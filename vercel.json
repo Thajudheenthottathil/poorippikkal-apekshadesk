@@ -4,6 +4,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/google:file.html",
+      "destination": "/api/google-verify?file=:file"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://ais-pre-63gugiqjyeaupazotrmbsu-535705716580.europe-west2.run.app/api/:path*"
     },
@@ -13,4 +17,5 @@
     }
   ]
 }
+
 
