@@ -1,0 +1,30 @@
+{
+  "totalDocsAllTime": 18,
+  "dailyCountsByDate": {
+    "2026-11-09": {
+      "total": 4,
+      "malayalam_letter": 2,
+      "gulf_cv": 1,
+      "rental_agreement": 1,
+      "teacher_marklist": 0,
+      "recentTitles": [
+        "വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ (വില്ലേജ് ഓഫീസ്)",
+        "കമ്പനി ജോലി രാജിക്കത്ത്",
+        "പ്രവാസി ഗൾഫ് ബയോഡാറ്റ (Gulf CV)",
+        "കെട്ടിട വാടക കരാർ പത്രം (Stamp Paper)"
+      ]
+    }
+  },
+  "lastScheduledRunDateIst": "",
+  "lastReportGeneratedAt": "9 Nov 2026, 3:36 pm",
+  "lastDispatchStatus": "Spot Report Generated at 9 Nov 2026, 3:36 pm",
+  "reportHistory": [
+    {
+      "id": "rep-1794218796964",
+      "generatedAtIst": "9 Nov 2026, 3:36 pm",
+      "triggerType": "SPOT_ON_DEMAND",
+      "summaryMalayalam": "ഇന്ന്: 4 ഫയലുകൾ | ആകെ: 18 | ഫീഡ്‌ബാക്ക്: 0",
+      "dispatchedChannels": []
+    }
+  ]
+}

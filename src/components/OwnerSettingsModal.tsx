@@ -40,7 +40,7 @@ interface OwnerSettingsModalProps {
   onBackToFrontend?: () => void;
 }
 
-type TabKey = 'identity' | 'contact' | 'payment' | 'pricing' | 'share' | 'feedback';
+type TabKey = 'identity' | 'contact' | 'payment' | 'pricing' | 'share' | 'feedback' | 'automation';
 
 export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
   isOpen,
@@ -61,6 +61,16 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
   const [feedbackList, setFeedbackList] = useState<CustomerFeedbackItem[]>([]);
   const [isLoadingFeedback, setIsLoadingFeedback] = useState<boolean>(false);
 
+  // Live Spot Report & Daily Automation State
+  const [spotReportData, setSpotReportData] = useState<any>(null);
+  const [isLoadingSpotReport, setIsLoadingSpotReport] = useState<boolean>(false);
+  const [dispatchStatusToast, setDispatchStatusToast] = useState<string>('');
+
+  // AI & Hugging Face Health Checker State
+  const [aiStatusData, setAiStatusData] = useState<any>(null);
+  const [isLoadingAiStatus, setIsLoadingAiStatus] = useState<boolean>(false);
+  const [hfTestMessage, setHfTestMessage] = useState<string>('');
+
   // Admin PIN Gate so customers cannot modify owner settings
   const [isPinAuthenticated, setIsPinAuthenticated] = useState<boolean>(false);
   const [pinAttempt, setPinAttempt] = useState<string>('');
@@ -69,6 +79,35 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
   useEffect(() => {
     setFormState(config);
   }, [config]);
+
+  const fetchAiStatus = async (tokenToTest?: string) => {
+    setIsLoadingAiStatus(true);
+    setHfTestMessage('');
+    try {
+      const res = await fetch('/api/admin/check-ai-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: tokenToTest !== undefined ? tokenToTest : formState.huggingFaceToken || '',
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAiStatusData(data);
+        if (data?.huggingFace?.valid) {
+          setHfTestMessage(`✅ Hugging Face കണക്റ്റഡ് ആണ്! അക്കൗണ്ട്: ${data.huggingFace.username}`);
+        } else if (data?.huggingFace?.configured) {
+          setHfTestMessage(`❌ ${data?.huggingFace?.error || 'ടോക്കൺ അസാധുവാണ്'}`);
+        } else {
+          setHfTestMessage('ℹ️ Hugging Face ടോക്കൺ നൽകിയിട്ടില്ല (സാരമില്ല — Gemini AI & വോയ്‌സ് സാധാരണ പോലെ പ്രവർത്തിക്കും).');
+        }
+      }
+    } catch {
+      setHfTestMessage('കണക്ഷൻ പരിശോധിക്കാൻ സാധിച്ചില്ല.');
+    } finally {
+      setIsLoadingAiStatus(false);
+    }
+  };
 
   const fetchServerFeedbacks = async () => {
     setIsLoadingFeedback(true);
@@ -87,9 +126,38 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     }
   };
 
+  const fetchSpotReport = async (dispatchNow = false) => {
+    setIsLoadingSpotReport(true);
+    if (dispatchNow) setDispatchStatusToast('');
+    try {
+      const res = await fetch('/api/admin/spot-report', {
+        method: dispatchNow ? 'POST' : 'GET',
+        headers: dispatchNow ? { 'Content-Type': 'application/json' } : undefined,
+        body: dispatchNow ? JSON.stringify({ dispatchNow: true }) : undefined,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSpotReportData(data);
+        if (dispatchNow) {
+          if (Array.isArray(data.dispatchedChannels) && data.dispatchedChannels.length > 0) {
+            setDispatchStatusToast(`✅ റിപ്പോർട്ട് അയച്ചു: ${data.dispatchedChannels.join(', ')}`);
+          } else {
+            setDispatchStatusToast('✅ തത്സമയ സ്പോട്ട് റിപ്പോർട്ട് പുതുക്കിയിട്ടുണ്ട്!');
+          }
+        }
+      }
+    } catch {
+      // Ignore network errors
+    } finally {
+      setIsLoadingSpotReport(false);
+    }
+  };
+
   useEffect(() => {
     if ((isOpen || isStandalonePage) && isPinAuthenticated) {
       fetchServerFeedbacks();
+      fetchSpotReport(false);
+      fetchAiStatus();
     }
   }, [isOpen, isStandalonePage, isPinAuthenticated]);
 
@@ -574,7 +642,23 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
               }`}
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              <span>6. 📥 ഫീഡ്‌ബാക്ക് ഇൻബോക്സ് ({feedbackList.length})</span>
+              <span>6. 📥 ഫീഡ്‌ബാക്ക് ({feedbackList.length})</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('automation');
+                fetchSpotReport(false);
+              }}
+              className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-malayalam font-bold flex items-center gap-1.5 whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
+                activeTab === 'automation'
+                  ? 'bg-emerald-700 text-white shadow-xs'
+                  : 'bg-emerald-100/90 text-emerald-950 hover:bg-emerald-200'
+              }`}
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>7. 📊 സ്പോട്ട് & 9 AM റിപ്പോർട്ട്</span>
             </button>
           </div>
 
@@ -1518,6 +1602,435 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
                     ))}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* TAB 7: DAILY 9:00 AM AUTOMATION SCHEDULER & LIVE SPOT REPORT */}
+            {activeTab === 'automation' && (
+              <div className="space-y-5 animate-fadeIn">
+                {/* 1. Instant On-Demand Spot Report Card */}
+                <div className="border-2 border-emerald-500 rounded-2xl p-4 bg-emerald-50/70 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h4 className="font-malayalam font-extrabold text-xs sm:text-sm text-emerald-950 flex items-center gap-1.5">
+                        <span>⚡ 1. തത്സമയ സ്പോട്ട് റിപ്പോർട്ട് (On-Demand Live Spot Report)</span>
+                      </h4>
+                      <p className="font-malayalam text-[11px] text-emerald-900 mt-0.5">
+                        നിങ്ങൾ എപ്പോൾ ചോദിച്ചാലും (അല്ലെങ്കിൽ ചാറ്റിൽ <strong>"റിപ്പോർട്ട് തരൂ"</strong> എന്ന് അയച്ചാലും) ഗൂഗിൾ കൺസോൾ സ്റ്റാറ്റസും അഡ്മിൻ പ്രവർത്തനങ്ങളും സ്പോട്ടിൽ ഇവിടെ കാണാം:
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => fetchSpotReport(true)}
+                        disabled={isLoadingSpotReport}
+                        className="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-malayalam font-extrabold flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      >
+                        <RotateCcw className={`w-3.5 h-3.5 ${isLoadingSpotReport ? 'animate-spin' : ''}`} />
+                        <span>{isLoadingSpotReport ? 'റിപ്പോർട്ട് എടുക്കുന്നു...' : '⚡ ഇപ്പോൾ സ്പോട്ട് റിപ്പോർട്ട് എടുക്കുക'}</span>
+                      </button>
+
+                      {spotReportData?.reportTextMalayalam && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopy(spotReportData.reportTextMalayalam, 'spotReportCopy')
+                            }
+                            className="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-emerald-300 text-emerald-950 text-xs font-malayalam font-bold flex items-center gap-1 cursor-pointer"
+                          >
+                            {copiedKey === 'spotReportCopy' ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-700" />
+                                <span>കോപ്പി ആയി!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5" />
+                                <span>റിപ്പോർട്ട് കോപ്പി</span>
+                              </>
+                            )}
+                          </button>
+
+                          <a
+                            href={spotReportData.whatsappDirectShareUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-2 rounded-xl bg-[#25D366] hover:bg-emerald-500 text-slate-950 text-xs font-malayalam font-extrabold flex items-center gap-1"
+                          >
+                            <Share2 className="w-3.5 h-3.5" />
+                            <span>വാട്സാപ്പിലേക്ക് അയക്കുക</span>
+                          </a>
+
+                          <a
+                            href={spotReportData.mailtoShareUrl}
+                            className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-malayalam font-bold flex items-center gap-1"
+                          >
+                            <Mail className="w-3.5 h-3.5 text-amber-300" />
+                            <span>ഇമെയിൽ അയക്കുക</span>
+                          </a>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {dispatchStatusToast && (
+                    <div className="bg-emerald-800 text-white px-3 py-2 rounded-xl text-xs font-malayalam font-bold">
+                      {dispatchStatusToast}
+                    </div>
+                  )}
+
+                  {/* Quick KPI Summary Strip */}
+                  {spotReportData?.adminMetrics && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      <div className="bg-white border border-emerald-200 rounded-xl p-3">
+                        <span className="text-[11px] font-malayalam text-slate-500 block">
+                          ഇന്ന് നിർമ്മിച്ച ഫയലുകൾ
+                        </span>
+                        <span className="text-lg font-mono-num font-black text-emerald-800">
+                          {spotReportData.adminMetrics.todayDocs}
+                        </span>
+                        <span className="text-[10px] font-malayalam text-slate-500 block">
+                          ആകെ: {spotReportData.adminMetrics.totalDocsAllTime} ഫയലുകൾ
+                        </span>
+                      </div>
+
+                      <div className="bg-white border border-emerald-200 rounded-xl p-3">
+                        <span className="text-[11px] font-malayalam text-slate-500 block">
+                          Google Console & Sitemap
+                        </span>
+                        <span className="text-xs font-malayalam font-extrabold text-emerald-700 block mt-1">
+                          {spotReportData.seoAndConsoleStatus?.googleVerifyFileExists
+                            ? '✅ വെരിഫൈഡ് & ആക്ടീവ്'
+                            : '⚠️ പരിശോധിക്കുക'}
+                        </span>
+                        <span className="text-[10px] font-mono-num text-slate-500 truncate block">
+                          /sitemap.xml · /robots.txt
+                        </span>
+                      </div>
+
+                      <div className="bg-white border border-emerald-200 rounded-xl p-3">
+                        <span className="text-[11px] font-malayalam text-slate-500 block">
+                          കസ്റ്റമർ ഫീഡ്‌ബാക്ക്
+                        </span>
+                        <span className="text-lg font-mono-num font-black text-amber-600">
+                          {spotReportData.adminMetrics.feedbackCount}
+                        </span>
+                        <span className="text-[10px] font-malayalam text-slate-500 block">
+                          പുതിയ ഫോം ആവശ്യം: {spotReportData.adminMetrics.newFormRequestsCount}
+                        </span>
+                      </div>
+
+                      <div className="bg-white border border-emerald-200 rounded-xl p-3">
+                        <span className="text-[11px] font-malayalam text-slate-500 block">
+                          9:00 AM ഓട്ടോ ഷെഡ്യൂളർ
+                        </span>
+                        <span className="text-xs font-malayalam font-extrabold text-emerald-800 block mt-1">
+                          {formState.dailyReportEnabled !== false
+                            ? `✅ ON (${formState.dailyReportTimeIst || '09:00'} IST)`
+                            : '⏸️ OFF'}
+                        </span>
+                        <span className="text-[10px] font-mono-num text-slate-500 truncate block">
+                          {formState.reportRecipientEmail || formState.email || 'thajukolari786@gmail.com'}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Full Formatted Spot Report Box */}
+                  <div className="bg-slate-900 text-slate-100 rounded-xl p-4 font-malayalam text-xs leading-relaxed whitespace-pre-line border border-slate-700 max-h-[300px] overflow-y-auto">
+                    {spotReportData?.reportTextMalayalam ||
+                      'സ്പോട്ട് റിപ്പോർട്ട് ലോഡ് ചെയ്യുന്നു... മുകളിലെ "ഇപ്പോൾ സ്പോട്ട് റിപ്പോർട്ട് എടുക്കുക" ബട്ടൺ അമർത്തുക.'}
+                  </div>
+                </div>
+
+                {/* 2. Daily 9:00 AM IST Automation Scheduler Configuration */}
+                <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h4 className="font-malayalam font-extrabold text-xs sm:text-sm text-slate-900">
+                        ⏰ 2. ദിവസവും രാവിലെ 9:00 മണിക്ക് ഓട്ടോമാറ്റിക് റിപ്പോർട്ട് (Daily 9:00 AM Scheduler)
+                      </h4>
+                      <p className="font-malayalam text-[11px] text-slate-600">
+                        ഇത് ON ആക്കി വെച്ചാൽ സെർവർ ദിവസവും രാവിലെ 9:00 മണിക്ക് (IST) തനിയെ റിപ്പോർട്ട് തയ്യാറാക്കി സൂക്ഷിക്കുകയും നിങ്ങളുടെ ഇമെയിൽ / വാട്സാപ്പ് വെബ്‌ഹുക്കിലേക്ക് അയക്കുകയും ചെയ്യും.
+                      </p>
+                    </div>
+
+                    <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={formState.dailyReportEnabled !== false}
+                        onChange={(e) =>
+                          setFormState({ ...formState, dailyReportEnabled: e.target.checked })
+                        }
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-700"></div>
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-malayalam text-xs font-bold text-slate-800 mb-1">
+                        ദിവസേനയുള്ള റിപ്പോർട്ട് സമയം (IST)
+                      </label>
+                      <input
+                        type="time"
+                        value={formState.dailyReportTimeIst || '09:00'}
+                        onChange={(e) =>
+                          setFormState({ ...formState, dailyReportTimeIst: e.target.value })
+                        }
+                        className="w-full min-h-[42px] font-mono-num text-sm bg-white border border-slate-300 rounded-xl px-3 focus:outline-none focus:border-emerald-700"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-malayalam text-xs font-bold text-slate-800 mb-1">
+                        റിപ്പോർട്ട് ലഭിക്കേണ്ട ഇമെയിൽ (Email)
+                      </label>
+                      <input
+                        type="email"
+                        value={
+                          formState.reportRecipientEmail ||
+                          formState.email ||
+                          'thajukolari786@gmail.com'
+                        }
+                        onChange={(e) =>
+                          setFormState({ ...formState, reportRecipientEmail: e.target.value })
+                        }
+                        placeholder="thajukolari786@gmail.com"
+                        className="w-full min-h-[42px] font-mono-num text-xs bg-white border border-slate-300 rounded-xl px-3 focus:outline-none focus:border-emerald-700"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-malayalam text-xs font-bold text-slate-800 mb-1">
+                        റിപ്പോർട്ട് ലഭിക്കേണ്ട വാട്സാപ്പ് നമ്പർ
+                      </label>
+                      <input
+                        type="text"
+                        value={
+                          formState.reportRecipientWhatsapp ||
+                          formState.whatsappNumber ||
+                          '+91 98470 00000'
+                        }
+                        onChange={(e) =>
+                          setFormState({ ...formState, reportRecipientWhatsapp: e.target.value })
+                        }
+                        placeholder="+91 98470 00000"
+                        className="w-full min-h-[42px] font-mono-num text-xs bg-white border border-slate-300 rounded-xl px-3 focus:outline-none focus:border-emerald-700"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Optional Email Webhook & Google Search Console Token */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <label className="block font-malayalam text-xs font-bold text-slate-800 mb-1">
+                        ഓട്ടോ ഇമെയിൽ വെബ്‌ഹുക്ക് (Google Apps Script URL - ഓപ്ഷണൽ)
+                      </label>
+                      <input
+                        type="url"
+                        value={formState.automationWebhookUrl || ''}
+                        onChange={(e) =>
+                          setFormState({ ...formState, automationWebhookUrl: e.target.value })
+                        }
+                        placeholder="https://script.google.com/macros/s/.../exec"
+                        className="w-full min-h-[40px] font-mono-num text-xs bg-white border border-slate-300 rounded-xl px-3 focus:outline-none focus:border-emerald-700"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-malayalam text-xs font-bold text-slate-800 mb-1">
+                        Google Search Console API Token (ഓപ്ഷണൽ)
+                      </label>
+                      <input
+                        type="password"
+                        value={formState.gscAccessToken || ''}
+                        onChange={(e) =>
+                          setFormState({ ...formState, gscAccessToken: e.target.value })
+                        }
+                        placeholder="ya29.a0... (ഉണ്ടെങ്കിൽ നേരിട്ട് ക്ലിക്കുകൾ കാണാം)"
+                        className="w-full min-h-[40px] font-mono-num text-xs bg-white border border-slate-300 rounded-xl px-3 focus:outline-none focus:border-emerald-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Google Search Console Complete Malayalam Meaning Dictionary */}
+                <div className="border-2 border-sky-300 rounded-2xl p-4 bg-sky-50/70 space-y-3.5">
+                  <div>
+                    <h4 className="font-malayalam font-extrabold text-xs sm:text-sm text-sky-950">
+                      🔍 3. ഗൂഗിൾ സെർച്ച് കൺസോളിലെ ഓരോ വാക്കിന്റെയും കൃത്യമായ മലയാളം അർത്ഥം (Google Search Console Guide)
+                    </h4>
+                    <p className="font-malayalam text-[11px] text-sky-900 mt-0.5">
+                      നിങ്ങൾ ഗൂഗിൾ സെർച്ച് കൺസോൾ തുറക്കുമ്പോൾ കാണുന്ന ഇംഗ്ലീഷ് വാക്കുകളുടെ അർത്ഥം വളരെ എളുപ്പത്തിൽ മനസ്സിലാക്കാൻ:
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-malayalam">
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-emerald-800 block">
+                        1. Total Clicks (ആകെ ക്ലിക്കുകൾ)
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        ഗൂഗിളിൽ സെർച്ച് ചെയ്ത് നിങ്ങളുടെ വെബ്സൈറ്റ് ലിങ്കിൽ തൊട്ട് <strong>അകത്തേക്ക് കയറിയ ആളുകളുടെ എണ്ണം</strong>.
+                      </p>
+                    </div>
+
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-sky-800 block">
+                        2. Total Impressions (ഇംപ്രഷനുകൾ)
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        ഗൂഗിളിൽ ആളുകൾ സെർച്ച് ചെയ്യുമ്പോൾ നിങ്ങളുടെ സൈറ്റിന്റെ പേര് <strong>എത്ര തവണ അവരുടെ സ്ക്രീനിൽ തെളിഞ്ഞുവന്നു</strong> എന്ന എണ്ണം.
+                      </p>
+                    </div>
+
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-amber-800 block">
+                        3. Average CTR & Position (ശരാശരി റാങ്ക്)
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        <strong>Position (1–10):</strong> ഗൂഗിളിൽ ഒന്നാം പേജിൽ എത്രാമതാണ് സൈറ്റ് എന്നത്. <strong>CTR:</strong> ലിങ്ക് കണ്ടവരിൽ എത്ര % പേർ ക്ലിക്ക് ചെയ്തു എന്നത്.
+                      </p>
+                    </div>
+
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-emerald-800 block">
+                        4. URL Inspection ("URL is on Google")
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        പച്ച ടിക് വന്ന് <strong>"URL is on Google"</strong> എന്ന് കണ്ടാൽ നിങ്ങളുടെ സൈറ്റ് ഗൂഗിൾ സെർച്ചിൽ ചേർക്കപ്പെട്ടു (Index ആയി) എന്നർത്ഥം.
+                      </p>
+                    </div>
+
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-purple-800 block">
+                        5. Pages → Indexed vs Not Indexed
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        <strong>Indexed:</strong> ഗൂഗിളിൽ വന്ന പേജുകൾ. <strong>Discovered / Crawled - currently not indexed:</strong> ഗൂഗിൾ സൈറ്റ് കണ്ടു, ഏതാനും ദിവസത്തിനുള്ളിൽ സെർച്ചിൽ ചേർത്തുകൊള്ളും (ഭയപ്പെടേണ്ടതില്ല).
+                      </p>
+                    </div>
+
+                    <div className="bg-white border border-sky-200 rounded-xl p-3 space-y-1">
+                      <span className="font-extrabold text-emerald-800 block">
+                        6. Sitemaps (/sitemap.xml → "Success")
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        Sitemaps-ൽ <code className="font-mono-num">sitemap.xml</code> കൊടുക്കുമ്പോൾ <strong>"Success"</strong> എന്ന് പച്ചയിൽ കാണിച്ചാൽ ഗൂഗിൾ സൈറ്റ് പൂർണ്ണമായി വായിച്ചു എന്നർത്ഥം.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. AI & Hugging Face Live Status Checker Card */}
+                <div className="border-2 border-purple-300 rounded-2xl p-4 bg-purple-50/70 space-y-3.5">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h4 className="font-malayalam font-extrabold text-xs sm:text-sm text-purple-950 flex items-center gap-1.5">
+                        <span>🤖 4. AI & Hugging Face തത്സമയ സ്റ്റാറ്റസ് ചെക്കർ (Live AI Health Check)</span>
+                      </h4>
+                      <p className="font-malayalam text-[11px] text-purple-900 mt-0.5">
+                        സൈറ്റിലെ ആർട്ടിഫിഷ്യൽ ഇന്റലിജൻസ് എഞ്ചിനുകളും (Gemini & Hugging Face) വോയ്‌സ് റെക്കോർഡിംഗും പ്രവർത്തിക്കുന്നുണ്ടോ എന്ന് തത്സമയം പരിശോധിക്കാൻ:
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => fetchAiStatus()}
+                      disabled={isLoadingAiStatus}
+                      className="px-3.5 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-malayalam font-extrabold flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    >
+                      <RotateCcw className={`w-3.5 h-3.5 ${isLoadingAiStatus ? 'animate-spin' : ''}`} />
+                      <span>{isLoadingAiStatus ? 'പരിശോധിക്കുന്നു...' : '⚡ AI സ്റ്റാറ്റസ് ഇപ്പോൾ പരിശോധിക്കുക'}</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-malayalam">
+                    {/* Gemini Status */}
+                    <div className="bg-white border border-purple-200 rounded-xl p-3 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                          <span>Google Gemini AI (പ്രധാന എഞ്ചിൻ)</span>
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-extrabold bg-emerald-100 text-emerald-800">
+                          {aiStatusData?.gemini?.configured !== false ? '🟢 സജീവം (Active)' : '🟡 ഡെവലപ്‌മെന്റ്'}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-relaxed">
+                        മലയാളം വോയ്‌സ് കേട്ട് മനസ്സിലാക്കുന്നതിനും A4 ഡോക്യുമെന്റുകൾ സ്വയം തയ്യാറാക്കുന്നതിനും ഉത്തരവാദിത്തമുള്ള പ്രധാന AI.
+                      </p>
+                    </div>
+
+                    {/* Hugging Face Status */}
+                    <div className="bg-white border border-purple-200 rounded-xl p-3 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                          <span>🤗 Hugging Face (ബാക്കപ്പ് എഞ്ചിൻ)</span>
+                        </span>
+                        <span
+                          className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
+                            aiStatusData?.huggingFace?.valid
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : aiStatusData?.huggingFace?.configured
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-slate-100 text-slate-700'
+                          }`}
+                        >
+                          {aiStatusData?.huggingFace?.valid
+                            ? `🟢 കണക്റ്റഡ് (${aiStatusData.huggingFace.username})`
+                            : aiStatusData?.huggingFace?.configured
+                            ? '🔴 തെറ്റായ ടോക്കൺ'
+                            : '⚪ നൽകിയിട്ടില്ല (ഓപ്ഷണൽ)'}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-relaxed">
+                        ഗൂഗിൾ സെർവറുകളിൽ എന്തെങ്കിലും തടസ്സം വന്നാൽ മാത്രം പ്രവർത്തിക്കുന്ന ഓപ്പൺ സോഴ്സ് ബാക്കപ്പ് (Whisper ASR & Qwen). ഇത് ഇല്ലെങ്കിലും സൈറ്റ് സുഗമമായി പ്രവർത്തിക്കും.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* HF Token Input Box */}
+                  <div className="bg-white border border-purple-200 rounded-xl p-3 space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <label className="block font-malayalam text-xs font-bold text-purple-950">
+                        Hugging Face Access Token (hf_...) — ഓപ്ഷണൽ
+                      </label>
+                      <span className="text-[10px] text-slate-500 font-malayalam">
+                        (ആവശ്യമെങ്കിൽ huggingface.co/settings/tokens-ൽ നിന്ന് സൗജന്യമായി എടുക്കാം)
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="password"
+                        value={formState.huggingFaceToken || ''}
+                        onChange={(e) =>
+                          setFormState({ ...formState, huggingFaceToken: e.target.value })
+                        }
+                        placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        className="flex-1 min-h-[40px] font-mono text-xs bg-slate-50 border border-purple-300 rounded-xl px-3 focus:outline-none focus:border-purple-600"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fetchAiStatus(formState.huggingFaceToken || '')}
+                        disabled={isLoadingAiStatus}
+                        className="px-3.5 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-malayalam font-extrabold flex items-center gap-1 cursor-pointer shrink-0"
+                      >
+                        <RotateCcw className={`w-3.5 h-3.5 ${isLoadingAiStatus ? 'animate-spin' : ''}`} />
+                        <span>ടെസ്റ്റ് ചെയ്യുക</span>
+                      </button>
+                    </div>
+                    {hfTestMessage && (
+                      <p className="text-xs font-malayalam font-bold text-purple-950 mt-1">
+                        {hfTestMessage}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 

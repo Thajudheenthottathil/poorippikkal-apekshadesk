@@ -1038,10 +1038,61 @@ export function App() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Audio API HTTP ${response.status}`);
+      }
       const data = await response.json();
       applyAiDocumentResult(data);
     } catch {
-      showToast('വോയ്‌സ് റെക്കോർഡ് പ്രോസസ്സ് ചെയ്യുന്നതിൽ ചെറിയ തടസ്സം നേരിട്ടു.');
+      const fallbackSpoken = normalizeSpokenMalayalamTranscript(
+        (payload.backupTranscript || '').trim()
+      );
+      if (fallbackSpoken) {
+        const effectiveText = payload.fieldContextLabel
+          ? `${payload.fieldContextLabel}: ${fallbackSpoken}`
+          : fallbackSpoken;
+        const localMatch = matchGovFormFromPrompt(
+          effectiveText,
+          activeCategory === 'malayalam_letter' ? letterData : null
+        );
+        if (localMatch) {
+          applyAiDocumentResult({
+            detectedType: 'malayalam_letter',
+            documentUpdated: true,
+            spokenTranscript: fallbackSpoken,
+            isComplete: localMatch.isComplete,
+            assistantReplyMalayalam: localMatch.assistantReplyMalayalam,
+            followUpQuestions: localMatch.followUpQuestions,
+            subFormPromptTitle: localMatch.subFormPromptTitle,
+            subFormOptions: localMatch.subFormOptions,
+            letterData: localMatch.letterData,
+          });
+        } else {
+          const customFallbackLetter: MalayalamLetterData = {
+            ...letterData,
+            documentHeading: 'ഔദ്യോഗിക അപേക്ഷ',
+            letterLayoutVariant: 'official_letter',
+            subject: 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
+            bodyParagraphs: [
+              `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${fallbackSpoken}`,
+              'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+            ],
+            date: new Date().toLocaleDateString('ml-IN'),
+          };
+          applyAiDocumentResult({
+            detectedType: 'malayalam_letter',
+            documentUpdated: true,
+            spokenTranscript: fallbackSpoken,
+            isComplete: false,
+            assistantReplyMalayalam:
+              '✅ നിങ്ങളുടെ വോയ്‌സ് സന്ദേശത്തിൽ നിന്നുള്ള വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
+            followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
+            letterData: customFallbackLetter,
+          });
+        }
+      } else {
+        showToast('നിങ്ങളുടെ ശബ്ദം വ്യക്തമായി കേൾക്കാൻ സാധിച്ചില്ല. ദയവായി ഒരിക്കൽ കൂടി പറയുകയോ ടൈപ്പ് ചെയ്യുകയോ ചെയ്യുക.');
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -1982,23 +2033,49 @@ export function App() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Generate API HTTP ${response.status}`);
+      }
       const data = await response.json();
       applyAiDocumentResult(data);
     } catch {
-      // Offline fallback: if server is unreachable, try local gov form matcher with extracted details
+      // Offline / API fallback: match local gov form or school leave letter or build clean custom Malayalam letter
       const fallbackGovMatch = matchGovFormFromPrompt(
         cleanedInput,
         activeCategory === 'malayalam_letter' ? letterData : null
       );
       if (fallbackGovMatch) {
-        setShowDirectPdfCanvas(false);
-        setActiveCategory('malayalam_letter');
-        setLetterData(fallbackGovMatch.letterData);
-        setFollowUpQuestions(buildEditableQuestionsForLetter(fallbackGovMatch.letterData));
-        setAssistantBannerMessage(fallbackGovMatch.assistantReplyMalayalam);
-        setIsEditMode(true);
+        applyAiDocumentResult({
+          detectedType: 'malayalam_letter',
+          documentUpdated: true,
+          isComplete: fallbackGovMatch.isComplete,
+          assistantReplyMalayalam: fallbackGovMatch.assistantReplyMalayalam,
+          followUpQuestions: fallbackGovMatch.followUpQuestions,
+          subFormPromptTitle: fallbackGovMatch.subFormPromptTitle,
+          subFormOptions: fallbackGovMatch.subFormOptions,
+          letterData: fallbackGovMatch.letterData,
+        });
       } else {
-        showToast('ഡോക്യുമെന്റ് നിർമ്മിക്കുന്നതിൽ ചെറിയ തടസ്സം നേരിട്ടു. വീണ്ടും ശ്രമിക്കുക.');
+        const customFallbackLetter: MalayalamLetterData = {
+          ...letterData,
+          documentHeading: 'ഔദ്യോഗിക അപേക്ഷ',
+          letterLayoutVariant: 'official_letter',
+          subject: 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
+          bodyParagraphs: [
+            `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${cleanedInput}`,
+            'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+          ],
+          date: new Date().toLocaleDateString('ml-IN'),
+        };
+        applyAiDocumentResult({
+          detectedType: 'malayalam_letter',
+          documentUpdated: true,
+          isComplete: false,
+          assistantReplyMalayalam:
+            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
+          followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
+          letterData: customFallbackLetter,
+        });
       }
     } finally {
       setIsGenerating(false);

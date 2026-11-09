@@ -1416,6 +1416,13 @@ export interface OwnerBusinessConfig {
   guideVideoUrl?: string;
   googleSiteVerification?: string;
   customDomainUrl?: string;
+  dailyReportEnabled?: boolean;
+  dailyReportTimeIst?: string;
+  reportRecipientEmail?: string;
+  reportRecipientWhatsapp?: string;
+  automationWebhookUrl?: string;
+  gscAccessToken?: string;
+  huggingFaceToken?: string;
 }
 
 export type TemplateSubGroup =

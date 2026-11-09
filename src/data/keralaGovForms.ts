@@ -2131,6 +2131,161 @@ export function matchGovFormFromPrompt(
     /\b(panchayat|municipality)\b/i.test(norm)
   ) {
     matchedFormId = 'lsgd-building-ownership-permit';
+  } else if (
+    !norm.includes('മദ്രസ') &&
+    !norm.includes('ഉസ്താദ്') &&
+    (prompt.includes('ലീവ് ലെറ്റർ') ||
+      prompt.includes('അവധി അപേക്ഷ') ||
+      prompt.includes('ടീച്ചർ') ||
+      prompt.includes('ടീച്ചറെ') ||
+      prompt.includes('ഹെഡ്മാസ്റ്റർ') ||
+      prompt.includes('പ്രധാനാധ്യാപക') ||
+      ((prompt.includes('സ്കൂൾ') || prompt.includes('സ്കൂളിൽ') || prompt.includes('ക്ലാസ്')) &&
+        (prompt.includes('അവധി') || prompt.includes('ലീവ്') || /\bleave\b/i.test(norm))))
+  ) {
+    // Smart Spoken Malayalam School Leave Letter extraction
+    const nonNameDativeWords = new Set([
+      'ടീച്ചർക്ക്',
+      'ടീച്ചറിന്',
+      'ടീച്ചറോട്',
+      'സാറിന്',
+      'മാഷിന്',
+      'ഹെഡ്മാസ്റ്റർക്ക്',
+      'പ്രിൻസിപ്പലിന്',
+      'സ്കൂളിൽ',
+      'കല്യാണത്തിന്',
+      'വിവാഹത്തിന്',
+      'ആശുപത്രിയിൽ',
+      'പനിക്ക്',
+      'അവധിക്ക്',
+      'ലീവിന്',
+      'പരീക്ഷയ്ക്ക്',
+      'വീട്ടിൽ',
+      'യാത്രയ്ക്ക്',
+      'എനിക്ക്',
+      'അവന്',
+      'അവൾക്ക്',
+      'കുട്ടിക്ക്',
+      'മകന്',
+      'മകൾക്ക്',
+      'കൊടുക്കാൻ',
+      'പോകാൻ',
+      'വരാൻ',
+    ]);
+
+    const explicitNameMatch = prompt.match(
+      /(?:എന്റെ പേര്|കുട്ടിയുടെ പേര്|വിദ്യാർത്ഥിയുടെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    );
+    let spokenStudentName = explicitNameMatch?.[1]?.replace(/\s*(ആണ്|എന്നാണ്).*$/, '').trim() || '';
+    if (!spokenStudentName) {
+      const words = prompt
+        .replace(/[.,;!?()"'🎙️]/g, ' ')
+        .split(/\s+/)
+        .map((w) => w.trim())
+        .filter(Boolean);
+      for (const w of words) {
+        if (w.length < 3 || nonNameDativeWords.has(w)) continue;
+        if (/(?:വിന്|വിനു|യിന്|യിനു|യ്ക്ക്|യ്ക്കു|ക്ക്|ക്കു|ലിന്|ലിനു|നിന്|നിനു|റിന്|റിനു|ിന്|ിനു)$/.test(w)) {
+          let base = w;
+          if (/(?:വിന്|വിനു|യിന്|യിനു)$/.test(w)) {
+            base = w.replace(/(?:വിന്|വിനു|യിന്|യിനു)$/, '');
+          } else if (/(?:യ്ക്ക്|യ്ക്കു)$/.test(w)) {
+            base = w.replace(/(?:യ്ക്ക്|യ്ക്കു)$/, '');
+          } else if (/(?:ക്ക്|ക്കു)$/.test(w)) {
+            base = w.replace(/(?:ക്ക്|ക്കു)$/, '');
+          } else if (/ലി(?:ന്|നു)$/.test(w)) {
+            base = w.replace(/ലി(?:ന്|നു)$/, 'ൽ');
+          } else if (/നി(?:ന്|നു)$/.test(w)) {
+            base = w.replace(/നി(?:ന്|നു)$/, 'ൻ');
+          } else if (/റി(?:ന്|നു)$/.test(w)) {
+            base = w.replace(/റി(?:ന്|നു)$/, 'ർ');
+          } else if (/(?:ിന്|ിനു)$/.test(w)) {
+            base = w.replace(/(?:ിന്|ിനു)$/, '്');
+          }
+          if (base.length >= 2) {
+            spokenStudentName = base;
+            break;
+          }
+        }
+      }
+    }
+
+    const extractedLoc = extractKeralaPlaceAndDistrict(prompt);
+    const cleanPlace = extractedLoc.found ? extractedLoc.place : currentLetter?.place || 'കേരളം';
+    const cleanDistrict = extractedLoc.found ? extractedLoc.district : cleanPlace;
+
+    const dayMatch = prompt.match(
+      /(തിങ്കളാഴ്ച|ചൊവ്വാഴ്ച|ബുധനാഴ്ച|വ്യാഴാഴ്ച|വെള്ളിയാഴ്ച|ശനിയാഴ്ച|ഞായറാഴ്ച|നാളെ|ഇന്ന്)/
+    );
+    const leaveDayPhrase = dayMatch?.[1]
+      ? dayMatch[1] === 'നാളെ' || dayMatch[1] === 'ഇന്ന്'
+        ? dayMatch[1]
+        : `വരുന്ന ${dayMatch[1]}`
+      : 'ഇന്ന്';
+
+    const leaveReasonPhrase =
+      prompt.includes('കല്യാണ') || prompt.includes('വിവാഹ')
+        ? 'ഒരു കല്യാണ ചടങ്ങിൽ (വിവാഹത്തിൽ) പങ്കെടുക്കേണ്ടതിനാൽ'
+        : prompt.includes('പനി') || prompt.includes('തലവേദന') || prompt.includes('ജലദോഷം') || prompt.includes('സുഖമില്ല')
+        ? 'കടുത്ത പനിയും ശാരീരിക അസ്വസ്ഥതയും ആയതിനാൽ'
+        : prompt.includes('ആശുപത്രി') || prompt.includes('ഡോക്ട')
+        ? 'ആശുപത്രിയിൽ പോയി ഡോക്ടറെ കാണേണ്ടതിനാൽ'
+        : prompt.includes('യാത്ര')
+        ? 'കുടുംബസമേതം ഒരു അത്യാവശ്യ യാത്ര പോകേണ്ടതിനാൽ'
+        : 'ഒഴിച്ചുകൂടാനാവാത്ത കുടുംബപരമായ ആവശ്യങ്ങളാൽ';
+
+    const studentIntro = spokenStudentName
+      ? `ഈ സ്കൂളിലെ വിദ്യാർത്ഥിയായ എനിക്ക് (${spokenStudentName})`
+      : 'ഈ സ്കൂളിലെ വിദ്യാർത്ഥിയായ എനിക്ക്';
+
+    const leaveLetter: MalayalamLetterData = {
+      documentHeading: 'അവധി അപേക്ഷ (Leave Letter)',
+      letterLayoutVariant: 'school_leave',
+      senderName: spokenStudentName || '',
+      senderAddress: cleanPlace !== cleanDistrict ? `${cleanPlace}, ${cleanDistrict}` : cleanPlace,
+      senderPhone: '',
+      recipientTitle: 'ബഹുമാനപ്പെട്ട ക്ലാസ് ടീച്ചർ / ഹെഡ്മാസ്റ്റർ അവർകൾക്ക്,',
+      recipientOffice: `ഗവൺമെന്റ് ഹയർ സെക്കൻഡറി സ്കൂൾ, ${cleanPlace},`,
+      recipientPlace: `${cleanDistrict}.`,
+      subject: 'ഒരു ദിവസത്തെ അവധി (Leave) അനുവദിച്ചു തരണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
+      reference: '',
+      salutation: 'ബഹുമാനപ്പെട്ട ടീച്ചറേ,',
+      bodyParagraphs: [
+        `${studentIntro} ${leaveReasonPhrase} ${leaveDayPhrase} ക്ലാസ്സിൽ ഹാജരാകുവാൻ സാധിക്കുന്നതല്ല.`,
+        'ആയതിനാൽ ദയവായി അന്നേ ദിവസം എനിക്ക് അവധി അനുവദിച്ചു തരണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+      ],
+      closingPhrase: 'വിനീത വിദ്യാർത്ഥി,',
+      place: cleanPlace,
+      date: new Date().toLocaleDateString('ml-IN'),
+      enclosures: [],
+    };
+
+    const syntheticForm: GovFormTemplate = {
+      id: 'school-student-leave-letter',
+      categoryKey: 'service_education',
+      categoryLabelMalayalam: 'സ്കൂൾ & വിദ്യാഭ്യാസം (Education)',
+      formCode: 'സ്കൂൾ വിദ്യാർത്ഥി അവധി അപേക്ഷ (School Leave Letter)',
+      titleMalayalam: 'അവധി അപേക്ഷ (Leave Letter)',
+      titleEnglish: 'School Student Leave Application',
+      subtitleMalayalam: 'സ്കൂളിൽ ക്ലാസ് ടീച്ചർക്ക് / ഹെഡ്മാസ്റ്റർക്ക് നൽകാനുള്ള അവധി അപേക്ഷ',
+      portalName: 'സ്കൂൾ / വിദ്യാഭ്യാസ വകുപ്പ്',
+      portalUrl: '',
+      searchKeywords: 'school leave letter teacher class student സ്കൂൾ അവധി അപേക്ഷ ലീവ് ലെറ്റർ ടീച്ചർ',
+      recipientTitle: leaveLetter.recipientTitle,
+      recipientOffice: leaveLetter.recipientOffice,
+      subject: leaveLetter.subject,
+      bodyParagraphs: leaveLetter.bodyParagraphs,
+      enclosures: [],
+      structuredFields: [],
+    };
+
+    return {
+      form: syntheticForm,
+      letterData: leaveLetter,
+      assistantReplyMalayalam: `✅ നിങ്ങൾ പറഞ്ഞ വിവരങ്ങൾ ചേർത്ത് **സ്കൂൾ അവധി അപേക്ഷ (Leave Letter)** തയ്യാറായിട്ടുണ്ട്!\n\n• വിദ്യാർത്ഥിയുടെ പേര്: **${spokenStudentName || 'താഴെ ചേർക്കാം'}**\n• അവധി ദിവസം: **${leaveDayPhrase}**\n• കാരണം: **${leaveReasonPhrase}**\n\nവലതുവശത്തെ A4 പേപ്പറിലോ താഴെ കാണുന്ന വാട്സാപ്പ് കോളങ്ങളിലോ സ്കൂളിന്റെ പേരും ക്ലാസ്സും ആവശ്യമെങ്കിൽ തിരുത്താം.`,
+      followUpQuestions: buildEditableQuestionsForLetter(leaveLetter),
+      isComplete: Boolean(spokenStudentName),
+    };
   }
 
   if (matchedFormId) {
