@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Background with Safe Margin (10% padding for Android Maskable) -->
+  <rect width="512" height="512" rx="112" fill="url(#grad)" />
+
+  <!-- A4 Paper Representation with Folded Corner -->
+  <g filter="url(#shadow)">
+    <!-- Base Paper -->
+    <path d="M128 96 H320 L384 160 V416 C384 429.255 373.255 440 360 440 H128 C114.745 440 104 429.255 104 416 V120 C104 106.745 114.745 96 128 96 Z" fill="url(#paperGrad)" />
+    <!-- Folded Corner -->
+    <path d="M320 96 V144 C320 152.837 327.163 160 336 160 H384 Z" fill="#cbd5e1" />
+  </g>
+
+  <!-- Malayalam Document Lines -->
+  <rect x="144" y="196" width="136" height="12" rx="6" fill="#047857" />
+  <rect x="144" y="224" width="200" height="10" rx="5" fill="#94a3b8" />
+  <rect x="144" y="248" width="180" height="10" rx="5" fill="#cbd5e1" />
+  <rect x="144" y="272" width="190" height="10" rx="5" fill="#cbd5e1" />
+
+  <!-- Microphone Badge Floating on Bottom Right -->
+  <circle cx="336" cy="352" r="54" fill="#047857" filter="url(#shadow)" stroke="#ffffff" stroke-width="6" />
+  <!-- Microphone Icon -->
+  <path d="M336 324 C330.477 324 326 328.477 326 334 V352 C326 357.523 330.477 362 336 362 C341.523 362 346 357.523 346 352 V334 C346 328.477 341.523 324 336 324 Z" fill="#ffffff" />
+  <path d="M318 346 C318 355.941 326.059 364 336 364 C345.941 364 354 355.941 354 346 H359 C359 357.781 350.158 367.488 339 368.868 V376 H345 V381 H327 V376 H333 V368.868 C321.842 367.488 313 357.781 313 346 H318 Z" fill="#ffffff" />
+</svg>

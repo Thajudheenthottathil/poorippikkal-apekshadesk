@@ -1,0 +1,11 @@
+{
+  "name": "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk) – Malayalam Voice to PDF & Form Desk",
+  "description": "മലയാളം അപേക്ഷകൾ, ഫോമുകൾ, വാടക കരാർ, ഗൾഫ് CV & മാർക്ക് ലിസ്റ്റ് — ഫോണിൽ പറയാം, 10 സെക്കൻഡിൽ A4 PDF തയ്യാറാക്കാം.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

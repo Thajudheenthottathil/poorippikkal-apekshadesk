@@ -1,0 +1,49 @@
+{
+  "id": "/",
+  "name": "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)",
+  "short_name": "അപേക്ഷാ ഡെസ്ക്",
+  "description": "മലയാളം അപേക്ഷകൾ, ഫോമുകൾ, വാടക കരാർ, ഗൾഫ് CV & മാർക്ക് ലിസ്റ്റ് — ഫോണിൽ പറയാം, 10 സെക്കൻഡിൽ തയ്യാറാക്കാം.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#047857",
+  "background_color": "#F8FAFC",
+  "lang": "ml-IN",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "അപേക്ഷ പൂരിപ്പിക്കാം",
+      "short_name": "അപേക്ഷ",
+      "description": "മലയാളം അപേക്ഷ / രാജിക്കത്ത് തയ്യാറാക്കുക",
+      "url": "/#letter",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ഗൾഫ് ബയോഡാറ്റ (CV)",
+      "short_name": "ഗൾഫ് CV",
+      "description": "ഇംഗ്ലീഷ് ഗൾഫ് CV തയ്യാറാക്കുക",
+      "url": "/#gulf_cv",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
