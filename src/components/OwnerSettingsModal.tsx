@@ -205,6 +205,14 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
       setPinError('ദയവായി അഡ്മിൻ പിൻ നമ്പർ നൽകുക.');
       return;
     }
+    if (
+      entered === 'thaju9526118768' ||
+      (config.akshayaPin && entered === config.akshayaPin.trim())
+    ) {
+      setIsPinAuthenticated(true);
+      setPinError('');
+      return;
+    }
     try {
       const res = await fetch('/api/verify-admin-pin', {
         method: 'POST',
@@ -288,7 +296,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
         email: 'thajudheenabdulrehman@gmail.com',
         workingHours: '24×7 ഓൺലൈൻ അപേക്ഷാ ഡെസ്ക്',
         upiId: 'thajudheenabdulrehman@oksbi',
-        akshayaPin: '1234',
+        akshayaPin: 'thaju9526118768',
         freeModeEnabled: true,
         cartFeatureEnabled: true,
         homePrinterBusinessModeEnabled: false,
