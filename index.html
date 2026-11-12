@@ -42,10 +42,14 @@
           true
         );
 
-        // Dynamically set canonical URL & og:url to the active domain (apekshadesk.vercel.app, poorippikkam.vercel.app, or Cloud Run)
+        // Lock canonical URL & og:url strictly to the primary production domain (prevents preview/branch duplicate indexing)
         try {
-          var cleanOrigin = window.location.origin.replace('ais-dev-', 'ais-pre-');
-          var canonicalHref = cleanOrigin + window.location.pathname;
+          var primaryDomain = 'https://poorippikkal-apekshadesk.vercel.app';
+          var params = new URLSearchParams(window.location.search);
+          var serviceSlug = params.get('service');
+          var canonicalHref = serviceSlug
+            ? primaryDomain + '/?service=' + encodeURIComponent(serviceSlug)
+            : primaryDomain + '/';
           document.addEventListener('DOMContentLoaded', function () {
             var linkCanonical = document.querySelector('link[rel="canonical"]');
             if (linkCanonical) linkCanonical.setAttribute('href', canonicalHref);
@@ -55,16 +59,16 @@
         } catch (_e2) {}
       })();
     </script>
-    <title>അപേക്ഷാ ഡെസ്ക് - മലയാളത്തിൽ സംസാരിച്ച് അപേക്ഷകളും കരാറുകളും തയ്യാറാക്കാം | പൂരിപ്പിക്കാം (Apeksha Desk)</title>
+    <title>പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, വാടക കരാർ &amp; PDF</title>
     <meta
       name="description"
-      content="വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ, ബയോഡാറ്റ, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ തയ്യാറാക്കാം. മലയാളം അപേക്ഷ എഴുതാൻ & ഓൺലൈൻ PDF ഫോർമാറ്റ്."
+      content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം) — വില്ലേജ്, പഞ്ചായത്ത് മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, 11 മാസത്തെ വാടക കരാർ ഫോം, ഗൾഫ് CV, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ ഫോണിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ A4 PDF ആക്കാം."
     />
     <meta
       name="keywords"
-      content="മലയാളം അപേക്ഷ എഴുതാൻ, മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ്, വാടക കരാർ ഫോർമാറ്റ് മലയാളം, മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ, പഞ്ചായത്ത് അപേക്ഷ ഫോർമാറ്റ് മലയാളം, പൂരിപ്പിക്കാം, അപേക്ഷാ ഡെസ്ക്, Apeksha Desk, Poorippikkam, poorippikkal-apekshadesk, മലയാളം അപേക്ഷ മാതൃക, മരം മുറിക്കാൻ അപേക്ഷ, വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ, കൈവശാവകാശ സർട്ടിഫിക്കറ്റ് അപേക്ഷ, പോക്കുവരവ് അപേക്ഷ ഫോർമാറ്റ്, വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF, ജോലി രാജിക്കത്ത് എങ്ങനെ എഴുതാം, പഞ്ചായത്ത് ബിൽഡിംഗ് ടാക്സ് അപേക്ഷ, Gulf driver CV format PDF, School mark list table format, malayalam application writing online, malayalam pdf editor online"
+      content="poorippikkal apekshadesk, പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്, പൂരിപ്പിക്കാം അപേക്ഷാ ഡെസ്ക്, poorippikkal-apekshadesk, Poorippikkam Apeksha Desk, അപേക്ഷ തയ്യാറാക്കാൻ, മലയാളം അപേക്ഷ എഴുതാൻ, വാടക കരാർ ഫോം, വാടക കരാർ ഫോർമാറ്റ് മലയാളം, മാർക്ക് ലിസ്റ്റ്, മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ, മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ്, പഞ്ചായത്ത് അപേക്ഷ ഫോർമാറ്റ് മലയാളം, മലയാളം അപേക്ഷ മാതൃക, മരം മുറിക്കാൻ അപേക്ഷ, വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ, കൈവശാവകാശ സർട്ടിഫിക്കറ്റ് അപേക്ഷ, പോക്കുവരവ് അപേക്ഷ ഫോർമാറ്റ്, വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF, ജോലി രാജിക്കത്ത് എങ്ങനെ എഴുതാം, പഞ്ചായത്ത് ബിൽഡിംഗ് ടാക്സ് അപേക്ഷ, Gulf driver CV format PDF, School mark list table format, malayalam application writing online, malayalam pdf editor online"
     />
-    <meta name="author" content="പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)" />
+    <meta name="author" content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="google-site-verification" content="googledcb782f90d41ae47" />
     <!-- GOOGLE_SITE_VERIFICATION_PLACEHOLDER -->
@@ -81,48 +85,68 @@
 
     <!-- OpenGraph / Facebook / WhatsApp Rich Preview Cards -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)" />
+    <meta property="og:site_name" content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)" />
     <meta property="og:locale" content="ml_IN" />
     <meta property="og:url" content="https://poorippikkal-apekshadesk.vercel.app/" />
-    <meta property="og:title" content="അപേക്ഷാ ഡെസ്ക് - മലയാളത്തിൽ സംസാരിച്ച് അപേക്ഷകളും കരാറുകളും തയ്യാറാക്കാം | പൂരിപ്പിക്കാം (Apeksha Desk)" />
+    <meta property="og:title" content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, വാടക കരാർ &amp; PDF" />
     <meta
       property="og:description"
-      content="വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ, ബയോഡാറ്റ, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ തയ്യാറാക്കാം. മലയാളം അപേക്ഷ എഴുതാൻ & ഓൺലൈൻ PDF ഫോർമാറ്റ്."
+      content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം) — വില്ലേജ്, പഞ്ചായത്ത് മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, 11 മാസത്തെ വാടക കരാർ ഫോം, ഗൾഫ് CV, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ ഫോണിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ A4 PDF ആക്കാം."
     />
     <meta property="og:image" content="https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png" />
+    <meta property="og:image:secure_url" content="https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) - മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ & വാടക കരാർ ഫോം" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
 
     <!-- Twitter / X Social Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="അപേക്ഷാ ഡെസ്ക് - മലയാളത്തിൽ സംസാരിച്ച് അപേക്ഷകളും കരാറുകളും തയ്യാറാക്കാം | പൂരിപ്പിക്കാം (Apeksha Desk)" />
+    <meta name="twitter:title" content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ" />
     <meta
       name="twitter:description"
-      content="വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ, ബയോഡാറ്റ, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ തയ്യാറാക്കാം."
+      content="പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം) — വില്ലേജ്, പഞ്ചായത്ത് മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, 11 മാസത്തെ വാടക കരാർ ഫോം, ഗൾഫ് CV, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ 10 സെക്കൻഡിൽ A4 PDF ആക്കാം."
     />
     <meta name="twitter:image" content="https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png" />
 
-    <!-- 2026 GEO & Schema.org Structured Data (SoftwareApplication + OnlineBusiness/LocalBusiness + HowTo + FAQPage) -->
+    <!-- 2026 GEO & Schema.org Structured Data (WebApplication + SoftwareApplication + WebSite + Brand + OnlineBusiness + HowTo + FAQPage) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "SoftwareApplication",
-            "name": "അപേക്ഷാ ഡെസ്ക് - മലയാളത്തിൽ സംസാരിച്ച് അപേക്ഷകളും കരാറുകളും തയ്യാറാക്കാം | പൂരിപ്പിക്കാം (Apeksha Desk)",
+            "@type": ["WebApplication", "SoftwareApplication"],
+            "@id": "https://poorippikkal-apekshadesk.vercel.app/#webapp",
+            "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്",
             "alternateName": [
+              "Poorippikkal Apekshadesk",
+              "poorippikkal apekshadesk",
+              "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്",
+              "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്",
+              "poorippikkal-apekshadesk",
               "Apeksha Desk",
               "Poorippikkam – Apeksha Desk",
-              "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്",
-              "മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ",
-              "Kerala Online Malayalam Application & PDF Form Desk"
+              "മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ ഓൺലൈൻ ടൂൾ",
+              "മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ"
             ],
             "url": "https://poorippikkal-apekshadesk.vercel.app/",
+            "mainEntityOfPage": "https://poorippikkal-apekshadesk.vercel.app/",
+            "sameAs": [
+              "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk"
+            ],
+            "image": "https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "All (Android, iOS, Web)",
+            "applicationSubCategory": "Document & Form Preparation Web Application",
+            "browserRequirements": "Requires JavaScript and HTML5",
+            "operatingSystem": "All (Android, iOS, Windows, macOS, Web)",
             "inLanguage": ["ml-IN", "en-IN"],
-            "description": "വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ, ബയോഡാറ്റ, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ തയ്യാറാക്കാം.",
-            "keywords": "മലയാളം അപേക്ഷ എഴുതാൻ, മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ്, വാടക കരാർ ഫോർമാറ്റ് മലയാളം, മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ",
+            "description": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം) — വില്ലേജ്, പഞ്ചായത്ത് മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, 11 മാസത്തെ വാടക കരാർ ഫോം, ഗൾഫ് CV, സ്കൂൾ മാർക്ക് ലിസ്റ്റ് എന്നിവ ഫോണിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ A4 PDF ആക്കാം.",
+            "keywords": "poorippikkal apekshadesk, പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്, അപേക്ഷ തയ്യാറാക്കാൻ, മലയാളം അപേക്ഷ എഴുതാൻ, വാടക കരാർ ഫോം, മാർക്ക് ലിസ്റ്റ്, മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ്, വാടക കരാർ ഫോർമാറ്റ് മലയാളം, മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ",
+            "brand": {
+              "@type": "Brand",
+              "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)",
+              "alternateName": ["Poorippikkal Apekshadesk", "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്", "Apeksha Desk", "Poorippikkam"]
+            },
             "offers": {
               "@type": "AggregateOffer",
               "lowPrice": "5",
@@ -132,10 +156,23 @@
             }
           },
           {
-            "@type": "OnlineBusiness",
-            "name": "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)",
+            "@type": "WebSite",
+            "@id": "https://poorippikkal-apekshadesk.vercel.app/#website",
             "url": "https://poorippikkal-apekshadesk.vercel.app/",
-            "description": "ഓൺലൈൻ മലയാളം അപേക്ഷാ ഫോം പൂരിപ്പിക്കൽ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, പഞ്ചായത്ത് ഫോമുകൾ, ഗൾഫ് CV, 11 മാസത്തെ വാടക കരാർ ഫോർമാറ്റ് മലയാളം, സ്കൂൾ-മദ്രസ മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ & PDF എഡിറ്റിംഗ് സേവന ഡെസ്ക്.",
+            "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)",
+            "alternateName": ["Poorippikkal Apekshadesk", "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്", "Apeksha Desk", "മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ"],
+            "inLanguage": ["ml-IN", "en-IN"]
+          },
+          {
+            "@type": "OnlineBusiness",
+            "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)",
+            "url": "https://poorippikkal-apekshadesk.vercel.app/",
+            "sameAs": [
+              "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk"
+            ],
+            "logo": "https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png",
+            "image": "https://poorippikkal-apekshadesk.vercel.app/pwa-512x512.png",
+            "description": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) — ഓൺലൈൻ മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ, പഞ്ചായത്ത് ഫോമുകൾ, ഗൾഫ് CV, 11 മാസത്തെ വാടക കരാർ ഫോം മലയാളം, സ്കൂൾ-മദ്രസ മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ & PDF എഡിറ്റിംഗ് സേവന ഡെസ്ക്.",
             "priceRange": "₹5 - ₹29",
             "openingHours": "Mo-Su 00:00-23:59",
             "areaServed": [
@@ -225,29 +262,29 @@
       <main style="max-width: 980px; margin: 0 auto; padding: 24px; font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; color: #0f172a;">
         <header style="margin-bottom: 24px; border-bottom: 2px solid #10b981; padding-bottom: 16px;">
           <h1 style="font-size: 28px; font-weight: 800; color: #064e3b; margin: 0 0 8px 0;">
-            അപേക്ഷാ ഡെസ്ക് - മലയാളത്തിൽ സംസാരിച്ച് അപേക്ഷകളും കരാറുകളും തയ്യാറാക്കാം | പൂരിപ്പിക്കാം (Apeksha Desk)
+            പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ, വാടക കരാർ ഫോം &amp; മാർക്ക് ലിസ്റ്റ്
           </h1>
           <p style="font-size: 16px; color: #334155; margin: 0;">
-            വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ, ബയോഡാറ്റ (Gulf CV), സ്കൂൾ &amp; മദ്രസ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ കൃത്യമായ A4 PDF ആയി തയ്യാറാക്കാം.
+            പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം) — വില്ലേജ്, പഞ്ചായത്ത് അപേക്ഷകൾ, 11 മാസത്തെ വാടക കരാർ ഫോം, ബയോഡാറ്റ (Gulf CV), സ്കൂൾ &amp; മദ്രസ മാർക്ക് ലിസ്റ്റ് എന്നിവ മലയാളത്തിൽ സംസാരിച്ച് 10 സെക്കൻഡിൽ കൃത്യമായ A4 PDF ആയി തയ്യാറാക്കാം.
           </p>
         </header>
 
         <nav aria-label="പ്രധാന സേവനങ്ങൾ" style="margin-bottom: 24px;">
-          <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">പ്രധാന ഓൺലൈൻ സേവനങ്ങൾ (Kerala Online Application &amp; PDF Services)</h2>
+          <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">പ്രധാന ഓൺലൈൻ സേവനങ്ങൾ — മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ &amp; PDF ഫോമുകൾ (Poorippikkal Apekshadesk Web Application)</h2>
           <ul>
-            <li><a href="/?service=village-office-application-malayalam">മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ (Village Office Application Format Malayalam)</a></li>
+            <li><a href="/?service=village-office-application-malayalam">മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ — അപേക്ഷ തയ്യാറാക്കാൻ (Village Office Application Format Malayalam)</a></li>
             <li><a href="/?service=panchayat-application-format-malayalam">പഞ്ചായത്ത് അപേക്ഷ ഫോർമാറ്റ് മലയാളം (Panchayat &amp; KSEB Application Format Malayalam)</a></li>
-            <li><a href="/?service=rental-agreement-format-malayalam">വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF (11-Month Kerala Stamp Paper Rental Agreement)</a></li>
-            <li><a href="/?service=school-mark-list-software-kerala">മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (School &amp; Madrasa Mark List Generator Software)</a></li>
+            <li><a href="/?service=rental-agreement-format-malayalam">വാടക കരാർ ഫോം &amp; വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF (11-Month Kerala Stamp Paper Rental Agreement)</a></li>
+            <li><a href="/?service=school-mark-list-software-kerala">മാർക്ക് ലിസ്റ്റ് &amp; മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (School &amp; Madrasa Mark List Generator Software)</a></li>
             <li><a href="/?service=gulf-cv-biodata-maker">ഗൾഫ് സിവി &amp; ബയോഡാറ്റ മേക്കർ (Gulf CV, Resume &amp; Marriage Biodata Format PDF)</a></li>
             <li><a href="/?service=resignation-letter-malayalam">ജോലി രാജിക്കത്ത് &amp; ലീവ് ലെറ്റർ ഫോർമാറ്റ് മലയാളം (Resignation &amp; Leave Application Malayalam)</a></li>
           </ul>
         </nav>
 
         <section style="margin-bottom: 24px;">
-          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">1. മലയാളം അപേക്ഷ എഴുതാൻ &amp; വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ</h2>
+          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">1. മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ &amp; വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ</h2>
           <p>
-            സാധാരണക്കാർക്ക് അക്ഷയ സെന്ററിലോ ഡിടിപി സെന്ററിലോ പോകാതെ സ്വന്തം ഫോണിലൂടെ <strong>മലയാളം അപേക്ഷ എഴുതാൻ</strong> സഹായിക്കുന്ന ഓൺലൈൻ സംവിധാനമാണ് പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്. <strong>മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ</strong> വഴി വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ (Income Certificate Application), ജാതി സർട്ടിഫിക്കറ്റ് (Caste Certificate), കൈവശാവകാശ സർട്ടിഫിക്കറ്റ് (Possession Certificate), പോക്കുവരവ് അപേക്ഷ (Mutation / Pokkuvaravu), ഭൂനികുതി (Land Tax), നോൺ-ക്രീമിലെയർ, നേറ്റിവിറ്റി സർട്ടിഫിക്കറ്റ് എന്നിവയുടെ ഔദ്യോഗിക മാതൃകകൾ (From, To, Subject, കാഴ്ചപ്പാട്, സ്ഥലം, തീയതി, ഒപ്പ്) ഉടനടി A4 PDF ആയി ഡൗൺലോഡ് ചെയ്യാം.
+            സാധാരണക്കാർക്ക് അക്ഷയ സെന്ററിലോ ഡിടിപി സെന്ററിലോ പോകാതെ സ്വന്തം ഫോണിലൂടെ <strong>മലയാളം അപേക്ഷ തയ്യാറാക്കാൻ</strong> (മലയാളം അപേക്ഷ എഴുതാൻ) സഹായിക്കുന്ന ഓൺലൈൻ വെബ് ആപ്ലിക്കേഷനാണ് പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (<strong>Poorippikkal Apekshadesk</strong>). <strong>മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ</strong> വഴി വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ (Income Certificate Application), ജാതി സർട്ടിഫിക്കറ്റ് (Caste Certificate), കൈവശാവകാശ സർട്ടിഫിക്കറ്റ് (Possession Certificate), പോക്കുവരവ് അപേക്ഷ (Mutation / Pokkuvaravu), ഭൂനികുതി (Land Tax), നോൺ-ക്രീമിലെയർ, നേറ്റിവിറ്റി സർട്ടിഫിക്കറ്റ് എന്നിവയുടെ ഔദ്യോഗിക മാതൃകകൾ (From, To, Subject, കാഴ്ചപ്പാട്, സ്ഥലം, തീയതി, ഒപ്പ്) ഉടനടി A4 PDF ആയി ഡൗൺലോഡ് ചെയ്യാം.
           </p>
         </section>
 
@@ -259,16 +296,16 @@
         </section>
 
         <section style="margin-bottom: 24px;">
-          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">3. വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF (11 മാസത്തെ വീട് / കട വാടക കരാർ)</h2>
+          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">3. വാടക കരാർ ഫോം &amp; വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF (11 മാസത്തെ വീട് / കട വാടക കരാർ)</h2>
           <p>
-            കേരളത്തിലെ മുദ്രപ്പത്രത്തിൽ (Stamp Paper) പ്രിന്റ് ചെയ്യാൻ പാകത്തിൽ മുകളിൽ കൃത്യമായ ഒഴിവ് (Stamp Paper Top Margin) ഇട്ടുകൊണ്ടുള്ള <strong>വാടക കരാർ ഫോർമാറ്റ് മലയാളം</strong> (11-Month House &amp; Shop Rental Agreement Format Malayalam PDF). വീട്ടുടമസ്ഥന്റെയും (Lessor/Owner) വാടകക്കാരന്റെയും (Lessee/Tenant) പേര്, വിലാസം, മാസവാടക, അഡ്വാൻസ് തുക, നിബന്ധനകൾ, സാക്ഷികൾ എന്നിവ ഫോണിൽ പറഞ്ഞാൽ നിമിഷങ്ങൾക്കുള്ളിൽ പൂർണ്ണമായ വാടക കരാർ PDF ലഭിക്കും.
+            കേരളത്തിലെ മുദ്രപ്പത്രത്തിൽ (Stamp Paper) പ്രിന്റ് ചെയ്യാൻ പാകത്തിൽ മുകളിൽ കൃത്യമായ ഒഴിവ് (Stamp Paper Top Margin) ഇട്ടുകൊണ്ടുള്ള <strong>വാടക കരാർ ഫോം</strong> / <strong>വാടക കരാർ ഫോർമാറ്റ് മലയാളം</strong> (11-Month House &amp; Shop Rental Agreement Format Malayalam PDF). വീട്ടുടമസ്ഥന്റെയും (Lessor/Owner) വാടകക്കാരന്റെയും (Lessee/Tenant) പേര്, വിലാസം, മാസവാടക, അഡ്വാൻസ് തുക, നിബന്ധനകൾ, സാക്ഷികൾ എന്നിവ ഫോണിൽ പറഞ്ഞാൽ നിമിഷങ്ങൾക്കുള്ളിൽ പൂർണ്ണമായ വാടക കരാർ PDF ലഭിക്കും.
           </p>
         </section>
 
         <section style="margin-bottom: 24px;">
-          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">4. മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (School &amp; Madrasa Mark List Generator Software)</h2>
+          <h2 style="font-size: 22px; font-weight: 700; color: #065f46;">4. മാർക്ക് ലിസ്റ്റ് &amp; മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (School &amp; Madrasa Mark List Generator Software)</h2>
           <p>
-            സ്കൂൾ അധ്യാപകർക്കും മദ്രസ ഉസ്താദുമാർക്കും ട്യൂഷൻ സെന്ററുകൾക്കും പരീക്ഷാ ഫലങ്ങൾ എളുപ്പത്തിൽ പട്ടികയാക്കാൻ സഹായിക്കുന്ന <strong>മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ</strong>. കുട്ടികളുടെ പേരും വിഷയങ്ങളിലെ മാർക്കുകളും നൽകിയാൽ Total Marks, Percentage (%), Grade (A+, A, B+), Rank എന്നിവ തനിയെ കണക്കാക്കി പ്രിന്റ് ചെയ്യാവുന്ന A4 PDF ടേബിൾ ആയി ഡൗൺലോഡ് ചെയ്യാം.
+            സ്കൂൾ അധ്യാപകർക്കും മദ്രസ ഉസ്താദുമാർക്കും ട്യൂഷൻ സെന്ററുകൾക്കും പരീക്ഷാ ഫലങ്ങൾ എളുപ്പത്തിൽ പട്ടികയാക്കാൻ സഹായിക്കുന്ന <strong>മാർക്ക് ലിസ്റ്റ്</strong> / <strong>മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ</strong>. കുട്ടികളുടെ പേരും വിഷയങ്ങളിലെ മാർക്കുകളും നൽകിയാൽ Total Marks, Percentage (%), Grade (A+, A, B+), Rank എന്നിവ തനിയെ കണക്കാക്കി പ്രിന്റ് ചെയ്യാവുന്ന A4 PDF ടേബിൾ ആയി ഡൗൺലോഡ് ചെയ്യാം.
           </p>
         </section>
 

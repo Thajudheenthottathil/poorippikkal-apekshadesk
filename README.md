@@ -1,12 +1,22 @@
-# 🇮🇳 പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)
-**അപേക്ഷ പൂരിപ്പിക്കൽ ഇനി എളുപ്പത്തിൽ പൂരിപ്പിക്കാം! മലയാളത്തിൽ സംസാരിക്കാം, 10 സെക്കൻഡിൽ ഔദ്യോഗിക A4 PDF അപേക്ഷകളും രേഖകളും തയ്യാറാക്കാം.**
+# 🇮🇳 പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk) | പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്
 
-👉 **[ഇവിടെ ക്ലിക്ക് ചെയ്ത് അപേക്ഷ തയ്യാറാക്കുക (Open Live Apeksha Desk)](https://poorippikkal-apekshadesk.vercel.app)**
+> ### 🟢 സാധാരണക്കാരും അക്ഷയ / DTP ഓപ്പറേറ്റർമാരും ശ്രദ്ധിക്കുക:
+> **ഇത് വെബ്‌സൈറ്റിന്റെ സോഫ്റ്റ്‌വെയർ കോഡ് സൂക്ഷിച്ചിരിക്കുന്ന പേജാണ്. അപേക്ഷകളും ഫോമുകളും തയ്യാറാക്കാനുള്ള യഥാർത്ഥ ലൈവ് വെബ്‌സൈറ്റ് തുറക്കാൻ താഴെയുള്ള ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക:**
+>
+> ## 👉 [🌐 ഇവിടെ ക്ലിക്ക് ചെയ്ത് ലൈവ് വെബ്‌സൈറ്റ് തുറക്കുക: https://poorippikkal-apekshadesk.vercel.app](https://poorippikkal-apekshadesk.vercel.app/)
+>
+> ### ⚡ നേരിട്ട് ആവശ്യമുള്ള സേവനം തുറക്കാൻ (Direct Online Tools):
+> * 🏛️ **[മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ (അപേക്ഷ തയ്യാറാക്കാൻ)](https://poorippikkal-apekshadesk.vercel.app/?service=village-office-application-malayalam)**
+> * 🌴 **[പഞ്ചായത്ത് & KSEB അപേക്ഷ ഫോർമാറ്റ് മലയാളം (മരം മുറിക്കൽ, വീട്ടുനികുതി)](https://poorippikkal-apekshadesk.vercel.app/?service=panchayat-application-format-malayalam)**
+> * 🏠 **[11 മാസത്തെ വാടക കരാർ ഫോം മലയാളം PDF (Rental Agreement Format)](https://poorippikkal-apekshadesk.vercel.app/?service=rental-agreement-format-malayalam)**
+> * 📊 **[സ്കൂൾ & മദ്രസ മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (Mark List Software)](https://poorippikkal-apekshadesk.vercel.app/?service=school-mark-list-software-kerala)**
+> * ✈️ **[പ്രവാസി ഗൾഫ് CV & ബയോഡാറ്റ മേക്കർ (Gulf CV & Biodata Maker)](https://poorippikkal-apekshadesk.vercel.app/?service=gulf-cv-biodata-maker)**
+> * 💼 **[ജോലി രാജിക്കത്ത് & ലീവ് ലെറ്റർ ഫോർമാറ്റ് മലയാളം (Resignation Letter)](https://poorippikkal-apekshadesk.vercel.app/?service=resignation-letter-malayalam)**
 
 ---
 
-## എന്താണ് പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്? (What is Apeksha Desk?)
-കേരളത്തിലെ സാധാരണക്കാർക്കും പ്രവാസികൾക്കും അധ്യാപകർക്കും അക്ഷയ/ഡി.ടി.പി (DTP) സെന്ററുകളിലേക്ക് ഓടാതെ, സ്വന്തം ഫോണിലെ മൈക്കിലൂടെ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിനുള്ളിൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള **ഔദ്യോഗിക A4 PDF രേഖകൾ** തയ്യാറാക്കി നൽകുന്ന ഓൺലൈൻ സേവന കേന്ദ്രമാണ് **പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)**.
+## എന്താണ് പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം)?
+കേരളത്തിലെ സാധാരണക്കാർക്കും പ്രവാസികൾക്കും അധ്യാപകർക്കും അക്ഷയ/ഡി.ടി.പി (DTP) സെന്ററുകളിലേക്ക് ഓടാതെ, സ്വന്തം ഫോണിലെ മൈക്കിലൂടെ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിനുള്ളിൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള **ഔദ്യോഗിക A4 PDF രേഖകൾ** തയ്യാറാക്കി നൽകുന്ന ഓൺലൈൻ വെബ് ആപ്ലിക്കേഷനാണ് **[പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)](https://poorippikkal-apekshadesk.vercel.app/)**.
 
 * **🎙️ Voice-to-A4 PDF:** മലയാളത്തിലോ മംഗ്ലീഷിലോ ഇംഗ്ലീഷിലോ സംസാരിച്ചാൽ ഉടൻ ഔദ്യോഗിക A4 ഫോർമാറ്റിൽ അപേക്ഷ റെഡി.
 * **✏️ Direct Touch Edit & Pre-Print Mistake Checker:** പേപ്പറിൽ നേരിട്ട് തൊട്ട് തിരുത്താം; പിൻകോഡ്, തീയതി, ഫോൺ നമ്പർ തെറ്റുകൾ സ്വയം കണ്ടെത്തി മുന്നറിയിപ്പ് നൽകും.
