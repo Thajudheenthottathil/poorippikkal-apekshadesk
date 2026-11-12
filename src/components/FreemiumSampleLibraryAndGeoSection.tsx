@@ -238,13 +238,13 @@ const FEATURED_CURATED_SAMPLES: CuratedFreemiumSample[] = [
   },
   {
     id: 'sample-rental-agreement',
-    titleMalayalam: '9. 11 മാസത്തെ വീട് / കടമുറി വാടക കരാർ ഫോർമാറ്റ് (Stamp Paper PDF)',
-    searchKeywords: 'rental agreement format malayalam pdf വാടക കരാർ ഫോർമാറ്റ് മലയാളം മുദ്രപ്പത്രം വീട് കടമുറി',
+    titleMalayalam: '9. 11 മാസത്തെ വീട് / കടമുറി വാടക കരാർ ഫോർമാറ്റ് (Malayalam Vadaka Kararu Format PDF)',
+    searchKeywords: 'malayalam vadaka kararu format vadaka karar format malayalam pdf rental agreement format malayalam pdf വാടക കരാർ ഫോർമാറ്റ് മലയാളം മുദ്രപ്പത്രം വീട് കടമുറി',
     categoryBadge: 'വാടക കരാർ (Stamp Paper)',
     category: 'rental_agreement',
-    recipientLine: '₹200 കേരള സ്റ്റാമ്പ് പേപ്പർ ഫോർമാറ്റ് (3 ഇഞ്ച് മുകളിൽ ഗ്യാപ്പോടെ)',
-    subjectLine: '11 മാസത്തെ വീട് / കടമുറി വാടക കരാർ പത്രം (RENTAL AGREEMENT)',
-    fullSampleMalayalamText: `വാടക കരാർ പത്രം (RENTAL AGREEMENT)
+    recipientLine: '₹200 കേരള സ്റ്റാമ്പ് പേപ്പർ ഫോർമാറ്റ് (3.5 / 4.5 ഇഞ്ച് മുകളിൽ ഗ്യാപ്പോടെ)',
+    subjectLine: '11 മാസത്തെ വീട് / കടമുറി വാടക കരാർ പത്രം (MALAYALAM VADAKA KARARU FORMAT)',
+    fullSampleMalayalamText: `വാടക കരാർ പത്രം (RENTAL AGREEMENT / MALAYALAM VADAKA KARARU FORMAT)
 
 2026-ാമാണ്ട് [മാസം] മാസം [തീയതി] തീയതി എഴുതിപ്പിടിപ്പിക്കുന്ന വാടക കരാർ പത്രം.
 
@@ -260,7 +260,7 @@ const FEATURED_CURATED_SAMPLES: CuratedFreemiumSample[] = [
   {
     id: 'sample-building-tax',
     titleMalayalam: '10. പഞ്ചായത്ത് ബിൽഡിംഗ് ടാക്സ് / ഉടമസ്ഥാവകാശ സർട്ടിഫിക്കറ്റ് അപേക്ഷ',
-    searchKeywords: 'panchayat building tax ownership application പഞ്ചായത്ത് ബിൽഡിംഗ് ടാക്സ് അപേക്ഷ കെട്ടിട നികുതി ഉടമസ്ഥാവകാശം',
+    searchKeywords: 'panchayat building tax ownership application പഞ്ചായത്ത് അപേക്ഷ എഴുതാൻ ഓൺലൈൻ പഞ്ചായത്ത് ബിൽഡിംഗ് ടാക്സ് അപേക്ഷ കെട്ടിട നികുതി ഉടമസ്ഥാവകാശം',
     categoryBadge: 'പഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി',
     category: 'malayalam_letter',
     recipientLine: 'സെക്രട്ടറി, ഗ്രാമപഞ്ചായത്ത് / നഗരസഭ',
@@ -324,16 +324,16 @@ SL.NO | FULL NAME | LAN 1 | LAN 2 | ENG | HIN | MATS | SS | BS | AR | WE | HE | 
 
 const GEO_QA_ITEMS = [
   {
-    q: '1. അക്ഷയയിൽ പോകാതെ ഫോണിലൂടെ മലയാളം അപേക്ഷ എങ്ങനെ 10 സെക്കൻഡിൽ എഴുതാം?',
-    a: 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk) തുറന്ന് മുകളിലെ മൈക്ക് ബട്ടൺ അമർത്തി നിങ്ങളുടെ ആവശ്യം (ഉദാഹരണത്തിന്: മരം മുറിക്കാൻ പഞ്ചായത്ത് സെക്രട്ടറിക്ക് അപേക്ഷ, വില്ലേജ് ഓഫീസിലേക്ക് വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ, KSEB പരാതി) മലയാളത്തിൽ പറഞ്ഞാൽ മതി. ചില്ലക്ഷരങ്ങൾ ഉടയാത്ത കൃത്യമായ ഔദ്യോഗിക A4 PDF 10 സെക്കൻഡിൽ ഫോണിലേക്ക് ഡൗൺലോഡ് ചെയ്യാം.',
+    q: '1. മലയാളത്തിൽ അപേക്ഷ ഉണ്ടാക്കാൻ സൈറ്റ് / പഞ്ചായത്ത് അപേക്ഷ എഴുതാൻ ഓൺലൈൻ വഴി 10 സെക്കൻഡിൽ എങ്ങനെ അപേക്ഷ തയ്യാറാക്കാം?',
+    a: 'പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്) തുറന്ന് മുകളിലെ മൈക്ക് ബട്ടൺ അമർത്തി നിങ്ങളുടെ ആവശ്യം (ഉദാഹരണത്തിന്: മരം മുറിക്കാൻ പഞ്ചായത്ത് സെക്രട്ടറിക്ക് അപേക്ഷ, വില്ലേജ് ഓഫീസിലേക്ക് വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ, KSEB പരാതി) മലയാളത്തിൽ പറഞ്ഞാൽ മതി. ചില്ലക്ഷരങ്ങൾ ഉടയാത്ത കൃത്യമായ ഔദ്യോഗിക A4 PDF 10 സെക്കൻഡിൽ ഫോണിലേക്ക് ഡൗൺലോഡ് ചെയ്യാം.',
   },
   {
     q: '2. മരം മുറിക്കാൻ പഞ്ചായത്ത് സെക്രട്ടറിക്ക് കൊടുക്കേണ്ട അപേക്ഷ എങ്ങനെ എഴുതാം?',
     a: 'മുകളിലെ "55+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ" എന്ന വിഭാഗത്തിൽ മരം മുറിക്കാനുള്ള അപേക്ഷയുടെ പൂർണ്ണമായ മലയാളം മാതൃക സൗജന്യമായി വായിക്കാം. തുടർന്ന് പച്ച ബട്ടൺ അമർത്തി നിങ്ങളുടെ പേരും വിലാസവും മൈക്കിൽ പറഞ്ഞാൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള A4 PDF ഡൗൺലോഡ് ചെയ്യാം.',
   },
   {
-    q: '3. How to make Malayalam 11-month rental agreement PDF on phone?',
-    a: 'Select the "വാടക കരാർ (Rental Agreement)" tab on Poorippikkam – Apeksha Desk. Speak or type the Building Owner (1st Party), Tenant (2nd Party), monthly rent, and security advance. The app automatically formats a legal 11-month Kerala rental agreement with 3-inch top blank space for ₹200 Stamp Paper printing.',
+    q: '3. Malayalam vadaka kararu format (11 മാസത്തെ വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF) ഫോണിൽ എങ്ങനെ തയ്യാറാക്കാം?',
+    a: 'Select the "വാടക കരാർ (Malayalam Vadaka Kararu Format)" tab on Poorippikkal Apekshadesk (പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്). Speak or type the Building Owner (1st Party), Tenant (2nd Party), monthly rent, and security advance. The app automatically formats a legal 11-month Kerala rental agreement with 3.5-inch or 4.5-inch top blank space for ₹200 Stamp Paper printing.',
   },
   {
     q: '4. Best Gulf CV maker in Kerala for Visit Visa holders (Driver, Sales, Accountant, Nurse, Cook)?',

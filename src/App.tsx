@@ -1957,16 +1957,17 @@ export function App() {
       return;
     }
 
-    // Instant client-side check 2: Official Kerala Government / Akshaya Forms
-    // IMPORTANT: Only intercept short form-title queries (<= 3 words) or structured followUpQuestion submissions.
-    // Detailed spoken/typed narratives (> 3 words) MUST go to /api/generate-doc so Gemini AI extracts all personal details!
+    // Instant client-side check 2: Official Kerala Government / Akshaya Forms & Smart Voice Entity Filler
+    // For short queries (<= 3 words) or structured follow-up replies, complete immediately in 0.1s.
+    // For longer spoken sentences (> 3 words, e.g. "എന്റെ പേര് അബ്ദുറഹ്മാൻ, മഞ്ചേരിയിലാണ് വീട്, പ്ലാവ് മുറിക്കാൻ പഞ്ചായത്തിലേക്ക് അപേക്ഷ വേണം"),
+    // ALSO populate the A4 sheet immediately in < 0.1s as an instant preview so the user never waits on slow networks!
     const promptWordCount = cleanedInput.split(/\s+/).filter(Boolean).length;
     const isStructuredFollowUpReply =
       cleanedInput.includes(':') &&
       activeCategory === 'malayalam_letter' &&
       Boolean(letterData.structuredFields && letterData.structuredFields.length > 0);
 
-    if ((promptWordCount <= 3 || isStructuredFollowUpReply) && requestedLang !== 'en') {
+    if (requestedLang !== 'en') {
       const govFormMatch = matchGovFormFromPrompt(
         cleanedInput,
         activeCategory === 'malayalam_letter' ? letterData : null
@@ -1983,44 +1984,46 @@ export function App() {
         setFollowUpQuestions(questionsForLetter);
         setFollowUpAnswerInputs({});
 
-        if (requestedLang !== 'ml') {
-          translateActiveDocumentViaServer({
-            category: 'malayalam_letter',
-            targetLanguage: requestedLang,
-            letterData: convertedLetter,
-            gulfCvData,
-            agreementData,
-            markListData,
-          })
-            .then((trData) => {
-              if (trData.letterData) {
-                setLetterData(trData.letterData);
-              }
+        if (promptWordCount <= 3 || isStructuredFollowUpReply || govFormMatch.isComplete) {
+          if (requestedLang !== 'ml') {
+            translateActiveDocumentViaServer({
+              category: 'malayalam_letter',
+              targetLanguage: requestedLang,
+              letterData: convertedLetter,
+              gulfCvData,
+              agreementData,
+              markListData,
             })
-            .catch(() => {});
-        }
+              .then((trData) => {
+                if (trData.letterData) {
+                  setLetterData(trData.letterData);
+                }
+              })
+              .catch(() => {});
+          }
 
-        setAssistantBannerMessage(govFormMatch.assistantReplyMalayalam);
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            id: `bot-gov-${Date.now()}`,
-            sender: 'bot',
-            text: govFormMatch.assistantReplyMalayalam,
-            timestamp: nowTime,
-            documentCategory: 'malayalam_letter',
-            followUpQuestions: questionsForLetter,
-            subFormPromptTitle: govFormMatch.subFormPromptTitle,
-            subFormOptions: govFormMatch.subFormOptions,
-            isComplete: govFormMatch.isComplete,
-          },
-        ]);
-        playDocumentReadyChime();
-        setIsEditMode(true);
-        showToast(
-          `✨ "${convertedLetter.documentHeading}" തയ്യാറായി! വാട്സാപ്പ് കോളങ്ങളിലോ A4 പേപ്പറിലോ തിരുത്താം.`
-        );
-        return;
+          setAssistantBannerMessage(govFormMatch.assistantReplyMalayalam);
+          setChatMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-gov-${Date.now()}`,
+              sender: 'bot',
+              text: govFormMatch.assistantReplyMalayalam,
+              timestamp: nowTime,
+              documentCategory: 'malayalam_letter',
+              followUpQuestions: questionsForLetter,
+              subFormPromptTitle: govFormMatch.subFormPromptTitle,
+              subFormOptions: govFormMatch.subFormOptions,
+              isComplete: govFormMatch.isComplete,
+            },
+          ]);
+          playDocumentReadyChime();
+          setIsEditMode(true);
+          showToast(
+            `✨ "${convertedLetter.documentHeading}" തയ്യാറായി! വാട്സാപ്പ് കോളങ്ങളിലോ A4 പേപ്പറിലോ തിരുത്താം.`
+          );
+          return;
+        }
       }
     }
 

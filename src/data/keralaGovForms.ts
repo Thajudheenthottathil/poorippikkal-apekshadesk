@@ -478,6 +478,31 @@ export const KERALA_GOV_FORMS_MASTER: GovFormTemplate[] = [
       { id: 'applicantName', label: 'അപേക്ഷകന്റെ പേരും ഫോൺ നമ്പറും', value: 'റഷീദ് കെ., ഫോൺ: 9847123456', placeholder: 'പേര്, ഫോൺ' },
     ],
   },
+  {
+    id: 'lsgd-tree-cutting-application',
+    categoryKey: 'lsgd_panchayat',
+    categoryLabelMalayalam: 'തദ്ദേശ സ്വയംഭരണം (Panchayat / Municipality / K-SMART)',
+    formCode: 'LSGD — Dangerous Tree Cutting Petition (അപകടകരമായ മരം മുറിച്ചു മാറ്റുന്നതിനുള്ള അപേക്ഷ)',
+    titleMalayalam: 'അപകടാവസ്ഥയിലായ മരം മുറിച്ചു മാറ്റാൻ പഞ്ചായത്ത് / നഗരസഭ സെക്രട്ടറിക്ക് അപേക്ഷ',
+    titleEnglish: 'Application to Panchayat / Municipality Secretary for Cutting Dangerous Tree',
+    subtitleMalayalam: 'വീടിനോ ജീവനോ സ്വത്തിനോ ഭീഷണിയായി നിൽക്കുന്ന മരം (പ്ലാവ് / തെങ്ങ് / മാവ്) മുറിച്ചു മാറ്റാനുള്ള അപേക്ഷ',
+    portalName: 'LSGD Kerala / K-SMART',
+    portalUrl: 'https://lsgkerala.gov.in',
+    searchKeywords: 'tree cutting application panchayat മരം മുറിക്കാൻ അപേക്ഷ പ്ലാവ് തെങ്ങ് മാവ് അപകടാവസ്ഥയിലുള്ള മരം പഞ്ചായത്ത് സെക്രട്ടറി',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട സെക്രട്ടറി അവർകൾക്ക്,',
+    recipientOffice: 'ഗ്രാമപഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി കാര്യാലയം',
+    subject: 'അപകടാവസ്ഥയിലായ മരം മുറിച്ചു മാറ്റുന്നതിന് അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ ബഹുമാനപ്പെട്ട സെക്രട്ടറിയുടെ അടിയന്തര ശ്രദ്ധയിലേക്കായി സമർപ്പിക്കുന്ന അപേക്ഷ. എന്റെ വീടിനോട് ചേർന്നുള്ള പുരയിടത്തിൽ / അതിർത്തിയിൽ നിൽക്കുന്ന വലിയ മരം കാറ്റിലും മഴയിലും ചരിഞ്ഞ് വീടിന് മുകളിലേക്ക് വീഴാറായ അതീവ അപകടാവസ്ഥയിലാണ് നിൽക്കുന്നത്.',
+      'ശക്തമായ കാറ്റോ മഴയോ ഉണ്ടായാൽ പ്രസ്തുത മരം കടപുഴകി വീണ് എന്റെ വീടിനും കുടുംബാംഗങ്ങളുടെ ജീവനും സ്വത്തിനും വലിയ അപകടം സംഭവിക്കാൻ സാധ്യതയുണ്ട്. ആയതിനാൽ അടിയന്തരമായി സ്ഥലം പരിശോധിച്ച് അപകടാവസ്ഥയിലുള്ള പ്രസ്തുത മരം മുറിച്ചു മാറ്റുന്നതിന് ആവശ്യമായ ഉത്തരവ് നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: ['സ്ഥലത്തിന്റെ ഫോട്ടോ (ഉണ്ടെങ്കിൽ)', 'ഭൂനികുതി / വീട്ടുനികുതി രസീത് പകർപ്പ്'],
+    structuredFields: [
+      { id: 'applicantName', label: 'അപേക്ഷകന്റെ പേര്', value: 'അബ്ദുറഹ്മാൻ കെ.', placeholder: 'നിങ്ങളുടെ പേര്' },
+      { id: 'addressWard', label: 'വീട്ടുപേരും വാർഡ് നമ്പറും സ്ഥലവും', value: 'മഞ്ചേരി, വാർഡ് 10', placeholder: 'വിലാസം, സ്ഥലം' },
+      { id: 'treeDetails', label: 'അപകടാവസ്ഥയിലുള്ള മരത്തിന്റെ വിവരണം', value: 'വീടിന് മുകളിലേക്ക് ചരിഞ്ഞു നിൽക്കുന്ന അപകടാവസ്ഥയിലുള്ള പ്ലാവ് / തെങ്ങ്', placeholder: 'ഉദാ: പ്ലാവ് / തെങ്ങ് / മാവ്' },
+    ],
+  },
 
   // ===========================================================================
   // CATEGORY 3: സാമൂഹ്യക്ഷേമ പെൻഷനുകളും സഹായങ്ങളും (Welfare Pensions & CMDRF)
@@ -1501,6 +1526,12 @@ export const PANCHAYAT_SUB_FORM_OPTIONS: SubFormOptionChoice[] = [
     titleMalayalam: '5. വാർദ്ധക്യകാല / വിധവാ / ഭിന്നശേഷി ക്ഷേമ പെൻഷൻ അപേക്ഷ',
     govFormId: 'pension-oldage-widow-disability',
   },
+  {
+    id: 'opt-pan-tree',
+    badgeIcon: '🌳',
+    titleMalayalam: '6. അപകടാവസ്ഥയിലായ മരം (പ്ലാവ് / തെങ്ങ്) മുറിച്ചു മാറ്റാനുള്ള അപേക്ഷ',
+    govFormId: 'lsgd-tree-cutting-application',
+  },
 ];
 
 export const MADRASA_SUB_FORM_OPTIONS: SubFormOptionChoice[] = [
@@ -1653,14 +1684,14 @@ function applyExtractedDetailsToGovLetter(
 
   // 2. Extract inline natural-language mentions (Name, Place/District, Phone, Survey No, Consumer No, Passport No, Income)
   const nameMatch = prompt.match(
-    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|ഞാൻ|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
   );
   if (nameMatch?.[1]?.trim()) {
     const cleanName = nameMatch[1]
       .trim()
       .replace(/\s*(ആണ്|എന്നാണ്|വീട്|സ്ഥലം|സ്വദേശം).*$/, '')
       .trim();
-    if (cleanName && cleanName.length >= 2 && cleanName.length <= 45) {
+    if (cleanName && cleanName.length >= 2 && cleanName.length <= 45 && !cleanName.includes('അപേക്ഷ')) {
       next.senderName = cleanName;
       if (next.structuredFields && next.structuredFields.length > 0) {
         const nameFld =
@@ -1675,8 +1706,18 @@ function applyExtractedDetailsToGovLetter(
     }
   }
 
-  // Extract place / hometown (e.g. "ഒറ്റപ്പാലം പാലക്കാട്", "തിരൂർ മലപ്പുറം സ്വദേശിയാണ്", "എന്റെ സ്ഥലം മലപ്പുറം (തിരൂർ) ആണ്")
-  const extractedLoc = extractKeralaPlaceAndDistrict(prompt);
+  // Extract place / hometown (e.g. "മഞ്ചേരിയിലാണ് വീട്", "ഒറ്റപ്പാലം പാലക്കാട്", "തിരൂർ മലപ്പുറം സ്വദേശിയാണ്")
+  let extractedLoc = extractKeralaPlaceAndDistrict(prompt);
+  if (!extractedLoc.found) {
+    const houseInPlaceMatch = prompt.match(/([^\s,.;:()]+?)(?:യിലാണ്|ത്തിലാണ്|ലാണ്|യിലാണ്)\s*(?:വീട്|താമസം|സ്ഥലം)/);
+    if (houseInPlaceMatch?.[1]) {
+      const cleanedPlaceToken = houseInPlaceMatch[1].trim();
+      const retryLoc = extractKeralaPlaceAndDistrict(cleanedPlaceToken);
+      extractedLoc = retryLoc.found
+        ? retryLoc
+        : { place: cleanedPlaceToken, district: cleanedPlaceToken, found: true };
+    }
+  }
   if (extractedLoc.found) {
     const townName = extractedLoc.place;
     const distName = extractedLoc.district;
@@ -1690,7 +1731,8 @@ function applyExtractedDetailsToGovLetter(
         (f) =>
           f.id.toLowerCase().includes('address') ||
           f.label.includes('വിലാസ') ||
-          f.label.includes('മേൽവിലാസ')
+          f.label.includes('മേൽവിലാസ') ||
+          f.label.includes('സ്ഥല')
       );
       if (addrFld) {
         addrFld.value = next.senderAddress;
@@ -1710,6 +1752,9 @@ function applyExtractedDetailsToGovLetter(
     if (next.recipientOffice.includes('വില്ലേജ് ഓഫീസ്')) {
       next.recipientOffice = `${townName} വില്ലേജ് ഓഫീസ്,`;
       next.recipientPlace = `${distName}.`;
+    } else if (next.recipientOffice.includes('ഗ്രാമപഞ്ചായത്ത്') || next.recipientOffice.includes('മുൻസിപ്പാലിറ്റി')) {
+      next.recipientOffice = `${townName} ഗ്രാമപഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി കാര്യാലയം,`;
+      next.recipientPlace = townName !== distName ? `${townName}, ${distName}.` : `${townName}.`;
     } else if (next.recipientOffice.includes('കെ.എസ്.ഇ.ബി') || next.recipientOffice.includes('KSEB')) {
       next.recipientOffice = `കെ.എസ്.ഇ.ബി (KSEB) ഇലക്ട്രിക്കൽ സെക്ഷൻ ഓഫീസ്, ${townName},`;
       next.recipientPlace = `${distName}.`;
@@ -1718,6 +1763,23 @@ function applyExtractedDetailsToGovLetter(
       next.recipientPlace = `${distName}.`;
     } else {
       next.recipientPlace = townName !== distName ? `${townName}, ${distName}.` : `${townName}.`;
+    }
+    extractedAny = true;
+  }
+
+  // Extract specific tree name for tree-cutting petitions (e.g. പ്ലാവ്, തെങ്ങ്, മാവ്, ആഞ്ഞിലി, മരം)
+  const treeTypeMatch = prompt.match(/(പ്ലാവ്|തെങ്ങ്|മാവ്|ആഞ്ഞിലി|തേക്ക്|മഹാഗണി|പുളിമരം|ആൽമരം|മരം)/);
+  if (treeTypeMatch?.[1] && (prompt.includes('മുറിക്ക') || prompt.includes('വെട്ട') || next.documentHeading.includes('മരം'))) {
+    const treeWord = treeTypeMatch[1];
+    const specificLabel = treeWord === 'മരം' ? 'മരം' : `${treeWord} മരം`;
+    next.subject = `അപകടാവസ്ഥയിലായ ${specificLabel} മുറിച്ചു മാറ്റുന്നതിന് അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.`;
+    next.bodyParagraphs = [
+      `മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ ബഹുമാനപ്പെട്ട സെക്രട്ടറിയുടെ അടിയന്തര ശ്രദ്ധയിലേക്കായി സമർപ്പിക്കുന്ന അപേക്ഷ. എന്റെ വീടിനോട് ചേർന്നുള്ള പുരയിടത്തിൽ / അതിർത്തിയിൽ നിൽക്കുന്ന വലിയ ${specificLabel} കാറ്റിലും മഴയിലും ചരിഞ്ഞ് വീടിന് മുകളിലേക്ക് വീഴാറായ അതീവ അപകടാവസ്ഥയിലാണ് നിൽക്കുന്നത്.`,
+      `ശക്തമായ കാറ്റോ മഴയോ ഉണ്ടായാൽ പ്രസ്തുത ${specificLabel} കടപുഴകി വീണ് എന്റെ വീടിനും കുടുംബാംഗങ്ങളുടെ ജീവനും സ്വത്തിനും വലിയ അപകടം സംഭവിക്കാൻ സാധ്യതയുണ്ട്. ആയതിനാൽ അടിയന്തരമായി സ്ഥലം പരിശോധിച്ച് അപകടാവസ്ഥയിലുള്ള പ്രസ്തുത ${specificLabel} മുറിച്ചു മാറ്റുന്നതിന് ആവശ്യമായ ഉത്തരവ് നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.`,
+    ];
+    const treeFld = next.structuredFields?.find((f) => f.id === 'treeDetails' || f.label.includes('മര'));
+    if (treeFld) {
+      treeFld.value = `വീടിന് ഭീഷണിയായി അപകടാവസ്ഥയിൽ നിൽക്കുന്ന ${specificLabel}`;
     }
     extractedAny = true;
   }
@@ -1965,6 +2027,12 @@ export function matchGovFormFromPrompt(
     /\b(trade\s*licen[cs]e|d&o|nregs|job\s*card)\b/i.test(norm)
   ) {
     matchedFormId = 'lsgd-trade-license-nregs';
+  } else if (
+    ((norm.includes('മരം') || norm.includes('പ്ലാവ്') || norm.includes('തെങ്ങ്') || norm.includes('മാവ്') || norm.includes('ആഞ്ഞിലി')) &&
+      (norm.includes('മുറിക്ക') || norm.includes('വെട്ട') || norm.includes('അപകട'))) ||
+    /\b(tree\s*cutting|dangerous\s*tree|cut\s*tree)\b/i.test(norm)
+  ) {
+    matchedFormId = 'lsgd-tree-cutting-application';
   } else if (
     norm.includes('ദുരിതാശ്വാസ') ||
     norm.includes('ചികിത്സാ സഹായ') ||

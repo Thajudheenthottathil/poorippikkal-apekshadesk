@@ -1968,15 +1968,16 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 ({agreementData.stampPaperHeaderSpaceMm} mm)
               </p>
               <p className="text-[11px] text-amber-800 mt-0.5">
-                സാധാരണ ₹100 / ₹200 മുദ്രപ്പത്രത്തിന് <strong>3 ഇഞ്ച് (75mm)</strong> അല്ലെങ്കിൽ{' '}
+                സാധാരണ ₹100 / ₹200 കേരള മുദ്രപ്പത്രത്തിന് <strong>4.5 ഇഞ്ച് (114mm)</strong> അല്ലെങ്കിൽ{' '}
                 <strong>3.5 ഇഞ്ച് (90mm)</strong> തിരഞ്ഞെടുക്കാം. പ്രിന്റ് എടുക്കുമ്പോൾ ഈ ബോക്സ് തനിയെ മാറും.
               </p>
               <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
                 {[
                   { label: '0 ഇഞ്ച് (സാധാ പേപ്പർ)', mm: 20 },
-                  { label: '3 ഇഞ്ച് (75mm - മുദ്രപ്പത്രം)', mm: 75 },
+                  { label: '3 ഇഞ്ച് (75mm)', mm: 75 },
                   { label: '3.5 ഇഞ്ച് (90mm)', mm: 90 },
                   { label: '4 ഇഞ്ച് (100mm)', mm: 100 },
+                  { label: '⚡ 4.5 ഇഞ്ച് (114mm - Stamp Paper Mode)', mm: 114 },
                 ].map((preset) => (
                   <button
                     key={preset.mm}
