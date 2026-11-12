@@ -1,7 +1,9 @@
 {
-  "name": "react-example",
+  "name": "poorippikkal-apekshadesk",
+  "homepage": "https://poorippikkal-apekshadesk.vercel.app",
+  "description": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്) — Official Live Web Application at https://poorippikkal-apekshadesk.vercel.app for Malayalam Village/Panchayat Applications, 11-Month Rental Agreements, Gulf CVs & School Mark Lists.",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",

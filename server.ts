@@ -5455,46 +5455,52 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>${origin}/?service=village-office-application-malayalam</loc>
+    <loc>${origin}/village-office-applications-malayalam.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
   <url>
-    <loc>${origin}/?service=panchayat-application-format-malayalam</loc>
+    <loc>${origin}/panchayat-kseb-applications-malayalam.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
   <url>
-    <loc>${origin}/?service=rental-agreement-format-malayalam</loc>
+    <loc>${origin}/rental-agreement-format-malayalam.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
   <url>
-    <loc>${origin}/?service=school-mark-list-software-kerala</loc>
+    <loc>${origin}/school-mark-list-software-kerala.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
   <url>
-    <loc>${origin}/?service=gulf-cv-biodata-maker</loc>
+    <loc>${origin}/gulf-cv-biodata-maker-malayalam.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.90</priority>
   </url>
   <url>
-    <loc>${origin}/?service=resignation-letter-malayalam</loc>
+    <loc>${origin}/resignation-leave-letter-malayalam.html</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>${origin}/about-privacy-disclaimer.html</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>${origin}/llms.txt</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
 </urlset>`);
   });

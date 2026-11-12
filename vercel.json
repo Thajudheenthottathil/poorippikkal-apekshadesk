@@ -1,6 +1,14 @@
 {
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "microphone=(self), camera=(self)" }
+      ]
+    },
+    {
       "source": "/sitemap.xml",
       "headers": [
         { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
@@ -21,7 +29,47 @@
       "destination": "/api/index"
     },
     {
-      "source": "/((?!api/|assets/|icons/|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|xml|txt|webmanifest|js|css|woff2?|ttf|otf)|google[a-zA-Z0-9_-]+\\.html).*)",
+      "source": "/forms/income-certificate",
+      "destination": "/village-office-applications-malayalam.html"
+    },
+    {
+      "source": "/forms/pokkuvaravu",
+      "destination": "/village-office-applications-malayalam.html"
+    },
+    {
+      "source": "/forms/village-office",
+      "destination": "/village-office-applications-malayalam.html"
+    },
+    {
+      "source": "/forms/tree-cutting",
+      "destination": "/panchayat-kseb-applications-malayalam.html"
+    },
+    {
+      "source": "/forms/panchayat-kseb",
+      "destination": "/panchayat-kseb-applications-malayalam.html"
+    },
+    {
+      "source": "/forms/rent-agreement",
+      "destination": "/rental-agreement-format-malayalam.html"
+    },
+    {
+      "source": "/forms/mark-list",
+      "destination": "/school-mark-list-software-kerala.html"
+    },
+    {
+      "source": "/forms/gulf-cv",
+      "destination": "/gulf-cv-biodata-maker-malayalam.html"
+    },
+    {
+      "source": "/forms/resignation-letter",
+      "destination": "/resignation-leave-letter-malayalam.html"
+    },
+    {
+      "source": "/(about|privacy-policy|terms|disclaimer)",
+      "destination": "/about-privacy-disclaimer.html"
+    },
+    {
+      "source": "/((?!api/|assets/|icons/|.*\\.(?:html|png|jpg|jpeg|gif|webp|svg|ico|xml|txt|webmanifest|js|css|woff2?|ttf|otf)).*)",
       "destination": "/index.html"
     }
   ]

@@ -117,7 +117,7 @@ const STORAGE_TX_KEY = 'parayam_transactions_v3';
 const STORAGE_CART_KEY = 'parayam_print_cart_v1';
 
 const DEFAULT_OWNER_CONFIG: OwnerBusinessConfig = {
-  shopName: 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)',
+  shopName: 'പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് | പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Poorippikkal Apekshadesk)',
   centerTagline:
     'മലയാളം അപേക്ഷകൾ, ഫോമുകൾ, വാടക കരാർ, ഗൾഫ് CV & മാർക്ക് ലിസ്റ്റ് — ഫോണിൽ പറയാം, 10 സെക്കൻഡിൽ തയ്യാറാക്കാം.',
   ownerName: 'Apeksha Desk Online Service',

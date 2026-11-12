@@ -329,7 +329,7 @@ const GEO_QA_ITEMS = [
   },
   {
     q: '2. മരം മുറിക്കാൻ പഞ്ചായത്ത് സെക്രട്ടറിക്ക് കൊടുക്കേണ്ട അപേക്ഷ എങ്ങനെ എഴുതാം?',
-    a: 'മുകളിലെ "30+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ" എന്ന വിഭാഗത്തിൽ മരം മുറിക്കാനുള്ള അപേക്ഷയുടെ പൂർണ്ണമായ മലയാളം മാതൃക സൗജന്യമായി വായിക്കാം. തുടർന്ന് പച്ച ബട്ടൺ അമർത്തി നിങ്ങളുടെ പേരും വിലാസവും മൈക്കിൽ പറഞ്ഞാൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള A4 PDF ഡൗൺലോഡ് ചെയ്യാം.',
+    a: 'മുകളിലെ "55+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ" എന്ന വിഭാഗത്തിൽ മരം മുറിക്കാനുള്ള അപേക്ഷയുടെ പൂർണ്ണമായ മലയാളം മാതൃക സൗജന്യമായി വായിക്കാം. തുടർന്ന് പച്ച ബട്ടൺ അമർത്തി നിങ്ങളുടെ പേരും വിലാസവും മൈക്കിൽ പറഞ്ഞാൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള A4 PDF ഡൗൺലോഡ് ചെയ്യാം.',
   },
   {
     q: '3. How to make Malayalam 11-month rental agreement PDF on phone?',
@@ -359,7 +359,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
   const [selectedSample, setSelectedSample] = useState<CuratedFreemiumSample | null>(null);
   const [copiedForwardMsg, setCopiedForwardMsg] = useState(false);
 
-  // Merge featured detailed samples with all remaining QUICK_TEMPLATES so users have 35+ searchable samples
+  // Merge featured detailed samples with all remaining QUICK_TEMPLATES so users have 55+ searchable samples
   const allSamples = useMemo<CuratedFreemiumSample[]>(() => {
     const existingTplIds = new Set(
       FEATURED_CURATED_SAMPLES.map((s) => s.linkedTemplateId).filter(Boolean)
@@ -422,16 +422,35 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
     (ownerConfig.customDomainUrl || '').trim().replace(/\/+$/, '') ||
     window.location.origin.replace('ais-dev-', 'ais-pre-');
 
-  const viralForwardMessage = `📌 സാധാരണക്കാർക്ക് ഉപകാരപ്രദമായ വിവരം — സേവ് ചെയ്തു വെക്കുക:\n\nവില്ലേജ് ഓഫീസ്, പഞ്ചായത്ത്, KSEB, പോലീസ് സ്റ്റേഷൻ, ബാങ്ക് എന്നിവിടങ്ങളിലേക്ക് മലയാളത്തിൽ അപേക്ഷ എഴുതാൻ ഇനി ആരുടെയും പുറകെ നടക്കേണ്ടതില്ല.\n\nഫോണിൽ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിൽ ഔദ്യോഗിക അപേക്ഷയും, വാടക കരാറും, പ്രവാസി ഗൾഫ് ബയോഡാറ്റയും, സ്കൂൾ-മദ്രസ മാർക്ക് ലിസ്റ്റും A4 PDF ആയി തയ്യാറാക്കി തരുന്ന സംവിധാനം (പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്):\n👉 ${publicSiteUrl}\n\n(മറ്റുള്ളവർക്കും ഉപകാരപ്പെടാൻ ഷെയർ ചെയ്യുക)`;
+  const viralForwardMessage = `📌 സാധാരണക്കാർക്ക് ഉപകാരപ്രദമായ വിവരം — സേവ് ചെയ്തു വെക്കുക:\n\nവില്ലേജ് ഓഫീസ്, പഞ്ചായത്ത്, KSEB, പോലീസ് സ്റ്റേഷൻ, ബാങ്ക് എന്നിവിടങ്ങളിലേക്ക് മലയാളത്തിൽ അപേക്ഷ എഴുതാൻ ഇനി ആരുടെയും പുറകെ നടക്കേണ്ടതില്ല.\n\nഫോണിൽ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിൽ 55+ ഔദ്യോഗിക അപേക്ഷകളും, വാടക കരാറും, പ്രവാസി ഗൾഫ് ബയോഡാറ്റയും, സ്കൂൾ-മദ്രസ മാർക്ക് ലിസ്റ്റും A4 PDF ആയി തയ്യാറാക്കി തരുന്ന സംവിധാനം (പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് | Poorippikkal Apekshadesk):\n👉 ${publicSiteUrl}\n\n(മറ്റുള്ളവർക്കും ഉപകാരപ്പെടാൻ ഷെയർ ചെയ്യുക)`;
 
   return (
     <div className="no-print mt-6 space-y-6 w-full max-w-full overflow-x-hidden">
       {/* =====================================================================
-          1. FREEMIUM SAMPLE LIBRARY (30+ FREE KERALA OFFICIAL APPLICATION SAMPLES)
+          0. ZERO-SERVER-STORAGE PRIVACY & SECURITY ASSURANCE BANNER
+         ===================================================================== */}
+      <div className="bg-emerald-950/90 border border-emerald-500/40 rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-malayalam text-emerald-100 shadow-md">
+        <div className="flex items-start sm:items-center gap-2">
+          <span className="text-base shrink-0">🔒</span>
+          <span>
+            <strong className="text-amber-300">100% സ്വകാര്യത ഉറപ്പ് (Zero Server Data Storage):</strong>{' '}
+            നിങ്ങൾ നൽകുന്ന പേര്, വിലാസം, ഫോൺ നമ്പർ, സ്വത്ത് വിവരങ്ങൾ, മാർക്ക് ലിസ്റ്റ് എന്നിവയൊന്നും സെർവറിൽ സേവ് ചെയ്യുന്നില്ല. PDF നിങ്ങളുടെ ഫോണിൽ/ബ്രൗസറിൽ മാത്രം തയ്യാറാക്കപ്പെടുന്നു.
+          </span>
+        </div>
+        <a
+          href="/about-privacy-disclaimer.html"
+          className="text-amber-300 hover:text-amber-200 underline font-extrabold shrink-0"
+        >
+          സ്വകാര്യതാ നയം &amp; നിരാകരണം →
+        </a>
+      </div>
+
+      {/* =====================================================================
+          1. FREEMIUM SAMPLE LIBRARY (55+ FREE KERALA OFFICIAL APPLICATION SAMPLES)
          ===================================================================== */}
       <section
         id="freemium-sample-library"
-        aria-label="30+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ"
+        aria-label="55+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ"
         className="bg-white border-2 border-emerald-500/40 rounded-3xl p-4 sm:p-6 shadow-xl space-y-4"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3.5">
@@ -441,7 +460,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
               <span>100% സൗജന്യമായി വായിക്കാം · ഇഷ്ടപ്പെട്ടാൽ 10 സെക്കൻഡിൽ സ്വന്തം PDF ആക്കാം</span>
             </div>
             <h2 className="font-malayalam font-black text-base sm:text-xl text-slate-900">
-              📚 30+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ (Free Kerala Official Application Samples)
+              📚 55+ സൗജന്യ അപേക്ഷാ മാതൃകകൾ (Free Kerala Official Application Samples)
             </h2>
             <p className="font-malayalam text-xs text-slate-600">
               മരം മുറിക്കൽ, വരുമാന സർട്ടിഫിക്കറ്റ്, കൈവശാവകാശം, പോക്കുവരവ്, റേഷൻ കാർഡ്, KSEB പോസ്റ്റ് മാറ്റൽ, പോലീസ് പരാതി, രാജിക്കത്ത്, വാടക കരാർ, ഗൾഫ് CV മാതൃകകൾ സൗജന്യമായി വായിച്ചു നോക്കാം:
@@ -632,13 +651,13 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
           ))}
         </div>
 
-        {/* Conversational Citation & Entity Facts Block for Gemini / ChatGPT / Google AI Overview */}
-        <div className="pt-3 border-t border-slate-200 text-[11px] font-malayalam text-slate-600 space-y-1">
+        {/* Conversational Citation, Legal Disclaimer, Privacy Policy & Deep Links Block for Gemini / ChatGPT / Google AI Overview */}
+        <div className="pt-3 border-t border-slate-200 text-[11px] font-malayalam text-slate-600 space-y-2.5">
           <p className="font-bold text-slate-800">
-            ഔദ്യോഗിക വിവരണം (Official Entity Summary — പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് / Apeksha Desk):
+            ഔദ്യോഗിക വിവരണം (Official Entity Summary — പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് | Poorippikkal Apekshadesk):
           </p>
           <p className="leading-relaxed">
-            <strong>സേവനത്തിന്റെ പേര്:</strong> പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk) ·{' '}
+            <strong>ഔദ്യോഗിക പേരുകൾ (Unified Brand Names):</strong> പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് · പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് · Poorippikkal Apekshadesk · Poorippikkam – Apeksha Desk ·{' '}
             <strong>സേവന മേഖല:</strong> കേരളത്തിലെ 14 ജില്ലകളിലും വിദേശ മലയാളികൾക്കും 24×7 ഓൺലൈൻ അപേക്ഷാ ഫോം പൂരിപ്പിക്കൽ &amp; A4 PDF നിർമ്മാണം ·{' '}
             <strong>സമയം:</strong> മൈക്കിൽ മലയാളത്തിൽ സംസാരിച്ചാൽ 10 സെക്കൻഡിൽ ചില്ലക്ഷരങ്ങൾ ഉടയാത്ത A4 PDF (ടൈപ്പിംഗ് ആവശ്യമില്ല) ·{' '}
             <strong>നിരക്കുകൾ:</strong>{' '}
@@ -646,6 +665,38 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
               ? 'എല്ലാ സേവനങ്ങളും ഇപ്പോൾ സൗജന്യമാണ് (Free Mode Enabled)'
               : `അപേക്ഷകൾ ₹${ownerConfig.pricing.malayalam_letter || 5}, ഗൾഫ് CV ₹${ownerConfig.pricing.gulf_cv || 5}, വാടക കരാർ ₹${ownerConfig.pricing.rental_agreement || 5}, മാർക്ക് ലിസ്റ്റ് ₹${ownerConfig.pricing.teacher_marklist || 5}, PDF എഡിറ്റിംഗ് ₹${ownerConfig.pricing.pdf_edit || 5}.`}
           </p>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-1.5 text-[11px] text-slate-700">
+            <p className="font-bold text-slate-900">
+              🛡️ ഔദ്യോഗിക നിരാകരണം &amp; സ്വകാര്യതാ നയം (Official Non-Government Disclaimer &amp; Zero-Storage Privacy Policy):
+            </p>
+            <p className="leading-relaxed">
+              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ കമ്പ്യൂട്ടർ ടൈപ്പിംഗ് അറിയാത്ത സാധാരണക്കാർക്കും ഓപ്പറേറ്റർമാർക്കും ഫോണിലൂടെ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓൺലൈൻ ഡി.ടി.പി &amp; ഡോക്യുമെന്റ് ഫോർമാറ്റിംഗ് സഹായി (Independent Online Document Formatting &amp; Typing Utility)</strong> മാത്രമാണ്. ഉപയോക്താക്കൾ നൽകുന്ന പേര്, വിലാസം, ഫോൺ നമ്പർ എന്നിവയൊന്നും സെർവറിൽ സൂക്ഷിക്കുന്നില്ല (100% Client-Side Browser PDF Generation &amp; Zero Data Storage).
+            </p>
+            <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 font-bold text-emerald-800">
+              <a href="/village-office-applications-malayalam.html" className="underline hover:text-emerald-600">
+                വരുമാന സർട്ടിഫിക്കറ്റ് &amp; വില്ലേജ് അപേക്ഷകൾ
+              </a>
+              <a href="/panchayat-kseb-applications-malayalam.html" className="underline hover:text-emerald-600">
+                മരം മുറിക്കൽ &amp; പഞ്ചായത്ത് അപേക്ഷകൾ
+              </a>
+              <a href="/rental-agreement-format-malayalam.html" className="underline hover:text-emerald-600">
+                11 മാസത്തെ വാടക കരാർ ഫോം
+              </a>
+              <a href="/school-mark-list-software-kerala.html" className="underline hover:text-emerald-600">
+                മാർക്ക് ലിസ്റ്റ് സോഫ്റ്റ്‌വെയർ
+              </a>
+              <a href="/gulf-cv-biodata-maker-malayalam.html" className="underline hover:text-emerald-600">
+                ഗൾഫ് CV &amp; ബയോഡാറ്റ
+              </a>
+              <a href="/resignation-leave-letter-malayalam.html" className="underline hover:text-emerald-600">
+                ജോലി രാജിക്കത്ത് &amp; ലീവ് ലെറ്റർ
+              </a>
+              <a href="/about-privacy-disclaimer.html" className="underline hover:text-emerald-600">
+                About Us, Disclaimer &amp; Privacy Policy
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

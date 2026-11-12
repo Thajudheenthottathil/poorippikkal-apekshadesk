@@ -5,18 +5,21 @@
 >
 > ## 👉 [🌐 ഇവിടെ ക്ലിക്ക് ചെയ്ത് ലൈവ് വെബ്‌സൈറ്റ് തുറക്കുക: https://poorippikkal-apekshadesk.vercel.app](https://poorippikkal-apekshadesk.vercel.app/)
 >
-> ### ⚡ നേരിട്ട് ആവശ്യമുള്ള സേവനം തുറക്കാൻ (Direct Online Tools):
-> * 🏛️ **[മലയാളം വില്ലേജ് ഓഫീസ് അപേക്ഷ ഫോർമാറ്റ് ഓൺലൈൻ (അപേക്ഷ തയ്യാറാക്കാൻ)](https://poorippikkal-apekshadesk.vercel.app/?service=village-office-application-malayalam)**
-> * 🌴 **[പഞ്ചായത്ത് & KSEB അപേക്ഷ ഫോർമാറ്റ് മലയാളം (മരം മുറിക്കൽ, വീട്ടുനികുതി)](https://poorippikkal-apekshadesk.vercel.app/?service=panchayat-application-format-malayalam)**
-> * 🏠 **[11 മാസത്തെ വാടക കരാർ ഫോം മലയാളം PDF (Rental Agreement Format)](https://poorippikkal-apekshadesk.vercel.app/?service=rental-agreement-format-malayalam)**
-> * 📊 **[സ്കൂൾ & മദ്രസ മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (Mark List Software)](https://poorippikkal-apekshadesk.vercel.app/?service=school-mark-list-software-kerala)**
-> * ✈️ **[പ്രവാസി ഗൾഫ് CV & ബയോഡാറ്റ മേക്കർ (Gulf CV & Biodata Maker)](https://poorippikkal-apekshadesk.vercel.app/?service=gulf-cv-biodata-maker)**
-> * 💼 **[ജോലി രാജിക്കത്ത് & ലീവ് ലെറ്റർ ഫോർമാറ്റ് മലയാളം (Resignation Letter)](https://poorippikkal-apekshadesk.vercel.app/?service=resignation-letter-malayalam)**
+> ### ⚡ നേരിട്ട് ആവശ്യമുള്ള സേവനം തുറക്കാൻ (Direct Online Tools & Sample Formats):
+> * 🏛️ **[വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ ഫോം, പോക്കുവരവ് & വില്ലേജ് ഓഫീസ് അപേക്ഷകൾ](https://poorippikkal-apekshadesk.vercel.app/village-office-applications-malayalam.html)**
+> * 🌴 **[മരം മുറിക്കാൻ അപേക്ഷ, പഞ്ചായത്ത് വീട്ടുനികുതി, KSEB & റേഷൻ കാർഡ് അപേക്ഷകൾ](https://poorippikkal-apekshadesk.vercel.app/panchayat-kseb-applications-malayalam.html)**
+> * 🏠 **[11 മാസത്തെ വാടക കരാർ ഫോം മലയാളം PDF (Rental Agreement Format)](https://poorippikkal-apekshadesk.vercel.app/rental-agreement-format-malayalam.html)**
+> * 📊 **[സ്കൂൾ & മദ്രസ മാർക്ക് ലിസ്റ്റ് തയ്യാറാക്കാൻ സോഫ്റ്റ്‌വെയർ (Mark List Software)](https://poorippikkal-apekshadesk.vercel.app/school-mark-list-software-kerala.html)**
+> * ✈️ **[പ്രവാസി ഗൾഫ് CV & ബയോഡാറ്റ മേക്കർ (Gulf CV & Biodata Maker)](https://poorippikkal-apekshadesk.vercel.app/gulf-cv-biodata-maker-malayalam.html)**
+> * 💼 **[ജോലി രാജിക്കത്ത് & ലീവ് ലെറ്റർ ഫോർമാറ്റ് മലയാളം (Resignation Letter)](https://poorippikkal-apekshadesk.vercel.app/resignation-leave-letter-malayalam.html)**
+> * 🛡️ **[ഞങ്ങളെക്കുറിച്ച്, ഔദ്യോഗിക നിരാകരണം (Disclaimer) & സ്വകാര്യതാ നയം (Privacy Policy)](https://poorippikkal-apekshadesk.vercel.app/about-privacy-disclaimer.html)**
 
 ---
 
-## എന്താണ് പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം)?
-കേരളത്തിലെ സാധാരണക്കാർക്കും പ്രവാസികൾക്കും അധ്യാപകർക്കും അക്ഷയ/ഡി.ടി.പി (DTP) സെന്ററുകളിലേക്ക് ഓടാതെ, സ്വന്തം ഫോണിലെ മൈക്കിലൂടെ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിനുള്ളിൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള **ഔദ്യോഗിക A4 PDF രേഖകൾ** തയ്യാറാക്കി നൽകുന്ന ഓൺലൈൻ വെബ് ആപ്ലിക്കേഷനാണ് **[പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)](https://poorippikkal-apekshadesk.vercel.app/)**.
+## എന്താണ് പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്)?
+കേരളത്തിലെ സാധാരണക്കാർക്കും പ്രവാസികൾക്കും അധ്യാപകർക്കും അക്ഷയ/ഡി.ടി.പി (DTP) സെന്ററുകളിലേക്ക് ഓടാതെ, സ്വന്തം ഫോണിലെ മൈക്കിലൂടെ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിനുള്ളിൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള **ഔദ്യോഗിക A4 PDF രേഖകൾ** തയ്യാറാക്കി നൽകുന്ന സ്വതന്ത്ര ഓൺലൈൻ വെബ് ആപ്ലിക്കേഷനാണ് **[പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Poorippikkal Apekshadesk / Poorippikkam – Apeksha Desk)](https://poorippikkal-apekshadesk.vercel.app/)**.
+
+> **🛡️ Official Non-Government Disclaimer (ഔദ്യോഗിക നിരാകരണം):** ഇത് കേരള സർക്കാരിന്റെയോ e-District / അക്ഷയ പോർട്ടലിന്റെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് അല്ല; ഓഫീസുകളിൽ സമർപ്പിക്കാനുള്ള വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകളും (White-Paper Petitions) വാടക കരാർ ഡ്രാഫ്റ്റുകളും മലയാളത്തിൽ ടൈപ്പ് ചെയ്ത് A4 PDF ആക്കാൻ സഹായിക്കുന്ന സ്വതന്ത്ര ഓൺലൈൻ ഡി.ടി.പി (DTP) ഫോർമാറ്റിംഗ് ടൂൾ മാത്രമാണ് (100% Zero Server Data Storage).
 
 * **🎙️ Voice-to-A4 PDF:** മലയാളത്തിലോ മംഗ്ലീഷിലോ ഇംഗ്ലീഷിലോ സംസാരിച്ചാൽ ഉടൻ ഔദ്യോഗിക A4 ഫോർമാറ്റിൽ അപേക്ഷ റെഡി.
 * **✏️ Direct Touch Edit & Pre-Print Mistake Checker:** പേപ്പറിൽ നേരിട്ട് തൊട്ട് തിരുത്താം; പിൻകോഡ്, തീയതി, ഫോൺ നമ്പർ തെറ്റുകൾ സ്വയം കണ്ടെത്തി മുന്നറിയിപ്പ് നൽകും.
