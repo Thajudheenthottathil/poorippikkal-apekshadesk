@@ -163,10 +163,26 @@ export function App() {
   // Mobile responsive view tab ('input' vs 'preview')
   const [mobileViewTab, setMobileViewTab] = useState<'input' | 'preview'>('input');
 
-  // Active Document Category & State
-  const [activeCategory, setActiveCategory] = useState<DocumentCategory>('malayalam_letter');
-  const [selectedTemplateGroup, setSelectedTemplateGroup] =
-    useState<TemplateSubGroup>('എല്ലാം (All)');
+  // Active Document Category & State (Supports Google Search deep links via ?service=...)
+  const [activeCategory, setActiveCategory] = useState<DocumentCategory>(() => {
+    if (typeof window === 'undefined') return 'malayalam_letter';
+    const service = new URLSearchParams(window.location.search).get('service') || '';
+    if (service.includes('rental-agreement')) return 'rental_agreement';
+    if (service.includes('mark-list')) return 'teacher_marklist';
+    if (service.includes('gulf-cv') || service.includes('biodata')) return 'gulf_cv';
+    return 'malayalam_letter';
+  });
+  const [selectedTemplateGroup, setSelectedTemplateGroup] = useState<TemplateSubGroup>(() => {
+    if (typeof window === 'undefined') return 'എല്ലാം (All)';
+    const service = new URLSearchParams(window.location.search).get('service') || '';
+    if (service.includes('village-office')) return 'അക്ഷയ & വില്ലേജ് ഓഫീസ്';
+    if (service.includes('panchayat')) return 'പഞ്ചായത്ത് & KSEB & റേഷൻ';
+    if (service.includes('rental-agreement')) return 'വാടക കരാർ & സത്യവാങ്മൂലം';
+    if (service.includes('mark-list')) return 'ടീച്ചേഴ്സ് മാർക്ക് ലിസ്റ്റ്';
+    if (service.includes('gulf-cv') || service.includes('biodata')) return 'പ്രവാസി ഗൾഫ് CV';
+    if (service.includes('resignation')) return 'രാജിക്കത്ത് & സ്ഥാപനം';
+    return 'എല്ലാം (All)';
+  });
 
   const [letterData, setLetterData] = useState<MalayalamLetterData>(INITIAL_LETTER_DATA);
   const [gulfCvData, setGulfCvData] = useState<GulfCvData>(INITIAL_GULF_CV_DATA);

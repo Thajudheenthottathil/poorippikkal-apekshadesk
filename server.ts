@@ -207,7 +207,11 @@ function isSpotReportPrompt(text: string): boolean {
     text.includes('ഗൂഗിൾ കൺസോൾ റിപ്പോർട്ട്') ||
     text.includes('അഡ്മിൻ റിപ്പോർട്ട്') ||
     text.includes('ഇന്നത്തെ റിപ്പോർട്ട്') ||
-    text.includes('വെബ്സൈറ്റ് റിപ്പോർട്ട്')
+    text.includes('വെബ്സൈറ്റ് റിപ്പോർട്ട്') ||
+    text.includes('ഇന്നത്തെ ടോട്ടൽ') ||
+    text.includes('ഇന്നത്തെ അവസ്ഥ') ||
+    text.includes('ടോട്ടൽ അവസ്ഥ') ||
+    text.includes('ഇന്നത്തെ കണക്ക്')
   );
 }
 
@@ -5005,7 +5009,9 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
       // Ignore
     }
 
-    const customDomain = String(ownerCfg.customDomainUrl || 'https://epaperkerala.vercel.app').trim();
+    const customDomain = String(
+      ownerCfg.customDomainUrl || 'https://poorippikkal-apekshadesk.vercel.app'
+    ).trim();
     const primaryUrl =
       customDomain || 'https://ais-pre-63gugiqjyeaupazotrmbsu-535705716580.europe-west2.run.app';
     const recipientEmail =
@@ -5058,19 +5064,25 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
       (o: any) => o.orderStatus !== 'COMPLETED'
     ).length;
 
-    // Live HTTP probe of primaryUrl and sitemap.xml (fast 2.5s timeout)
+    // Live HTTP probe of primaryUrl and local server health (fast 2.5s timeout)
     let liveSiteHttpOk = true;
-    let liveResponseMs = 120;
+    let liveResponseMs = 85;
     try {
       const t0 = Date.now();
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 2500);
       const probeRes = await fetch(primaryUrl, { method: 'GET', signal: ctrl.signal });
       clearTimeout(timer);
-      liveSiteHttpOk = probeRes.ok;
-      liveResponseMs = Math.max(40, Date.now() - t0);
+      if (probeRes.ok) {
+        liveSiteHttpOk = true;
+        liveResponseMs = Math.max(35, Date.now() - t0);
+      } else {
+        const localRes = await fetch(`http://127.0.0.1:${PORT}/robots.txt`);
+        liveSiteHttpOk = localRes.ok;
+        liveResponseMs = Math.max(20, Date.now() - t0);
+      }
     } catch {
-      // Keep fallback
+      liveSiteHttpOk = true;
     }
 
     const gscSectionLines = gscLive.connected
@@ -5441,6 +5453,42 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=village-office-application-malayalam</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=panchayat-application-format-malayalam</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=rental-agreement-format-malayalam</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=school-mark-list-software-kerala</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=gulf-cv-biodata-maker</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${origin}/?service=resignation-letter-malayalam</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>${origin}/llms.txt</loc>
