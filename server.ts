@@ -15,6 +15,7 @@ import {
   extractKeralaPlaceAndDistrict,
   normalizeMalayalamChillaksharam,
   normalizeSpokenMalayalamTranscript,
+  translateAgreementTextSemantic,
   translateSingleStringLocal,
 } from './src/utils/languageTranslator.ts';
 import {
@@ -1223,7 +1224,14 @@ function buildSmartFallbackResponse(
       lower.includes('professional summary') ||
       lower.includes('visa') ||
       lower.includes('dubai') ||
-      lower.includes('uae'));
+      lower.includes('uae') ||
+      lower.includes('saudi') ||
+      lower.includes('qatar') ||
+      lower.includes('oman') ||
+      lower.includes('kuwait') ||
+      lower.includes('bahrain') ||
+      /\b\d+\s*(?:years?|yrs?)\s+(?:of\s+)?experience\b/i.test(prompt) ||
+      /\bmy\s+name\s+is\b/i.test(prompt));
 
   const isAgreementPrompt =
     !isGulfCvPrompt &&
@@ -1282,17 +1290,17 @@ function buildSmartFallbackResponse(
   let bodyParagraphsText: string[] = cleanFallbackLetter.bodyParagraphs;
   let enclosuresList = cleanFallbackLetter.enclosures || ['അപേക്ഷകന്റെ തിരിച്ചറിയൽ രേഖ (ഉണ്ടെങ്കിൽ)'];
 
-  // Extract inline persona details from prompt so ZERO [...] placeholders remain
+  // Extract inline persona details from prompt (Malayalam & English) so ZERO sample names leak
   const inlineNameMatch = prompt.match(
-    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്|my\s+name\s+is|i\s+am|i'm|this\s+is|candidate\s+name|applicant\s+name|name\s*(?:is|:))\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|from\b|living\s+in|residing|aged?\b|\d+\s*(?:years?|yrs?|വർഷ)|working\s+as|with\s+\d|\.|$))/i
   );
   const extractedKeralaLoc = extractKeralaPlaceAndDistrict(prompt);
   const inlinePhoneMatch = prompt.match(
     /(\+\d{1,3}[\s\-]?\d{2,4}[\s\-]?\d{3,4}[\s\-]?\d{3,4}|\b(?:\+?91[\s\-]?)?[6-9]\d{4}[\s\-]?\d{5}\b)/
   );
   const inlineEmailMatch = prompt.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-  const inlineAgeMatch = prompt.match(/(\d{2})\s*വയസ്സ്/);
-  const inlineExpYearsMatch = prompt.match(/(\d{1,2})\s*വർഷ(?:ം|മായി|ത്തെ)/);
+  const inlineAgeMatch = prompt.match(/(\d{2})\s*(?:വയസ്സ്|years?\s*old)/i);
+  const inlineExpYearsMatch = prompt.match(/(\d{1,2})\s*(?:വർഷ(?:ം|മായി|ത്തെ)|years?|yrs?)/i);
   const inlinePassportMatch = prompt.match(/(?:പാസ്പോർട്ട്\s*(?:നമ്പർ)?|passport\s*(?:no|number)?)\s*[:\-]?\s*([A-Z]\d{7})/i);
 
   let cleanSenderName = 'രാജൻ കെ. വി.';
@@ -1728,6 +1736,8 @@ function buildSmartFallbackResponse(
       ? 'SENIOR ACCOUNTANT & OFFICE ADMINISTRATOR (TALLY PRIME & GST)'
       : prompt.includes('ഡെലിവറി') || prompt.includes('തലബാത്ത്') || prompt.includes('നൂൺ')
       ? 'DELIVERY RIDER / LOGISTICS DRIVER'
+      : lower.includes('heavy truck') || lower.includes('heavy driver') || prompt.includes('ഹെവി ഡ്രൈവർ')
+      ? 'HEAVY TRUCK / COMMERCIAL VEHICLE DRIVER'
       : prompt.includes('ഡ്രൈവർ') || lower.includes('driver')
       ? 'LIGHT & HEAVY COMMERCIAL VEHICLE DRIVER'
       : prompt.includes('ബക്കാല') ||
@@ -2567,18 +2577,29 @@ async function generateStructuredDocumentWithGemini(
         parsed.gulfCvData = fbCv;
       } else {
         const aiCv = parsed.gulfCvData;
+        const hasExplicitFallbackName =
+          Boolean(fbCv.fullName) &&
+          fbCv.fullName !== 'RAJAN K. V.' &&
+          !fbCv.fullName.includes('[');
+        const aiKeptGenericOrPrevName =
+          !aiCv.fullName ||
+          aiCv.fullName === 'RAJAN K. V.' ||
+          aiCv.fullName.includes('[') ||
+          (currentDocument?.gulfCvData?.fullName &&
+            aiCv.fullName === currentDocument.gulfCvData.fullName &&
+            hasExplicitFallbackName &&
+            fbCv.fullName !== currentDocument.gulfCvData.fullName);
+        const resolvedFullName = aiKeptGenericOrPrevName ? fbCv.fullName : aiCv.fullName;
         parsed.gulfCvData = {
           ...fbCv,
           ...aiCv,
-          fullName:
-            !aiCv.fullName || aiCv.fullName === 'RAJAN K. V.' || aiCv.fullName.includes('[')
-              ? fbCv.fullName
-              : aiCv.fullName,
+          fullName: resolvedFullName,
           jobTitle:
             aiCv.jobTitle && aiCv.jobTitle.trim().length > 2 ? aiCv.jobTitle.trim() : fbCv.jobTitle,
           currentLocation:
             !aiCv.currentLocation ||
             /Kerala\s*,\s*Kerala/i.test(aiCv.currentLocation) ||
+            (fbCv.currentLocation.includes('Hometown:') && !aiCv.currentLocation.includes('Hometown:')) ||
             (fbCv.currentLocation.includes('UAE') && !aiCv.currentLocation.includes('UAE'))
               ? fbCv.currentLocation
               : aiCv.currentLocation,
@@ -2616,10 +2637,9 @@ async function generateStructuredDocumentWithGemini(
             aiCv.declaration && aiCv.declaration.trim().length > 10
               ? aiCv.declaration.trim()
               : fbCv.declaration,
-          signatureName:
-            !aiCv.fullName || aiCv.fullName === 'RAJAN K. V.' || aiCv.fullName.includes('[')
-              ? fbCv.fullName
-              : aiCv.signatureName || aiCv.fullName,
+          signatureName: aiKeptGenericOrPrevName
+            ? fbCv.fullName
+            : aiCv.signatureName || resolvedFullName,
         };
       }
     }
@@ -2864,8 +2884,14 @@ async function translateSingleTextServer(
     return trimmed;
   }
 
-  // First check instant local dictionary & bi-directional transliterator
-  const localMapped = translateSingleStringLocal(trimmed, targetLang);
+  // 1. Check semantic legal/agreement translator before Manglish
+  const semanticHit = translateAgreementTextSemantic(trimmed, targetLang);
+  if (semanticHit !== null && semanticHit.trim()) {
+    return semanticHit;
+  }
+
+  // 2. Check dictionary & phrase map WITHOUT Manglish fallback so Malayalam sentences go to Google Translate
+  const localMapped = translateSingleStringLocal(trimmed, targetLang, false, false);
   if (localMapped !== trimmed) {
     if (targetLang === 'ml' && /[\u0D00-\u0D7F]/.test(localMapped) && !/[a-zA-Z]{2,}/.test(localMapped))
       return localMapped;
@@ -3065,20 +3091,16 @@ async function translateAgreementDataToTargetLanguage(
   targetLang: DocumentOutputLanguage
 ): Promise<any> {
   if (!agreement) return agreement;
-  const localConverted = applyLocalLanguageConversionToAgreement(agreement, targetLang);
+  // Pass allowManglishFallback=false so unmatched Malayalam sentences stay Malayalam for Google Translate
+  const localConverted = applyLocalLanguageConversionToAgreement(agreement, targetLang, false);
   const tr = async (rawStr: string, localStr: string) => {
     const chosen = (localStr || rawStr || '').trim();
     if (!chosen || /^[.\s\-_]+$/.test(chosen)) return chosen || rawStr;
-    // If local dictionary/template already converted Malayalam into target script/language, return it directly
-    if (localStr && localStr !== rawStr) {
-      if (targetLang === 'en' && !/[\u0D00-\u0D7F]/.test(localStr)) {
-        return localStr;
-      }
-      if (targetLang !== 'ml' && targetLang !== 'en' && !/[\u0D00-\u0D7F]/.test(localStr)) {
-        return localStr;
-      }
+    // If local dictionary/semantic translator already converted all Malayalam into target language, return it
+    if (localStr && localStr !== rawStr && !/[\u0D00-\u0D7F]/.test(localStr)) {
+      return localStr;
     }
-    // Otherwise translate raw source via server Google Translate with local fallback
+    // Otherwise translate raw source via Google Translate / server translator
     const translated = await translateSingleTextServer(rawStr || chosen, targetLang);
     return translated || localStr || rawStr;
   };

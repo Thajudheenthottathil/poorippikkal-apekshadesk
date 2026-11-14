@@ -700,6 +700,46 @@ const PHRASE_MAP: Array<{
     ta: 'வாடகை ஒப்பந்தப் பத்திரம்',
   },
   {
+    ml: 'വാടക ചീട്ട്',
+    en: 'RENTAL AGREEMENT DEED',
+    ar: 'عقد إيجار',
+    ur: 'کرایہ نامہ',
+    hi: 'किराया अनुबंध पत्र',
+    ta: 'வாடகை ஒப்பந்தம்',
+  },
+  {
+    ml: 'കെട്ടിട വാടക കരാർ പത്രം',
+    en: 'BUILDING RENTAL AGREEMENT DEED',
+    ar: 'عقد إيجار مبنى',
+    ur: 'عمارت کرایہ نامہ',
+    hi: 'भवन किराया अनुबंध पत्र',
+    ta: 'கட்டிட வாடகை ஒப்பந்தப் பத்திரம்',
+  },
+  {
+    ml: 'കെട്ടിട വാടക കരാർ',
+    en: 'BUILDING RENTAL AGREEMENT',
+    ar: 'عقد إيجار مبنى',
+    ur: 'عمارت کرایہ نامہ',
+    hi: 'भवन किराया अनुबंध',
+    ta: 'கட்டிட வாடகை ஒப்பந்தம்',
+  },
+  {
+    ml: 'വാടക കരാർ പത്രം',
+    en: 'RENTAL AGREEMENT DEED',
+    ar: 'وثيقة عقد الإيجار',
+    ur: 'معاہدہ کرایہ نامہ',
+    hi: 'किराया अनुबंध पत्र',
+    ta: 'வாடகை ஒப்பந்தப் பத்திரம்',
+  },
+  {
+    ml: 'വാടക കരാർ',
+    en: 'RENTAL AGREEMENT',
+    ar: 'عقد إيجار',
+    ur: 'کرایہ نامہ',
+    hi: 'किराया अनुबंध',
+    ta: 'வாடகை ஒப்பந்தம்',
+  },
+  {
     ml: 'വാടക കരാർ (Rent Agreement)',
     en: 'Rent Agreement',
     ar: 'عقد إيجار',
@@ -732,12 +772,36 @@ const PHRASE_MAP: Array<{
     ta: 'முதல் தரப்பினர் (உரிமையாளர்)',
   },
   {
+    ml: 'ഒന്നാം കക്ഷി (ഉടമ)',
+    en: 'FIRST PARTY (OWNER)',
+    ar: 'الطرف الأول (المالك)',
+    ur: 'فریق اول (مالک)',
+    hi: 'प्रथम पक्ष (मालिक)',
+    ta: 'முதல் தரப்பினர் (உரிமையாளர்)',
+  },
+  {
+    ml: 'ഒന്നാം കക്ഷി',
+    en: 'FIRST PARTY (LANDLORD)',
+    ar: 'الطرف الأول',
+    ur: 'فریق اول',
+    hi: 'प्रथम पक्ष',
+    ta: 'முதல் தரப்பினர்',
+  },
+  {
     ml: 'രണ്ടാം കക്ഷി (വാടകക്കാരൻ)',
     en: 'SECOND PARTY (TENANT)',
     ar: 'الطرف الثاني (المستأجر)',
     ur: 'فریق دوم (کرایہ دار)',
     hi: 'द्वितीय पक्ष (किरायेदार)',
     ta: 'இரண்டாம் தரப்பினர் (வாடகைதாரர்)',
+  },
+  {
+    ml: 'രണ്ടാം കക്ഷി',
+    en: 'SECOND PARTY (TENANT)',
+    ar: 'الطرف الثاني',
+    ur: 'فریق دوم',
+    hi: 'द्वितीय पक्ष',
+    ta: 'இரண்டாம் தரப்பினர்',
   },
   {
     ml: 'കാന്റൺ, ജോർജിയ 30114',
@@ -2708,6 +2772,70 @@ export function extractKeralaPlaceAndDistrict(rawPrompt: string): {
     }
   }
 
+  // 4. Support English Kerala districts / towns & "from <City>" (e.g. "My name is Shameer from Kozhikode")
+  const englishKeralaTownMap: Array<[RegExp, string, string]> = [
+    [/\b(kozhikode|calicut)\b/i, 'Kozhikode', 'Kozhikode'],
+    [/\bmalappuram\b/i, 'Malappuram', 'Malappuram'],
+    [/\bmanjeri\b/i, 'Manjeri', 'Malappuram'],
+    [/\btirur\b/i, 'Tirur', 'Malappuram'],
+    [/\bperinthalmanna\b/i, 'Perinthalmanna', 'Malappuram'],
+    [/\bkottakkal\b/i, 'Kottakkal', 'Malappuram'],
+    [/\bkondotty\b/i, 'Kondotty', 'Malappuram'],
+    [/\bponnani\b/i, 'Ponnani', 'Malappuram'],
+    [/\bnilambur\b/i, 'Nilambur', 'Malappuram'],
+    [/\b(kannur|cannanore)\b/i, 'Kannur', 'Kannur'],
+    [/\bthalassery\b/i, 'Thalassery', 'Kannur'],
+    [/\bpayyanur\b/i, 'Payyanur', 'Kannur'],
+    [/\bkasaragod\b/i, 'Kasaragod', 'Kasaragod'],
+    [/\bkanhangad\b/i, 'Kanhangad', 'Kasaragod'],
+    [/\bwayanad\b/i, 'Wayanad', 'Wayanad'],
+    [/\bkalpetta\b/i, 'Kalpetta', 'Wayanad'],
+    [/\b(thrissur|trichur)\b/i, 'Thrissur', 'Thrissur'],
+    [/\bguruvayur\b/i, 'Guruvayur', 'Thrissur'],
+    [/\bchalakudy\b/i, 'Chalakudy', 'Thrissur'],
+    [/\bpalakkad\b/i, 'Palakkad', 'Palakkad'],
+    [/\bottapalam\b/i, 'Ottapalam', 'Palakkad'],
+    [/\bpattambi\b/i, 'Pattambi', 'Palakkad'],
+    [/\b(ernakulam|kochi|cochin)\b/i, 'Kochi', 'Ernakulam'],
+    [/\baluva\b/i, 'Aluva', 'Ernakulam'],
+    [/\bperumbavoor\b/i, 'Perumbavoor', 'Ernakulam'],
+    [/\bmuvattupuzha\b/i, 'Muvattupuzha', 'Ernakulam'],
+    [/\bidukki\b/i, 'Idukki', 'Idukki'],
+    [/\bthodupuzha\b/i, 'Thodupuzha', 'Idukki'],
+    [/\bkottayam\b/i, 'Kottayam', 'Kottayam'],
+    [/\bpala\b/i, 'Pala', 'Kottayam'],
+    [/\b(alappuzha|alleppey)\b/i, 'Alappuzha', 'Alappuzha'],
+    [/\bkayamkulam\b/i, 'Kayamkulam', 'Alappuzha'],
+    [/\bmavelikkara\b/i, 'Mavelikkara', 'Alappuzha'],
+    [/\bpathanamthitta\b/i, 'Pathanamthitta', 'Pathanamthitta'],
+    [/\bthiruvalla\b/i, 'Thiruvalla', 'Pathanamthitta'],
+    [/\b(kollam|quilon)\b/i, 'Kollam', 'Kollam'],
+    [/\b(thiruvananthapuram|trivandrum)\b/i, 'Thiruvananthapuram', 'Thiruvananthapuram'],
+    [/\bvadakara\b/i, 'Vadakara', 'Kozhikode'],
+    [/\bkoyilandy\b/i, 'Koyilandy', 'Kozhikode'],
+  ];
+  for (const [rx, placeEn, distEn] of englishKeralaTownMap) {
+    if (rx.test(prompt)) {
+      return { place: placeEn, district: distEn, found: true };
+    }
+  }
+
+  const fromEnglishCityMatch = prompt.match(
+    /\bfrom\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)(?=\s*(?:,|with\b|in\b|having\b|looking\b|\d+\s*(?:years?|yrs?)|\.|$))/i
+  );
+  if (fromEnglishCityMatch?.[1]?.trim()) {
+    const cityCand = fromEnglishCityMatch[1].trim();
+    if (
+      cityCand.length >= 3 &&
+      cityCand.length <= 28 &&
+      !/^(india|kerala|saudi|arabia|saudi arabia|uae|dubai|qatar|oman|kuwait|bahrain|uk|usa)$/i.test(
+        cityCand
+      )
+    ) {
+      return { place: cityCand, district: cityCand, found: true };
+    }
+  }
+
   return { place: 'കേരളം', district: 'കേരളം', found: false };
 }
 
@@ -2845,7 +2973,8 @@ function getPhraseTargetValue(
 export function translateSingleStringLocal(
   text: string,
   targetLang: DocumentOutputLanguage,
-  isProperName = false
+  isProperName = false,
+  allowManglishFallback = true
 ): string {
   if (!text || !text.trim()) return text;
   // Clean any legacy prompt interpolation artifact from CV summary
@@ -2879,9 +3008,9 @@ export function translateSingleStringLocal(
   }
 
   // Bi-directional script enforcement:
-  // When target language is English ('en'), convert all Malayalam semantic phrases, places & proper names to pure English
-  // (NOTE: When target language is Malayalam, we strictly preserve English Survey numbers, PAN cards, codes, and acronyms verbatim)
-  if (targetLang === 'en' && /[\u0D00-\u0D7F]/.test(result)) {
+  // When allowManglishFallback=true (client-side instant offline preview) and target language is English ('en'), convert remaining Malayalam words/names
+  // When allowManglishFallback=false (server-side translation), preserve remaining Malayalam so Google Translate translates full sentences into genuine English!
+  if (allowManglishFallback && targetLang === 'en' && /[\u0D00-\u0D7F]/.test(result)) {
     result = convertMalayalamToEnglish(result, isProperName);
   }
 
@@ -2956,7 +3085,7 @@ export function applyLocalLanguageConversionToLetter(
   };
 }
 
-function translateAgreementTextSemantic(
+export function translateAgreementTextSemantic(
   raw: string,
   targetLang: DocumentOutputLanguage
 ): string | null {
@@ -3014,7 +3143,7 @@ function translateAgreementTextSemantic(
     }
   }
 
-  // 2. Preamble Paragraph
+  // 2. Preamble Paragraphs (full & compact AI-generated variants)
   const preambleMatch = s.match(
     /^ഒന്നാം കക്ഷിയുടെ\s*\((.+?)\)\s*ഉടമസ്ഥതയിലുള്ള കെട്ടിടം രണ്ടാം കക്ഷിക്ക്\s*\((.+?)\)\s*(\d+)\s*മാസത്തേക്ക്/
   );
@@ -3038,69 +3167,111 @@ function translateAgreementTextSemantic(
     }
   }
 
-  // 3. Clauses (1..5 standard rental clauses)
-  const clause1Match = s.match(
-    /^(?:1\.\s*)?പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
-  );
-  if (clause1Match) {
-    const amt = clause1Match[1].trim();
+  if (/^ഒന്നാം കക്ഷിയുടെ ഉടമസ്ഥതയിലുള്ള (?:കെട്ടിടം|വീട്|മുറി).*വാടകയ്ക്ക് നൽകുന്ന കരാർ/.test(s)) {
     switch (targetLang) {
       case 'en':
-        return `1. The Second Party (Tenant) shall pay the agreed monthly rent of ₹${amt}/- to the First Party (Landlord) on or before the 5th day of every calendar month.`;
+        return 'Rental Agreement mutually executed for leasing the building owned by the First Party (Landlord) to the Second Party (Tenant) under the terms and conditions stated below.';
       case 'ar':
-        return `1. يلتزم الطرف الثاني (المستأجر) بدفع الإيجار الشهري المتفق عليه وقدره ₹${amt}/- للطرف الأول (المؤجر) في موعد أقصاه اليوم الخامس من كل شهر.`;
+        return 'عقد إيجار مبرم بالتراضي لتأجير العقار المملوك للطرف الأول (المؤجر) إلى الطرف الثاني (المستأجر) وفقاً للشروط التالية.';
       case 'hi':
-        return `1. द्वितीय पक्ष (किरायेदार) प्रत्येक माह की 5 तारीख तक प्रथम पक्ष (मकान मालिक) को निर्धारित मासिक किराया ₹${amt}/- का भुगतान करेगा।`;
+        return 'प्रथम पक्ष (मकान मालिक) के स्वामित्व वाले भवन को नीचे दी गई शर्तों पर द्वितीय पक्ष (किरायेदार) को किराए पर देने हेतु निष्पादित किराया अनुबंध।';
       case 'ta':
-        return `1. இரண்டாம் தரப்பினர் ஒவ்வொரு மாதமும் 5-ஆம் தேதிக்குள் நிர்ணயிக்கப்பட்ட மாத வாடகை ₹${amt}/- ஐ முதல் தரப்பினருக்கு செலுத்த வேண்டும்.`;
+        return 'முதல் தரப்பினருக்கு சொந்தமான கட்டிடத்தை கீழ்க்கண்ட நிபந்தனைகளுக்கு உட்பட்டு இரண்டாம் தரப்பினருக்கு வாடகைக்கு விடும் ஒப்பந்தம்.';
       case 'ur':
-        return `1. فریق دوم ہر ماہ کی 5 تاریخ تک طے شدہ ماہانہ کرایہ ₹${amt}/- فریق اول کو ادا کرے گا۔`;
+        return 'فریق اول کی ملکیت والی عمارت کو درج ذیل شرائط پر فریق دوم کو کرایہ پر دینے کا معاہدہ۔';
       default:
         return null;
     }
   }
 
-  const clause2Match = s.match(
-    /^(?:2\.\s*)?പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായ\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
+  // 3. Clauses (both full & compact AI-generated variants)
+  const clause1Full = s.match(
+    /^(?:(\d+)\.\s*)?പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
   );
-  if (clause2Match) {
-    const amt = clause2Match[1].trim();
+  if (clause1Full) {
+    const num = clause1Full[1] || '1';
+    const amt = clause1Full[2].trim();
     switch (targetLang) {
       case 'en':
-        return `2. The interest-free security advance deposit of ₹${amt}/- shall be refunded to the Second Party at the time of vacating the premises, after deducting any pending arrears or damages.`;
+        return `${num}. The Second Party (Tenant) shall pay the agreed monthly rent of ₹${amt}/- to the First Party (Landlord) on or before the 5th day of every calendar month.`;
       case 'ar':
-        return `2. يتم استرداد مبلغ التأمين المقدم (بدون فوائد) وقدره ₹${amt}/- للطرف الثاني عند إخلاء العقار بعد خصم أي مستحقات أو أضرار إن وجدت.`;
+        return `${num}. يلتزم الطرف الثاني (المستأجر) بدفع الإيجار الشهري المتفق عليه وقدره ₹${amt}/- للطرف الأول (المؤجر) في موعد أقصاه اليوم الخامس من كل شهر.`;
       case 'hi':
-        return `2. ₹${amt}/- की ब्याज-मुक्त अग्रिम सुरक्षा राशि (Advance) परिसर खाली करते समय किसी भी बकाया या क्षति की कटौती के बाद द्वितीय पक्ष को वापस कर दी जाएगी।`;
+        return `${num}. द्वितीय पक्ष (किरायेदार) प्रत्येक माह की 5 तारीख तक प्रथम पक्ष (मकान मालिक) को निर्धारित मासिक किराया ₹${amt}/- का भुगतान करेगा।`;
       case 'ta':
-        return `2. வட்டியில்லா முன்பணமான ₹${amt}/- கட்டிடத்தை காலி செய்யும்போது நிலுவைத் தொகை அல்லது சேதங்கள் ஏதேனும் இருந்தால் கழித்துவிட்டு திருப்பித் தரப்படும்.`;
+        return `${num}. இரண்டாம் தரப்பினர் ஒவ்வொரு மாதமும் 5-ஆம் தேதிக்குள் நிர்ணயிக்கப்பட்ட மாத வாடகை ₹${amt}/- ஐ முதல் தரப்பினருக்கு செலுத்த வேண்டும்.`;
       case 'ur':
-        return `2. ₹${amt}/- کی بلا سود ایڈوانس رقم عمارت خالی کرتے وقت کسی بھی بقایا یا نقصان کی کٹوتی کے بعد فریق دوم کو واپس کر دی جائے گی۔`;
+        return `${num}. فریق دوم ہر ماہ کی 5 تاریخ تک طے شدہ ماہانہ کرایہ ₹${amt}/- فریق اول کو ادا کرے گا۔`;
       default:
         return null;
     }
   }
 
-  const clause3Match = s.match(/^(?:3\.\s*)?കരാർ കാലാവധി\s*(\d+)\s*മാസമായിരിക്കും/);
+  const clause1Short = s.match(
+    /^(?:(\d+)\.\s*)?(?:പ്രതിമാസ\s*വാടക|മാസവാടക)\s*(?:[:\-]?\s*)?(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ(?:യാണ്)?)?\.?$/
+  );
+  if (clause1Short) {
+    const num = clause1Short[1] || '1';
+    const amt = clause1Short[2].trim();
+    switch (targetLang) {
+      case 'en':
+        return `${num}. The agreed monthly rent is ₹${amt}/- payable on or before the 5th of every month.`;
+      case 'ar':
+        return `${num}. الإيجار الشهري المتفق عليه هو ₹${amt}/- ويدفع في موعد أقصاه الخامس من كل شهر.`;
+      case 'hi':
+        return `${num}. मासिक किराया ₹${amt}/- निर्धारित है।`;
+      case 'ta':
+        return `${num}. மாதாந்திர வாடகை ₹${amt}/- ஆகும்.`;
+      case 'ur':
+        return `${num}. طے شدہ ماہانہ کرایہ ₹${amt}/- ہے۔`;
+      default:
+        return null;
+    }
+  }
+
+  const clause2Full = s.match(
+    /^(?:(\d+)\.\s*)?(?:പലിശയില്ലാത്ത\s*)?(?:അഡ്വാൻസ്|മുൻകൂർ)\s*(?:തുകയായ|തുക)?\s*(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ)?/
+  );
+  if (clause2Full) {
+    const num = clause2Full[1] || '2';
+    const amt = clause2Full[2].trim();
+    switch (targetLang) {
+      case 'en':
+        return `${num}. The interest-free security advance deposit of ₹${amt}/- shall be refunded to the Second Party at the time of vacating the premises, after deducting any pending arrears or damages.`;
+      case 'ar':
+        return `${num}. يتم استرداد مبلغ التأمين المقدم (بدون فوائد) وقدره ₹${amt}/- للطرف الثاني عند إخلاء العقار بعد خصم أي مستحقات أو أضرار إن وجدت.`;
+      case 'hi':
+        return `${num}. ₹${amt}/- की ब्याज-मुक्त अग्रिम सुरक्षा राशि (Advance) परिसर खाली करते समय किसी भी बकाया या क्षति की कटौती के बाद द्वितीय पक्ष को वापस कर दी जाएगी।`;
+      case 'ta':
+        return `${num}. வட்டியில்லா முன்பணமான ₹${amt}/- கட்டிடத்தை காலி செய்யும்போது நிலுவைத் தொகை அல்லது சேதங்கள் ஏதேனும் இருந்தால் கழித்துவிட்டு திருப்பித் தரப்படும்.`;
+      case 'ur':
+        return `${num}. ₹${amt}/- کی بلا سود ایڈوانس رقم عمارت خالی کرتے وقت کسی بھی بقایا یا نقصان کی کٹوتی کے بعد فریق دوم کو واپس کر دی جائے گی۔`;
+      default:
+        return null;
+    }
+  }
+
+  const clause3Match = s.match(/^(?:(\d+)\.\s*)?കരാർ കാലാവധി\s*(\d+)\s*മാസമായിരിക്കും/);
   if (clause3Match) {
-    const months = clause3Match[1].trim();
+    const num = clause3Match[1] || '3';
+    const months = clause3Match[2].trim();
     switch (targetLang) {
       case 'en':
-        return `3. The duration of this lease agreement shall be ${months} months and may be renewed thereafter upon mutual written consent of both parties.`;
+        return `${num}. The duration of this lease agreement shall be ${months} months and may be renewed thereafter upon mutual written consent of both parties.`;
       case 'ar':
-        return `3. مدة هذا العقد ${months} شهراً، ويمكن تجديده بعد انتهاء المدة بموافقة الطرفين المتبادلة.`;
+        return `${num}. مدة هذا العقد ${months} شهراً، ويمكن تجديده بعد انتهاء المدة بموافقة الطرفين المتبادلة.`;
       case 'hi':
-        return `3. अनुबंध की अवधि ${months} माह होगी। अवधि समाप्त होने के बाद दोनों पक्षों की आपसी सहमति से अनुबंध का नवीनीकरण किया जा सकता है।`;
+        return `${num}. अनुबंध की अवधि ${months} माह होगी। अवधि समाप्त होने के बाद दोनों पक्षों की आपसी सहमति से अनुबंध का नवीनीकरण किया जा सकता है।`;
       case 'ta':
-        return `3. ஒப்பந்தக் காலம் ${months} மாதங்களாகும். காலம் முடிந்த பிறகு இரு தரப்பினரின் பரஸ்பர சம்மதத்துடன் ஒப்பந்தத்தைப் புதுப்பிக்கலாம்.`;
+        return `${num}. ஒப்பந்தக் காலம் ${months} மாதங்களாகும். காலம் முடிந்த பிறகு இரு தரப்பினரின் பரஸ்பர சம்மதத்துடன் ஒப்பந்தத்தைப் புதுப்பிக்கலாம்.`;
       case 'ur':
-        return `3. معاہدے کی مدت ${months} ماہ ہوگی۔ مدت پوری ہونے کے بعد دونوں فریقین کی باہمی رضامندی سے معاہدے کی تجدید کی جا سکے گی۔`;
+        return `${num}. معاہدے کی مدت ${months} ماہ ہوگی۔ مدت پوری ہونے کے بعد دونوں فریقین کی باہمی رضامندی سے معاہدے کی تجدید کی جا سکے گی۔`;
       default:
         return null;
     }
   }
 
-  if (/^(?:4\.\s*)?വൈദ്യുതി ചാർജ്ജ്,\s*വെള്ളക്കരം/.test(s)) {
+  if (/^(?:\d+\.\s*)?വൈദ്യുതി\s*(?:ചാർജ്ജ്|ബിൽ)?[,\s]*വെള്ളക്കരം/.test(s)) {
     switch (targetLang) {
       case 'en':
         return '4. Electricity charges and water bills incurred during the occupancy period shall be paid promptly every month by the Second Party.';
@@ -3117,7 +3288,7 @@ function translateAgreementTextSemantic(
     }
   }
 
-  if (/^(?:5\.\s*)?കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ/.test(s)) {
+  if (/^(?:\d+\.\s*)?കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ/.test(s)) {
     switch (targetLang) {
       case 'en':
         return '5. The Second Party shall not sublet the rented premises or carry out any structural alterations without prior consent of the First Party.';
@@ -3206,15 +3377,17 @@ function translateAgreementTextSemantic(
 
 export function applyLocalLanguageConversionToAgreement(
   agreement: RentalAgreementData,
-  targetLang: DocumentOutputLanguage
+  targetLang: DocumentOutputLanguage,
+  allowManglishFallback = true
 ): RentalAgreementData {
   if (targetLang === 'ml') return agreement;
-  const tr = (s: string) => translateSingleStringLocal(s, targetLang);
+  const tr = (s: string) =>
+    translateSingleStringLocal(s, targetLang, false, allowManglishFallback);
   const trName = (s: string) => {
     if (!s || /^[.\s\-_]+$/.test(s.trim())) return s;
     const semantic = translateAgreementTextSemantic(s, targetLang);
     if (semantic !== null) return semantic;
-    return translateSingleStringLocal(s, targetLang, true);
+    return translateSingleStringLocal(s, targetLang, true, allowManglishFallback);
   };
   return {
     ...agreement,
