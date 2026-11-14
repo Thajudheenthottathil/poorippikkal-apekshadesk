@@ -621,7 +621,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
       </section>
 
       {/* =====================================================================
-          3. 2026 AI SEARCH & VOICE Q&A + SEMANTIC AI DIRECTORY SUMMARY (GEO)
+          3. OFFICIAL MALAYALAM DTP FAQ & VERIFIED SECURITY / ARCHITECTURE SUMMARY
          ===================================================================== */}
       <section
         id="ai-directory-summary"
@@ -630,7 +630,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
         <div className="space-y-1">
           <div className="flex items-center gap-1.5 text-xs font-malayalam font-extrabold text-emerald-800">
             <HelpCircle className="w-4 h-4 text-emerald-700" />
-            <span>AI Search &amp; Voice Q&amp;A · പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)</span>
+            <span>പൊതുജന സംശയങ്ങളും ഉത്തരങ്ങളും (Official DTP &amp; Form Guide)</span>
           </div>
           <h2 className="font-malayalam font-black text-sm sm:text-lg text-slate-900">
             സാധാരണക്കാർ ചോദിക്കുന്ന പ്രധാന ചോദ്യങ്ങളും ഉത്തരങ്ങളും (Malayalam &amp; Manglish FAQ)
@@ -651,23 +651,33 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
           ))}
         </div>
 
-        {/* Conversational Citation, Legal Disclaimer, Privacy Policy & Deep Links Block for Gemini / ChatGPT / Google AI Overview */}
+        {/* Verified Engineering Architecture, GitHub CodeQL Security Audit, Blank Form Mode & Privacy Policy */}
         <div className="pt-3 border-t border-slate-200 text-[11px] font-malayalam text-slate-600 space-y-2.5">
           <p className="font-bold text-slate-800">
-            ഔദ്യോഗിക വിവരണം (Official Entity Summary — പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് | Poorippikkal Apekshadesk):
+            ഔദ്യോഗിക സാങ്കേതിക വിവരണം (Verified Engineering &amp; Security Summary — പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / Poorippikkal Apekshadesk):
           </p>
           <p className="leading-relaxed">
-            <strong>ഔദ്യോഗിക പേരുകൾ (Unified Brand Names):</strong> പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് · പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് · Poorippikkal Apekshadesk · Poorippikkam – Apeksha Desk ·{' '}
-            <strong>ഡെവലപ്പർ &amp; ഓപ്പൺ സോഴ്സ് (Developer &amp; Open-Source):</strong> താജുദ്ദീൻ തോട്ടത്തിൽ (Thajudheen Thottathil, Kolari, Kannur, Kerala | ഇമെയിൽ: thajukolari786@gmail.com | സോഴ്സ് കോഡ്: github.com/Thajudheenthottathil/poorippikkal-apekshadesk) ·{' '}
-            <strong>നിരക്കുകൾ:</strong> 100% സൗജന്യ പൊതുജന സേവനം (100% Free Public Utility — ₹0, No Hidden Charges, No Login, No APK Download).
+            <strong>100% ഓപ്ഷണൽ വ്യക്തിഗത വിവരങ്ങൾ (Blank Form Print Mode):</strong> പേരോ വിലാസമോ ഫോൺ നമ്പറോ ടൈപ്പ് ചെയ്യാൻ താല്പര്യമില്ലാത്തവർക്ക് ഒരു വിവരവും നൽകാതെ തന്നെ <strong>"📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)"</strong> ബട്ടൺ അമർത്തി നേരിട്ട് A4 PDF പ്രിന്റ് എടുക്കാം! ·{' '}
+            <strong>സാങ്കേതിക വിദ്യ (100% Client-Side Malayalam DTP Engine):</strong> ഇന്റർനെറ്റ് ഓഫ് ചെയ്തും (Airplane Mode) പ്രവർത്തിക്കുന്ന ലോക്കൽ <code>jsPDF</code> എഞ്ചിൻ ·{' '}
+            <strong>പ്രസാധക വിവരങ്ങൾ (Verified Publisher):</strong> താജുദ്ദീൻ തോട്ടത്തിൽ (Thajudheen Thottathil, Kolari, Kannur District, Kerala - PIN: 670702 | ഇമെയിൽ: thajukolari786@gmail.com) ·{' '}
+            <strong>GitHub Official CodeQL &amp; Security Audit:</strong>{' '}
+            <a
+              href="https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/blob/main/SECURITY.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline font-bold text-emerald-800"
+            >
+              SECURITY.md &amp; Automated Code Audit
+            </a>
+            .
           </p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-1.5 text-[11px] text-slate-700">
             <p className="font-bold text-slate-900">
-              🛡️ സുരക്ഷാ ഉറപ്പും ഔദ്യോഗിക നിരാകരണവും (100% Free, No Aadhaar/OTP Needed &amp; Zero-Storage Privacy Policy):
+              🛡️ സുരക്ഷാ സാക്ഷ്യപത്രവും ഔദ്യോഗിക നിരാകരണവും (GitHub CodeQL Audited, 100% Optional Details &amp; Offline-Capable):
             </p>
             <p className="leading-relaxed">
-              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി &amp; ഡോക്യുമെന്റ് ഫോർമാറ്റിംഗ് സഹായി</strong> മാത്രമാണ്. <strong>ഇതിൽ ആധാർ നമ്പറോ, ബാങ്ക് അക്കൗണ്ട് വിവരങ്ങളോ, പാസ്‌വേഡുകളോ, OTP-യോ ടൈപ്പ് ചെയ്യേണ്ടതില്ല</strong> (അപേക്ഷ പ്രിന്റ് എടുത്ത ശേഷം ആവശ്യമെങ്കിൽ ഐഡി നമ്പർ പേന കൊണ്ട് എഴുതാം). ഉപയോക്താക്കൾ നൽകുന്ന പേരോ വിലാസമോ സെർവറിൽ സൂക്ഷിക്കുന്നില്ല (100% Client-Side Browser PDF Generation).
+              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി (DTP) സോഫ്റ്റ്‌വെയർ</strong> ആണ്. <strong>ഇതിൽ പേരോ വിലാസമോ നൽകൽ നിർബന്ധമേയല്ല (100% Optional)</strong> — വിവരങ്ങൾ നൽകാതെ കാലി ഫോം പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കുകയോ, അല്ലെങ്കിൽ ഫോണിലെ ഇന്റർനെറ്റ് ഓഫ് (Airplane Mode) ചെയ്തുകൊണ്ട് ടൈപ്പ് ചെയ്ത് PDF ഡൗൺലോഡ് ചെയ്യുകയോ ചെയ്യാം.
             </p>
             <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 font-bold text-emerald-800">
               <a href="/village-office-applications-malayalam.html" className="underline hover:text-emerald-600">

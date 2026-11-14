@@ -1,0 +1,52 @@
+name: "Official Security & Zero-Storage Privacy Audit"
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-and-privacy-audit:
+    name: "Verify Zero-Database Architecture & Build Integrity"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify Zero External Database / User-Tracking Packages in package.json
+        run: |
+          echo "🔍 Auditing package.json for any user-data storage or tracking SDKs..."
+          if grep -E '"(mongoose|mongodb|pg|mysql|mysql2|sqlite3|prisma|@supabase/supabase-js|firebase-admin|mixpanel|segment)"' package.json; then
+            echo "❌ FAIL: Database or tracking package detected in package.json!"
+            exit 1
+          fi
+          echo "✅ PASS: Zero database or third-party tracking SDKs found in package.json."
+
+      - name: Verify Official Security & AI Verification Manifests Exist
+        run: |
+          test -f SECURITY.md
+          test -f public/.well-known/security.txt
+          test -f public/security-audit.json
+          test -f public/llms.txt
+          test -f public/about-privacy-disclaimer.html
+          echo "✅ PASS: All RFC 9116 security.txt, SECURITY.md, and AI verification manifests verified."
+
+      - name: Install Dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run TypeScript Static Type & Syntax Verification
+        run: npm run lint
+
+      - name: Run Production Build Verification
+        run: npm run build

@@ -48,6 +48,7 @@ import {
   DocumentOutputLanguage,
   FollowUpQuestion,
   getMissingDocumentFields,
+  isPlaceholderOrEmpty,
   GulfCvData,
   INITIAL_AGREEMENT_DATA,
   INITIAL_GULF_CV_DATA,
@@ -2245,26 +2246,148 @@ export function App() {
   const [govFormSearchQuery, setGovFormSearchQuery] = useState<string>('');
   const [selectedGovCategory, setSelectedGovCategory] = useState<GovFormCategoryKey>('all');
 
+  const sanitizeUnfilledPlaceholdersForOutput = () => {
+    const cleanPlaceholderText = (text: string, dots = '........................................') => {
+      if (!text) return dots;
+      if (/^ഉദാ\s*:/i.test(text.trim())) return dots;
+      return text.replace(/\[[^\]]+\]/g, dots);
+    };
+
+    if (activeCategory === 'malayalam_letter') {
+      let changed = false;
+      const nextLetter: MalayalamLetterData = {
+        ...letterData,
+        structuredFields: letterData.structuredFields
+          ? letterData.structuredFields.map((f) => {
+              const rawVal = (f.value || '').trim();
+              if (!rawVal || /^ഉദാ\s*:/i.test(rawVal) || /\[[^\]]+\]/.test(rawVal)) {
+                changed = true;
+                return {
+                  ...f,
+                  value: rawVal ? cleanPlaceholderText(rawVal, '....................................') : '....................................',
+                };
+              }
+              return f;
+            })
+          : letterData.structuredFields,
+      };
+
+      if (isPlaceholderOrEmpty(nextLetter.senderName)) {
+        nextLetter.senderName = '........................................';
+        changed = true;
+      } else if (/\[[^\]]+\]/.test(nextLetter.senderName)) {
+        nextLetter.senderName = cleanPlaceholderText(nextLetter.senderName);
+        changed = true;
+      }
+
+      if (isPlaceholderOrEmpty(nextLetter.senderAddress)) {
+        nextLetter.senderAddress = '........................................';
+        changed = true;
+      } else if (/\[[^\]]+\]/.test(nextLetter.senderAddress)) {
+        nextLetter.senderAddress = cleanPlaceholderText(nextLetter.senderAddress);
+        changed = true;
+      }
+
+      if (nextLetter.senderPhone && (/\[[^\]]+\]/.test(nextLetter.senderPhone) || /^ഉദാ\s*:/i.test(nextLetter.senderPhone.trim()))) {
+        nextLetter.senderPhone = '';
+        changed = true;
+      }
+
+      if (isPlaceholderOrEmpty(nextLetter.recipientOffice)) {
+        nextLetter.recipientOffice = '........................................';
+        changed = true;
+      } else if (/\[[^\]]+\]/.test(nextLetter.recipientOffice)) {
+        nextLetter.recipientOffice = cleanPlaceholderText(nextLetter.recipientOffice);
+        changed = true;
+      }
+
+      if (nextLetter.recipientPlace && /\[[^\]]+\]/.test(nextLetter.recipientPlace)) {
+        nextLetter.recipientPlace = cleanPlaceholderText(nextLetter.recipientPlace, '........................');
+        changed = true;
+      }
+
+      if (nextLetter.place && /\[[^\]]+\]/.test(nextLetter.place)) {
+        nextLetter.place = cleanPlaceholderText(nextLetter.place, '........................');
+        changed = true;
+      }
+
+      if (nextLetter.bodyParagraphs && nextLetter.bodyParagraphs.some((p) => /\[[^\]]+\]/.test(p))) {
+        nextLetter.bodyParagraphs = nextLetter.bodyParagraphs.map((p) =>
+          cleanPlaceholderText(p, '........................')
+        );
+        changed = true;
+      }
+
+      if (changed) {
+        setLetterData(nextLetter);
+      }
+    } else if (activeCategory === 'rental_agreement') {
+      let changed = false;
+      const nextAg = { ...agreementData };
+      if (isPlaceholderOrEmpty(nextAg.firstPartyDetails) || /\[[^\]]+\]/.test(nextAg.firstPartyDetails)) {
+        nextAg.firstPartyDetails = cleanPlaceholderText(
+          nextAg.firstPartyDetails || '',
+          '................................................................................'
+        );
+        changed = true;
+      }
+      if (isPlaceholderOrEmpty(nextAg.secondPartyDetails) || /\[[^\]]+\]/.test(nextAg.secondPartyDetails)) {
+        nextAg.secondPartyDetails = cleanPlaceholderText(
+          nextAg.secondPartyDetails || '',
+          '................................................................................'
+        );
+        changed = true;
+      }
+      if (changed) {
+        setAgreementData(nextAg);
+      }
+    }
+  };
+
+  const handleConvertToBlankHandFillableForm = () => {
+    const dots = '........................................';
+    if (activeCategory === 'malayalam_letter') {
+      const nextLetter: MalayalamLetterData = {
+        ...letterData,
+        senderName: dots,
+        senderAddress: dots,
+        senderPhone: '........................',
+        place: '........................',
+        bodyParagraphs: (letterData.bodyParagraphs || []).map((p) =>
+          p.replace(/\[[^\]]+\]/g, '........................')
+        ),
+        structuredFields: letterData.structuredFields
+          ? letterData.structuredFields.map((f) => ({
+              ...f,
+              value: '....................................',
+            }))
+          : letterData.structuredFields,
+      };
+      setLetterData(nextLetter);
+    } else if (activeCategory === 'rental_agreement') {
+      setAgreementData({
+        ...agreementData,
+        firstPartyDetails:
+          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, പിൻകോഡ്: ..................',
+        secondPartyDetails:
+          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, പിൻകോഡ്: ..................',
+      });
+    }
+    showToast(
+      '✓ വ്യക്തിഗത വിവരങ്ങൾ ഇല്ലാതെ പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) റെഡി! ഇനി നേരിട്ട് പ്രിന്റ് / PDF എടുക്കാം.'
+    );
+  };
+
   const triggerProtectedAction = (
     actionType: 'download' | 'download_ats' | 'print' | 'whatsapp',
     targetPhone?: string
   ) => {
-    // Always verify completeness of required document fields BEFORE opening any payment/download step
-    const missing = getMissingDocumentFields(activeCategory, letterData, agreementData);
-    if (missing.length > 0) {
-      setMissingFieldsList(missing);
-      const initialDrafts: Record<string, string> = {};
-      missing.forEach((m) => {
-        initialDrafts[m.key] = m.currentValue || '';
-      });
-      setMissingFieldDrafts(initialDrafts);
-      setPendingOutputAction(actionType);
-      setPendingTargetPhone(targetPhone);
-      setIsMissingFieldsModalOpen(true);
-      return;
-    }
-
-    proceedAfterCompletenessCheck(actionType, targetPhone);
+    // All personal details are 100% OPTIONAL. Never force or block users from printing/downloading a blank form.
+    // Automatically convert any remaining bracketed placeholders into clean hand-fillable dotted lines.
+    sanitizeUnfilledPlaceholdersForOutput();
+    setTimeout(() => {
+      proceedAfterCompletenessCheck(actionType, targetPhone);
+    }, 60);
   };
 
   const handleSaveMissingFieldsAndProceed = (e: React.FormEvent) => {
@@ -3272,6 +3395,19 @@ export function App() {
                         <Printer className="w-3.5 h-3.5 text-amber-900 shrink-0 stroke-[2.2]" />
                         <span>പ്രിന്റ്</span>
                       </button>
+
+                      {/* 1-Click Blank Form Mode (No Personal Details Needed — Print & Fill with Pen) */}
+                      {(activeCategory === 'malayalam_letter' || activeCategory === 'rental_agreement') && (
+                        <button
+                          type="button"
+                          onClick={handleConvertToBlankHandFillableForm}
+                          className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-slate-100 to-slate-200 hover:from-white hover:to-slate-100 text-slate-900 border border-slate-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#475569] active:translate-y-0.5 transition-all"
+                          title="വ്യക്തിഗത വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാതെ പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) ആക്കാൻ"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-slate-800 shrink-0" />
+                          <span>📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)</span>
+                        </button>
+                      )}
 
                       <button
                         type="button"

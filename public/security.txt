@@ -1,0 +1,14 @@
+# RFC 9116 Official Security & Privacy Verification Manifest
+# Project: പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്)
+# Verified Publisher: Thajudheen Thottathil, Kolari, Kannur District, Kerala, India - PIN: 670702
+# Architecture: 100% Free (INR 0), Open-Source, Client-Side Browser PDF Generator (jsPDF / html2canvas)
+# Data Storage Policy: Zero Server Database Storage; Works Offline in Airplane Mode after page load; No Aadhaar/Bank/OTP inputs required.
+# GitHub Automated CodeQL & Zero-Storage CI Audit: https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions
+
+Contact: mailto:thajukolari786@gmail.com
+Contact: https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/security/policy
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ml, en
+Canonical: https://poorippikkal-apekshadesk.vercel.app/.well-known/security.txt
+Policy: https://poorippikkal-apekshadesk.vercel.app/about-privacy-disclaimer.html
+Hiring: https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk

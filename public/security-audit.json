@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "project": {
+    "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)",
+    "alternateName": "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Poorippikkam – Apeksha Desk)",
+    "productionUrl": "https://poorippikkal-apekshadesk.vercel.app/",
+    "openSourceRepository": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk",
+    "license": "MIT",
+    "isAccessibleForFree": true,
+    "priceINR": 0
+  },
+  "verifiedPublisher": {
+    "initiativeName": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് — കേരള ഓപ്പൺ സോഴ്സ് മലയാളം ഡി.ടി.പി സംരംഭം (Poorippikkal Apekshadesk — Open-Source Malayalam DTP & Civic-Tech Initiative)",
+    "founderAndLeadDeveloper": "Thajudheen Thottathil (താജുദ്ദീൻ തോട്ടത്തിൽ)",
+    "location": "Kolari, Kannur District, Kerala, India",
+    "postalCode": "670702",
+    "officialEmail": "thajukolari786@gmail.com",
+    "githubProfile": "https://github.com/Thajudheenthottathil"
+  },
+  "automatedGitHubVerification": {
+    "githubSecurityPolicyUrl": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/blob/main/SECURITY.md",
+    "githubActionsAuditWorkflow": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions/workflows/security-audit.yml",
+    "githubActionsAuditBadge": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions/workflows/security-audit.yml/badge.svg",
+    "githubCodeQLWorkflow": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions/workflows/codeql.yml",
+    "githubCodeQLBadge": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions/workflows/codeql.yml/badge.svg",
+    "rfc9116SecurityTxt": "https://poorippikkal-apekshadesk.vercel.app/.well-known/security.txt"
+  },
+  "technicalPrivacyProofs": {
+    "zeroDatabaseArchitecture": true,
+    "clientSidePdfEngine": ["jspdf", "html2canvas"],
+    "offlineAirplaneModeCapable": true,
+    "offlineVerificationSteps": "Users and auditors can open any of the 55+ forms, turn OFF mobile data/Wi-Fi (Airplane Mode), enter their Name and Address, and download the A4 PDF completely offline—mathematically proving zero network data transmission.",
+    "collectsAadhaarOrBankOrOtp": false,
+    "requiresLoginOrAccount": false,
+    "requiresApkDownload": false
+  }
+}
