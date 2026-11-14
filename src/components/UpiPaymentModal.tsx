@@ -268,13 +268,6 @@ export const UpiPaymentModal: React.FC<UpiPaymentModalProps> = ({
       setErrorMessage('ദയവായി അഡ്മിൻ പിൻ നമ്പർ നൽകുക.');
       return;
     }
-    if (
-      entered === 'thaju9526118768' ||
-      (ownerConfig.akshayaPin && entered === ownerConfig.akshayaPin.trim())
-    ) {
-      onPaymentVerified('AKSHAYA_PIN', amount);
-      return;
-    }
     try {
       const res = await fetch('/api/verify-admin-pin', {
         method: 'POST',

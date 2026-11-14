@@ -86,7 +86,10 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     try {
       const res = await fetch('/api/admin/check-ai-status', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-pin': pinAttempt.trim(),
+        },
         body: JSON.stringify({
           token: tokenToTest !== undefined ? tokenToTest : formState.huggingFaceToken || '',
         }),
@@ -112,7 +115,9 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
   const fetchServerFeedbacks = async () => {
     setIsLoadingFeedback(true);
     try {
-      const res = await fetch('/api/feedback');
+      const res = await fetch('/api/feedback', {
+        headers: { 'x-admin-pin': pinAttempt.trim() },
+      });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data.feedbacks)) {
@@ -132,7 +137,9 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     try {
       const res = await fetch('/api/admin/spot-report', {
         method: dispatchNow ? 'POST' : 'GET',
-        headers: dispatchNow ? { 'Content-Type': 'application/json' } : undefined,
+        headers: dispatchNow
+          ? { 'Content-Type': 'application/json', 'x-admin-pin': pinAttempt.trim() }
+          : { 'x-admin-pin': pinAttempt.trim() },
         body: dispatchNow ? JSON.stringify({ dispatchNow: true }) : undefined,
       });
       if (res.ok) {
@@ -165,6 +172,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     try {
       const res = await fetch(`/api/feedback/${encodeURIComponent(id)}`, {
         method: 'DELETE',
+        headers: { 'x-admin-pin': pinAttempt.trim() },
       });
       if (res.ok) {
         setFeedbackList((prev) => prev.filter((item) => item.id !== id));
@@ -178,6 +186,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     try {
       const res = await fetch('/api/feedback', {
         method: 'DELETE',
+        headers: { 'x-admin-pin': pinAttempt.trim() },
       });
       if (res.ok) {
         setFeedbackList([]);
@@ -273,14 +282,6 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
       setPinError('ദയവായി അഡ്മിൻ പിൻ നമ്പർ നൽകുക.');
       return;
     }
-    if (
-      entered === 'thaju9526118768' ||
-      (config.akshayaPin && entered === config.akshayaPin.trim())
-    ) {
-      setIsPinAuthenticated(true);
-      setPinError('');
-      return;
-    }
     try {
       const res = await fetch('/api/verify-admin-pin', {
         method: 'POST',
@@ -296,7 +297,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
     } catch {
       // Ignore network errors
     }
-    setPinError('പിൻ നമ്പർ തെറ്റാണ്. ദയവായി ശരിയായ പിൻ നമ്പർ നൽകുക.');
+    setPinError('പിൻ നമ്പർ തെറ്റാണ്. സെർവർ എൻവയോൺമെന്റിലെ ശരിയായ ADMIN_UNLOCK_PIN നൽകുക.');
   };
 
   const handleApplyPresetShop = (name: string, tagline?: string) => {
@@ -361,10 +362,10 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
         location: 'കേരളം (Online Application & PDF Desk)',
         centerPhone: '+91 98470 00000',
         whatsappNumber: '+91 98470 00000',
-        email: 'thajudheenabdulrehman@gmail.com',
+        email: 'thajukolari786@gmail.com',
         workingHours: '24×7 ഓൺലൈൻ അപേക്ഷാ ഡെസ്ക്',
         upiId: 'thajudheenabdulrehman@oksbi',
-        akshayaPin: 'thaju9526118768',
+        akshayaPin: '',
         freeModeEnabled: true,
         cartFeatureEnabled: true,
         homePrinterBusinessModeEnabled: false,
@@ -375,7 +376,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
           teacher_marklist: 5,
           pdf_edit: 5,
         },
-        whatsappWebhookToken: 'parayam_print_verify_2026',
+        whatsappWebhookToken: '',
       });
     }
   };
@@ -1278,7 +1279,7 @@ export const OwnerSettingsModal: React.FC<OwnerSettingsModalProps> = ({
                     2. നിങ്ങൾക്ക് (ഉടമസ്ഥന്) മാത്രം ഉപയോഗിക്കാനുള്ള അഡ്മിൻ ബാക്ക്-എൻഡ് ലിങ്ക് (Admin Backend URL)
                   </h4>
                   <p className="text-[11px] font-malayalam text-slate-700">
-                    വില മാറ്റാനും UPI ID മാറ്റാനും വരുമാനം പരിശോധിക്കാനും ഈ ലിങ്ക് നിങ്ങളുടെ ഫോണിൽ സേവ് ചെയ്തു വെക്കുക (PIN: {formState.akshayaPin || '1234'}):
+                    വില മാറ്റാനും UPI ID മാറ്റാനും വരുമാനം പരിശോധിക്കാനും ഈ ലിങ്ക് നിങ്ങളുടെ ഫോണിൽ സേവ് ചെയ്തു വെക്കുക (സെർവർ എൻവയോൺമെന്റിലെ <code>ADMIN_UNLOCK_PIN</code> ഉപയോഗിക്കുക):
                   </p>
                   <div className="flex items-center gap-2">
                     <input

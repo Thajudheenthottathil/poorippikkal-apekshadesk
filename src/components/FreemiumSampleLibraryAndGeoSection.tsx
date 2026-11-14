@@ -242,14 +242,14 @@ const FEATURED_CURATED_SAMPLES: CuratedFreemiumSample[] = [
     searchKeywords: 'malayalam vadaka kararu format vadaka karar format malayalam pdf rental agreement format malayalam pdf വാടക കരാർ ഫോർമാറ്റ് മലയാളം മുദ്രപ്പത്രം വീട് കടമുറി',
     categoryBadge: 'വാടക കരാർ (Stamp Paper)',
     category: 'rental_agreement',
-    recipientLine: '₹200 കേരള സ്റ്റാമ്പ് പേപ്പർ ഫോർമാറ്റ് (3.5 / 4.5 ഇഞ്ച് മുകളിൽ ഗ്യാപ്പോടെ)',
+    recipientLine: '₹500 / ₹200 കേരള സ്റ്റാമ്പ് പേപ്പർ ഫോർമാറ്റ് (3.5 / 4.5 ഇഞ്ച് മുകളിൽ ഗ്യാപ്പോടെ)',
     subjectLine: '11 മാസത്തെ വീട് / കടമുറി വാടക കരാർ പത്രം (MALAYALAM VADAKA KARARU FORMAT)',
     fullSampleMalayalamText: `വാടക കരാർ പത്രം (RENTAL AGREEMENT / MALAYALAM VADAKA KARARU FORMAT)
 
 2026-ാമാണ്ട് [മാസം] മാസം [തീയതി] തീയതി എഴുതിപ്പിടിപ്പിക്കുന്ന വാടക കരാർ പത്രം.
 
-ഒന്നാം കക്ഷി (കെട്ടിട ഉടമ): [ഉടമയുടെ പേര്, വയസ്സ്, പിതാവിന്റെ പേര്, വീട്ടുപേര്, സ്ഥലം, ആധാർ നമ്പർ]
-രണ്ടാം കക്ഷി (വാടകക്കാരൻ): [വാടകക്കാരന്റെ പേര്, വയസ്സ്, പിതാവിന്റെ പേര്, വീട്ടുപേര്, സ്ഥലം, ആധാർ നമ്പർ]
+ഒന്നാം കക്ഷി (കെട്ടിട ഉടമ): [ഉടമയുടെ പേര്, വയസ്സ്, പിതാവിന്റെ പേര്, വീട്ടുപേര്, സ്ഥലം]
+രണ്ടാം കക്ഷി (വാടകക്കാരൻ): [വാടകക്കാരന്റെ പേര്, വയസ്സ്, പിതാവിന്റെ പേര്, വീട്ടുപേര്, സ്ഥലം]
 
 വ്യവസ്ഥകൾ:
 1. ഒന്നാം കക്ഷിയുടെ ഉടമസ്ഥതയിലുള്ള പട്ടികയിൽ വിവരിക്കുന്ന കെട്ടിടം പ്രതിമാസം ₹[മാസവാടക]/- രൂപ വാടക നിശ്ചയിച്ച് 11 മാസത്തെ കാലാവധിക്ക് രണ്ടാം കക്ഷിക്ക് വാടകയ്ക്ക് നൽകിയിരിക്കുന്നു.
@@ -333,7 +333,7 @@ const GEO_QA_ITEMS = [
   },
   {
     q: '3. Malayalam vadaka kararu format (11 മാസത്തെ വാടക കരാർ ഫോർമാറ്റ് മലയാളം PDF) ഫോണിൽ എങ്ങനെ തയ്യാറാക്കാം?',
-    a: 'Select the "വാടക കരാർ (Malayalam Vadaka Kararu Format)" tab on Poorippikkal Apekshadesk (പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്). Speak or type the Building Owner (1st Party), Tenant (2nd Party), monthly rent, and security advance. The app automatically formats a legal 11-month Kerala rental agreement with 3.5-inch or 4.5-inch top blank space for ₹200 Stamp Paper printing.',
+    a: 'Select the "വാടക കരാർ (Malayalam Vadaka Kararu Format)" tab on Poorippikkal Apekshadesk (പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക്). Speak or type the Building Owner (1st Party), Tenant (2nd Party), monthly rent, and security advance (or click Blank Form Mode to print without personal details). The app formats an 11-month Kerala rental agreement with 3.5-inch or 4.5-inch top blank space for ₹500 / ₹200 Kerala Stamp Paper printing.',
   },
   {
     q: '4. Best Gulf CV maker in Kerala for Visit Visa holders (Driver, Sales, Accountant, Nurse, Cook)?',

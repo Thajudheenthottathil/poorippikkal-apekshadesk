@@ -128,7 +128,7 @@ const DEFAULT_OWNER_CONFIG: OwnerBusinessConfig = {
   email: 'service.kerala@email.com',
   workingHours: '24×7 ഓൺലൈൻ അപേക്ഷാ ഡെസ്ക്',
   upiId: 'thajudheenabdulrehman@oksbi',
-  akshayaPin: 'thaju9526118768',
+  akshayaPin: '',
   freeModeEnabled: true,
   cartFeatureEnabled: true,
   homePrinterBusinessModeEnabled: false,

@@ -89,71 +89,50 @@ function getCurrentTimeIst(): { hhmm: string; readable: string; dateKey: string 
   return { hhmm, readable, dateKey: getTodayDateKeyIst() };
 }
 
+let inMemoryAutomationState: DailyAutomationState | null = null;
+let inMemoryFeedbackStore: StoredFeedbackItem[] = [];
+
 function readDailyAutomationState(): DailyAutomationState {
   const todayKey = getTodayDateKeyIst();
-  const defaultState: DailyAutomationState = {
-    totalDocsAllTime: 18,
-    dailyCountsByDate: {
-      [todayKey]: {
-        total: 4,
-        malayalam_letter: 2,
-        gulf_cv: 1,
-        rental_agreement: 1,
-        teacher_marklist: 0,
-        recentTitles: [
-          'വരുമാന സർട്ടിഫിക്കറ്റ് അപേക്ഷ (വില്ലേജ് ഓഫീസ്)',
-          'കമ്പനി ജോലി രാജിക്കത്ത്',
-          'പ്രവാസി ഗൾഫ് ബയോഡാറ്റ (Gulf CV)',
-          'കെട്ടിട വാടക കരാർ പത്രം (Stamp Paper)',
-        ],
+  if (!inMemoryAutomationState) {
+    inMemoryAutomationState = {
+      totalDocsAllTime: 0,
+      dailyCountsByDate: {
+        [todayKey]: {
+          total: 0,
+          malayalam_letter: 0,
+          gulf_cv: 0,
+          rental_agreement: 0,
+          teacher_marklist: 0,
+          recentTitles: [],
+        },
       },
-    },
-    lastScheduledRunDateIst: '',
-    lastReportGeneratedAt: '',
-    lastDispatchStatus: 'Ready (9:00 AM IST Daily Scheduler Active)',
-    reportHistory: [],
-  };
-  try {
-    if (fs.existsSync(DAILY_AUTOMATION_FILE)) {
-      const raw = JSON.parse(fs.readFileSync(DAILY_AUTOMATION_FILE, 'utf-8'));
-      if (raw && typeof raw === 'object') {
-        return {
-          ...defaultState,
-          ...raw,
-          dailyCountsByDate: {
-            ...defaultState.dailyCountsByDate,
-            ...(raw.dailyCountsByDate || {}),
-          },
-          reportHistory: Array.isArray(raw.reportHistory) ? raw.reportHistory : [],
-        };
-      }
-    }
-  } catch {
-    // Ignore read errors
+      lastScheduledRunDateIst: '',
+      lastReportGeneratedAt: '',
+      lastDispatchStatus: 'Ready (Stateless In-Memory Mode)',
+      reportHistory: [],
+    };
   }
-  return defaultState;
+  return inMemoryAutomationState;
 }
 
 function writeDailyAutomationState(state: DailyAutomationState): void {
-  try {
-    // Keep only last 14 days of dailyCountsByDate and last 30 reportHistory items
-    const dateKeys = Object.keys(state.dailyCountsByDate || {}).sort().slice(-14);
-    const trimmedDaily: DailyAutomationState['dailyCountsByDate'] = {};
-    for (const k of dateKeys) {
-      trimmedDaily[k] = state.dailyCountsByDate[k];
-    }
-    const clean: DailyAutomationState = {
-      ...state,
-      dailyCountsByDate: trimmedDaily,
-      reportHistory: (state.reportHistory || []).slice(0, 30),
+  const dateKeys = Object.keys(state.dailyCountsByDate || {}).sort().slice(-7);
+  const trimmedDaily: DailyAutomationState['dailyCountsByDate'] = {};
+  for (const k of dateKeys) {
+    trimmedDaily[k] = {
+      ...state.dailyCountsByDate[k],
+      recentTitles: [], // Never store user document titles
     };
-    fs.writeFileSync(DAILY_AUTOMATION_FILE, JSON.stringify(clean, null, 2), 'utf-8');
-  } catch {
-    // Ignore write errors
   }
+  inMemoryAutomationState = {
+    ...state,
+    dailyCountsByDate: trimmedDaily,
+    reportHistory: (state.reportHistory || []).slice(0, 10),
+  };
 }
 
-function recordDocumentActivityServer(category: string, titleHint?: string): void {
+function recordDocumentActivityServer(category: string, _titleHint?: string): void {
   try {
     const state = readDailyAutomationState();
     const todayKey = getTodayDateKeyIst();
@@ -176,13 +155,8 @@ function recordDocumentActivityServer(category: string, titleHint?: string): voi
     else if (category === 'teacher_marklist') dayBucket.teacher_marklist += 1;
     else dayBucket.malayalam_letter += 1;
 
-    if (titleHint && titleHint.trim()) {
-      const cleanTitle = titleHint.trim().slice(0, 80);
-      dayBucket.recentTitles = [
-        cleanTitle,
-        ...(dayBucket.recentTitles || []).filter((t) => t !== cleanTitle),
-      ].slice(0, 8);
-    }
+    // Never store document titles or user content
+    dayBucket.recentTitles = [];
     writeDailyAutomationState(state);
   } catch {
     // Ignore tracking errors
@@ -216,25 +190,11 @@ function isSpotReportPrompt(text: string): boolean {
 }
 
 function readStoredFeedbacks(): StoredFeedbackItem[] {
-  try {
-    if (fs.existsSync(FEEDBACK_INBOX_FILE)) {
-      const raw = fs.readFileSync(FEEDBACK_INBOX_FILE, 'utf-8');
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch {
-    // Ignore read errors
-  }
-  return [];
+  return inMemoryFeedbackStore;
 }
 
 function writeStoredFeedbacks(items: StoredFeedbackItem[]): void {
-  try {
-    const capped = items.slice(0, MAX_FEEDBACK_ITEMS);
-    fs.writeFileSync(FEEDBACK_INBOX_FILE, JSON.stringify(capped, null, 2), 'utf-8');
-  } catch {
-    // Ignore write errors
-  }
+  inMemoryFeedbackStore = items.slice(0, MAX_FEEDBACK_ITEMS);
 }
 
 // Per-IP bot/DDoS protection for AI endpoints (Allows 120 requests/min so active paying users & Akshaya DTP operators are never blocked)
@@ -3666,28 +3626,39 @@ Return a JSON object with a "boxes" array. Each item must have:
     }
   });
 
-  // Helper: Verify Admin / Akshaya PIN strictly on the server (never exposed in client bundle)
+  // Helper: Verify Admin / Akshaya PIN strictly from server environment variable (never hardcoded in source code)
   const verifyAdminPinServer = (enteredPin: string): boolean => {
     const clean = String(enteredPin || '').trim();
-    if (!clean) return false;
+    if (!clean || clean.length < 4) return false;
     const envPin = (process.env.ADMIN_UNLOCK_PIN || '').trim();
-    if (envPin && clean === envPin) return true;
-    if (clean === 'thaju9526118768') return true;
-    try {
-      if (fs.existsSync(OWNER_CONFIG_FILE)) {
-        const saved = JSON.parse(fs.readFileSync(OWNER_CONFIG_FILE, 'utf-8'));
-        if (saved?.akshayaPin && clean === String(saved.akshayaPin).trim()) {
-          return true;
-        }
-      }
-    } catch {
-      // Ignore read errors
+    if (!envPin) return false;
+    return clean === envPin;
+  };
+
+  const requireAdminAuth = (req: express.Request, res: express.Response): boolean => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(`admin_${clientIp}`, 15)) {
+      res.status(429).json({ error: 'Too many authentication attempts. Please try again later.' });
+      return false;
     }
-    // Server-only fallback when ADMIN_UNLOCK_PIN is not explicitly set in environment
-    return !envPin && (clean === 'thaju9526118768' || clean === '1234');
+    const headerPin = String(req.headers['x-admin-pin'] || '').trim();
+    const bodyPin = String(req.body?.adminPin || req.body?.pin || '').trim();
+    const queryPin = String(req.query?.adminPin || '').trim();
+    const authHeader = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
+    const candidate = headerPin || bodyPin || queryPin || authHeader;
+    if (!verifyAdminPinServer(candidate)) {
+      res.status(401).json({ error: 'Unauthorized: Valid server ADMIN_UNLOCK_PIN required.' });
+      return false;
+    }
+    return true;
   };
 
   app.post('/api/verify-admin-pin', (req, res) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(`verify_pin_${clientIp}`, 10)) {
+      res.status(429).json({ valid: false, error: 'Too many PIN attempts. Please wait 1 minute.' });
+      return;
+    }
     const pin = String(req.body?.pin || '').trim();
     const valid = verifyAdminPinServer(pin);
     if (!valid) {
@@ -3697,57 +3668,28 @@ Return a JSON object with a "boxes" array. Each item must have:
     res.json({ valid: true });
   });
 
-  // 9. Server-Side Persistent Owner Business Configuration (UPI ID, Live Pricing, Shop Name)
+  // 9. Server-Side Owner Business Configuration (Protected by requireAdminAuth)
+  let inMemoryOwnerConfig: Record<string, any> | null = null;
   app.get('/api/owner-config', (_req, res) => {
-    try {
-      if (fs.existsSync(OWNER_CONFIG_FILE)) {
-        const raw = fs.readFileSync(OWNER_CONFIG_FILE, 'utf-8');
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object') {
-          const { akshayaPin: _hiddenPin, ...publicConfig } = parsed;
-          res.json({ config: publicConfig });
-          return;
-        }
-      }
-    } catch {
-      // Ignore read errors
+    if (inMemoryOwnerConfig) {
+      const { akshayaPin: _hiddenPin, huggingFaceToken: _hiddenHf, ...publicConfig } = inMemoryOwnerConfig;
+      res.json({ config: publicConfig });
+      return;
     }
     res.json({ config: null });
   });
 
   app.post('/api/owner-config', (req, res) => {
     try {
+      if (!requireAdminAuth(req, res)) return;
       const incoming = req.body?.config;
-      const adminPin = String(req.body?.adminPin || '').trim();
       if (!incoming || typeof incoming !== 'object') {
         res.status(400).json({ error: 'Invalid config payload' });
         return;
       }
-      if (!verifyAdminPinServer(adminPin)) {
-        res.status(403).json({ error: 'Unauthorized: Valid Admin PIN required to update owner config' });
-        return;
-      }
-      // Preserve existing server PIN unless explicitly updated by authenticated admin
-      let existingPin = 'thaju9526118768';
-      try {
-        if (fs.existsSync(OWNER_CONFIG_FILE)) {
-          const prev = JSON.parse(fs.readFileSync(OWNER_CONFIG_FILE, 'utf-8'));
-          if (prev?.akshayaPin) existingPin = prev.akshayaPin;
-        }
-      } catch {
-        // Ignore
-      }
-      const toSave = {
-        ...incoming,
-        akshayaPin: incoming.akshayaPin ? String(incoming.akshayaPin).trim() : existingPin,
-      };
-      try {
-        fs.writeFileSync(OWNER_CONFIG_FILE, JSON.stringify(toSave, null, 2), 'utf-8');
-      } catch {
-        // Ignore read-only filesystem errors on serverless
-      }
-      const { akshayaPin: _hiddenPin, ...publicConfig } = toSave;
-      res.json({ ok: true, config: publicConfig });
+      const { akshayaPin: _ignorePin, ...safeConfig } = incoming;
+      inMemoryOwnerConfig = safeConfig;
+      res.json({ ok: true, config: safeConfig });
     } catch (err: any) {
       res.status(500).json({ error: err?.message || 'Failed to save config' });
     }
@@ -3841,15 +3783,16 @@ Return a JSON object with a "boxes" array. Each item must have:
     }
   });
 
-  // 11. Server-Persisted Customer Feedback Inbox (GET, POST, DELETE single, DELETE all)
-  app.get('/api/feedback', (_req, res) => {
+  // 11. In-Memory Customer Feedback Inbox (GET & DELETE strictly protected by requireAdminAuth; no personal phone or doc title stored)
+  app.get('/api/feedback', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     const items = readStoredFeedbacks();
     res.json({ feedbacks: items, maxCapacity: MAX_FEEDBACK_ITEMS });
   });
 
   app.post('/api/feedback', (req, res) => {
     const clientIp = req.ip || 'unknown';
-    if (!checkRateLimit(clientIp, 20)) {
+    if (!checkRateLimit(clientIp, 15)) {
       res.status(429).json({ error: 'വളരെ കൂടുതൽ സന്ദേശങ്ങൾ അയച്ചു. അല്പം കഴിഞ്ഞ് ശ്രമിക്കുക.' });
       return;
     }
@@ -3857,12 +3800,9 @@ Return a JSON object with a "boxes" array. Each item must have:
     const {
       category = 'new_form',
       categoryLabelMalayalam = '1. പുതിയ ഫോം / അപേക്ഷ ചേർക്കാൻ',
-      senderName = '',
-      senderPhone = '',
       feedbackType = 'general_feedback',
       rating = 5,
       message = '',
-      activeDocumentTitle = '',
     } = req.body || {};
 
     if (!message || typeof message !== 'string' || !message.trim()) {
@@ -3880,12 +3820,12 @@ Return a JSON object with a "boxes" array. Each item must have:
       ).slice(0, 120),
       createdAt: nowStr,
       timestamp: nowStr,
-      senderName: String(senderName || 'പൊതുജനം (Citizen)').trim().slice(0, 80),
-      senderPhone: String(senderPhone || '').trim().slice(0, 25),
+      senderName: 'പൊതുജനം (Anonymous User)', // Never store personal names or phone numbers
+      senderPhone: '',
       feedbackType,
       rating: Math.min(5, Math.max(1, Number(rating) || 5)),
-      message: message.trim().normalize('NFC').slice(0, 2000),
-      activeDocumentTitle: String(activeDocumentTitle || '').slice(0, 140),
+      message: message.trim().normalize('NFC').slice(0, 1000),
+      activeDocumentTitle: '', // Never store user document titles
     };
 
     const existing = readStoredFeedbacks();
@@ -3896,6 +3836,7 @@ Return a JSON object with a "boxes" array. Each item must have:
   });
 
   app.delete('/api/feedback/:id', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     const { id } = req.params;
     const existing = readStoredFeedbacks();
     const filtered = existing.filter((item) => item.id !== id);
@@ -3903,7 +3844,8 @@ Return a JSON object with a "boxes" array. Each item must have:
     res.json({ ok: true, feedbacks: filtered });
   });
 
-  app.delete('/api/feedback', (_req, res) => {
+  app.delete('/api/feedback', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     writeStoredFeedbacks([]);
     res.json({ ok: true, feedbacks: [] });
   });
@@ -4745,44 +4687,17 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     },
   ];
 
-  const readHomePrinterPartners = (): any[] => {
-    try {
-      if (fs.existsSync(PRINT_PARTNERS_FILE)) {
-        const parsed = JSON.parse(fs.readFileSync(PRINT_PARTNERS_FILE, 'utf-8'));
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {
-      // Fallback to default partners
-    }
-    return DEFAULT_HOME_PRINTER_PARTNERS;
-  };
+  let inMemoryPartners: any[] = DEFAULT_HOME_PRINTER_PARTNERS;
+  let inMemoryPrintOrders: any[] = [];
 
+  const readHomePrinterPartners = (): any[] => inMemoryPartners;
   const writeHomePrinterPartners = (partners: any[]) => {
-    try {
-      fs.writeFileSync(PRINT_PARTNERS_FILE, JSON.stringify(partners, null, 2), 'utf-8');
-    } catch {
-      // Ignore write errors
-    }
+    inMemoryPartners = partners.slice(0, 100);
   };
 
-  const readHomePrintOrders = (): any[] => {
-    try {
-      if (fs.existsSync(PRINT_ORDERS_FILE)) {
-        const parsed = JSON.parse(fs.readFileSync(PRINT_ORDERS_FILE, 'utf-8'));
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch {
-      // Fallback to empty
-    }
-    return [];
-  };
-
+  const readHomePrintOrders = (): any[] => inMemoryPrintOrders;
   const writeHomePrintOrders = (orders: any[]) => {
-    try {
-      fs.writeFileSync(PRINT_ORDERS_FILE, JSON.stringify(orders.slice(0, 200), null, 2), 'utf-8');
-    } catch {
-      // Ignore write errors
-    }
+    inMemoryPrintOrders = orders.slice(0, 100);
   };
 
   app.get('/api/print-network/partners', (_req, res) => {
@@ -4790,6 +4705,7 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
   });
 
   app.post('/api/print-network/register-partner', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     const {
       unitName = '',
       operatorName = '',
@@ -4835,7 +4751,8 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     res.json({ ok: true, partner: newPartner, partners: updated });
   });
 
-  app.get('/api/print-network/orders', (_req, res) => {
+  app.get('/api/print-network/orders', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     res.json({ ok: true, orders: readHomePrintOrders() });
   });
 
@@ -4851,16 +4768,16 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     const newOrder = {
       orderId,
       createdAt: new Date().toLocaleString('en-IN'),
-      customerName: String(body.customerName || 'ഉപഭോക്താവ്').trim(),
-      customerPhone: String(body.customerPhone || '').trim(),
-      customerAddress: String(body.customerAddress || '').trim(),
-      panchayatOrLandmark: String(body.panchayatOrLandmark || '').trim(),
-      pincode: String(body.pincode || '').trim(),
+      customerName: 'ഉപഭോക്താവ്',
+      customerPhone: '',
+      customerAddress: '',
+      panchayatOrLandmark: '',
+      pincode: '',
       deliveryMode: body.deliveryMode === 'SELF_PICKUP' ? 'SELF_PICKUP' : 'HOME_DELIVERY',
       selectedPartnerId: String(body.selectedPartnerId || 'hp-kerala-1'),
       selectedPartnerName: String(body.selectedPartnerName || 'അപേക്ഷാ ഡെസ്ക് ഹോം പ്രിന്റ് ഹബ്'),
       selectedPartnerPhone: String(body.selectedPartnerPhone || '+91 98470 00000'),
-      items,
+      items: [],
       totalFiles: Number(body.totalFiles) || items.length,
       totalCopies: Number(body.totalCopies) || items.length,
       subtotalAmount: Number(body.subtotalAmount) || 0,
@@ -4877,10 +4794,11 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     const existing = readHomePrintOrders();
     const updated = [newOrder, ...existing];
     writeHomePrintOrders(updated);
-    res.json({ ok: true, order: newOrder, orders: updated });
+    res.json({ ok: true, order: newOrder });
   });
 
   app.patch('/api/print-network/orders/:orderId/status', (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     const { orderId } = req.params;
     const { orderStatus = 'PRINTING', paymentStatus } = req.body || {};
     const existing = readHomePrintOrders();
@@ -5293,8 +5211,9 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     };
   }
 
-  // On-Demand Spot Report API (GET & POST)
-  app.get('/api/admin/spot-report', async (_req, res) => {
+  // On-Demand Spot Report API (GET & POST — Protected by requireAdminAuth)
+  app.get('/api/admin/spot-report', async (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     try {
       const report = await generateLiveWebsiteAndConsoleReport('SPOT_ON_DEMAND', false);
       res.json(normalizePayloadNFC(report));
@@ -5304,6 +5223,7 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
   });
 
   app.post('/api/admin/spot-report', async (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     try {
       const dispatchNow = Boolean(req.body?.dispatchNow);
       const report = await generateLiveWebsiteAndConsoleReport('SPOT_ON_DEMAND', dispatchNow);
@@ -5313,8 +5233,9 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     }
   });
 
-  // AI & Hugging Face Status Checker (Checks Gemini, Hugging Face whoami, and Speech engines)
+  // AI & Hugging Face Status Checker (Protected by requireAdminAuth)
   app.all('/api/admin/check-ai-status', async (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     try {
       const explicitToken = req.body?.token ? String(req.body.token).trim() : '';
       const token = explicitToken || getHuggingFaceToken();
@@ -5380,8 +5301,9 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     }
   });
 
-  // External / Vercel Cron Endpoint for 9:00 AM IST Daily Report
-  app.get('/api/cron/daily-report', async (_req, res) => {
+  // External / Vercel Cron Endpoint for 9:00 AM IST Daily Report (Protected by requireAdminAuth)
+  app.get('/api/cron/daily-report', async (req, res) => {
+    if (!requireAdminAuth(req, res)) return;
     try {
       const report = await generateLiveWebsiteAndConsoleReport('SCHEDULED_9AM', true);
       res.json(normalizePayloadNFC(report));

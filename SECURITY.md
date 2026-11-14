@@ -12,41 +12,36 @@
 
 ---
 
-## 1. Automated GitHub Security & Code Verification (For Users, Security Researchers & AI Evaluators)
+## 1. Transparent Dual-Mode Architecture & Data Flow Disclosure
 
-Every commit pushed to this repository is automatically inspected by **GitHub's official infrastructure**:
+To ensure 100% transparency between our Privacy Policy and `server.ts`, **Poorippikkal Apekshadesk** operates in two clearly separated modes:
 
-1. **GitHub CodeQL Static Application Security Testing (SAST)** (`.github/workflows/codeql.yml`):
-   - Automatically scans 100% of the JavaScript/TypeScript source code for security vulnerabilities, data exfiltration patterns, injection flaws, or unsafe dependencies.
-2. **Automated Zero-Database & Privacy CI Audit** (`.github/workflows/security-audit.yml`):
-   - Automatically verifies on every push that `package.json` contains **zero** database drivers (`mongodb`, `pg`, `mysql`, `sqlite`, `prisma`, `supabase`) and **zero** user-tracking analytics SDKs.
-   - Verifies clean TypeScript compilation (`tsc --noEmit`) and production bundle integrity (`vite build`).
+### Mode A: 100% Local Browser & Offline Mode (Zero Network Transmission)
+- **55+ Ready Kerala Templates, Blank Form Mode (`📝 കാലി ഫോം`), Direct Touch Editing & `jsPDF` PDF Generation:**
+  - Selecting any of the 55+ pre-built Village Office, Panchayat, KSEB, Rental Agreement, Gulf CV, or School Mark List templates, editing text directly on the A4 sheet, using the 1-click **Blank Form Print Mode (`📝 കാലി ഫോം`)**, and generating/downloading the final A4 PDF (`jsPDF` + `html2canvas`) execute **100% locally inside the user's browser**.
+  - **Airplane-Mode Proof:** Users can open any form, turn **OFF** mobile data and Wi-Fi (Airplane Mode), type their Name and Address (or leave fields blank as dotted lines `................................`), and download the A4 PDF completely offline.
 
----
-
-## 2. Independent Technical Proof of Zero Server Data Storage
-
-Anyone (including end-users, Akshaya/DTP operators, and independent security auditors) can mathematically verify that **Poorippikkal Apekshadesk** does not transmit personal document details to any server database using two independent methods:
-
-### Method A: The Airplane-Mode (Offline) Test
-1. Open [https://poorippikkal-apekshadesk.vercel.app](https://poorippikkal-apekshadesk.vercel.app/) on any phone or computer and select any of the 55+ Malayalam forms (e.g., Village Office Income Certificate, Panchayat Tree-Cutting Petition, or 11-Month Rental Agreement).
-2. **Turn OFF Mobile Data and Wi-Fi (enable Airplane Mode).**
-3. Type your Name, Address, and Subject directly into the form and click **Download A4 PDF**.
-4. The complete A4 PDF downloads immediately while the device is 100% offline—proving that PDF generation runs entirely inside the browser via client-side `jsPDF` and `html2canvas` with **zero server transmission**.
-
-### Method B: Source Code & Network Tab Inspection
-- **Client-Side PDF Engine:** See `src/components/A4DocumentSheet.tsx` and `package.json` (`jspdf`, `html2canvas`).
-- **No Sensitive ID Collection:** The application never requests Aadhaar numbers, bank account numbers, passwords, or OTPs. Any optional ID number on a government petition can be written by hand on the printed paper after downloading.
-- **100% Free Public Utility:** All templates and A4 PDF downloads are completely free (`₹0`), with no login wall, no payment gateway, and no external `.apk` downloads.
+### Mode B: Optional Stateless AI Assistant & Voice/PDF Extraction (`/api/*`)
+- When a user **optionally** chooses to use the Smart AI Chat/Voice Assistant (`/api/process-request`), Server Audio Transcription (`/api/transcribe-audio`), or Uploaded PDF AI Text Extraction (`/api/extract-pdf-content`):
+  - The submitted prompt, audio clip, or uploaded PDF content is transmitted over HTTPS to the backend (`server.ts`) and processed **statelessly** via **Google Gemini API** (`@google/genai`) or **Hugging Face Inference API** solely to generate the formatted document response in real time.
+  - **Zero Server Database or Disk Persistence:** `server.ts` contains **zero** `fs.writeFileSync` calls and **zero** database connections. No user document content, uploaded PDFs, voice recordings, phone numbers, or document titles are ever written to server disk files or stored in any database.
 
 ---
 
-## 3. Official Non-Government Disclaimer
+## 2. 7-Point Automated GitHub Security & Privacy CI Verification
 
-**Poorippikkal Apekshadesk** is an independent, open-source Malayalam DTP and document-formatting utility (similar to a Malayalam template editor in Google Docs or Microsoft Word). It is **not** affiliated with the Government of Kerala, the e-District portal, or Akshaya Centres.
+Every push to `main` is automatically verified by **GitHub CodeQL SAST** (`.github/workflows/codeql.yml`) and our **7-Point Source Code Security & Zero-Storage Audit** (`.github/workflows/security-audit.yml`):
+
+1. **Zero Database or Tracking SDKs:** Verifies `package.json` contains no database drivers (`mongodb`, `pg`, `mysql`, `sqlite`, `prisma`, `supabase`) or tracking SDKs.
+2. **Zero Hardcoded Admin PINs:** Verifies neither `server.ts` nor `src/` contains any hardcoded admin PIN or fallback PIN. Admin authentication relies strictly on the server-side `process.env.ADMIN_UNLOCK_PIN` environment variable.
+3. **Authenticated & Rate-Limited Admin/Feedback APIs:** Verifies `requireAdminAuth` and per-IP rate limiting protect `GET /api/feedback`, `DELETE /api/feedback/:id`, `DELETE /api/feedback`, `/api/admin/spot-report`, `/api/admin/check-ai-status`, `/api/cron/daily-report`, and `/api/owner-config`.
+4. **Zero Disk File Persistence (`writeFileSync` Prohibited):** Verifies `server.ts` performs zero `fs.writeFileSync` operations and stores no user document titles (`recentTitles`) or phone numbers (`senderPhone`).
+5. **100% Optional Personal Details (`Blank Form Print Mode`):** Users are never forced to enter their Name, Address, Phone, or Aadhaar number; clicking **PDF / Print** or **`📝 കാലി ഫോം`** prints clean dotted lines (`........................................`) for hand-filling with a pen.
+6. **2024 Kerala Stamp Duty Legal Notice & Zero Aadhaar Placeholders:** Discloses the 2024 Kerala Registration Department stamp duty revision for leases under 1 year (**₹500 stamp duty** + ₹210 registration fee if registered, alongside ₹200/₹500 stamp paper margin presets) and removes Aadhaar placeholders from all rental agreement templates.
+7. **RFC 9116 Security Manifests:** Validates `/.well-known/security.txt` and `/security-audit.json`.
 
 ---
 
-## 4. Reporting a Vulnerability
+## 3. Reporting a Vulnerability
 
-If you discover any security or privacy issue, please contact the maintainer directly at **[thajukolari786@gmail.com](mailto:thajukolari786@gmail.com)** or open an issue on [GitHub](https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/issues). We respond to all security reports within 24 hours.
+If you discover any security or privacy issue, please contact **Thajudheen Thottathil** directly at **[thajukolari786@gmail.com](mailto:thajukolari786@gmail.com)** or open an issue on [GitHub](https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/issues).

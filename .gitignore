@@ -8,3 +8,5 @@ coverage/
 !.env.example
 .owner-config.json
 .feedback-inbox.json
+.daily-automation-state.json
+

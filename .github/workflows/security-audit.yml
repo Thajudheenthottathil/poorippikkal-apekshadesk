@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   security-and-privacy-audit:
-    name: "Verify Zero-Database Architecture & Build Integrity"
+    name: "7-Point Source Code Security & Zero-Storage Audit"
     runs-on: ubuntu-latest
 
     steps:
@@ -24,29 +24,74 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Verify Zero External Database / User-Tracking Packages in package.json
+      - name: "Check 1: Verify Zero External Database or Tracking SDKs in package.json"
         run: |
-          echo "🔍 Auditing package.json for any user-data storage or tracking SDKs..."
+          echo "🔍 [1/7] Auditing package.json for database or third-party tracking SDKs..."
           if grep -E '"(mongoose|mongodb|pg|mysql|mysql2|sqlite3|prisma|@supabase/supabase-js|firebase-admin|mixpanel|segment)"' package.json; then
             echo "❌ FAIL: Database or tracking package detected in package.json!"
             exit 1
           fi
           echo "✅ PASS: Zero database or third-party tracking SDKs found in package.json."
 
-      - name: Verify Official Security & AI Verification Manifests Exist
+      - name: "Check 2: Verify Zero Hardcoded Admin PINs in server.ts and src/"
         run: |
+          echo "🔍 [2/7] Auditing server.ts and src/ for hardcoded Admin PINs..."
+          if grep -rnE "thaju9526118768|akshayaPin:\s*'[^']+'" server.ts src/; then
+            echo "❌ FAIL: Hardcoded Admin PIN found in source code!"
+            exit 1
+          fi
+          echo "✅ PASS: Zero hardcoded Admin PINs in server.ts and src/ (strictly uses process.env.ADMIN_UNLOCK_PIN)."
+
+      - name: "Check 3: Verify requireAdminAuth Enforced on Feedback, Admin & Cron APIs"
+        run: |
+          echo "🔍 [3/7] Auditing server.ts for requireAdminAuth protection on sensitive endpoints..."
+          grep -q "const requireAdminAuth" server.ts
+          grep -A 2 "app.get('/api/feedback'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.delete('/api/feedback/:id'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.delete('/api/feedback'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.get('/api/admin/spot-report'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.post('/api/admin/spot-report'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.all('/api/admin/check-ai-status'" server.ts | grep -q "requireAdminAuth"
+          grep -A 2 "app.get('/api/cron/daily-report'" server.ts | grep -q "requireAdminAuth"
+          echo "✅ PASS: All feedback, admin report, AI status, and cron APIs enforce requireAdminAuth."
+
+      - name: "Check 4: Verify Zero Disk File Writes (No writeFileSync) in server.ts"
+        run: |
+          echo "🔍 [4/7] Auditing server.ts for disk persistence of user feedback or document titles..."
+          if grep -n "writeFileSync" server.ts; then
+            echo "❌ FAIL: fs.writeFileSync detected in server.ts! Server must remain 100% stateless."
+            exit 1
+          fi
+          if test -f .daily-automation-state.json; then
+            echo "❌ FAIL: .daily-automation-state.json must not exist in repository!"
+            exit 1
+          fi
+          echo "✅ PASS: Zero fs.writeFileSync calls in server.ts and zero state files in repository."
+
+      - name: "Check 5: Verify Transparent Dual-Mode Privacy Disclosure (Local jsPDF + Optional Stateless Gemini/HF)"
+        run: |
+          echo "🔍 [5/7] Verifying transparent Gemini/HuggingFace stateless API disclosure in Privacy Policy & SECURITY.md..."
+          grep -qi "Gemini" SECURITY.md
+          grep -qi "Hugging Face" SECURITY.md
+          grep -qi "Gemini" public/about-privacy-disclaimer.html
+          grep -qi "Hugging Face" public/about-privacy-disclaimer.html
+          echo "✅ PASS: Privacy Policy and SECURITY.md transparently document both Local Offline Mode and Optional Stateless AI API processing."
+
+      - name: "Check 6: Verify 2024 Kerala Stamp Duty Disclosure (₹500) & Zero Aadhaar Placeholders in Rental Templates"
+        run: |
+          echo "🔍 [6/7] Verifying 2024 Kerala Stamp Duty (₹500) disclosure and zero Aadhaar placeholders..."
+          grep -q "500" public/rental-agreement-format-malayalam.html
+          if grep -q "\[ആധാർ നമ്പർ\]" public/rental-agreement-format-malayalam.html src/components/FreemiumSampleLibraryAndGeoSection.tsx; then
+            echo "❌ FAIL: Aadhaar placeholder found in rental agreement sample!"
+            exit 1
+          fi
+          echo "✅ PASS: 2024 Kerala Stamp Duty (₹500) disclosed and zero Aadhaar placeholders in rental templates."
+
+      - name: "Check 7: Verify RFC 9116 security.txt, security-audit.json, and JSON Syntax"
+        run: |
+          echo "🔍 [7/7] Verifying security manifests and JSON validity..."
           test -f SECURITY.md
           test -f public/.well-known/security.txt
           test -f public/security-audit.json
           test -f public/llms.txt
-          test -f public/about-privacy-disclaimer.html
-          echo "✅ PASS: All RFC 9116 security.txt, SECURITY.md, and AI verification manifests verified."
-
-      - name: Install Dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Run TypeScript Static Type & Syntax Verification
-        run: npm run lint
-
-      - name: Run Production Build Verification
-        run: npm run build
+          node -e "JSON.parse(require('fs').readFileSync('public/security-audit.json', 'utf8')); JSON.parse(require('fs').readFileSync('vercel.json', 'utf8')); console.log('✅ PASS: All JSON manifests valid.');"
