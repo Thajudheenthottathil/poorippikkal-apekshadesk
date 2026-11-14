@@ -692,6 +692,54 @@ const PHRASE_MAP: Array<{
     ta: 'தலைமை ஆசிரியர் / முதல்வர்',
   },
   {
+    ml: 'വാടക ചീട്ട് (കെട്ടിട വാടക കരാർ പത്രം)',
+    en: 'RENTAL / LEASE AGREEMENT DEED',
+    ar: 'عقد إيجار مبنى سكني / تجاري',
+    ur: 'کرایہ نامہ (معاہدہ کرایہ)',
+    hi: 'किराया अनुबंध पत्र (Rent Agreement)',
+    ta: 'வாடகை ஒப்பந்தப் பத்திரம்',
+  },
+  {
+    ml: 'വാടക കരാർ (Rent Agreement)',
+    en: 'Rent Agreement',
+    ar: 'عقد إيجار',
+    ur: 'کرایہ نامہ',
+    hi: 'किराया अनुबंध',
+    ta: 'வாடகை ஒப்பந்தம்',
+  },
+  {
+    ml: 'സത്യവാങ്മൂലം (AFFIDAVIT)',
+    en: 'SWORN AFFIDAVIT',
+    ar: 'إقرار خطي مشفوع باليمين',
+    ur: 'حلف نامہ (Affidavit)',
+    hi: 'शपथ पत्र (Affidavit)',
+    ta: 'சத்தியப் பிரமாணப் பத்திரம்',
+  },
+  {
+    ml: 'സത്യവാങ്മൂലം (Affidavit)',
+    en: 'Affidavit',
+    ar: 'إقرار مشفوع باليمين',
+    ur: 'حلف نامہ',
+    hi: 'शपथ पत्र',
+    ta: 'சத்தியப் பிரமாணப் பத்திரம்',
+  },
+  {
+    ml: 'ഒന്നാം കക്ഷി (കെട്ടിട ഉടമ)',
+    en: 'FIRST PARTY (LANDLORD / OWNER)',
+    ar: 'الطرف الأول (المؤجر / مالك العقار)',
+    ur: 'فریق اول (مالک مکان)',
+    hi: 'प्रथम पक्ष (मकान मालिक)',
+    ta: 'முதல் தரப்பினர் (உரிமையாளர்)',
+  },
+  {
+    ml: 'രണ്ടാം കക്ഷി (വാടകക്കാരൻ)',
+    en: 'SECOND PARTY (TENANT)',
+    ar: 'الطرف الثاني (المستأجر)',
+    ur: 'فریق دوم (کرایہ دار)',
+    hi: 'द्वितीय पक्ष (किरायेदार)',
+    ta: 'இரண்டாம் தரப்பினர் (வாடகைதாரர்)',
+  },
+  {
     ml: 'കാന്റൺ, ജോർജിയ 30114',
     en: 'Canton, Georgia 30114',
     ar: 'كانتون، جورجيا 30114',
@@ -2905,6 +2953,287 @@ export function applyLocalLanguageConversionToLetter(
           value: tr(f.value),
         }))
       : letter.structuredFields,
+  };
+}
+
+function translateAgreementTextSemantic(
+  raw: string,
+  targetLang: DocumentOutputLanguage
+): string | null {
+  const s = normalizeMalayalamChillaksharam(raw || '').trim();
+  if (!s) return s;
+
+  // 1. Party Details: "<Name> (വിലാസം: <addr>, ഫോൺ: <phone>)." or "<district> ജില്ലയിൽ <place> സ്വദേശിയായ <name>..."
+  const partyAddrMatch = s.match(
+    /^(.+?)\s*\(\s*വിലാസം\s*:\s*([^,)]+?)(?:\s*,\s*ഫോൺ\s*:\s*([^)]+))?\s*\)\.?$/
+  );
+  if (partyAddrMatch) {
+    const name = translateSingleStringLocal(partyAddrMatch[1].trim(), targetLang, true);
+    const addrRaw = partyAddrMatch[2].trim();
+    const addr = /^[.\s\-_]+$/.test(addrRaw)
+      ? addrRaw
+      : translateSingleStringLocal(addrRaw, targetLang, true);
+    const phone = partyAddrMatch[3]?.trim();
+    switch (targetLang) {
+      case 'en':
+        return `${name} (Address: ${addr}${phone ? `, Phone: ${phone}` : ''}).`;
+      case 'ar':
+        return `${name} (العنوان: ${addr}${phone ? `، الهاتف: ${phone}` : ''}).`;
+      case 'hi':
+        return `${name} (पता: ${addr}${phone ? `, फोन: ${phone}` : ''}).`;
+      case 'ta':
+        return `${name} (முகவரி: ${addr}${phone ? `, தொலைபேசி: ${phone}` : ''}).`;
+      case 'ur':
+        return `${name} (پتہ: ${addr}${phone ? `، فون: ${phone}` : ''}).`;
+      default:
+        return null;
+    }
+  }
+
+  const distOwnerMatch = s.match(
+    /^(.+?)\s+ജില്ലയിൽ\s+(.+?)\s+(?:സ്വദേശിയായ|താമസിക്കുന്ന)\s+(.+?)(?:\s*\(\s*ഫോൺ\s*:\s*([^)]+)\s*\))?\.?$/
+  );
+  if (distOwnerMatch) {
+    const district = translateSingleStringLocal(distOwnerMatch[1].trim(), targetLang, true);
+    const place = translateSingleStringLocal(distOwnerMatch[2].trim(), targetLang, true);
+    const name = translateSingleStringLocal(distOwnerMatch[3].trim(), targetLang, true);
+    const phone = distOwnerMatch[4]?.trim();
+    switch (targetLang) {
+      case 'en':
+        return `${name}, residing at ${place}, ${district} District${phone ? ` (Phone: ${phone})` : ''}.`;
+      case 'ar':
+        return `${name}، المقيم في ${place}، منطقة ${district}${phone ? ` (الهاتف: ${phone})` : ''}.`;
+      case 'hi':
+        return `${name}, निवासी ${place}, जिला ${district}${phone ? ` (फोन: ${phone})` : ''}.`;
+      case 'ta':
+        return `${name}, வசிப்பிடம் ${place}, ${district} மாவட்டம்${phone ? ` (தொலைபேசி: ${phone})` : ''}.`;
+      case 'ur':
+        return `${name}، ساکن ${place}، ضلع ${district}${phone ? ` (فون: ${phone})` : ''}.`;
+      default:
+        return null;
+    }
+  }
+
+  // 2. Preamble Paragraph
+  const preambleMatch = s.match(
+    /^ഒന്നാം കക്ഷിയുടെ\s*\((.+?)\)\s*ഉടമസ്ഥതയിലുള്ള കെട്ടിടം രണ്ടാം കക്ഷിക്ക്\s*\((.+?)\)\s*(\d+)\s*മാസത്തേക്ക്/
+  );
+  if (preambleMatch) {
+    const owner = translateSingleStringLocal(preambleMatch[1].trim(), targetLang, true);
+    const tenant = translateSingleStringLocal(preambleMatch[2].trim(), targetLang, true);
+    const months = preambleMatch[3].trim();
+    switch (targetLang) {
+      case 'en':
+        return `This Rental Agreement is mutually executed between the First Party / Landlord (${owner}) and the Second Party / Tenant (${tenant}) for leasing the scheduled building for a period of ${months} months subject to the terms and conditions set forth below.`;
+      case 'ar':
+        return `تم إبرام عقد الإيجار هذا بالتراضي بين الطرف الأول / المؤجر (${owner}) والطرف الثاني / المستأجر (${tenant}) لتأجير العقار المذكور لمدة ${months} شهراً وفقاً للشروط والأحكام التالية.`;
+      case 'hi':
+        return `यह किराया अनुबंध प्रथम पक्ष / मकान मालिक (${owner}) और द्वितीय पक्ष / किरायेदार (${tenant}) के बीच नीचे दी गई शर्तों के अधीन ${months} महीनों की अवधि के लिए भवन को किराए पर देने हेतु आपसी सहमति से निष्पादित किया जाता है।`;
+      case 'ta':
+        return `முதல் தரப்பினர் / உரிமையாளர் (${owner}) மற்றும் இரண்டாம் தரப்பினர் / வாடகைதாரர் (${tenant}) ஆகிய இருவரும் கீழ்க்கண்ட நிபந்தனைகளுக்கு உட்பட்டு ${months} மாத காலத்திற்கு கட்டிடத்தை வாடகைக்கு விடுவதற்கான ஒப்பந்தம்.`;
+      case 'ur':
+        return `یہ کرایہ نامہ فریق اول / مالک مکان (${owner}) اور فریق دوم / کرایہ دار (${tenant}) کے درمیان درج ذیل شرائط کے تحت ${months} ماہ کی مدت کے لیے عمارت کرایہ پر دینے کے لیے باہمی رضامندی سے تحریر کیا گیا ہے۔`;
+      default:
+        return null;
+    }
+  }
+
+  // 3. Clauses (1..5 standard rental clauses)
+  const clause1Match = s.match(
+    /^(?:1\.\s*)?പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
+  );
+  if (clause1Match) {
+    const amt = clause1Match[1].trim();
+    switch (targetLang) {
+      case 'en':
+        return `1. The Second Party (Tenant) shall pay the agreed monthly rent of ₹${amt}/- to the First Party (Landlord) on or before the 5th day of every calendar month.`;
+      case 'ar':
+        return `1. يلتزم الطرف الثاني (المستأجر) بدفع الإيجار الشهري المتفق عليه وقدره ₹${amt}/- للطرف الأول (المؤجر) في موعد أقصاه اليوم الخامس من كل شهر.`;
+      case 'hi':
+        return `1. द्वितीय पक्ष (किरायेदार) प्रत्येक माह की 5 तारीख तक प्रथम पक्ष (मकान मालिक) को निर्धारित मासिक किराया ₹${amt}/- का भुगतान करेगा।`;
+      case 'ta':
+        return `1. இரண்டாம் தரப்பினர் ஒவ்வொரு மாதமும் 5-ஆம் தேதிக்குள் நிர்ணயிக்கப்பட்ட மாத வாடகை ₹${amt}/- ஐ முதல் தரப்பினருக்கு செலுத்த வேண்டும்.`;
+      case 'ur':
+        return `1. فریق دوم ہر ماہ کی 5 تاریخ تک طے شدہ ماہانہ کرایہ ₹${amt}/- فریق اول کو ادا کرے گا۔`;
+      default:
+        return null;
+    }
+  }
+
+  const clause2Match = s.match(
+    /^(?:2\.\s*)?പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായ\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
+  );
+  if (clause2Match) {
+    const amt = clause2Match[1].trim();
+    switch (targetLang) {
+      case 'en':
+        return `2. The interest-free security advance deposit of ₹${amt}/- shall be refunded to the Second Party at the time of vacating the premises, after deducting any pending arrears or damages.`;
+      case 'ar':
+        return `2. يتم استرداد مبلغ التأمين المقدم (بدون فوائد) وقدره ₹${amt}/- للطرف الثاني عند إخلاء العقار بعد خصم أي مستحقات أو أضرار إن وجدت.`;
+      case 'hi':
+        return `2. ₹${amt}/- की ब्याज-मुक्त अग्रिम सुरक्षा राशि (Advance) परिसर खाली करते समय किसी भी बकाया या क्षति की कटौती के बाद द्वितीय पक्ष को वापस कर दी जाएगी।`;
+      case 'ta':
+        return `2. வட்டியில்லா முன்பணமான ₹${amt}/- கட்டிடத்தை காலி செய்யும்போது நிலுவைத் தொகை அல்லது சேதங்கள் ஏதேனும் இருந்தால் கழித்துவிட்டு திருப்பித் தரப்படும்.`;
+      case 'ur':
+        return `2. ₹${amt}/- کی بلا سود ایڈوانس رقم عمارت خالی کرتے وقت کسی بھی بقایا یا نقصان کی کٹوتی کے بعد فریق دوم کو واپس کر دی جائے گی۔`;
+      default:
+        return null;
+    }
+  }
+
+  const clause3Match = s.match(/^(?:3\.\s*)?കരാർ കാലാവധി\s*(\d+)\s*മാസമായിരിക്കും/);
+  if (clause3Match) {
+    const months = clause3Match[1].trim();
+    switch (targetLang) {
+      case 'en':
+        return `3. The duration of this lease agreement shall be ${months} months and may be renewed thereafter upon mutual written consent of both parties.`;
+      case 'ar':
+        return `3. مدة هذا العقد ${months} شهراً، ويمكن تجديده بعد انتهاء المدة بموافقة الطرفين المتبادلة.`;
+      case 'hi':
+        return `3. अनुबंध की अवधि ${months} माह होगी। अवधि समाप्त होने के बाद दोनों पक्षों की आपसी सहमति से अनुबंध का नवीनीकरण किया जा सकता है।`;
+      case 'ta':
+        return `3. ஒப்பந்தக் காலம் ${months} மாதங்களாகும். காலம் முடிந்த பிறகு இரு தரப்பினரின் பரஸ்பர சம்மதத்துடன் ஒப்பந்தத்தைப் புதுப்பிக்கலாம்.`;
+      case 'ur':
+        return `3. معاہدے کی مدت ${months} ماہ ہوگی۔ مدت پوری ہونے کے بعد دونوں فریقین کی باہمی رضامندی سے معاہدے کی تجدید کی جا سکے گی۔`;
+      default:
+        return null;
+    }
+  }
+
+  if (/^(?:4\.\s*)?വൈദ്യുതി ചാർജ്ജ്,\s*വെള്ളക്കരം/.test(s)) {
+    switch (targetLang) {
+      case 'en':
+        return '4. Electricity charges and water bills incurred during the occupancy period shall be paid promptly every month by the Second Party.';
+      case 'ar':
+        return '4. يلتزم الطرف الثاني بسداد فواتير الكهرباء والمياه الشهرية بانتظام طوال فترة الإيجار.';
+      case 'hi':
+        return '4. बिजली और पानी के बिलों का भुगतान द्वितीय पक्ष द्वारा नियमित रूप से हर महीने किया जाएगा।';
+      case 'ta':
+        return '4. மின் கட்டணம் மற்றும் குடிநீர் கட்டணம் ஆகியவற்றை இரண்டாம் தரப்பினரே அந்தந்த மாதங்களில் செலுத்த வேண்டும்.';
+      case 'ur':
+        return '4. بجلی اور پانی کے بل فریق دوم کو ہر ماہ باقاعدگی سے خود ادا کرنے ہوں گے۔';
+      default:
+        return null;
+    }
+  }
+
+  if (/^(?:5\.\s*)?കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ/.test(s)) {
+    switch (targetLang) {
+      case 'en':
+        return '5. The Second Party shall not sublet the rented premises or carry out any structural alterations without prior consent of the First Party.';
+      case 'ar':
+        return '5. لا يجوز للطرف الثاني تأجير العقار من الباطن أو إجراء أي تعديلات هيكلية دون موافقة الطرف الأول.';
+      case 'hi':
+        return '5. द्वितीय पक्ष भवन को उप-किराए (Sublet) पर नहीं देगा और न ही कोई संरचनात्मक परिवर्तन करेगा।';
+      case 'ta':
+        return '5. கட்டிடத்தை உள்வாடகைக்கு விடவோ அல்லது அமைப்பில் மாற்றம் செய்யவோ கூடாது.';
+      case 'ur':
+        return '5. فریق دوم عمارت کو ذیلی کرایہ پر نہیں دے گا اور نہ ہی اس کی ساخت میں کوئی تبدیلی کرے گا۔';
+      default:
+        return null;
+    }
+  }
+
+  // 4. Schedule Property Details
+  if (/^വസ്തുവിന്റെ\s*\/\s*കെട്ടിടത്തിന്റെ വിവരണം/.test(s)) {
+    switch (targetLang) {
+      case 'en':
+        return 'Property / Building Description (District, Taluk, Village, Ward, Building No.): ........................';
+      case 'ar':
+        return 'وصف العقار / المبنى (المنطقة، القرية، الحي، رقم المبنى): ........................';
+      case 'hi':
+        return 'संपत्ति / भवन का विवरण (जिला, तालुका, गांव, वार्ड, भवन संख्या): ........................';
+      case 'ta':
+        return 'சொத்து / கட்டிட விவரம் (மாவட்டம், தாலுகா, கிராமம், வார்டு, கட்டிட எண்): ........................';
+      case 'ur':
+        return 'جائیداد / عمارت کی تفصیل (ضلع، تعلقہ، گاؤں، وارڈ، بلڈنگ نمبر): ........................';
+      default:
+        return null;
+    }
+  }
+
+  const schedMatch = s.match(
+    /^(.+?)\s*ജില്ല,\s*(.+?)\s*തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും\.?$/
+  );
+  if (schedMatch) {
+    const dist = translateSingleStringLocal(schedMatch[1].trim(), targetLang, true);
+    const place = translateSingleStringLocal(schedMatch[2].trim(), targetLang, true);
+    switch (targetLang) {
+      case 'en':
+        return `Building and appurtenant amenities situated within the local self-government limits of ${place}, ${dist} District.`;
+      case 'ar':
+        return `المبنى والمرافق التابعة له الواقع ضمن حدود البلدية في ${place}، منطقة ${dist}.`;
+      case 'hi':
+        return `${dist} जिला, ${place} स्थानीय स्वशासन सीमा के अंतर्गत स्थित भवन एवं संबद्ध सुविधाएँ।`;
+      case 'ta':
+        return `${dist} மாவட்டம், ${place} உள்ளாட்சி எல்லைக்குட்பட்ட கட்டிடம் மற்றும் இணைந்த வசதிகள்.`;
+      case 'ur':
+        return `${dist} ضلع، ${place} لوکل باڈی حدود میں واقع عمارت اور متعلقہ سہولیات۔`;
+      default:
+        return null;
+    }
+  }
+
+  // 5. Witness lines
+  const witnessMatch = s.match(
+    /^(\d+)\.\s*സാക്ഷിയുടെ പേരും വിലാസവും\s*:\s*(.+?)\s*\(\s*ഒപ്പ്\s*:\s*([^)]+)\s*\)$/
+  );
+  if (witnessMatch) {
+    const idx = witnessMatch[1].trim();
+    const restRaw = witnessMatch[2].trim();
+    const rest = /^[.,\s\-_]+$/.test(restRaw)
+      ? restRaw
+      : translateSingleStringLocal(restRaw, targetLang, true);
+    const sig = witnessMatch[3].trim();
+    switch (targetLang) {
+      case 'en':
+        return `${idx}. Witness Name & Address: ${rest} (Signature: ${sig})`;
+      case 'ar':
+        return `${idx}. اسم الشاهد وعنوانه: ${rest} (التوقيع: ${sig})`;
+      case 'hi':
+        return `${idx}. गवाह का नाम और पता: ${rest} (हस्ताक्षर: ${sig})`;
+      case 'ta':
+        return `${idx}. சாட்சியின் பெயர் மற்றும் முகவரி: ${rest} (கையொப்பம்: ${sig})`;
+      case 'ur':
+        return `${idx}. گواہ کا نام اور پتہ: ${rest} (دستخط: ${sig})`;
+      default:
+        return null;
+    }
+  }
+
+  return null;
+}
+
+export function applyLocalLanguageConversionToAgreement(
+  agreement: RentalAgreementData,
+  targetLang: DocumentOutputLanguage
+): RentalAgreementData {
+  if (targetLang === 'ml') return agreement;
+  const tr = (s: string) => translateSingleStringLocal(s, targetLang);
+  const trName = (s: string) => {
+    if (!s || /^[.\s\-_]+$/.test(s.trim())) return s;
+    const semantic = translateAgreementTextSemantic(s, targetLang);
+    if (semantic !== null) return semantic;
+    return translateSingleStringLocal(s, targetLang, true);
+  };
+  return {
+    ...agreement,
+    titleMalayalam: tr(agreement.titleMalayalam),
+    executionPlace: trName(agreement.executionPlace),
+    firstPartyLabel: tr(agreement.firstPartyLabel),
+    firstPartyDetails: trName(agreement.firstPartyDetails),
+    secondPartyLabel: tr(agreement.secondPartyLabel),
+    secondPartyDetails: trName(agreement.secondPartyDetails),
+    preambleParagraph: trName(agreement.preambleParagraph),
+    clauses: (agreement.clauses || []).map(trName),
+    schedulePropertyDetails: trName(agreement.schedulePropertyDetails),
+    witnesses: (agreement.witnesses || []).map(trName),
+    ...(agreement.scheduleHeadingOverride
+      ? { scheduleHeadingOverride: tr(agreement.scheduleHeadingOverride) }
+      : {}),
+    ...(agreement.witnessesHeadingOverride
+      ? { witnessesHeadingOverride: tr(agreement.witnessesHeadingOverride) }
+      : {}),
   };
 }
 

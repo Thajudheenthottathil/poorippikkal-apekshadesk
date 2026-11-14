@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { GoogleGenAI, Type } from '@google/genai';
 import { parseStructuredCvFromText } from './src/utils/cvParser.ts';
 import {
+  applyLocalLanguageConversionToAgreement,
   applyLocalLanguageConversionToCv,
   applyLocalLanguageConversionToLetter,
   convertEnglishOrManglishToMalayalam,
@@ -1324,7 +1325,12 @@ function buildSmartFallbackResponse(
     cleanDistrict = cleanPlace;
   }
   recipientPlace = cleanPlace !== cleanDistrict ? `${cleanPlace}, ${cleanDistrict}.` : `${cleanPlace}.`;
-  const cleanPhone = inlinePhoneMatch?.[1]?.trim() || currentDocument?.letterData?.senderPhone || '9847123456';
+  const existingPhone =
+    currentDocument?.letterData?.senderPhone &&
+    currentDocument.letterData.senderPhone !== '9847123456'
+      ? currentDocument.letterData.senderPhone
+      : '';
+  const cleanPhone = inlinePhoneMatch?.[1]?.trim() || existingPhone;
 
   // 1. School Assembly Speech
   if (isSchoolSpeechPrompt) {
@@ -1619,11 +1625,25 @@ function buildSmartFallbackResponse(
     enclosuresList = [];
   }
 
+  const effectiveSenderName =
+    inlineNameMatch?.[1]?.trim() ||
+    (currentDocument?.letterData?.senderName &&
+    currentDocument.letterData.senderName !== 'രാജൻ കെ. വി.' &&
+    !currentDocument.letterData.senderName.includes('[')
+      ? currentDocument.letterData.senderName
+      : cleanFallbackLetter.senderName);
+  const effectiveSenderAddress =
+    extractedKeralaLoc.found ||
+    (currentDocument?.letterData?.senderAddress &&
+      !currentDocument.letterData.senderAddress.includes('['))
+      ? cleanSenderAddress
+      : cleanFallbackLetter.senderAddress;
+
   const defaultLetter = {
     documentHeading: letterHeading,
     letterLayoutVariant,
-    senderName: cleanSenderName,
-    senderAddress: cleanSenderAddress,
+    senderName: effectiveSenderName,
+    senderAddress: effectiveSenderAddress,
     senderPhone: cleanPhone,
     recipientTitle,
     recipientOffice,
@@ -1633,7 +1653,7 @@ function buildSmartFallbackResponse(
     salutation: salutationText,
     bodyParagraphs: bodyParagraphsText,
     closingPhrase: 'വിശ്വസ്തതയോടെ,',
-    place: cleanPlace,
+    place: extractedKeralaLoc.found ? cleanPlace : cleanFallbackLetter.place,
     date: todayMl,
     enclosures: enclosuresList,
   };
@@ -1788,8 +1808,8 @@ function buildSmartFallbackResponse(
     fullName: engCandidateName,
     jobTitle: detectedRoleEn,
     photoDataUrl: currentDocument?.gulfCvData?.photoDataUrl || '',
-    phone: cleanPhone,
-    whatsapp: cleanPhone,
+    phone: cleanPhone || '+91 98470 00000',
+    whatsapp: cleanPhone || '+91 98470 00000',
     email:
       inlineEmailMatch?.[0]?.toLowerCase() ||
       `${engCandidateName.toLowerCase().replace(/[^a-z0-9]/g, '.').replace(/\.+/g, '.').replace(/^\.|\.$/g, '')}@gmail.com`,
@@ -1902,26 +1922,55 @@ function buildSmartFallbackResponse(
   };
   const defaultGulfCv = applyLocalLanguageConversionToCv(rawGulfCv, 'en');
 
-  // Extract Rental Agreement details (Landlord, Tenant, Monthly Rent, Advance, Witnesses) with self-correction support
+  // Extract Rental Agreement details (Landlord, Tenant, Monthly Rent, Advance, Tenure) supporting both prefix & suffix order + self-correction
   const ownerMatch = prompt.match(
-    /(?:വീട്ടുടമസ്ഥൻ|കെട്ടിട\s*ഉടമസ്ഥൻ|കെട്ടിട\s*ഉടമ|വീട്ടുടമ|ഉടമസ്ഥൻ|ഉടമ|ഒന്നാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|വാടകക്കാരൻ|രണ്ടാം\s*കക്ഷി|മാസവാടക|\.|$))/i
+    /(?:വീട്ടുടമസ്ഥൻ|കെട്ടിട\s*ഉടമസ്ഥൻ|കെട്ടിട\s*ഉടമ|വീട്ടുടമ|ഉടമസ്ഥൻ|ഉടമ|ഒന്നാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി|മാസവാടക|വാടക|അഡ്വാൻസ|മുൻകൂർ|\.|$))/i
   );
   const tenantMatch = prompt.match(
-    /(?:വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|മാസവാടക|വാടക|അഡ്വാൻസ്|\.|$))/i
+    /(?:വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ഉടമ|ഒന്നാം\s*കക്ഷി|മാസവാടക|വാടക|അഡ്വാൻസ|മുൻകൂർ|\.|$))/i
   );
 
-  // Self-correction support: if user said "12,000 അല്ല സോറി 15,000", matchAll picks the last/corrected number
-  const allRentMatches = [...prompt.matchAll(/(?:മാസവാടക|വാടക)\s*(?:₹|രൂപ)?\s*([\d,]+)/g)];
-  const rentAmt = allRentMatches.length > 0 ? allRentMatches[allRentMatches.length - 1][1].trim() : '12,000';
+  const collectAmountMatches = (patterns: RegExp[]): string[] => {
+    const found: Array<{ index: number; value: string }> = [];
+    for (const rx of patterns) {
+      for (const m of prompt.matchAll(rx)) {
+        const rawDigits = (m[1] || '').replace(/,/g, '').trim();
+        if (rawDigits && /^\d+$/.test(rawDigits)) {
+          found.push({
+            index: m.index ?? 0,
+            value: Number(rawDigits).toLocaleString('en-IN'),
+          });
+        }
+      }
+    }
+    found.sort((a, b) => a.index - b.index);
+    return found.map((f) => f.value);
+  };
 
-  const allAdvMatches = [...prompt.matchAll(/(?:അഡ്വാൻസ്|മുൻകൂർ)\s*(?:₹|രൂപ)?\s*([\d,]+)/g)];
-  const advAmt = allAdvMatches.length > 0 ? allAdvMatches[allAdvMatches.length - 1][1].trim() : '50,000';
+  // Supports both "മാസവാടക 18000" and "18000 രൂപ മാസവാടകയും" + self-correction ("12,000 അല്ല സോറി 18,000")
+  // Negative lookahead prevents prefix rent from grabbing the next phrase's advance number (e.g. "മാസവാടകയും 50000 രൂപ അഡ്വാൻസും")
+  const allRentMatches = collectAmountMatches([
+    /(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക)\s*(?:ആയി|യായി|:|-)?\s*(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})(?!\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ|മുൻകൂ|advance|deposit))/gi,
+    /(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക)(?:യും|യ്ക്ക്|യായി|ക്ക്)?/gi,
+  ]);
+  const rentAmt =
+    allRentMatches.length > 0 ? allRentMatches[allRentMatches.length - 1] : '12,000';
+
+  const allAdvMatches = collectAmountMatches([
+    /(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ്|മുൻകൂർ)\s*(?:ആയി|യായി|തുക|:|-)?\s*(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})(?!\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക|rent))/gi,
+    /(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ(?:്|ും|ായി|ിന്)?|മുൻകൂ(?:ർ|റായി)|advance|deposit)/gi,
+  ]);
+  const advAmt =
+    allAdvMatches.length > 0 ? allAdvMatches[allAdvMatches.length - 1] : '50,000';
 
   const tenureMatch = prompt.match(/(\d{1,2})\s*(?:മാസം|മാസത്തേക്ക്|months?)/i);
   const tenureMonths = tenureMatch ? tenureMatch[1] : '11';
 
-  const ownerName = ownerMatch?.[1]?.trim() || cleanSenderName;
-  const tenantName = tenantMatch?.[1]?.trim() || 'അനൂപ് ജോസഫ്';
+  const hasExplicitLocation = extractedKeralaLoc.found;
+  const ownerName =
+    ownerMatch?.[1]?.trim() ||
+    (inlineNameMatch?.[1]?.trim() ? cleanSenderName : '........................');
+  const tenantName = tenantMatch?.[1]?.trim() || '........................';
 
   const defaultAgreement = {
     subType: (prompt.includes('സത്യവാങ്മൂലം')
@@ -1935,17 +1984,21 @@ function buildSmartFallbackResponse(
       : 'വാടക ചീട്ട് (കെട്ടിട വാടക കരാർ പത്രം)',
     stampPaperHeaderSpaceMm: 90,
     executionDate: todayMl,
-    executionPlace: cleanPlace || 'എറണാകുളം',
+    executionPlace: hasExplicitLocation ? cleanPlace : '........................',
     firstPartyLabel: prompt.includes('സത്യവാങ്മൂലം')
       ? 'സത്യവാങ്മൂലം സമർപ്പിക്കുന്നയാൾ'
       : 'ഒന്നാം കക്ഷി (കെട്ടിട ഉടമ)',
-    firstPartyDetails: `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} സ്വദേശിയായ ${ownerName} (ഫോൺ: ${cleanPhone}).`,
+    firstPartyDetails: hasExplicitLocation
+      ? `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} സ്വദേശിയായ ${ownerName}${cleanPhone ? ` (ഫോൺ: ${cleanPhone})` : ''}.`
+      : `${ownerName} (വിലാസം: ........................${cleanPhone ? `, ഫോൺ: ${cleanPhone}` : ''}).`,
     secondPartyLabel: prompt.includes('സത്യവാങ്മൂലം')
       ? 'സമർപ്പിക്കുന്ന ഓഫീസ് / അധികാരി'
       : 'രണ്ടാം കക്ഷി (വാടകക്കാരൻ)',
     secondPartyDetails: prompt.includes('സത്യവാങ്മൂലം')
-      ? `${recipientOffice} ${recipientPlace}`
-      : `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} താമസിക്കുന്ന ${tenantName}.`,
+      ? `${recipientOffice}${hasExplicitLocation ? ` ${recipientPlace}` : ''}`
+      : hasExplicitLocation
+      ? `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} താമസിക്കുന്ന ${tenantName}.`
+      : `${tenantName} (വിലാസം: ........................).`,
     preambleParagraph: prompt.includes('സത്യവാങ്മൂലം')
       ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ എന്റെ പൂർണ്ണ അറിവോടും സമ്മതത്തോടും കൂടി ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം: ${prompt}`
       : `ഒന്നാം കക്ഷിയുടെ (${ownerName}) ഉടമസ്ഥതയിലുള്ള കെട്ടിടം രണ്ടാം കക്ഷിക്ക് (${tenantName}) ${tenureMonths} മാസത്തേക്ക് താഴെ പറയുന്ന വ്യവസ്ഥകളിൽ വാടകയ്ക്ക് നൽകുന്നതിന് ഇരു കക്ഷികളും സമ്മതിച്ച് എഴുതി ഒപ്പിടുന്ന കരാർ പത്രം.`,
@@ -1956,11 +2009,18 @@ function buildSmartFallbackResponse(
       '4. വൈദ്യുതി ചാർജ്ജ്, വെള്ളക്കരം എന്നിവ രണ്ടാം കക്ഷി തന്നെ അതാത് മാസം അടയ്ക്കേണ്ടതാണ്.',
       '5. കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ രൂപമാറ്റം വരുത്തുവാനോ പാടുള്ളതല്ല.',
     ],
-    schedulePropertyDetails: `${cleanDistrict} ജില്ല, ${cleanPlace} തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും.`,
-    witnesses: [
-      `1. അബ്ദുൾ സലാം, ${cleanPlace} (ഒപ്പ്: ...........................)`,
-      `2. വിനോദ് കെ. ആർ., ${cleanPlace} (ഒപ്പ്: ...........................)`,
-    ],
+    schedulePropertyDetails: hasExplicitLocation
+      ? `${cleanDistrict} ജില്ല, ${cleanPlace} തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും.`
+      : 'വസ്തുവിന്റെ / കെട്ടിടത്തിന്റെ വിവരണം (ജില്ല, താലൂക്ക്, വില്ലേജ്, വാർഡ്, കെട്ടിട നമ്പർ): ........................',
+    witnesses: hasExplicitLocation
+      ? [
+          `1. സാക്ഷിയുടെ പേരും വിലാസവും: ........................, ${cleanPlace} (ഒപ്പ്: .................)`,
+          `2. സാക്ഷിയുടെ പേരും വിലാസവും: ........................, ${cleanPlace} (ഒപ്പ്: .................)`,
+        ]
+      : [
+          '1. സാക്ഷിയുടെ പേരും വിലാസവും: ........................ (ഒപ്പ്: .................)',
+          '2. സാക്ഷിയുടെ പേരും വിലാസവും: ........................ (ഒപ്പ്: .................)',
+        ],
   };
 
   if (isGulfCvPrompt) {
@@ -2600,9 +2660,10 @@ async function generateStructuredDocumentWithGemini(
     }
   }
 
-  // If it's a Rental Agreement, ensure deterministic place/landlord/tenant extraction cleans any bad AI placeholders
+  // If it's a Rental Agreement, ensure deterministic place/landlord/tenant/rent/advance extraction cleans any bad AI placeholders or fake data
   if (parsed.detectedType === 'rental_agreement' && deterministicFallback?.agreementData) {
     const fbAg = deterministicFallback.agreementData;
+    const hasLoc = extractKeralaPlaceAndDistrict(prompt).found;
     if (!parsed.agreementData) {
       parsed.agreementData = fbAg;
     } else {
@@ -2610,6 +2671,7 @@ async function generateStructuredDocumentWithGemini(
         !parsed.agreementData.executionPlace ||
         parsed.agreementData.executionPlace.includes('തയ്യാറാക്കണം') ||
         parsed.agreementData.executionPlace.includes('[') ||
+        (!hasLoc && /കേരളം/.test(parsed.agreementData.executionPlace)) ||
         (parsed.outputLanguage === 'ml' && /[A-Za-z]/.test(parsed.agreementData.executionPlace))
       ) {
         parsed.agreementData.executionPlace = fbAg.executionPlace;
@@ -2617,24 +2679,54 @@ async function generateStructuredDocumentWithGemini(
       if (
         !parsed.agreementData.firstPartyDetails ||
         parsed.agreementData.firstPartyDetails.includes('തയ്യാറാക്കണം') ||
-        parsed.agreementData.firstPartyDetails.includes('[')
+        parsed.agreementData.firstPartyDetails.includes('[') ||
+        parsed.agreementData.firstPartyDetails.includes('9847123456') ||
+        (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.firstPartyDetails))
       ) {
         parsed.agreementData.firstPartyDetails = fbAg.firstPartyDetails;
       }
       if (
         !parsed.agreementData.secondPartyDetails ||
         parsed.agreementData.secondPartyDetails.includes('തയ്യാറാക്കണം') ||
-        parsed.agreementData.secondPartyDetails.includes('[')
+        parsed.agreementData.secondPartyDetails.includes('[') ||
+        (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.secondPartyDetails))
       ) {
         parsed.agreementData.secondPartyDetails = fbAg.secondPartyDetails;
       }
       if (
         !parsed.agreementData.schedulePropertyDetails ||
         parsed.agreementData.schedulePropertyDetails.includes('തയ്യാറാക്കണം') ||
-        parsed.agreementData.schedulePropertyDetails.includes('[')
+        parsed.agreementData.schedulePropertyDetails.includes('[') ||
+        (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.schedulePropertyDetails))
       ) {
         parsed.agreementData.schedulePropertyDetails = fbAg.schedulePropertyDetails;
       }
+      if (
+        !Array.isArray(parsed.agreementData.witnesses) ||
+        parsed.agreementData.witnesses.length === 0 ||
+        (!hasLoc && parsed.agreementData.witnesses.some((w: string) => /അബ്ദുൾ സലാം|വിനോദ് കെ|കേരളം/.test(w)))
+      ) {
+        parsed.agreementData.witnesses = fbAg.witnesses;
+      }
+      // Enforce deterministic rent/advance clause amounts when prompt explicitly gave numbers
+      const fbRentMatch = fbAg.clauses?.[0]?.match(/₹([\d,]+)\/-/);
+      const fbAdvMatch = fbAg.clauses?.[1]?.match(/₹([\d,]+)\/-/);
+      const aiClauses = Array.isArray(parsed.agreementData.clauses)
+        ? [...parsed.agreementData.clauses]
+        : [...fbAg.clauses];
+      if (fbRentMatch?.[1]) {
+        const fbRentDigits = fbRentMatch[1].replace(/,/g, '');
+        if (!aiClauses[0] || !aiClauses[0].replace(/,/g, '').includes(fbRentDigits)) {
+          aiClauses[0] = fbAg.clauses[0];
+        }
+      }
+      if (fbAdvMatch?.[1]) {
+        const fbAdvDigits = fbAdvMatch[1].replace(/,/g, '');
+        if (!aiClauses[1] || !aiClauses[1].replace(/,/g, '').includes(fbAdvDigits)) {
+          aiClauses[1] = fbAg.clauses[1];
+        }
+      }
+      parsed.agreementData.clauses = aiClauses;
     }
   }
 
@@ -2680,6 +2772,12 @@ async function generateStructuredDocumentWithGemini(
     merged.gulfCvData = await translateCvDataToTargetLanguage(
       merged.gulfCvData,
       effectiveCvLang
+    );
+  }
+  if (merged.agreementData && merged.outputLanguage && merged.outputLanguage !== 'ml') {
+    merged.agreementData = await translateAgreementDataToTargetLanguage(
+      merged.agreementData,
+      merged.outputLanguage
     );
   }
   return merged;
@@ -2959,6 +3057,97 @@ async function translateLetterDataToTargetLanguage(
     place,
     enclosures,
     ...(structuredFields ? { structuredFields } : {}),
+  };
+}
+
+async function translateAgreementDataToTargetLanguage(
+  agreement: any,
+  targetLang: DocumentOutputLanguage
+): Promise<any> {
+  if (!agreement) return agreement;
+  const localConverted = applyLocalLanguageConversionToAgreement(agreement, targetLang);
+  const tr = async (rawStr: string, localStr: string) => {
+    const chosen = (localStr || rawStr || '').trim();
+    if (!chosen || /^[.\s\-_]+$/.test(chosen)) return chosen || rawStr;
+    // If local dictionary/template already converted Malayalam into target script/language, return it directly
+    if (localStr && localStr !== rawStr) {
+      if (targetLang === 'en' && !/[\u0D00-\u0D7F]/.test(localStr)) {
+        return localStr;
+      }
+      if (targetLang !== 'ml' && targetLang !== 'en' && !/[\u0D00-\u0D7F]/.test(localStr)) {
+        return localStr;
+      }
+    }
+    // Otherwise translate raw source via server Google Translate with local fallback
+    const translated = await translateSingleTextServer(rawStr || chosen, targetLang);
+    return translated || localStr || rawStr;
+  };
+
+  const rawClauses: string[] = Array.isArray(agreement.clauses) ? agreement.clauses : [];
+  const localClauses: string[] = Array.isArray(localConverted.clauses) ? localConverted.clauses : [];
+  const rawWitnesses: string[] = Array.isArray(agreement.witnesses) ? agreement.witnesses : [];
+  const localWitnesses: string[] = Array.isArray(localConverted.witnesses) ? localConverted.witnesses : [];
+
+  const [
+    titleMalayalam,
+    executionPlace,
+    firstPartyLabel,
+    firstPartyDetails,
+    secondPartyLabel,
+    secondPartyDetails,
+    preambleParagraph,
+    clauses,
+    schedulePropertyDetails,
+    witnesses,
+    scheduleHeadingOverride,
+    witnessesHeadingOverride,
+    placeLabelOverride,
+    dateLabelOverride,
+    firstPartySignLabelOverride,
+    firstPartySignatureLabelOverride,
+    secondPartySignLabelOverride,
+    secondPartySignatureLabelOverride,
+  ] = await Promise.all([
+    tr(agreement.titleMalayalam, localConverted.titleMalayalam),
+    tr(agreement.executionPlace, localConverted.executionPlace),
+    tr(agreement.firstPartyLabel, localConverted.firstPartyLabel),
+    tr(agreement.firstPartyDetails, localConverted.firstPartyDetails),
+    tr(agreement.secondPartyLabel, localConverted.secondPartyLabel),
+    tr(agreement.secondPartyDetails, localConverted.secondPartyDetails),
+    tr(agreement.preambleParagraph, localConverted.preambleParagraph),
+    Promise.all(rawClauses.map((c, idx) => tr(c, localClauses[idx] ?? c))),
+    tr(agreement.schedulePropertyDetails, localConverted.schedulePropertyDetails),
+    Promise.all(rawWitnesses.map((w, idx) => tr(w, localWitnesses[idx] ?? w))),
+    localConverted.scheduleHeadingOverride ? tr(agreement.scheduleHeadingOverride || '', localConverted.scheduleHeadingOverride) : Promise.resolve(undefined),
+    localConverted.witnessesHeadingOverride ? tr(agreement.witnessesHeadingOverride || '', localConverted.witnessesHeadingOverride) : Promise.resolve(undefined),
+    localConverted.placeLabelOverride ? tr(agreement.placeLabelOverride || '', localConverted.placeLabelOverride) : Promise.resolve(undefined),
+    localConverted.dateLabelOverride ? tr(agreement.dateLabelOverride || '', localConverted.dateLabelOverride) : Promise.resolve(undefined),
+    localConverted.firstPartySignLabelOverride ? tr(agreement.firstPartySignLabelOverride || '', localConverted.firstPartySignLabelOverride) : Promise.resolve(undefined),
+    localConverted.firstPartySignatureLabelOverride ? tr(agreement.firstPartySignatureLabelOverride || '', localConverted.firstPartySignatureLabelOverride) : Promise.resolve(undefined),
+    localConverted.secondPartySignLabelOverride ? tr(agreement.secondPartySignLabelOverride || '', localConverted.secondPartySignLabelOverride) : Promise.resolve(undefined),
+    localConverted.secondPartySignatureLabelOverride ? tr(agreement.secondPartySignatureLabelOverride || '', localConverted.secondPartySignatureLabelOverride) : Promise.resolve(undefined),
+  ]);
+
+  return {
+    ...localConverted,
+    titleMalayalam,
+    executionPlace,
+    firstPartyLabel,
+    firstPartyDetails,
+    secondPartyLabel,
+    secondPartyDetails,
+    preambleParagraph,
+    clauses,
+    schedulePropertyDetails,
+    witnesses,
+    ...(scheduleHeadingOverride !== undefined ? { scheduleHeadingOverride } : {}),
+    ...(witnessesHeadingOverride !== undefined ? { witnessesHeadingOverride } : {}),
+    ...(placeLabelOverride !== undefined ? { placeLabelOverride } : {}),
+    ...(dateLabelOverride !== undefined ? { dateLabelOverride } : {}),
+    ...(firstPartySignLabelOverride !== undefined ? { firstPartySignLabelOverride } : {}),
+    ...(firstPartySignatureLabelOverride !== undefined ? { firstPartySignatureLabelOverride } : {}),
+    ...(secondPartySignLabelOverride !== undefined ? { secondPartySignLabelOverride } : {}),
+    ...(secondPartySignatureLabelOverride !== undefined ? { secondPartySignatureLabelOverride } : {}),
   };
 }
 
@@ -3747,6 +3936,11 @@ Return a JSON object with a "boxes" array. Each item must have:
         out.gulfCvData = await translateCvDataToTargetLanguage(gulfCvData, targetLanguage);
       } else if (category === 'malayalam_letter' && letterData) {
         out.letterData = await translateLetterDataToTargetLanguage(letterData, targetLanguage);
+      } else if (category === 'rental_agreement' && agreementData) {
+        out.agreementData = await translateAgreementDataToTargetLanguage(
+          agreementData,
+          targetLanguage
+        );
       } else {
         if (gulfCvData) {
           out.gulfCvData = await translateCvDataToTargetLanguage(gulfCvData, targetLanguage);
@@ -3754,8 +3948,19 @@ Return a JSON object with a "boxes" array. Each item must have:
         if (letterData) {
           out.letterData = await translateLetterDataToTargetLanguage(letterData, targetLanguage);
         }
+        if (agreementData) {
+          out.agreementData = await translateAgreementDataToTargetLanguage(
+            agreementData,
+            targetLanguage
+          );
+        }
       }
-      if (agreementData) out.agreementData = agreementData;
+      if (!out.agreementData && agreementData) {
+        out.agreementData = await translateAgreementDataToTargetLanguage(
+          agreementData,
+          targetLanguage
+        );
+      }
       if (markListData) out.markListData = markListData;
 
       res.json(normalizePayloadNFC(out));

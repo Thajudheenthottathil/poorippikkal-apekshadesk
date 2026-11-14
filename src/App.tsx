@@ -107,6 +107,7 @@ import {
 } from './utils/pdfExport';
 import { parseStructuredCvFromText } from './utils/cvParser';
 import {
+  applyLocalLanguageConversionToAgreement,
   applyLocalLanguageConversionToCv,
   applyLocalLanguageConversionToLetter,
   detectRequestedOutputLanguage,
@@ -697,13 +698,16 @@ export function App() {
   const handleSelectOutputLanguage = async (newLang: DocumentOutputLanguage) => {
     const sourceCv = gulfCvData;
     const sourceLetter = letterData;
+    const sourceAgreement = agreementData;
     setOutputLanguage(newLang);
 
     // 1. Instant local dictionary & semantic conversion (0ms, works 100% offline/client-side)
     const nextCv = applyLocalLanguageConversionToCv(sourceCv, newLang);
     const nextLetter = applyLocalLanguageConversionToLetter(sourceLetter, newLang);
+    const nextAgreement = applyLocalLanguageConversionToAgreement(sourceAgreement, newLang);
     setGulfCvData(nextCv);
     setLetterData(nextLetter);
+    setAgreementData(nextAgreement);
 
     const langObj = OUTPUT_LANGUAGE_OPTIONS.find((o) => o.code === newLang);
     showToast(`🌐 പ്രിന്റ് ഭാഷ "${langObj?.nativeLabel || newLang}" ആയി മാറ്റി — A4 PDF വിവർത്തനം ചെയ്യുന്നു...`);
@@ -716,7 +720,7 @@ export function App() {
         targetLanguage: newLang,
         letterData: sourceLetter,
         gulfCvData: sourceCv,
-        agreementData,
+        agreementData: sourceAgreement,
         markListData,
       });
       if (trData.gulfCvData) {
@@ -728,9 +732,12 @@ export function App() {
       if (trData.letterData) {
         setLetterData(trData.letterData);
       }
+      if (trData.agreementData) {
+        setAgreementData(trData.agreementData);
+      }
       showToast(`✓ A4 PDF പൂർണ്ണമായും "${langObj?.nativeLabel || newLang}" ഭാഷയിലേക്ക് മാറ്റി!`);
     } catch {
-      // Local dictionary & semantic conversion (nextCv / nextLetter) is already applied above!
+      // Local dictionary & semantic conversion (nextCv / nextLetter / nextAgreement) is already applied above!
       showToast(`✓ A4 PDF "${langObj?.nativeLabel || newLang}" ഭാഷയിലേക്ക് മാറ്റി!`);
     } finally {
       setIsTranslatingLanguage(false);

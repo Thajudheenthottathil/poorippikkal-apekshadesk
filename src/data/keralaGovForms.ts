@@ -1927,7 +1927,11 @@ export function extractCleanComplaintOrPetitionDetails(rawPrompt: string): {
 
   let core = cleanedPrompt
     .replace(
-      /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഒരു\s*)?(?:പോലീസ്\s*സ്റ്റേഷനിൽ|പഞ്ചായത്തിൽ|വില്ലേജ്\s*ഓഫീസിൽ)?\s*(?:കൊടുക്കാൻ|സമർപ്പിക്കാൻ)?\s*(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)?\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
+      /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഞങ്ങളുടെ\s*)?(?:ഒരു\s*)?(?:പോലീസ്\s*സ്റ്റേഷനിൽ|പഞ്ചായത്ത്\s*സെക്രട്ടറിക്ക്|വില്ലേജ്\s*ഓഫീസർക്ക്|തഹസിൽദാർക്ക്|കലക്ടർക്ക്|സെക്രട്ടറിക്ക്|പഞ്ചായത്തിൽ|വില്ലേജ്\s*ഓഫീസിൽ)\s*(?:കൊടുക്കാൻ|സമർപ്പിക്കാൻ|നൽകാൻ)?\s*(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)?\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)?\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
+      ' '
+    )
+    .replace(
+      /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)?\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
       ' '
     )
     .replace(/(?:അതിനെതിരെയാണ്|ഇതിനെതിരെയാണ്|അതിനെതിരെ|ഇതിനെതിരെ)\s*(?:പരാതി|കേസ്)?/gi, ' ')
@@ -1989,17 +1993,34 @@ export function buildCleanCustomLetterFromPrompt(
     /പോലീസ്|സ്റ്റേഷൻ|കടിച്ചു|നക്കി|ആക്രമ|മോഷണം|ഭീഷണി|തല്ലി|അടിച്ചു|പൂച്ച|നായ|പട്ടി|\bpolice\b/i.test(
       cleanedPrompt
     );
+  const isPanchayatSecretaryTarget =
+    /പഞ്ചായത്ത്|സെക്രട്ടറി|മുൻസിപ്പാലിറ്റി|നഗരസഭ|വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|ഓട|കലുങ്ക്|മാലിന്യ|panchayat|municipality|secretary/i.test(
+      cleanedPrompt
+    );
+  const isVillageOfficerTarget = /വില്ലേജ്|തഹസിൽദാർ|village\s*office/i.test(cleanedPrompt);
 
   const documentHeading = isComplaint ? 'പരാതി (COMPLAINT)' : 'ഔദ്യോഗിക അപേക്ഷ';
   const recipientTitle = isPoliceOrAnimalIncident
     ? 'ബഹുമാനപ്പെട്ട സ്റ്റേഷൻ ഹൗസ് ഓഫീസർ (SHO) / ബന്ധപ്പെട്ട അധികാരി അവർകൾക്ക്,'
+    : isPanchayatSecretaryTarget
+    ? 'ബഹുമാനപ്പെട്ട സെക്രട്ടറി അവർകൾക്ക്,'
+    : isVillageOfficerTarget
+    ? 'ബഹുമാനപ്പെട്ട വില്ലേജ് ഓഫീസർ അവർകൾക്ക്,'
     : 'ബഹുമാനപ്പെട്ട അധികാരി / സെക്രട്ടറി അവർകൾക്ക്,';
   const recipientOffice = isPoliceOrAnimalIncident
     ? cleanPlace !== 'കേരളം'
       ? `${cleanPlace} പോലീസ് സ്റ്റേഷൻ,`
       : 'പോലീസ് സ്റ്റേഷൻ,'
+    : isPanchayatSecretaryTarget
+    ? cleanPlace !== 'കേരളം'
+      ? `${cleanPlace} ഗ്രാമപഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി കാര്യാലയം,`
+      : 'ഗ്രാമപഞ്ചായത്ത് കാര്യാലയം,'
+    : isVillageOfficerTarget
+    ? cleanPlace !== 'കേരളം'
+      ? `${cleanPlace} വില്ലേജ് ഓഫീസ്,`
+      : 'വില്ലേജ് ഓഫീസ്,'
     : cleanPlace !== 'കേരളം'
-    ? `${cleanPlace} ഗ്രാമപഞ്ചായത്ത് / ബന്ധപ്പെട്ട ഓഫീസ്,`
+    ? `${cleanPlace} ബന്ധപ്പെട്ട ഓഫീസ്,`
     : 'ബന്ധപ്പെട്ട കാര്യാലയം,';
   const recipientPlace = loc.found ? `${loc.district}.` : `${cleanPlace}.`;
 
@@ -2010,7 +2031,7 @@ export function buildCleanCustomLetterFromPrompt(
       ? `${incidentDisplay} — അടിയന്തര അന്വേഷണം നടത്തി ഉചിതമായ നിയമനടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള പരാതി.`
       : 'അടിയന്തര അന്വേഷണം നടത്തി ഉചിതമായ നിയമനടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള പരാതി.'
     : coreIncident
-    ? `${incidentDisplay} സംബന്ധിച്ച അടിയന്തര അപേക്ഷ.`
+    ? `${incidentDisplay} സംബന്ധിച്ച് അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.`
     : 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.';
 
   const bodyParagraphs = isComplaint
@@ -2023,9 +2044,9 @@ export function buildCleanCustomLetterFromPrompt(
       ]
     : [
         coreIncident
-          ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ അടിയന്തര ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${incidentDisplay}.`
+          ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ അടിയന്തര ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${incidentDisplay}. ഇതുമൂലം പ്രദേശവാസികൾക്കും പൊതുജനങ്ങൾക്കും വലിയ ബുദ്ധിമുട്ട് നേരിടേണ്ടിവരുന്നുണ്ട്.`
           : 'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ എന്റെ ഔദ്യോഗിക ആവശ്യത്തിലേക്കായി ഈ അപേക്ഷ സമർപ്പിക്കുന്നു.',
-        'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ തുടർനടപടികൾ സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+        'ആയതിനാൽ പ്രസ്തുത വിഷയം അടിയന്തരമായി പരിശോധിച്ച് എത്രയും വേഗം പരിഹാര നടപടികൾ സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
       ];
 
   const enclosures = isComplaint
@@ -2037,7 +2058,10 @@ export function buildCleanCustomLetterFromPrompt(
     letterLayoutVariant: 'official_letter',
     senderName: hasUserSenderName ? currentLetter!.senderName : '',
     senderAddress: cleanSenderAddress,
-    senderPhone: currentLetter?.senderPhone || '',
+    senderPhone:
+      currentLetter?.senderPhone && currentLetter.senderPhone !== '9847123456'
+        ? currentLetter.senderPhone
+        : '',
     recipientTitle,
     recipientOffice,
     recipientPlace,
@@ -2329,15 +2353,22 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'general-company-resignation';
   } else if (
-    norm.includes('വില്ലേജ് ഓഫീസ') ||
-    /\b(village\s*office)\b/i.test(norm)
+    prompt.split(/\s+/).filter(Boolean).length <= 5 &&
+    !/വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|കുടിവെള്ള|മാലിന്യ|കലുങ്ക്|ഓട|തെരുവുനായ|കാട്ടുപന്നി|നന്നാക്ക|ശുചീകരിക്ക|street\s*light|road|water|repair/i.test(
+      norm
+    ) &&
+    (norm.includes('വില്ലേജ് ഓഫീസ') || /\b(village\s*office)\b/i.test(norm))
   ) {
     matchedFormId = 'edistrict-income';
   } else if (
-    norm.includes('പഞ്ചായത്ത') ||
-    norm.includes('മുൻസിപ്പാലിറ്റി') ||
-    norm.includes('നഗരസഭ') ||
-    /\b(panchayat|municipality)\b/i.test(norm)
+    prompt.split(/\s+/).filter(Boolean).length <= 5 &&
+    !/വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|കുടിവെള്ള|മാലിന്യ|കലുങ്ക്|ഓട|തെരുവുനായ|കാട്ടുപന്നി|നന്നാക്ക|ശുചീകരിക്ക|street\s*light|road|water|repair/i.test(
+      norm
+    ) &&
+    (norm.includes('പഞ്ചായത്ത') ||
+      norm.includes('മുൻസിപ്പാലിറ്റി') ||
+      norm.includes('നഗരസഭ') ||
+      /\b(panchayat|municipality)\b/i.test(norm))
   ) {
     matchedFormId = 'lsgd-building-ownership-permit';
   } else if (
