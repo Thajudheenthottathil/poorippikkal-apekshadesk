@@ -437,6 +437,14 @@ var PHRASE_MAP = [
     ta: "\u0B87\u0BB2\u0B95\u0BC1 \u0BAE\u0BB1\u0BCD\u0BB1\u0BC1\u0BAE\u0BCD \u0B95\u0BA9\u0BB0\u0B95 \u0BB5\u0BBE\u0B95\u0BA9 \u0B93\u0B9F\u0BCD\u0B9F\u0BC1\u0BA8\u0BB0\u0BCD / PRO \u0B93\u0B9F\u0BCD\u0B9F\u0BC1\u0BA8\u0BB0\u0BCD"
   },
   {
+    ml: "\u0D2A\u0D4D\u0D30\u0D4A\u0D2B\u0D37\u0D23\u0D7D \u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C",
+    en: "Professional Driver",
+    ar: "\u0633\u0627\u0626\u0642 \u0645\u062D\u062A\u0631\u0641",
+    hi: "\u092A\u0947\u0936\u0947\u0935\u0930 \u0921\u094D\u0930\u093E\u0907\u0935\u0930",
+    ur: "\u067E\u0631\u0648\u0641\u06CC\u0634\u0646\u0644 \u0688\u0631\u0627\u0626\u06CC\u0648\u0631",
+    ta: "\u0BA4\u0BCA\u0BB4\u0BBF\u0BB2\u0BCD\u0BAE\u0BC1\u0BB1\u0BC8 \u0B93\u0B9F\u0BCD\u0B9F\u0BC1\u0BA8\u0BB0\u0BCD"
+  },
+  {
     ml: "\u0D2A\u0D4D\u0D30\u0D4A\u0D2B\u0D37\u0D23\u0D7D \u0D32\u0D48\u0D31\u0D4D\u0D31\u0D4D \u0D35\u0D46\u0D39\u0D3F\u0D15\u0D4D\u0D15\u0D3F\u0D7E \u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C / \u0D0E\u0D15\u0D4D\u0D38\u0D3F\u0D15\u0D4D\u0D2F\u0D42\u0D1F\u0D4D\u0D1F\u0D40\u0D35\u0D4D \u0D37\u0D4B\u0D2B\u0D7C",
     en: "PROFESSIONAL LIGHT VEHICLE DRIVER / EXECUTIVE CHAUFFEUR",
     ar: "\u0633\u0627\u0626\u0642 \u0645\u0631\u0643\u0628\u0627\u062A \u062E\u0641\u064A\u0641\u0629 \u0645\u062D\u062A\u0631\u0641 / \u0633\u0627\u0626\u0642 \u062A\u0646\u0641\u064A\u0630\u064A \u062E\u0627\u0635",
@@ -1019,6 +1027,118 @@ var PHRASE_MAP = [
     ur: "\u06C1\u06CC\u0688 \u0645\u0627\u0633\u0679\u0631 / \u067E\u0631\u0646\u0633\u067E\u0644",
     hi: "\u092A\u094D\u0930\u0927\u093E\u0928\u093E\u0927\u094D\u092F\u093E\u092A\u0915 / \u092A\u094D\u0930\u093E\u091A\u093E\u0930\u094D\u092F",
     ta: "\u0BA4\u0BB2\u0BC8\u0BAE\u0BC8 \u0B86\u0B9A\u0BBF\u0BB0\u0BBF\u0BAF\u0BB0\u0BCD / \u0BAE\u0BC1\u0BA4\u0BB2\u0BCD\u0BB5\u0BB0\u0BCD"
+  },
+  {
+    ml: "\u0D35\u0D3E\u0D1F\u0D15 \u0D1A\u0D40\u0D1F\u0D4D\u0D1F\u0D4D (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02)",
+    en: "RENTAL / LEASE AGREEMENT DEED",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631 \u0645\u0628\u0646\u0649 \u0633\u0643\u0646\u064A / \u062A\u062C\u0627\u0631\u064A",
+    ur: "\u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1 (\u0645\u0639\u0627\u06C1\u062F\u06C1 \u06A9\u0631\u0627\u06CC\u06C1)",
+    hi: "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 \u092A\u0924\u094D\u0930 (Rent Agreement)",
+    ta: "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D35\u0D3E\u0D1F\u0D15 \u0D1A\u0D40\u0D1F\u0D4D\u0D1F\u0D4D",
+    en: "RENTAL AGREEMENT DEED",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631",
+    ur: "\u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 \u092A\u0924\u094D\u0930",
+    ta: "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02",
+    en: "BUILDING RENTAL AGREEMENT DEED",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631 \u0645\u0628\u0646\u0649",
+    ur: "\u0639\u0645\u0627\u0631\u062A \u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u092D\u0935\u0928 \u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 \u092A\u0924\u094D\u0930",
+    ta: "\u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F \u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C",
+    en: "BUILDING RENTAL AGREEMENT",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631 \u0645\u0628\u0646\u0649",
+    ur: "\u0639\u0645\u0627\u0631\u062A \u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u092D\u0935\u0928 \u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927",
+    ta: "\u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F \u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02",
+    en: "RENTAL AGREEMENT DEED",
+    ar: "\u0648\u062B\u064A\u0642\u0629 \u0639\u0642\u062F \u0627\u0644\u0625\u064A\u062C\u0627\u0631",
+    ur: "\u0645\u0639\u0627\u06C1\u062F\u06C1 \u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 \u092A\u0924\u094D\u0930",
+    ta: "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C",
+    en: "RENTAL AGREEMENT",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631",
+    ur: "\u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927",
+    ta: "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C (Rent Agreement)",
+    en: "Rent Agreement",
+    ar: "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631",
+    ur: "\u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1",
+    hi: "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927",
+    ta: "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (AFFIDAVIT)",
+    en: "SWORN AFFIDAVIT",
+    ar: "\u0625\u0642\u0631\u0627\u0631 \u062E\u0637\u064A \u0645\u0634\u0641\u0648\u0639 \u0628\u0627\u0644\u064A\u0645\u064A\u0646",
+    ur: "\u062D\u0644\u0641 \u0646\u0627\u0645\u06C1 (Affidavit)",
+    hi: "\u0936\u092A\u0925 \u092A\u0924\u094D\u0930 (Affidavit)",
+    ta: "\u0B9A\u0BA4\u0BCD\u0BA4\u0BBF\u0BAF\u0BAA\u0BCD \u0BAA\u0BBF\u0BB0\u0BAE\u0BBE\u0BA3\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (Affidavit)",
+    en: "Affidavit",
+    ar: "\u0625\u0642\u0631\u0627\u0631 \u0645\u0634\u0641\u0648\u0639 \u0628\u0627\u0644\u064A\u0645\u064A\u0646",
+    ur: "\u062D\u0644\u0641 \u0646\u0627\u0645\u06C1",
+    hi: "\u0936\u092A\u0925 \u092A\u0924\u094D\u0930",
+    ta: "\u0B9A\u0BA4\u0BCD\u0BA4\u0BBF\u0BAF\u0BAA\u0BCD \u0BAA\u0BBF\u0BB0\u0BAE\u0BBE\u0BA3\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD"
+  },
+  {
+    ml: "\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D09\u0D1F\u0D2E)",
+    en: "FIRST PARTY (LANDLORD / OWNER)",
+    ar: "\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644 (\u0627\u0644\u0645\u0624\u062C\u0631 / \u0645\u0627\u0644\u0643 \u0627\u0644\u0639\u0642\u0627\u0631)",
+    ur: "\u0641\u0631\u06CC\u0642 \u0627\u0648\u0644 (\u0645\u0627\u0644\u06A9 \u0645\u06A9\u0627\u0646)",
+    hi: "\u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937 (\u092E\u0915\u093E\u0928 \u092E\u093E\u0932\u093F\u0915)",
+    ta: "\u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD (\u0B89\u0BB0\u0BBF\u0BAE\u0BC8\u0BAF\u0BBE\u0BB3\u0BB0\u0BCD)"
+  },
+  {
+    ml: "\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D09\u0D1F\u0D2E)",
+    en: "FIRST PARTY (OWNER)",
+    ar: "\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644 (\u0627\u0644\u0645\u0627\u0644\u0643)",
+    ur: "\u0641\u0631\u06CC\u0642 \u0627\u0648\u0644 (\u0645\u0627\u0644\u06A9)",
+    hi: "\u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937 (\u092E\u093E\u0932\u093F\u0915)",
+    ta: "\u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD (\u0B89\u0BB0\u0BBF\u0BAE\u0BC8\u0BAF\u0BBE\u0BB3\u0BB0\u0BCD)"
+  },
+  {
+    ml: "\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F",
+    en: "FIRST PARTY (LANDLORD)",
+    ar: "\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644",
+    ur: "\u0641\u0631\u06CC\u0642 \u0627\u0648\u0644",
+    hi: "\u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937",
+    ta: "\u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD"
+  },
+  {
+    ml: "\u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D35\u0D3E\u0D1F\u0D15\u0D15\u0D4D\u0D15\u0D3E\u0D30\u0D7B)",
+    en: "SECOND PARTY (TENANT)",
+    ar: "\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A (\u0627\u0644\u0645\u0633\u062A\u0623\u062C\u0631)",
+    ur: "\u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 (\u06A9\u0631\u0627\u06CC\u06C1 \u062F\u0627\u0631)",
+    hi: "\u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 (\u0915\u093F\u0930\u093E\u092F\u0947\u0926\u093E\u0930)",
+    ta: "\u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD (\u0BB5\u0BBE\u0B9F\u0B95\u0BC8\u0BA4\u0BBE\u0BB0\u0BB0\u0BCD)"
+  },
+  {
+    ml: "\u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F",
+    en: "SECOND PARTY (TENANT)",
+    ar: "\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A",
+    ur: "\u0641\u0631\u06CC\u0642 \u062F\u0648\u0645",
+    hi: "\u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937",
+    ta: "\u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD"
   },
   {
     ml: "\u0D15\u0D3E\u0D28\u0D4D\u0D31\u0D7A, \u0D1C\u0D4B\u0D7C\u0D1C\u0D3F\u0D2F 30114",
@@ -1828,9 +1948,84 @@ var ENGLISH_TO_MALAYALAM_WORD_MAP = {
   govt: "\u0D17\u0D35.",
   government: "\u0D17\u0D35\u0D7A\u0D2E\u0D46\u0D28\u0D4D\u0D31\u0D4D"
 };
+var SPOKEN_DIGIT_STOP_SET = /* @__PURE__ */ new Set([
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "\u0D2A\u0D42\u0D1C\u0D4D\u0D2F\u0D02",
+  "\u0D12\u0D28\u0D4D\u0D28\u0D4D",
+  "\u0D30\u0D23\u0D4D\u0D1F\u0D4D",
+  "\u0D2E\u0D42\u0D28\u0D4D\u0D28\u0D4D",
+  "\u0D28\u0D3E\u0D32\u0D4D",
+  "\u0D05\u0D1E\u0D4D\u0D1A\u0D4D",
+  "\u0D06\u0D31\u0D4D",
+  "\u0D0F\u0D34\u0D4D",
+  "\u0D0E\u0D1F\u0D4D\u0D1F\u0D4D",
+  "\u0D12\u0D2E\u0D4D\u0D2A\u0D24\u0D4D",
+  "\u0D12\u0D7B\u0D2A\u0D24\u0D4D",
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine"
+]);
+function deduplicateStutteredSpeech(text) {
+  if (!text || !text.trim()) return text;
+  const words = normalizeMalayalamChillaksharam(text).replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+  if (words.length <= 1) return words.join(" ");
+  const normToken = (w) => w.replace(/^[,.;:!?()"'“”‘’🎙️]+|[,.;:!?()"'“”‘’🎙️]+$/g, "").toLowerCase();
+  let current = [...words];
+  let changed = true;
+  let guard = 0;
+  while (changed && guard < 40) {
+    changed = false;
+    guard++;
+    const maxLen = Math.floor(current.length / 2);
+    outer: for (let L = 1; L <= maxLen; L++) {
+      for (let i = 0; i <= current.length - 2 * L; i++) {
+        const sliceA = current.slice(i, i + L);
+        if (sliceA.every((tok) => SPOKEN_DIGIT_STOP_SET.has(normToken(tok)) || /^\d+$/.test(normToken(tok)))) {
+          continue;
+        }
+        let allMatch = true;
+        for (let k = 0; k < L; k++) {
+          const a = normToken(current[i + k]);
+          const b = normToken(current[i + L + k]);
+          if (!a || a !== b) {
+            allMatch = false;
+            break;
+          }
+        }
+        if (allMatch) {
+          const keepSecond = /[,.;:!?]$/.test(current[i + 2 * L - 1]);
+          if (keepSecond) {
+            current.splice(i, L);
+          } else {
+            current.splice(i + L, L);
+          }
+          changed = true;
+          break outer;
+        }
+      }
+    }
+  }
+  return current.join(" ").replace(/\s{2,}/g, " ").trim();
+}
 function normalizeSpokenMalayalamTranscript(text) {
   if (!text || !text.trim()) return text;
-  let result = normalizeMalayalamChillaksharam(text);
+  let result = deduplicateStutteredSpeech(normalizeMalayalamChillaksharam(text));
   const correctionPhraseRegex = "(?:\u0D05\u0D32\u0D4D\u0D32\\s*\u0D38\u0D4B\u0D31\u0D3F|\u0D38\u0D4B\u0D31\u0D3F\\s*\u0D05\u0D32\u0D4D\u0D32|\u0D05\u0D32\u0D4D\u0D32\\s*\u0D24\u0D46\u0D31\u0D4D\u0D31\u0D3F\u0D2A\u0D4D\u0D2A\u0D4B\u0D2F\u0D3F|\u0D38\u0D4B\u0D31\u0D3F\\s*\u0D2E\u0D3E\u0D31\u0D3F\u0D2A\u0D4D\u0D2A\u0D4B\u0D2F\u0D3F|\u0D05\u0D32\u0D4D\u0D32\\s*\u0D2E\u0D3E\u0D31\u0D3F\u0D2A\u0D4D\u0D2A\u0D4B\u0D2F\u0D3F|\u0D05\u0D32\u0D4D\u0D32\\s*\u0D15\u0D4D\u0D37\u0D2E\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D02|\u0D2E\u0D3E\u0D31\u0D3F\u0D2A\u0D4D\u0D2A\u0D4B\u0D2F\u0D3F|\u0D24\u0D46\u0D31\u0D4D\u0D31\u0D3F\u0D2A\u0D4D\u0D2A\u0D4B\u0D2F\u0D3F|\u0D38\u0D4B\u0D31\u0D3F|no\\s*sorry|sorry)";
   const unitRegex = "(?:\u0D35\u0D7C\u0D37\u0D02|\u0D35\u0D2F\u0D38\u0D4D\u0D38\u0D4D|\u0D30\u0D42\u0D2A|\u0D2E\u0D3E\u0D38\u0D02|\u0D26\u0D3F\u0D35\u0D38\u0D02|\u0D38\u0D46\u0D28\u0D4D\u0D31\u0D4D|\u0D0F\u0D15\u0D4D\u0D15\u0D7C|\u0D35\u0D3E\u0D7C\u0D21\u0D4D)?";
   const selfCorrectionPattern = new RegExp(
@@ -2063,6 +2258,7 @@ var MALAYALAM_TO_ENGLISH_SEMANTIC_MAP = [
   ["\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F \u0D31\u0D48\u0D21\u0D7C", "Delivery Rider"],
   ["\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F \u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C", "Delivery & Logistics Driver"],
   ["\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F \u0D2C\u0D4B\u0D2F\u0D4D", "Delivery Associate"],
+  ["\u0D2A\u0D4D\u0D30\u0D4A\u0D2B\u0D37\u0D23\u0D7D \u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C", "Professional Driver"],
   ["\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C", "Professional Driver"],
   ["\u0D38\u0D46\u0D2F\u0D3F\u0D7D\u0D38\u0D4D \u0D0E\u0D15\u0D4D\u0D38\u0D3F\u0D15\u0D4D\u0D2F\u0D42\u0D1F\u0D4D\u0D1F\u0D40\u0D35\u0D4D", "Sales Executive"],
   ["\u0D38\u0D46\u0D2F\u0D3F\u0D7D\u0D38\u0D4D\u0D2E\u0D3E\u0D7B", "Salesman / Retail Associate"],
@@ -2281,6 +2477,19 @@ var MALAYALAM_TO_ENGLISH_SEMANTIC_MAP = [
   ["\u0D24\u0D3E\u0D32\u0D42\u0D15\u0D4D\u0D15\u0D4D", "Taluk"],
   ["\u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D", "Village"],
   ["\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24\u0D4D", "Panchayat"],
+  ["\u0D2A\u0D4D\u0D30\u0D35\u0D43\u0D24\u0D4D\u0D24\u0D3F\u0D2A\u0D30\u0D3F\u0D1A\u0D2F\u0D02", "Work Experience"],
+  ["\u0D2A\u0D4D\u0D30\u0D35\u0D7C\u0D24\u0D4D\u0D24\u0D28\u0D19\u0D4D\u0D19\u0D7E", "Operations"],
+  ["\u0D15\u0D43\u0D24\u0D4D\u0D2F\u0D2E\u0D3E\u0D2F\u0D3F", "Accurately"],
+  ["\u0D15\u0D48\u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D02 \u0D1A\u0D46\u0D2F\u0D4D\u0D24\u0D41", "Managed"],
+  ["\u0D2E\u0D47\u0D16\u0D32\u0D2F\u0D3F\u0D7D", "Sector"],
+  ["\u0D2E\u0D47\u0D16\u0D32", "Sector"],
+  ["\u0D35\u0D7C\u0D37\u0D24\u0D4D\u0D24\u0D46", "Years"],
+  ["\u0D38\u0D4D\u0D35\u0D26\u0D47\u0D36\u0D3F\u0D2F\u0D3E\u0D23\u0D4D", "Native"],
+  ["\u0D38\u0D4D\u0D35\u0D26\u0D47\u0D36\u0D3F", "Native"],
+  ["\u0D0E\u0D15\u0D4D\u0D38\u0D3F\u0D15\u0D4D\u0D2F\u0D42\u0D1F\u0D4D\u0D1F\u0D40\u0D35\u0D4D", "Executive"],
+  ["\u0D17\u0D4D\u0D30\u0D42\u0D2A\u0D4D\u0D2A\u0D4D", "Group"],
+  ["\u0D05\u0D7D \u0D2E\u0D26\u0D40\u0D28", "Al Madina"],
+  ["\u0D05\u0D7D \u0D28\u0D42\u0D7C", "Al Noor"],
   ["\u0D35\u0D47\u0D23\u0D02", ""],
   ["\u0D06\u0D23\u0D4D", ""],
   ["\u0D09\u0D23\u0D4D\u0D1F\u0D4D", ""]
@@ -2529,6 +2738,63 @@ function extractKeralaPlaceAndDistrict(rawPrompt) {
       return { place: candidate, district: candidate, found: true };
     }
   }
+  const englishKeralaTownMap = [
+    [/\b(kozhikode|calicut)\b/i, "Kozhikode", "Kozhikode"],
+    [/\bmalappuram\b/i, "Malappuram", "Malappuram"],
+    [/\bmanjeri\b/i, "Manjeri", "Malappuram"],
+    [/\btirur\b/i, "Tirur", "Malappuram"],
+    [/\bperinthalmanna\b/i, "Perinthalmanna", "Malappuram"],
+    [/\bkottakkal\b/i, "Kottakkal", "Malappuram"],
+    [/\bkondotty\b/i, "Kondotty", "Malappuram"],
+    [/\bponnani\b/i, "Ponnani", "Malappuram"],
+    [/\bnilambur\b/i, "Nilambur", "Malappuram"],
+    [/\b(kannur|cannanore)\b/i, "Kannur", "Kannur"],
+    [/\bthalassery\b/i, "Thalassery", "Kannur"],
+    [/\bpayyanur\b/i, "Payyanur", "Kannur"],
+    [/\bkasaragod\b/i, "Kasaragod", "Kasaragod"],
+    [/\bkanhangad\b/i, "Kanhangad", "Kasaragod"],
+    [/\bwayanad\b/i, "Wayanad", "Wayanad"],
+    [/\bkalpetta\b/i, "Kalpetta", "Wayanad"],
+    [/\b(thrissur|trichur)\b/i, "Thrissur", "Thrissur"],
+    [/\bguruvayur\b/i, "Guruvayur", "Thrissur"],
+    [/\bchalakudy\b/i, "Chalakudy", "Thrissur"],
+    [/\bpalakkad\b/i, "Palakkad", "Palakkad"],
+    [/\bottapalam\b/i, "Ottapalam", "Palakkad"],
+    [/\bpattambi\b/i, "Pattambi", "Palakkad"],
+    [/\b(ernakulam|kochi|cochin)\b/i, "Kochi", "Ernakulam"],
+    [/\baluva\b/i, "Aluva", "Ernakulam"],
+    [/\bperumbavoor\b/i, "Perumbavoor", "Ernakulam"],
+    [/\bmuvattupuzha\b/i, "Muvattupuzha", "Ernakulam"],
+    [/\bidukki\b/i, "Idukki", "Idukki"],
+    [/\bthodupuzha\b/i, "Thodupuzha", "Idukki"],
+    [/\bkottayam\b/i, "Kottayam", "Kottayam"],
+    [/\bpala\b/i, "Pala", "Kottayam"],
+    [/\b(alappuzha|alleppey)\b/i, "Alappuzha", "Alappuzha"],
+    [/\bkayamkulam\b/i, "Kayamkulam", "Alappuzha"],
+    [/\bmavelikkara\b/i, "Mavelikkara", "Alappuzha"],
+    [/\bpathanamthitta\b/i, "Pathanamthitta", "Pathanamthitta"],
+    [/\bthiruvalla\b/i, "Thiruvalla", "Pathanamthitta"],
+    [/\b(kollam|quilon)\b/i, "Kollam", "Kollam"],
+    [/\b(thiruvananthapuram|trivandrum)\b/i, "Thiruvananthapuram", "Thiruvananthapuram"],
+    [/\bvadakara\b/i, "Vadakara", "Kozhikode"],
+    [/\bkoyilandy\b/i, "Koyilandy", "Kozhikode"]
+  ];
+  for (const [rx, placeEn, distEn] of englishKeralaTownMap) {
+    if (rx.test(prompt)) {
+      return { place: placeEn, district: distEn, found: true };
+    }
+  }
+  const fromEnglishCityMatch = prompt.match(
+    /\bfrom\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)(?=\s*(?:,|with\b|in\b|having\b|looking\b|\d+\s*(?:years?|yrs?)|\.|$))/i
+  );
+  if (fromEnglishCityMatch?.[1]?.trim()) {
+    const cityCand = fromEnglishCityMatch[1].trim();
+    if (cityCand.length >= 3 && cityCand.length <= 28 && !/^(india|kerala|saudi|arabia|saudi arabia|uae|dubai|qatar|oman|kuwait|bahrain|uk|usa)$/i.test(
+      cityCand
+    )) {
+      return { place: cityCand, district: cityCand, found: true };
+    }
+  }
   return { place: "\u0D15\u0D47\u0D30\u0D33\u0D02", district: "\u0D15\u0D47\u0D30\u0D33\u0D02", found: false };
 }
 function convertMalayalamToEnglish(text, allowProperNameTransliteration = true) {
@@ -2571,7 +2837,7 @@ function convertMalayalamToEnglish(text, allowProperNameTransliteration = true) 
   result = result.replace(/\s{2,}/g, " ").trim();
   if (!/[\u0D00-\u0D7F]/.test(result)) return dedupEnglishLocations(result);
   if (!allowProperNameTransliteration) {
-    return dedupEnglishLocations(result);
+    return /[\u0D00-\u0D7F]/.test(result) ? text : dedupEnglishLocations(result);
   }
   const malConsonants = {
     \u0D15: "k",
@@ -2684,7 +2950,7 @@ function getPhraseTargetValue(entry, targetLang) {
   if (targetLang === "ta") return entry.ta || entry.en;
   return entry[targetLang] || entry.en;
 }
-function translateSingleStringLocal(text, targetLang, isProperName = false) {
+function translateSingleStringLocal(text, targetLang, isProperName = false, allowManglishFallback = true, allowSubstringReplace = true) {
   if (!text || !text.trim()) return text;
   const cleanedText = normalizeMalayalamChillaksharam(text).replace(/\s*Detail generated from your request:\s*"[^"]*"\.?\s*/gi, " ").replace(/\s{2,}/g, " ").trim();
   if (!cleanedText) return text;
@@ -2697,24 +2963,46 @@ function translateSingleStringLocal(text, targetLang, isProperName = false) {
     }
   }
   let result = cleanedText;
-  for (const entry of PHRASE_MAP) {
-    const targetVal = getPhraseTargetValue(entry, targetLang);
-    for (const srcKey of ["ml", "en", "ar", "hi", "ur", "ta"]) {
-      if (srcKey === targetLang) continue;
-      const srcVal = entry[srcKey];
-      if (srcVal && srcVal.length >= 4 && result.includes(srcVal)) {
-        result = result.split(srcVal).join(targetVal);
+  const isFullMalayalamSentence = /[\u0D00-\u0D7F]/.test(cleanedText) && (cleanedText.split(/\s+/).filter(Boolean).length >= 3 || /[.\u0964!?]$/.test(cleanedText));
+  if (allowSubstringReplace && !isFullMalayalamSentence) {
+    const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    for (const entry of PHRASE_MAP) {
+      const targetVal = getPhraseTargetValue(entry, targetLang);
+      for (const srcKey of ["ml", "en", "ar", "hi", "ur", "ta"]) {
+        if (srcKey === targetLang) continue;
+        const srcVal = entry[srcKey];
+        if (!srcVal || srcVal.length < 4 || !result.includes(srcVal)) continue;
+        if (/[\u0D00-\u0D7F]/.test(srcVal)) {
+          const boundedRx = new RegExp(
+            `(?<![\\u0D00-\\u0D7F])${escapeRegex(srcVal)}(?![\\u0D00-\\u0D7F])`,
+            "g"
+          );
+          result = result.replace(boundedRx, targetVal);
+        } else {
+          result = result.split(srcVal).join(targetVal);
+        }
       }
     }
   }
-  if (targetLang === "en" && /[\u0D00-\u0D7F]/.test(result)) {
+  if (allowManglishFallback && targetLang === "en" && /[\u0D00-\u0D7F]/.test(result)) {
     result = convertMalayalamToEnglish(result, isProperName);
   }
   return result;
 }
-function applyLocalLanguageConversionToCv(cv, targetLang) {
-  const tr = (s) => translateSingleStringLocal(s, targetLang, false);
-  const trName = (s) => translateSingleStringLocal(s, targetLang, true);
+function applyLocalLanguageConversionToCv(cv, targetLang, serverSafeMode = false) {
+  const allowFallback = !serverSafeMode;
+  const ensurePureEnglishForCv = (val) => {
+    if (targetLang !== "en" || serverSafeMode || !/[\u0D00-\u0D7F]/.test(val)) return val;
+    return convertMalayalamToEnglish(val, true);
+  };
+  const tr = (s) => {
+    const firstPass = translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+    if (targetLang === "en" && !serverSafeMode && /[\u0D00-\u0D7F]/.test(firstPass)) {
+      return ensurePureEnglishForCv(firstPass);
+    }
+    return firstPass;
+  };
+  const trName = (s) => translateSingleStringLocal(s, targetLang, true, allowFallback, allowFallback);
   return {
     ...cv,
     fullName: trName(cv.fullName),
@@ -2746,9 +3034,10 @@ function applyLocalLanguageConversionToCv(cv, targetLang) {
     signatureName: cv.signatureName ? trName(cv.signatureName) : trName(cv.fullName)
   };
 }
-function applyLocalLanguageConversionToLetter(letter, targetLang) {
-  const tr = (s) => translateSingleStringLocal(s, targetLang);
-  const trName = (s) => translateSingleStringLocal(s, targetLang, true);
+function applyLocalLanguageConversionToLetter(letter, targetLang, serverSafeMode = false) {
+  const allowFallback = !serverSafeMode;
+  const tr = (s) => translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+  const trName = (s) => translateSingleStringLocal(s, targetLang, true, allowFallback, allowFallback);
   return {
     ...letter,
     documentHeading: tr(letter.documentHeading),
@@ -2768,6 +3057,350 @@ function applyLocalLanguageConversionToLetter(letter, targetLang) {
       label: tr(f.label),
       value: tr(f.value)
     })) : letter.structuredFields
+  };
+}
+function translateAgreementTextSemantic(raw, targetLang) {
+  const s = normalizeMalayalamChillaksharam(raw || "").trim();
+  if (!s) return s;
+  if (/^വാടക\s*കരാർ(?:\s*\(.*\))?$/i.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "RENTAL AGREEMENT";
+      case "ar":
+        return "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631";
+      case "hi":
+        return "\u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 (RENTAL AGREEMENT)";
+      case "ta":
+        return "\u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD";
+      case "ur":
+        return "\u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1 (RENTAL AGREEMENT)";
+      default:
+        return null;
+    }
+  }
+  if (/^സത്യവാങ്മൂലം(?:\s*\(.*\))?$/i.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "SWORN AFFIDAVIT";
+      case "ar":
+        return "\u0625\u0642\u0631\u0627\u0631 \u0645\u0634\u0641\u0648\u0639 \u0628\u0627\u0644\u064A\u0645\u064A\u0646";
+      case "hi":
+        return "\u0936\u092A\u0925 \u092A\u0924\u094D\u0930 (AFFIDAVIT)";
+      case "ta":
+        return "\u0B9A\u0BA4\u0BCD\u0BA4\u0BBF\u0BAF\u0BAA\u0BCD\u0BAA\u0BBF\u0BB0\u0BAE\u0BBE\u0BA3\u0BAA\u0BCD \u0BAA\u0BA4\u0BCD\u0BA4\u0BBF\u0BB0\u0BAE\u0BCD";
+      case "ur":
+        return "\u062D\u0644\u0641 \u0646\u0627\u0645\u06C1 (AFFIDAVIT)";
+      default:
+        return null;
+    }
+  }
+  const partyAddrMatch = s.match(
+    /^(.+?)\s*\(\s*വിലാസം\s*:\s*([^,)]+?)(?:\s*,\s*ഫോൺ\s*:\s*([^)]+))?\s*\)\.?$/
+  );
+  if (partyAddrMatch) {
+    const name = translateSingleStringLocal(partyAddrMatch[1].trim(), targetLang, true);
+    const addrRaw = partyAddrMatch[2].trim();
+    const addr = /^[.\s\-_]+$/.test(addrRaw) ? addrRaw : translateSingleStringLocal(addrRaw, targetLang, true);
+    const phone = partyAddrMatch[3]?.trim();
+    switch (targetLang) {
+      case "en":
+        return `${name} (Address: ${addr}${phone ? `, Phone: ${phone}` : ""}).`;
+      case "ar":
+        return `${name} (\u0627\u0644\u0639\u0646\u0648\u0627\u0646: ${addr}${phone ? `\u060C \u0627\u0644\u0647\u0627\u062A\u0641: ${phone}` : ""}).`;
+      case "hi":
+        return `${name} (\u092A\u0924\u093E: ${addr}${phone ? `, \u092B\u094B\u0928: ${phone}` : ""}).`;
+      case "ta":
+        return `${name} (\u0BAE\u0BC1\u0B95\u0BB5\u0BB0\u0BBF: ${addr}${phone ? `, \u0BA4\u0BCA\u0BB2\u0BC8\u0BAA\u0BC7\u0B9A\u0BBF: ${phone}` : ""}).`;
+      case "ur":
+        return `${name} (\u067E\u062A\u06C1: ${addr}${phone ? `\u060C \u0641\u0648\u0646: ${phone}` : ""}).`;
+      default:
+        return null;
+    }
+  }
+  const distOwnerMatch = s.match(
+    /^(.+?)\s+ജില്ലയിൽ\s+(.+?)\s+(?:സ്വദേശിയായ|താമസിക്കുന്ന)\s+(.+?)(?:\s*\(\s*ഫോൺ\s*:\s*([^)]+)\s*\))?\.?$/
+  );
+  if (distOwnerMatch) {
+    const district = translateSingleStringLocal(distOwnerMatch[1].trim(), targetLang, true);
+    const place = translateSingleStringLocal(distOwnerMatch[2].trim(), targetLang, true);
+    const name = translateSingleStringLocal(distOwnerMatch[3].trim(), targetLang, true);
+    const phone = distOwnerMatch[4]?.trim();
+    switch (targetLang) {
+      case "en":
+        return `${name}, residing at ${place}, ${district} District${phone ? ` (Phone: ${phone})` : ""}.`;
+      case "ar":
+        return `${name}\u060C \u0627\u0644\u0645\u0642\u064A\u0645 \u0641\u064A ${place}\u060C \u0645\u0646\u0637\u0642\u0629 ${district}${phone ? ` (\u0627\u0644\u0647\u0627\u062A\u0641: ${phone})` : ""}.`;
+      case "hi":
+        return `${name}, \u0928\u093F\u0935\u093E\u0938\u0940 ${place}, \u091C\u093F\u0932\u093E ${district}${phone ? ` (\u092B\u094B\u0928: ${phone})` : ""}.`;
+      case "ta":
+        return `${name}, \u0BB5\u0B9A\u0BBF\u0BAA\u0BCD\u0BAA\u0BBF\u0B9F\u0BAE\u0BCD ${place}, ${district} \u0BAE\u0BBE\u0BB5\u0B9F\u0BCD\u0B9F\u0BAE\u0BCD${phone ? ` (\u0BA4\u0BCA\u0BB2\u0BC8\u0BAA\u0BC7\u0B9A\u0BBF: ${phone})` : ""}.`;
+      case "ur":
+        return `${name}\u060C \u0633\u0627\u06A9\u0646 ${place}\u060C \u0636\u0644\u0639 ${district}${phone ? ` (\u0641\u0648\u0646: ${phone})` : ""}.`;
+      default:
+        return null;
+    }
+  }
+  const preambleMatch = s.match(
+    /^ഒന്നാം കക്ഷിയുടെ\s*\((.+?)\)\s*ഉടമസ്ഥതയിലുള്ള കെട്ടിടം രണ്ടാം കക്ഷിക്ക്\s*\((.+?)\)\s*(\d+)\s*മാസത്തേക്ക്/
+  );
+  if (preambleMatch) {
+    const owner = translateSingleStringLocal(preambleMatch[1].trim(), targetLang, true);
+    const tenant = translateSingleStringLocal(preambleMatch[2].trim(), targetLang, true);
+    const months = preambleMatch[3].trim();
+    switch (targetLang) {
+      case "en":
+        return `This Rental Agreement is mutually executed between the First Party / Landlord (${owner}) and the Second Party / Tenant (${tenant}) for leasing the scheduled building for a period of ${months} months subject to the terms and conditions set forth below.`;
+      case "ar":
+        return `\u062A\u0645 \u0625\u0628\u0631\u0627\u0645 \u0639\u0642\u062F \u0627\u0644\u0625\u064A\u062C\u0627\u0631 \u0647\u0630\u0627 \u0628\u0627\u0644\u062A\u0631\u0627\u0636\u064A \u0628\u064A\u0646 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644 / \u0627\u0644\u0645\u0624\u062C\u0631 (${owner}) \u0648\u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A / \u0627\u0644\u0645\u0633\u062A\u0623\u062C\u0631 (${tenant}) \u0644\u062A\u0623\u062C\u064A\u0631 \u0627\u0644\u0639\u0642\u0627\u0631 \u0627\u0644\u0645\u0630\u0643\u0648\u0631 \u0644\u0645\u062F\u0629 ${months} \u0634\u0647\u0631\u0627\u064B \u0648\u0641\u0642\u0627\u064B \u0644\u0644\u0634\u0631\u0648\u0637 \u0648\u0627\u0644\u0623\u062D\u0643\u0627\u0645 \u0627\u0644\u062A\u0627\u0644\u064A\u0629.`;
+      case "hi":
+        return `\u092F\u0939 \u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927 \u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937 / \u092E\u0915\u093E\u0928 \u092E\u093E\u0932\u093F\u0915 (${owner}) \u0914\u0930 \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 / \u0915\u093F\u0930\u093E\u092F\u0947\u0926\u093E\u0930 (${tenant}) \u0915\u0947 \u092C\u0940\u091A \u0928\u0940\u091A\u0947 \u0926\u0940 \u0917\u0908 \u0936\u0930\u094D\u0924\u094B\u0902 \u0915\u0947 \u0905\u0927\u0940\u0928 ${months} \u092E\u0939\u0940\u0928\u094B\u0902 \u0915\u0940 \u0905\u0935\u0927\u093F \u0915\u0947 \u0932\u093F\u090F \u092D\u0935\u0928 \u0915\u094B \u0915\u093F\u0930\u093E\u090F \u092A\u0930 \u0926\u0947\u0928\u0947 \u0939\u0947\u0924\u0941 \u0906\u092A\u0938\u0940 \u0938\u0939\u092E\u0924\u093F \u0938\u0947 \u0928\u093F\u0937\u094D\u092A\u093E\u0926\u093F\u0924 \u0915\u093F\u092F\u093E \u091C\u093E\u0924\u093E \u0939\u0948\u0964`;
+      case "ta":
+        return `\u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD / \u0B89\u0BB0\u0BBF\u0BAE\u0BC8\u0BAF\u0BBE\u0BB3\u0BB0\u0BCD (${owner}) \u0BAE\u0BB1\u0BCD\u0BB1\u0BC1\u0BAE\u0BCD \u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD / \u0BB5\u0BBE\u0B9F\u0B95\u0BC8\u0BA4\u0BBE\u0BB0\u0BB0\u0BCD (${tenant}) \u0B86\u0B95\u0BBF\u0BAF \u0B87\u0BB0\u0BC1\u0BB5\u0BB0\u0BC1\u0BAE\u0BCD \u0B95\u0BC0\u0BB4\u0BCD\u0B95\u0BCD\u0B95\u0BA3\u0BCD\u0B9F \u0BA8\u0BBF\u0BAA\u0BA8\u0BCD\u0BA4\u0BA9\u0BC8\u0B95\u0BB3\u0BC1\u0B95\u0BCD\u0B95\u0BC1 \u0B89\u0B9F\u0BCD\u0BAA\u0B9F\u0BCD\u0B9F\u0BC1 ${months} \u0BAE\u0BBE\u0BA4 \u0B95\u0BBE\u0BB2\u0BA4\u0BCD\u0BA4\u0BBF\u0BB1\u0BCD\u0B95\u0BC1 \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BA4\u0BCD\u0BA4\u0BC8 \u0BB5\u0BBE\u0B9F\u0B95\u0BC8\u0B95\u0BCD\u0B95\u0BC1 \u0BB5\u0BBF\u0B9F\u0BC1\u0BB5\u0BA4\u0BB1\u0BCD\u0B95\u0BBE\u0BA9 \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD.`;
+      case "ur":
+        return `\u06CC\u06C1 \u06A9\u0631\u0627\u06CC\u06C1 \u0646\u0627\u0645\u06C1 \u0641\u0631\u06CC\u0642 \u0627\u0648\u0644 / \u0645\u0627\u0644\u06A9 \u0645\u06A9\u0627\u0646 (${owner}) \u0627\u0648\u0631 \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 / \u06A9\u0631\u0627\u06CC\u06C1 \u062F\u0627\u0631 (${tenant}) \u06A9\u06D2 \u062F\u0631\u0645\u06CC\u0627\u0646 \u062F\u0631\u062C \u0630\u06CC\u0644 \u0634\u0631\u0627\u0626\u0637 \u06A9\u06D2 \u062A\u062D\u062A ${months} \u0645\u0627\u06C1 \u06A9\u06CC \u0645\u062F\u062A \u06A9\u06D2 \u0644\u06CC\u06D2 \u0639\u0645\u0627\u0631\u062A \u06A9\u0631\u0627\u06CC\u06C1 \u067E\u0631 \u062F\u06CC\u0646\u06D2 \u06A9\u06D2 \u0644\u06CC\u06D2 \u0628\u0627\u06C1\u0645\u06CC \u0631\u0636\u0627\u0645\u0646\u062F\u06CC \u0633\u06D2 \u062A\u062D\u0631\u06CC\u0631 \u06A9\u06CC\u0627 \u06AF\u06CC\u0627 \u06C1\u06D2\u06D4`;
+      default:
+        return null;
+    }
+  }
+  if (/^ഒന്നാം കക്ഷിയുടെ ഉടമസ്ഥതയിലുള്ള (?:കെട്ടിടം|വീട്|മുറി).*വാടകയ്ക്ക് നൽകുന്ന കരാർ/.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "Rental Agreement mutually executed for leasing the building owned by the First Party (Landlord) to the Second Party (Tenant) under the terms and conditions stated below.";
+      case "ar":
+        return "\u0639\u0642\u062F \u0625\u064A\u062C\u0627\u0631 \u0645\u0628\u0631\u0645 \u0628\u0627\u0644\u062A\u0631\u0627\u0636\u064A \u0644\u062A\u0623\u062C\u064A\u0631 \u0627\u0644\u0639\u0642\u0627\u0631 \u0627\u0644\u0645\u0645\u0644\u0648\u0643 \u0644\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644 (\u0627\u0644\u0645\u0624\u062C\u0631) \u0625\u0644\u0649 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A (\u0627\u0644\u0645\u0633\u062A\u0623\u062C\u0631) \u0648\u0641\u0642\u0627\u064B \u0644\u0644\u0634\u0631\u0648\u0637 \u0627\u0644\u062A\u0627\u0644\u064A\u0629.";
+      case "hi":
+        return "\u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937 (\u092E\u0915\u093E\u0928 \u092E\u093E\u0932\u093F\u0915) \u0915\u0947 \u0938\u094D\u0935\u093E\u092E\u093F\u0924\u094D\u0935 \u0935\u093E\u0932\u0947 \u092D\u0935\u0928 \u0915\u094B \u0928\u0940\u091A\u0947 \u0926\u0940 \u0917\u0908 \u0936\u0930\u094D\u0924\u094B\u0902 \u092A\u0930 \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 (\u0915\u093F\u0930\u093E\u092F\u0947\u0926\u093E\u0930) \u0915\u094B \u0915\u093F\u0930\u093E\u090F \u092A\u0930 \u0926\u0947\u0928\u0947 \u0939\u0947\u0924\u0941 \u0928\u093F\u0937\u094D\u092A\u093E\u0926\u093F\u0924 \u0915\u093F\u0930\u093E\u092F\u093E \u0905\u0928\u0941\u092C\u0902\u0927\u0964";
+      case "ta":
+        return "\u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BC1\u0B95\u0BCD\u0B95\u0BC1 \u0B9A\u0BCA\u0BA8\u0BCD\u0BA4\u0BAE\u0BBE\u0BA9 \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BA4\u0BCD\u0BA4\u0BC8 \u0B95\u0BC0\u0BB4\u0BCD\u0B95\u0BCD\u0B95\u0BA3\u0BCD\u0B9F \u0BA8\u0BBF\u0BAA\u0BA8\u0BCD\u0BA4\u0BA9\u0BC8\u0B95\u0BB3\u0BC1\u0B95\u0BCD\u0B95\u0BC1 \u0B89\u0B9F\u0BCD\u0BAA\u0B9F\u0BCD\u0B9F\u0BC1 \u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BC1\u0B95\u0BCD\u0B95\u0BC1 \u0BB5\u0BBE\u0B9F\u0B95\u0BC8\u0B95\u0BCD\u0B95\u0BC1 \u0BB5\u0BBF\u0B9F\u0BC1\u0BAE\u0BCD \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BAE\u0BCD.";
+      case "ur":
+        return "\u0641\u0631\u06CC\u0642 \u0627\u0648\u0644 \u06A9\u06CC \u0645\u0644\u06A9\u06CC\u062A \u0648\u0627\u0644\u06CC \u0639\u0645\u0627\u0631\u062A \u06A9\u0648 \u062F\u0631\u062C \u0630\u06CC\u0644 \u0634\u0631\u0627\u0626\u0637 \u067E\u0631 \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 \u06A9\u0648 \u06A9\u0631\u0627\u06CC\u06C1 \u067E\u0631 \u062F\u06CC\u0646\u06D2 \u06A9\u0627 \u0645\u0639\u0627\u06C1\u062F\u06C1\u06D4";
+      default:
+        return null;
+    }
+  }
+  const clause1Full = s.match(
+    /^(?:(\d+)\.\s*)?പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള\s*(?:₹\s*)?([\d,]+)\/?-?\s*രൂപ/
+  );
+  if (clause1Full) {
+    const num = clause1Full[1] || "1";
+    const amt = clause1Full[2].trim();
+    switch (targetLang) {
+      case "en":
+        return `${num}. The Second Party (Tenant) shall pay the agreed monthly rent of \u20B9${amt}/- to the First Party (Landlord) on or before the 5th day of every calendar month.`;
+      case "ar":
+        return `${num}. \u064A\u0644\u062A\u0632\u0645 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A (\u0627\u0644\u0645\u0633\u062A\u0623\u062C\u0631) \u0628\u062F\u0641\u0639 \u0627\u0644\u0625\u064A\u062C\u0627\u0631 \u0627\u0644\u0634\u0647\u0631\u064A \u0627\u0644\u0645\u062A\u0641\u0642 \u0639\u0644\u064A\u0647 \u0648\u0642\u062F\u0631\u0647 \u20B9${amt}/- \u0644\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644 (\u0627\u0644\u0645\u0624\u062C\u0631) \u0641\u064A \u0645\u0648\u0639\u062F \u0623\u0642\u0635\u0627\u0647 \u0627\u0644\u064A\u0648\u0645 \u0627\u0644\u062E\u0627\u0645\u0633 \u0645\u0646 \u0643\u0644 \u0634\u0647\u0631.`;
+      case "hi":
+        return `${num}. \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 (\u0915\u093F\u0930\u093E\u092F\u0947\u0926\u093E\u0930) \u092A\u094D\u0930\u0924\u094D\u092F\u0947\u0915 \u092E\u093E\u0939 \u0915\u0940 5 \u0924\u093E\u0930\u0940\u0916 \u0924\u0915 \u092A\u094D\u0930\u0925\u092E \u092A\u0915\u094D\u0937 (\u092E\u0915\u093E\u0928 \u092E\u093E\u0932\u093F\u0915) \u0915\u094B \u0928\u093F\u0930\u094D\u0927\u093E\u0930\u093F\u0924 \u092E\u093E\u0938\u093F\u0915 \u0915\u093F\u0930\u093E\u092F\u093E \u20B9${amt}/- \u0915\u093E \u092D\u0941\u0917\u0924\u093E\u0928 \u0915\u0930\u0947\u0917\u093E\u0964`;
+      case "ta":
+        return `${num}. \u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BCD \u0B92\u0BB5\u0BCD\u0BB5\u0BCA\u0BB0\u0BC1 \u0BAE\u0BBE\u0BA4\u0BAE\u0BC1\u0BAE\u0BCD 5-\u0B86\u0BAE\u0BCD \u0BA4\u0BC7\u0BA4\u0BBF\u0B95\u0BCD\u0B95\u0BC1\u0BB3\u0BCD \u0BA8\u0BBF\u0BB0\u0BCD\u0BA3\u0BAF\u0BBF\u0B95\u0BCD\u0B95\u0BAA\u0BCD\u0BAA\u0B9F\u0BCD\u0B9F \u0BAE\u0BBE\u0BA4 \u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u20B9${amt}/- \u0B90 \u0BAE\u0BC1\u0BA4\u0BB2\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BC1\u0B95\u0BCD\u0B95\u0BC1 \u0B9A\u0BC6\u0BB2\u0BC1\u0BA4\u0BCD\u0BA4 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD.`;
+      case "ur":
+        return `${num}. \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 \u06C1\u0631 \u0645\u0627\u06C1 \u06A9\u06CC 5 \u062A\u0627\u0631\u06CC\u062E \u062A\u06A9 \u0637\u06D2 \u0634\u062F\u06C1 \u0645\u0627\u06C1\u0627\u0646\u06C1 \u06A9\u0631\u0627\u06CC\u06C1 \u20B9${amt}/- \u0641\u0631\u06CC\u0642 \u0627\u0648\u0644 \u06A9\u0648 \u0627\u062F\u0627 \u06A9\u0631\u06D2 \u06AF\u0627\u06D4`;
+      default:
+        return null;
+    }
+  }
+  const clause1Short = s.match(
+    /^(?:(\d+)\.\s*)?(?:പ്രതിമാസ\s*വാടക|മാസവാടക)\s*(?:[:\-]?\s*)?(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ(?:യാണ്)?|ആണ്)?\.?$/
+  );
+  if (clause1Short) {
+    const num = clause1Short[1] || "1";
+    const amt = clause1Short[2].trim();
+    switch (targetLang) {
+      case "en":
+        return `${num}. The agreed monthly rent is \u20B9${amt}/- payable on or before the 5th of every month.`;
+      case "ar":
+        return `${num}. \u0627\u0644\u0625\u064A\u062C\u0627\u0631 \u0627\u0644\u0634\u0647\u0631\u064A \u0627\u0644\u0645\u062A\u0641\u0642 \u0639\u0644\u064A\u0647 \u0647\u0648 \u20B9${amt}/- \u0648\u064A\u062F\u0641\u0639 \u0641\u064A \u0645\u0648\u0639\u062F \u0623\u0642\u0635\u0627\u0647 \u0627\u0644\u062E\u0627\u0645\u0633 \u0645\u0646 \u0643\u0644 \u0634\u0647\u0631.`;
+      case "hi":
+        return `${num}. \u092E\u093E\u0938\u093F\u0915 \u0915\u093F\u0930\u093E\u092F\u093E \u20B9${amt}/- \u0928\u093F\u0930\u094D\u0927\u093E\u0930\u093F\u0924 \u0939\u0948\u0964`;
+      case "ta":
+        return `${num}. \u0BAE\u0BBE\u0BA4\u0BBE\u0BA8\u0BCD\u0BA4\u0BBF\u0BB0 \u0BB5\u0BBE\u0B9F\u0B95\u0BC8 \u20B9${amt}/- \u0B86\u0B95\u0BC1\u0BAE\u0BCD.`;
+      case "ur":
+        return `${num}. \u0637\u06D2 \u0634\u062F\u06C1 \u0645\u0627\u06C1\u0627\u0646\u06C1 \u06A9\u0631\u0627\u06CC\u06C1 \u20B9${amt}/- \u06C1\u06D2\u06D4`;
+      default:
+        return null;
+    }
+  }
+  const clause2Full = s.match(
+    /^(?:(\d+)\.\s*)?(?:പലിശയില്ലാത്ത\s*)?(?:അഡ്വാൻസ്|മുൻകൂർ)\s*(?:തുകയായ|തുക)?\s*(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ)?/
+  );
+  if (clause2Full) {
+    const num = clause2Full[1] || "2";
+    const amt = clause2Full[2].trim();
+    switch (targetLang) {
+      case "en":
+        return `${num}. The interest-free security advance deposit of \u20B9${amt}/- shall be refunded to the Second Party at the time of vacating the premises, after deducting any pending arrears or damages.`;
+      case "ar":
+        return `${num}. \u064A\u062A\u0645 \u0627\u0633\u062A\u0631\u062F\u0627\u062F \u0645\u0628\u0644\u063A \u0627\u0644\u062A\u0623\u0645\u064A\u0646 \u0627\u0644\u0645\u0642\u062F\u0645 (\u0628\u062F\u0648\u0646 \u0641\u0648\u0627\u0626\u062F) \u0648\u0642\u062F\u0631\u0647 \u20B9${amt}/- \u0644\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A \u0639\u0646\u062F \u0625\u062E\u0644\u0627\u0621 \u0627\u0644\u0639\u0642\u0627\u0631 \u0628\u0639\u062F \u062E\u0635\u0645 \u0623\u064A \u0645\u0633\u062A\u062D\u0642\u0627\u062A \u0623\u0648 \u0623\u0636\u0631\u0627\u0631 \u0625\u0646 \u0648\u062C\u062F\u062A.`;
+      case "hi":
+        return `${num}. \u20B9${amt}/- \u0915\u0940 \u092C\u094D\u092F\u093E\u091C-\u092E\u0941\u0915\u094D\u0924 \u0905\u0917\u094D\u0930\u093F\u092E \u0938\u0941\u0930\u0915\u094D\u0937\u093E \u0930\u093E\u0936\u093F (Advance) \u092A\u0930\u093F\u0938\u0930 \u0916\u093E\u0932\u0940 \u0915\u0930\u0924\u0947 \u0938\u092E\u092F \u0915\u093F\u0938\u0940 \u092D\u0940 \u092C\u0915\u093E\u092F\u093E \u092F\u093E \u0915\u094D\u0937\u0924\u093F \u0915\u0940 \u0915\u091F\u094C\u0924\u0940 \u0915\u0947 \u092C\u093E\u0926 \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 \u0915\u094B \u0935\u093E\u092A\u0938 \u0915\u0930 \u0926\u0940 \u091C\u093E\u090F\u0917\u0940\u0964`;
+      case "ta":
+        return `${num}. \u0BB5\u0B9F\u0BCD\u0B9F\u0BBF\u0BAF\u0BBF\u0BB2\u0BCD\u0BB2\u0BBE \u0BAE\u0BC1\u0BA9\u0BCD\u0BAA\u0BA3\u0BAE\u0BBE\u0BA9 \u20B9${amt}/- \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BA4\u0BCD\u0BA4\u0BC8 \u0B95\u0BBE\u0BB2\u0BBF \u0B9A\u0BC6\u0BAF\u0BCD\u0BAF\u0BC1\u0BAE\u0BCD\u0BAA\u0BCB\u0BA4\u0BC1 \u0BA8\u0BBF\u0BB2\u0BC1\u0BB5\u0BC8\u0BA4\u0BCD \u0BA4\u0BCA\u0B95\u0BC8 \u0B85\u0BB2\u0BCD\u0BB2\u0BA4\u0BC1 \u0B9A\u0BC7\u0BA4\u0B99\u0BCD\u0B95\u0BB3\u0BCD \u0B8F\u0BA4\u0BC7\u0BA9\u0BC1\u0BAE\u0BCD \u0B87\u0BB0\u0BC1\u0BA8\u0BCD\u0BA4\u0BBE\u0BB2\u0BCD \u0B95\u0BB4\u0BBF\u0BA4\u0BCD\u0BA4\u0BC1\u0BB5\u0BBF\u0B9F\u0BCD\u0B9F\u0BC1 \u0BA4\u0BBF\u0BB0\u0BC1\u0BAA\u0BCD\u0BAA\u0BBF\u0BA4\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0B9F\u0BC1\u0BAE\u0BCD.`;
+      case "ur":
+        return `${num}. \u20B9${amt}/- \u06A9\u06CC \u0628\u0644\u0627 \u0633\u0648\u062F \u0627\u06CC\u0688\u0648\u0627\u0646\u0633 \u0631\u0642\u0645 \u0639\u0645\u0627\u0631\u062A \u062E\u0627\u0644\u06CC \u06A9\u0631\u062A\u06D2 \u0648\u0642\u062A \u06A9\u0633\u06CC \u0628\u06BE\u06CC \u0628\u0642\u0627\u06CC\u0627 \u06CC\u0627 \u0646\u0642\u0635\u0627\u0646 \u06A9\u06CC \u06A9\u0679\u0648\u062A\u06CC \u06A9\u06D2 \u0628\u0639\u062F \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 \u06A9\u0648 \u0648\u0627\u067E\u0633 \u06A9\u0631 \u062F\u06CC \u062C\u0627\u0626\u06D2 \u06AF\u06CC\u06D4`;
+      default:
+        return null;
+    }
+  }
+  const clause3Match = s.match(/^(?:(\d+)\.\s*)?കരാർ കാലാവധി\s*(\d+)\s*മാസമായിരിക്കും/);
+  if (clause3Match) {
+    const num = clause3Match[1] || "3";
+    const months = clause3Match[2].trim();
+    switch (targetLang) {
+      case "en":
+        return `${num}. The duration of this lease agreement shall be ${months} months and may be renewed thereafter upon mutual written consent of both parties.`;
+      case "ar":
+        return `${num}. \u0645\u062F\u0629 \u0647\u0630\u0627 \u0627\u0644\u0639\u0642\u062F ${months} \u0634\u0647\u0631\u0627\u064B\u060C \u0648\u064A\u0645\u0643\u0646 \u062A\u062C\u062F\u064A\u062F\u0647 \u0628\u0639\u062F \u0627\u0646\u062A\u0647\u0627\u0621 \u0627\u0644\u0645\u062F\u0629 \u0628\u0645\u0648\u0627\u0641\u0642\u0629 \u0627\u0644\u0637\u0631\u0641\u064A\u0646 \u0627\u0644\u0645\u062A\u0628\u0627\u062F\u0644\u0629.`;
+      case "hi":
+        return `${num}. \u0905\u0928\u0941\u092C\u0902\u0927 \u0915\u0940 \u0905\u0935\u0927\u093F ${months} \u092E\u093E\u0939 \u0939\u094B\u0917\u0940\u0964 \u0905\u0935\u0927\u093F \u0938\u092E\u093E\u092A\u094D\u0924 \u0939\u094B\u0928\u0947 \u0915\u0947 \u092C\u093E\u0926 \u0926\u094B\u0928\u094B\u0902 \u092A\u0915\u094D\u0937\u094B\u0902 \u0915\u0940 \u0906\u092A\u0938\u0940 \u0938\u0939\u092E\u0924\u093F \u0938\u0947 \u0905\u0928\u0941\u092C\u0902\u0927 \u0915\u093E \u0928\u0935\u0940\u0928\u0940\u0915\u0930\u0923 \u0915\u093F\u092F\u093E \u091C\u093E \u0938\u0915\u0924\u093E \u0939\u0948\u0964`;
+      case "ta":
+        return `${num}. \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0B95\u0BCD \u0B95\u0BBE\u0BB2\u0BAE\u0BCD ${months} \u0BAE\u0BBE\u0BA4\u0B99\u0BCD\u0B95\u0BB3\u0BBE\u0B95\u0BC1\u0BAE\u0BCD. \u0B95\u0BBE\u0BB2\u0BAE\u0BCD \u0BAE\u0BC1\u0B9F\u0BBF\u0BA8\u0BCD\u0BA4 \u0BAA\u0BBF\u0BB1\u0B95\u0BC1 \u0B87\u0BB0\u0BC1 \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BBF\u0BA9\u0BCD \u0BAA\u0BB0\u0BB8\u0BCD\u0BAA\u0BB0 \u0B9A\u0BAE\u0BCD\u0BAE\u0BA4\u0BA4\u0BCD\u0BA4\u0BC1\u0B9F\u0BA9\u0BCD \u0B92\u0BAA\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BA4\u0BCD\u0BA4\u0BC8\u0BAA\u0BCD \u0BAA\u0BC1\u0BA4\u0BC1\u0BAA\u0BCD\u0BAA\u0BBF\u0B95\u0BCD\u0B95\u0BB2\u0BBE\u0BAE\u0BCD.`;
+      case "ur":
+        return `${num}. \u0645\u0639\u0627\u06C1\u062F\u06D2 \u06A9\u06CC \u0645\u062F\u062A ${months} \u0645\u0627\u06C1 \u06C1\u0648\u06AF\u06CC\u06D4 \u0645\u062F\u062A \u067E\u0648\u0631\u06CC \u06C1\u0648\u0646\u06D2 \u06A9\u06D2 \u0628\u0639\u062F \u062F\u0648\u0646\u0648\u06BA \u0641\u0631\u06CC\u0642\u06CC\u0646 \u06A9\u06CC \u0628\u0627\u06C1\u0645\u06CC \u0631\u0636\u0627\u0645\u0646\u062F\u06CC \u0633\u06D2 \u0645\u0639\u0627\u06C1\u062F\u06D2 \u06A9\u06CC \u062A\u062C\u062F\u06CC\u062F \u06A9\u06CC \u062C\u0627 \u0633\u06A9\u06D2 \u06AF\u06CC\u06D4`;
+      default:
+        return null;
+    }
+  }
+  if (/^(?:\d+\.\s*)?വൈദ്യുതി\s*(?:ചാർജ്ജ്|ബിൽ)?[,\s]*വെള്ളക്കരം/.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "4. Electricity charges and water bills incurred during the occupancy period shall be paid promptly every month by the Second Party.";
+      case "ar":
+        return "4. \u064A\u0644\u062A\u0632\u0645 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A \u0628\u0633\u062F\u0627\u062F \u0641\u0648\u0627\u062A\u064A\u0631 \u0627\u0644\u0643\u0647\u0631\u0628\u0627\u0621 \u0648\u0627\u0644\u0645\u064A\u0627\u0647 \u0627\u0644\u0634\u0647\u0631\u064A\u0629 \u0628\u0627\u0646\u062A\u0638\u0627\u0645 \u0637\u0648\u0627\u0644 \u0641\u062A\u0631\u0629 \u0627\u0644\u0625\u064A\u062C\u0627\u0631.";
+      case "hi":
+        return "4. \u092C\u093F\u091C\u0932\u0940 \u0914\u0930 \u092A\u093E\u0928\u0940 \u0915\u0947 \u092C\u093F\u0932\u094B\u0902 \u0915\u093E \u092D\u0941\u0917\u0924\u093E\u0928 \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 \u0926\u094D\u0935\u093E\u0930\u093E \u0928\u093F\u092F\u092E\u093F\u0924 \u0930\u0942\u092A \u0938\u0947 \u0939\u0930 \u092E\u0939\u0940\u0928\u0947 \u0915\u093F\u092F\u093E \u091C\u093E\u090F\u0917\u093E\u0964";
+      case "ta":
+        return "4. \u0BAE\u0BBF\u0BA9\u0BCD \u0B95\u0B9F\u0BCD\u0B9F\u0BA3\u0BAE\u0BCD \u0BAE\u0BB1\u0BCD\u0BB1\u0BC1\u0BAE\u0BCD \u0B95\u0BC1\u0B9F\u0BBF\u0BA8\u0BC0\u0BB0\u0BCD \u0B95\u0B9F\u0BCD\u0B9F\u0BA3\u0BAE\u0BCD \u0B86\u0B95\u0BBF\u0BAF\u0BB5\u0BB1\u0BCD\u0BB1\u0BC8 \u0B87\u0BB0\u0BA3\u0BCD\u0B9F\u0BBE\u0BAE\u0BCD \u0BA4\u0BB0\u0BAA\u0BCD\u0BAA\u0BBF\u0BA9\u0BB0\u0BC7 \u0B85\u0BA8\u0BCD\u0BA4\u0BA8\u0BCD\u0BA4 \u0BAE\u0BBE\u0BA4\u0B99\u0BCD\u0B95\u0BB3\u0BBF\u0BB2\u0BCD \u0B9A\u0BC6\u0BB2\u0BC1\u0BA4\u0BCD\u0BA4 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD.";
+      case "ur":
+        return "4. \u0628\u062C\u0644\u06CC \u0627\u0648\u0631 \u067E\u0627\u0646\u06CC \u06A9\u06D2 \u0628\u0644 \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 \u06A9\u0648 \u06C1\u0631 \u0645\u0627\u06C1 \u0628\u0627\u0642\u0627\u0639\u062F\u06AF\u06CC \u0633\u06D2 \u062E\u0648\u062F \u0627\u062F\u0627 \u06A9\u0631\u0646\u06D2 \u06C1\u0648\u06BA \u06AF\u06D2\u06D4";
+      default:
+        return null;
+    }
+  }
+  if (/^(?:\d+\.\s*)?കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ/.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "5. The Second Party shall not sublet the rented premises or carry out any structural alterations without prior consent of the First Party.";
+      case "ar":
+        return "5. \u0644\u0627 \u064A\u062C\u0648\u0632 \u0644\u0644\u0637\u0631\u0641 \u0627\u0644\u062B\u0627\u0646\u064A \u062A\u0623\u062C\u064A\u0631 \u0627\u0644\u0639\u0642\u0627\u0631 \u0645\u0646 \u0627\u0644\u0628\u0627\u0637\u0646 \u0623\u0648 \u0625\u062C\u0631\u0627\u0621 \u0623\u064A \u062A\u0639\u062F\u064A\u0644\u0627\u062A \u0647\u064A\u0643\u0644\u064A\u0629 \u062F\u0648\u0646 \u0645\u0648\u0627\u0641\u0642\u0629 \u0627\u0644\u0637\u0631\u0641 \u0627\u0644\u0623\u0648\u0644.";
+      case "hi":
+        return "5. \u0926\u094D\u0935\u093F\u0924\u0940\u092F \u092A\u0915\u094D\u0937 \u092D\u0935\u0928 \u0915\u094B \u0909\u092A-\u0915\u093F\u0930\u093E\u090F (Sublet) \u092A\u0930 \u0928\u0939\u0940\u0902 \u0926\u0947\u0917\u093E \u0914\u0930 \u0928 \u0939\u0940 \u0915\u094B\u0908 \u0938\u0902\u0930\u091A\u0928\u093E\u0924\u094D\u092E\u0915 \u092A\u0930\u093F\u0935\u0930\u094D\u0924\u0928 \u0915\u0930\u0947\u0917\u093E\u0964";
+      case "ta":
+        return "5. \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BA4\u0BCD\u0BA4\u0BC8 \u0B89\u0BB3\u0BCD\u0BB5\u0BBE\u0B9F\u0B95\u0BC8\u0B95\u0BCD\u0B95\u0BC1 \u0BB5\u0BBF\u0B9F\u0BB5\u0BCB \u0B85\u0BB2\u0BCD\u0BB2\u0BA4\u0BC1 \u0B85\u0BAE\u0BC8\u0BAA\u0BCD\u0BAA\u0BBF\u0BB2\u0BCD \u0BAE\u0BBE\u0BB1\u0BCD\u0BB1\u0BAE\u0BCD \u0B9A\u0BC6\u0BAF\u0BCD\u0BAF\u0BB5\u0BCB \u0B95\u0BC2\u0B9F\u0BBE\u0BA4\u0BC1.";
+      case "ur":
+        return "5. \u0641\u0631\u06CC\u0642 \u062F\u0648\u0645 \u0639\u0645\u0627\u0631\u062A \u06A9\u0648 \u0630\u06CC\u0644\u06CC \u06A9\u0631\u0627\u06CC\u06C1 \u067E\u0631 \u0646\u06C1\u06CC\u06BA \u062F\u06D2 \u06AF\u0627 \u0627\u0648\u0631 \u0646\u06C1 \u06C1\u06CC \u0627\u0633 \u06A9\u06CC \u0633\u0627\u062E\u062A \u0645\u06CC\u06BA \u06A9\u0648\u0626\u06CC \u062A\u0628\u062F\u06CC\u0644\u06CC \u06A9\u0631\u06D2 \u06AF\u0627\u06D4";
+      default:
+        return null;
+    }
+  }
+  if (/^വസ്തുവിന്റെ\s*\/\s*കെട്ടിടത്തിന്റെ വിവരണം/.test(s)) {
+    switch (targetLang) {
+      case "en":
+        return "Property / Building Description (District, Taluk, Village, Ward, Building No.): ........................";
+      case "ar":
+        return "\u0648\u0635\u0641 \u0627\u0644\u0639\u0642\u0627\u0631 / \u0627\u0644\u0645\u0628\u0646\u0649 (\u0627\u0644\u0645\u0646\u0637\u0642\u0629\u060C \u0627\u0644\u0642\u0631\u064A\u0629\u060C \u0627\u0644\u062D\u064A\u060C \u0631\u0642\u0645 \u0627\u0644\u0645\u0628\u0646\u0649): ........................";
+      case "hi":
+        return "\u0938\u0902\u092A\u0924\u094D\u0924\u093F / \u092D\u0935\u0928 \u0915\u093E \u0935\u093F\u0935\u0930\u0923 (\u091C\u093F\u0932\u093E, \u0924\u093E\u0932\u0941\u0915\u093E, \u0917\u093E\u0902\u0935, \u0935\u093E\u0930\u094D\u0921, \u092D\u0935\u0928 \u0938\u0902\u0916\u094D\u092F\u093E): ........................";
+      case "ta":
+        return "\u0B9A\u0BCA\u0BA4\u0BCD\u0BA4\u0BC1 / \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F \u0BB5\u0BBF\u0BB5\u0BB0\u0BAE\u0BCD (\u0BAE\u0BBE\u0BB5\u0B9F\u0BCD\u0B9F\u0BAE\u0BCD, \u0BA4\u0BBE\u0BB2\u0BC1\u0B95\u0BBE, \u0B95\u0BBF\u0BB0\u0BBE\u0BAE\u0BAE\u0BCD, \u0BB5\u0BBE\u0BB0\u0BCD\u0B9F\u0BC1, \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F \u0B8E\u0BA3\u0BCD): ........................";
+      case "ur":
+        return "\u062C\u0627\u0626\u06CC\u062F\u0627\u062F / \u0639\u0645\u0627\u0631\u062A \u06A9\u06CC \u062A\u0641\u0635\u06CC\u0644 (\u0636\u0644\u0639\u060C \u062A\u0639\u0644\u0642\u06C1\u060C \u06AF\u0627\u0624\u06BA\u060C \u0648\u0627\u0631\u0688\u060C \u0628\u0644\u0688\u0646\u06AF \u0646\u0645\u0628\u0631): ........................";
+      default:
+        return null;
+    }
+  }
+  const schedMatch = s.match(
+    /^(.+?)\s*ജില്ല,\s*(.+?)\s*തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും\.?$/
+  );
+  if (schedMatch) {
+    const dist = translateSingleStringLocal(schedMatch[1].trim(), targetLang, true);
+    const place = translateSingleStringLocal(schedMatch[2].trim(), targetLang, true);
+    switch (targetLang) {
+      case "en":
+        return `Building and appurtenant amenities situated within the local self-government limits of ${place}, ${dist} District.`;
+      case "ar":
+        return `\u0627\u0644\u0645\u0628\u0646\u0649 \u0648\u0627\u0644\u0645\u0631\u0627\u0641\u0642 \u0627\u0644\u062A\u0627\u0628\u0639\u0629 \u0644\u0647 \u0627\u0644\u0648\u0627\u0642\u0639 \u0636\u0645\u0646 \u062D\u062F\u0648\u062F \u0627\u0644\u0628\u0644\u062F\u064A\u0629 \u0641\u064A ${place}\u060C \u0645\u0646\u0637\u0642\u0629 ${dist}.`;
+      case "hi":
+        return `${dist} \u091C\u093F\u0932\u093E, ${place} \u0938\u094D\u0925\u093E\u0928\u0940\u092F \u0938\u094D\u0935\u0936\u093E\u0938\u0928 \u0938\u0940\u092E\u093E \u0915\u0947 \u0905\u0902\u0924\u0930\u094D\u0917\u0924 \u0938\u094D\u0925\u093F\u0924 \u092D\u0935\u0928 \u090F\u0935\u0902 \u0938\u0902\u092C\u0926\u094D\u0927 \u0938\u0941\u0935\u093F\u0927\u093E\u090F\u0901\u0964`;
+      case "ta":
+        return `${dist} \u0BAE\u0BBE\u0BB5\u0B9F\u0BCD\u0B9F\u0BAE\u0BCD, ${place} \u0B89\u0BB3\u0BCD\u0BB3\u0BBE\u0B9F\u0BCD\u0B9A\u0BBF \u0B8E\u0BB2\u0BCD\u0BB2\u0BC8\u0B95\u0BCD\u0B95\u0BC1\u0B9F\u0BCD\u0BAA\u0B9F\u0BCD\u0B9F \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BAE\u0BCD \u0BAE\u0BB1\u0BCD\u0BB1\u0BC1\u0BAE\u0BCD \u0B87\u0BA3\u0BC8\u0BA8\u0BCD\u0BA4 \u0BB5\u0B9A\u0BA4\u0BBF\u0B95\u0BB3\u0BCD.`;
+      case "ur":
+        return `${dist} \u0636\u0644\u0639\u060C ${place} \u0644\u0648\u06A9\u0644 \u0628\u0627\u0688\u06CC \u062D\u062F\u0648\u062F \u0645\u06CC\u06BA \u0648\u0627\u0642\u0639 \u0639\u0645\u0627\u0631\u062A \u0627\u0648\u0631 \u0645\u062A\u0639\u0644\u0642\u06C1 \u0633\u06C1\u0648\u0644\u06CC\u0627\u062A\u06D4`;
+      default:
+        return null;
+    }
+  }
+  const shortSchedMatch = s.match(
+    /^(.+?)\s*(?:യിലുള്ള|ലുള്ള)\s*കെട്ടിട(?:ം|വും)?(?:\s+.*)?\.?$/
+  );
+  if (shortSchedMatch) {
+    const place = translateSingleStringLocal(shortSchedMatch[1].trim(), targetLang, true);
+    switch (targetLang) {
+      case "en":
+        return `Building and premises situated in ${place}.`;
+      case "ar":
+        return `\u0627\u0644\u0645\u0628\u0646\u0649 \u0627\u0644\u0648\u0627\u0642\u0639 \u0641\u064A ${place}.`;
+      case "hi":
+        return `${place} \u092E\u0947\u0902 \u0938\u094D\u0925\u093F\u0924 \u092D\u0935\u0928\u0964`;
+      case "ta":
+        return `${place}-\u0B87\u0BB2\u0BCD \u0B85\u0BAE\u0BC8\u0BA8\u0BCD\u0BA4\u0BC1\u0BB3\u0BCD\u0BB3 \u0B95\u0B9F\u0BCD\u0B9F\u0BBF\u0B9F\u0BAE\u0BCD.`;
+      case "ur":
+        return `${place} \u0645\u06CC\u06BA \u0648\u0627\u0642\u0639 \u0639\u0645\u0627\u0631\u062A\u06D4`;
+      default:
+        return null;
+    }
+  }
+  const witnessMatch = s.match(
+    /^(\d+)\.\s*സാക്ഷിയുടെ പേരും വിലാസവും\s*:\s*(.+?)\s*\(\s*ഒപ്പ്\s*:\s*([^)]+)\s*\)$/
+  );
+  if (witnessMatch) {
+    const idx = witnessMatch[1].trim();
+    const restRaw = witnessMatch[2].trim();
+    const rest = /^[.,\s\-_]+$/.test(restRaw) ? restRaw : translateSingleStringLocal(restRaw, targetLang, true);
+    const sig = witnessMatch[3].trim();
+    switch (targetLang) {
+      case "en":
+        return `${idx}. Witness Name & Address: ${rest} (Signature: ${sig})`;
+      case "ar":
+        return `${idx}. \u0627\u0633\u0645 \u0627\u0644\u0634\u0627\u0647\u062F \u0648\u0639\u0646\u0648\u0627\u0646\u0647: ${rest} (\u0627\u0644\u062A\u0648\u0642\u064A\u0639: ${sig})`;
+      case "hi":
+        return `${idx}. \u0917\u0935\u093E\u0939 \u0915\u093E \u0928\u093E\u092E \u0914\u0930 \u092A\u0924\u093E: ${rest} (\u0939\u0938\u094D\u0924\u093E\u0915\u094D\u0937\u0930: ${sig})`;
+      case "ta":
+        return `${idx}. \u0B9A\u0BBE\u0B9F\u0BCD\u0B9A\u0BBF\u0BAF\u0BBF\u0BA9\u0BCD \u0BAA\u0BC6\u0BAF\u0BB0\u0BCD \u0BAE\u0BB1\u0BCD\u0BB1\u0BC1\u0BAE\u0BCD \u0BAE\u0BC1\u0B95\u0BB5\u0BB0\u0BBF: ${rest} (\u0B95\u0BC8\u0BAF\u0BCA\u0BAA\u0BCD\u0BAA\u0BAE\u0BCD: ${sig})`;
+      case "ur":
+        return `${idx}. \u06AF\u0648\u0627\u06C1 \u06A9\u0627 \u0646\u0627\u0645 \u0627\u0648\u0631 \u067E\u062A\u06C1: ${rest} (\u062F\u0633\u062A\u062E\u0637: ${sig})`;
+      default:
+        return null;
+    }
+  }
+  return null;
+}
+function applyLocalLanguageConversionToAgreement(agreement, targetLang, allowManglishFallback = true) {
+  if (targetLang === "ml") return agreement;
+  const tr = (s) => {
+    const semantic = translateAgreementTextSemantic(s, targetLang);
+    if (semantic !== null) return semantic;
+    return translateSingleStringLocal(s, targetLang, false, allowManglishFallback, allowManglishFallback);
+  };
+  const trName = (s) => {
+    if (!s || /^[.\s\-_]+$/.test(s.trim())) return s;
+    const semantic = translateAgreementTextSemantic(s, targetLang);
+    if (semantic !== null) return semantic;
+    return translateSingleStringLocal(s, targetLang, true, allowManglishFallback, allowManglishFallback);
+  };
+  return {
+    ...agreement,
+    titleMalayalam: tr(agreement.titleMalayalam),
+    executionPlace: trName(agreement.executionPlace),
+    firstPartyLabel: tr(agreement.firstPartyLabel),
+    firstPartyDetails: trName(agreement.firstPartyDetails),
+    secondPartyLabel: tr(agreement.secondPartyLabel),
+    secondPartyDetails: trName(agreement.secondPartyDetails),
+    preambleParagraph: trName(agreement.preambleParagraph),
+    clauses: (agreement.clauses || []).map(trName),
+    schedulePropertyDetails: trName(agreement.schedulePropertyDetails),
+    witnesses: (agreement.witnesses || []).map(trName),
+    ...agreement.scheduleHeadingOverride ? { scheduleHeadingOverride: tr(agreement.scheduleHeadingOverride) } : {},
+    ...agreement.witnessesHeadingOverride ? { witnessesHeadingOverride: tr(agreement.witnessesHeadingOverride) } : {}
   };
 }
 
@@ -5643,6 +6276,78 @@ function buildFollowUpsForGovForm(form, currentLetter) {
   const letter = currentLetter || convertGovFormToLetterData(form);
   return buildEditableQuestionsForLetter(letter);
 }
+function extractCleanComplaintOrPetitionDetails(rawPrompt) {
+  const cleanedPrompt = normalizeSpokenMalayalamTranscript(rawPrompt || "").normalize("NFC").trim();
+  const isComplaint = /പരാതി|അതിനെതിരെ|ഇതിനെതിരെ|കടിച്ചു|നക്കി|ആക്രമ|ഉപദ്രവ|ഭീഷണി|മോഷണം|തട്ടിപ്പ്|ശല്യം|\bcomplaint\b/i.test(
+    cleanedPrompt
+  );
+  let core = cleanedPrompt.replace(
+    /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഞങ്ങളുടെ\s*)?(?:ഒരു\s*)?(?:പോലീസ്\s*സ്റ്റേഷനിൽ|പഞ്ചായത്ത്\s*സെക്രട്ടറിക്ക്|വില്ലേജ്\s*ഓഫീസർക്ക്|തഹസിൽദാർക്ക്|കലക്ടർക്ക്|സെക്രട്ടറിക്ക്|പഞ്ചായത്തിൽ|വില്ലേജ്\s*ഓഫീസിൽ)\s*(?:കൊടുക്കാൻ|സമർപ്പിക്കാൻ|നൽകാൻ)?\s*(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)?\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)?\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
+    " "
+  ).replace(
+    /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)?\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
+    " "
+  ).replace(/(?:അതിനെതിരെയാണ്|ഇതിനെതിരെയാണ്|അതിനെതിരെ|ഇതിനെതിരെ)\s*(?:പരാതി|കേസ്)?/gi, " ").replace(/^(?:ദയവായി|ഹലോ|നമസ്കാരം|സർ)\s+/gi, " ").replace(
+    /\bplease\s+(?:write|prepare|make|create|draft)\s+(?:a\s+)?(?:complaint|letter|application|petition)(?:\s+for\s+me)?\b/gi,
+    " "
+  ).replace(/\s{2,}/g, " ").replace(/^[,.\-–—\s]+|[,.\-–—\s]+$/g, "").trim();
+  if (!core || /^(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|പോലീസ്\s*പരാതി)$/i.test(core)) {
+    core = "";
+  }
+  return {
+    cleanedPrompt,
+    coreIncident: core,
+    isComplaint
+  };
+}
+function buildCleanCustomLetterFromPrompt(rawPrompt, currentLetter) {
+  const { cleanedPrompt, coreIncident, isComplaint } = extractCleanComplaintOrPetitionDetails(rawPrompt);
+  const todayMl = (/* @__PURE__ */ new Date()).toLocaleDateString("ml-IN");
+  const loc = extractKeralaPlaceAndDistrict(cleanedPrompt);
+  const hasUserSenderName = Boolean(currentLetter?.senderName?.trim()) && currentLetter?.senderName !== "\u0D30\u0D3E\u0D1C\u0D7B \u0D15\u0D46. \u0D35\u0D3F." && !currentLetter?.senderName?.includes("[");
+  const cleanPlace = loc.found ? loc.place : currentLetter?.place && currentLetter.place !== "\u0D15\u0D47\u0D30\u0D33\u0D02" ? currentLetter.place : "\u0D15\u0D47\u0D30\u0D33\u0D02";
+  const cleanSenderAddress = loc.found ? loc.place !== loc.district ? `${loc.place}, ${loc.district} \u0D1C\u0D3F\u0D32\u0D4D\u0D32, \u0D15\u0D47\u0D30\u0D33\u0D02` : `${loc.place}, \u0D15\u0D47\u0D30\u0D33\u0D02` : currentLetter?.senderAddress && !currentLetter.senderAddress.includes("[") ? currentLetter.senderAddress : "";
+  const isPoliceOrAnimalIncident = isComplaint && /പോലീസ്|സ്റ്റേഷൻ|കടിച്ചു|നക്കി|ആക്രമ|മോഷണം|ഭീഷണി|തല്ലി|അടിച്ചു|പൂച്ച|നായ|പട്ടി|\bpolice\b/i.test(
+    cleanedPrompt
+  );
+  const isPanchayatSecretaryTarget = /പഞ്ചായത്ത്|സെക്രട്ടറി|മുൻസിപ്പാലിറ്റി|നഗരസഭ|വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|ഓട|കലുങ്ക്|മാലിന്യ|panchayat|municipality|secretary/i.test(
+    cleanedPrompt
+  );
+  const isVillageOfficerTarget = /വില്ലേജ്|തഹസിൽദാർ|village\s*office/i.test(cleanedPrompt);
+  const documentHeading = isComplaint ? "\u0D2A\u0D30\u0D3E\u0D24\u0D3F (COMPLAINT)" : "\u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37";
+  const recipientTitle = isPoliceOrAnimalIncident ? "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D47\u0D37\u0D7B \u0D39\u0D57\u0D38\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D7C (SHO) / \u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F \u0D05\u0D35\u0D7C\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D," : isPanchayatSecretaryTarget ? "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D38\u0D46\u0D15\u0D4D\u0D30\u0D1F\u0D4D\u0D1F\u0D31\u0D3F \u0D05\u0D35\u0D7C\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D," : isVillageOfficerTarget ? "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D7C \u0D05\u0D35\u0D7C\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D," : "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F / \u0D38\u0D46\u0D15\u0D4D\u0D30\u0D1F\u0D4D\u0D1F\u0D31\u0D3F \u0D05\u0D35\u0D7C\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D,";
+  const recipientOffice = isPoliceOrAnimalIncident ? cleanPlace !== "\u0D15\u0D47\u0D30\u0D33\u0D02" ? `${cleanPlace} \u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D47\u0D37\u0D7B,` : "\u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D47\u0D37\u0D7B," : isPanchayatSecretaryTarget ? cleanPlace !== "\u0D15\u0D47\u0D30\u0D33\u0D02" ? `${cleanPlace} \u0D17\u0D4D\u0D30\u0D3E\u0D2E\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24\u0D4D / \u0D2E\u0D41\u0D7B\u0D38\u0D3F\u0D2A\u0D4D\u0D2A\u0D3E\u0D32\u0D3F\u0D31\u0D4D\u0D31\u0D3F \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D3E\u0D32\u0D2F\u0D02,` : "\u0D17\u0D4D\u0D30\u0D3E\u0D2E\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24\u0D4D \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D3E\u0D32\u0D2F\u0D02," : isVillageOfficerTarget ? cleanPlace !== "\u0D15\u0D47\u0D30\u0D33\u0D02" ? `${cleanPlace} \u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D4D,` : "\u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D4D," : cleanPlace !== "\u0D15\u0D47\u0D30\u0D33\u0D02" ? `${cleanPlace} \u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D13\u0D2B\u0D40\u0D38\u0D4D,` : "\u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D3E\u0D32\u0D2F\u0D02,";
+  const recipientPlace = loc.found ? `${loc.district}.` : `${cleanPlace}.`;
+  const incidentDisplay = coreIncident || cleanedPrompt;
+  const subject = isComplaint ? coreIncident ? `${incidentDisplay} \u2014 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D05\u0D28\u0D4D\u0D35\u0D47\u0D37\u0D23\u0D02 \u0D28\u0D1F\u0D24\u0D4D\u0D24\u0D3F \u0D09\u0D1A\u0D3F\u0D24\u0D2E\u0D3E\u0D2F \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D2A\u0D30\u0D3E\u0D24\u0D3F.` : "\u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D05\u0D28\u0D4D\u0D35\u0D47\u0D37\u0D23\u0D02 \u0D28\u0D1F\u0D24\u0D4D\u0D24\u0D3F \u0D09\u0D1A\u0D3F\u0D24\u0D2E\u0D3E\u0D2F \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D2A\u0D30\u0D3E\u0D24\u0D3F." : coreIncident ? `${incidentDisplay} \u0D38\u0D02\u0D2C\u0D28\u0D4D\u0D27\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37.` : "\u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37.";
+  const bodyParagraphs = isComplaint ? [
+    "\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D1E\u0D3E\u0D7B \u0D05\u0D19\u0D4D\u0D19\u0D2F\u0D41\u0D1F\u0D46 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D36\u0D4D\u0D30\u0D26\u0D4D\u0D27\u0D2F\u0D3F\u0D32\u0D47\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D2E\u0D3E\u0D2F\u0D3F \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D2A\u0D30\u0D3E\u0D24\u0D3F.",
+    coreIncident ? `\u0D38\u0D02\u0D2D\u0D35 \u0D35\u0D3F\u0D35\u0D30\u0D23\u0D02: ${incidentDisplay}. \u0D08 \u0D38\u0D02\u0D2D\u0D35\u0D02 \u0D2E\u0D42\u0D32\u0D02 \u0D0E\u0D28\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D15\u0D41\u0D1F\u0D41\u0D02\u0D2C\u0D24\u0D4D\u0D24\u0D3F\u0D28\u0D41\u0D02 \u0D35\u0D32\u0D3F\u0D2F \u0D06\u0D36\u0D19\u0D4D\u0D15\u0D2F\u0D41\u0D02 \u0D2C\u0D41\u0D26\u0D4D\u0D27\u0D3F\u0D2E\u0D41\u0D1F\u0D4D\u0D1F\u0D41\u0D02 \u0D28\u0D47\u0D30\u0D3F\u0D1F\u0D47\u0D23\u0D4D\u0D1F\u0D3F\u0D35\u0D28\u0D4D\u0D28\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D.` : "\u0D2A\u0D4D\u0D30\u0D38\u0D4D\u0D24\u0D41\u0D24 \u0D38\u0D02\u0D2D\u0D35\u0D02 \u0D2E\u0D42\u0D32\u0D02 \u0D0E\u0D28\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D15\u0D41\u0D1F\u0D41\u0D02\u0D2C\u0D24\u0D4D\u0D24\u0D3F\u0D28\u0D41\u0D02 \u0D35\u0D32\u0D3F\u0D2F \u0D06\u0D36\u0D19\u0D4D\u0D15\u0D2F\u0D41\u0D02 \u0D2C\u0D41\u0D26\u0D4D\u0D27\u0D3F\u0D2E\u0D41\u0D1F\u0D4D\u0D1F\u0D41\u0D02 \u0D28\u0D47\u0D30\u0D3F\u0D1F\u0D47\u0D23\u0D4D\u0D1F\u0D3F\u0D35\u0D28\u0D4D\u0D28\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D.",
+    "\u0D06\u0D2F\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D2E\u0D47\u0D7D\u0D2A\u0D4D\u0D2A\u0D31\u0D1E\u0D4D\u0D1E \u0D35\u0D3F\u0D37\u0D2F\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30\u0D2E\u0D3E\u0D2F\u0D3F \u0D38\u0D4D\u0D25\u0D32\u0D35\u0D41\u0D02 \u0D38\u0D3E\u0D39\u0D1A\u0D30\u0D4D\u0D2F\u0D35\u0D41\u0D02 \u0D2A\u0D30\u0D3F\u0D36\u0D4B\u0D27\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D15\u0D41\u0D31\u0D4D\u0D31\u0D15\u0D4D\u0D15\u0D3E\u0D7C\u0D15\u0D4D\u0D15\u0D46\u0D24\u0D3F\u0D30\u0D46 / \u0D09\u0D24\u0D4D\u0D24\u0D30\u0D35\u0D3E\u0D26\u0D3F\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D46\u0D24\u0D3F\u0D30\u0D46 \u0D09\u0D1A\u0D3F\u0D24\u0D2E\u0D3E\u0D2F \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D15\u0D7E \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D41\u0D02 \u0D07\u0D24\u0D4D\u0D24\u0D30\u0D02 \u0D38\u0D02\u0D2D\u0D35\u0D19\u0D4D\u0D19\u0D7E \u0D06\u0D35\u0D7C\u0D24\u0D4D\u0D24\u0D3F\u0D15\u0D4D\u0D15\u0D3E\u0D24\u0D3F\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D3E\u0D7B \u0D35\u0D47\u0D23\u0D4D\u0D1F \u0D38\u0D02\u0D30\u0D15\u0D4D\u0D37\u0D23\u0D02 \u0D28\u0D7D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D41\u0D02 \u0D35\u0D3F\u0D28\u0D40\u0D24\u0D2E\u0D3E\u0D2F\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41."
+  ] : [
+    coreIncident ? `\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D1E\u0D3E\u0D7B \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D31\u0D2F\u0D41\u0D28\u0D4D\u0D28 \u0D35\u0D3F\u0D37\u0D2F\u0D02 \u0D05\u0D19\u0D4D\u0D19\u0D2F\u0D41\u0D1F\u0D46 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D36\u0D4D\u0D30\u0D26\u0D4D\u0D27\u0D2F\u0D3F\u0D7D\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D28\u0D4D\u0D28\u0D41: ${incidentDisplay}. \u0D07\u0D24\u0D41\u0D2E\u0D42\u0D32\u0D02 \u0D2A\u0D4D\u0D30\u0D26\u0D47\u0D36\u0D35\u0D3E\u0D38\u0D3F\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D2A\u0D4A\u0D24\u0D41\u0D1C\u0D28\u0D19\u0D4D\u0D19\u0D7E\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D35\u0D32\u0D3F\u0D2F \u0D2C\u0D41\u0D26\u0D4D\u0D27\u0D3F\u0D2E\u0D41\u0D1F\u0D4D\u0D1F\u0D4D \u0D28\u0D47\u0D30\u0D3F\u0D1F\u0D47\u0D23\u0D4D\u0D1F\u0D3F\u0D35\u0D30\u0D41\u0D28\u0D4D\u0D28\u0D41\u0D23\u0D4D\u0D1F\u0D4D.` : "\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D1E\u0D3E\u0D7B \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D47\u0D15\u0D4D\u0D15\u0D3E\u0D2F\u0D3F \u0D08 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37 \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41.",
+    "\u0D06\u0D2F\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D2A\u0D4D\u0D30\u0D38\u0D4D\u0D24\u0D41\u0D24 \u0D35\u0D3F\u0D37\u0D2F\u0D02 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30\u0D2E\u0D3E\u0D2F\u0D3F \u0D2A\u0D30\u0D3F\u0D36\u0D4B\u0D27\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D0E\u0D24\u0D4D\u0D30\u0D2F\u0D41\u0D02 \u0D35\u0D47\u0D17\u0D02 \u0D2A\u0D30\u0D3F\u0D39\u0D3E\u0D30 \u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D15\u0D7E \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D35\u0D3F\u0D28\u0D40\u0D24\u0D2E\u0D3E\u0D2F\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41."
+  ];
+  const enclosures = isComplaint ? ["\u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D15\u0D28\u0D4D\u0D31\u0D46 \u0D24\u0D3F\u0D30\u0D3F\u0D1A\u0D4D\u0D1A\u0D31\u0D3F\u0D2F\u0D7D \u0D30\u0D47\u0D16 (\u0D06\u0D27\u0D3E\u0D7C \u0D15\u0D3E\u0D7C\u0D21\u0D4D \u0D2A\u0D15\u0D7C\u0D2A\u0D4D\u0D2A\u0D4D)", "\u0D38\u0D02\u0D2D\u0D35\u0D35\u0D41\u0D2E\u0D3E\u0D2F\u0D3F \u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D2B\u0D4B\u0D1F\u0D4D\u0D1F\u0D4B / \u0D24\u0D46\u0D33\u0D3F\u0D35\u0D41\u0D15\u0D7E (\u0D09\u0D23\u0D4D\u0D1F\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D7D)"] : ["\u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D15\u0D28\u0D4D\u0D31\u0D46 \u0D24\u0D3F\u0D30\u0D3F\u0D1A\u0D4D\u0D1A\u0D31\u0D3F\u0D2F\u0D7D \u0D30\u0D47\u0D16 (\u0D09\u0D23\u0D4D\u0D1F\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D7D)"];
+  return {
+    documentHeading,
+    letterLayoutVariant: "official_letter",
+    senderName: hasUserSenderName ? currentLetter.senderName : "",
+    senderAddress: cleanSenderAddress,
+    senderPhone: currentLetter?.senderPhone && currentLetter.senderPhone !== "9847123456" ? currentLetter.senderPhone : "",
+    recipientTitle,
+    recipientOffice,
+    recipientPlace,
+    subject,
+    reference: "",
+    salutation: "\u0D38\u0D7C / \u0D2E\u0D3E\u0D21\u0D02,",
+    bodyParagraphs,
+    closingPhrase: "\u0D35\u0D3F\u0D36\u0D4D\u0D35\u0D38\u0D4D\u0D24\u0D24\u0D2F\u0D4B\u0D1F\u0D46,",
+    place: cleanPlace,
+    date: todayMl,
+    enclosures
+  };
+}
 function matchGovFormFromPrompt(rawPrompt, currentLetter) {
   if (!rawPrompt || !rawPrompt.trim()) return null;
   const prompt = normalizeSpokenMalayalamTranscript(rawPrompt).normalize("NFC").trim();
@@ -5715,7 +6420,7 @@ function matchGovFormFromPrompt(rawPrompt, currentLetter) {
     } else {
       matchedFormId = "madrasa-tc-certificate";
     }
-  } else if (norm.includes("\u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D") || norm.includes("\u0D2A\u0D30\u0D3E\u0D24\u0D3F \u0D15\u0D4A\u0D1F\u0D41\u0D15\u0D4D\u0D15") || norm.includes("\u0D2A\u0D30\u0D3E\u0D24\u0D3F \u0D28\u0D7D\u0D15") || /\b(police|police\s*station|police\s*complaint|petition)\b/i.test(norm)) {
+  } else if (norm.includes("\u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D") || norm.includes("\u0D2A\u0D30\u0D3E\u0D24\u0D3F") || /\b(police|police\s*station|police\s*complaint|complaint|petition)\b/i.test(norm)) {
     matchedFormId = "police-general-complaint";
   } else if (norm.includes("\u0D2C\u0D3E\u0D19\u0D4D\u0D15\u0D4D") || norm.includes("\u0D32\u0D4B\u0D7A") || norm.includes("\u0D05\u0D15\u0D4D\u0D15\u0D57\u0D23\u0D4D\u0D1F\u0D4D") || norm.includes("\u0D2F\u0D41\u0D2A\u0D3F\u0D10") || /\b(bank\s*manager|bank\s*account|education\s*loan|upi)\b/i.test(norm)) {
     matchedFormId = "bank-account-loan-upi-application";
@@ -5729,9 +6434,13 @@ function matchGovFormFromPrompt(rawPrompt, currentLetter) {
     matchedFormId = "experience-salary-certificate-request";
   } else if (norm.includes("\u0D30\u0D3E\u0D1C\u0D3F\u0D15\u0D4D\u0D15\u0D24\u0D4D\u0D24\u0D4D") || norm.includes("\u0D30\u0D3E\u0D1C\u0D3F") || /\b(resignation|resign)\b/i.test(norm)) {
     matchedFormId = "general-company-resignation";
-  } else if (norm.includes("\u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38") || /\b(village\s*office)\b/i.test(norm)) {
+  } else if (prompt.split(/\s+/).filter(Boolean).length <= 5 && !/വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|കുടിവെള്ള|മാലിന്യ|കലുങ്ക്|ഓട|തെരുവുനായ|കാട്ടുപന്നി|നന്നാക്ക|ശുചീകരിക്ക|street\s*light|road|water|repair/i.test(
+    norm
+  ) && (norm.includes("\u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38") || /\b(village\s*office)\b/i.test(norm))) {
     matchedFormId = "edistrict-income";
-  } else if (norm.includes("\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24") || norm.includes("\u0D2E\u0D41\u0D7B\u0D38\u0D3F\u0D2A\u0D4D\u0D2A\u0D3E\u0D32\u0D3F\u0D31\u0D4D\u0D31\u0D3F") || norm.includes("\u0D28\u0D17\u0D30\u0D38\u0D2D") || /\b(panchayat|municipality)\b/i.test(norm)) {
+  } else if (prompt.split(/\s+/).filter(Boolean).length <= 5 && !/വഴിവിളക്ക|തെരുവുവിളക്ക|റോഡ്|കുടിവെള്ള|മാലിന്യ|കലുങ്ക്|ഓട|തെരുവുനായ|കാട്ടുപന്നി|നന്നാക്ക|ശുചീകരിക്ക|street\s*light|road|water|repair/i.test(
+    norm
+  ) && (norm.includes("\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24") || norm.includes("\u0D2E\u0D41\u0D7B\u0D38\u0D3F\u0D2A\u0D4D\u0D2A\u0D3E\u0D32\u0D3F\u0D31\u0D4D\u0D31\u0D3F") || norm.includes("\u0D28\u0D17\u0D30\u0D38\u0D2D") || /\b(panchayat|municipality)\b/i.test(norm))) {
     matchedFormId = "lsgd-building-ownership-permit";
   } else if (!norm.includes("\u0D2E\u0D26\u0D4D\u0D30\u0D38") && !norm.includes("\u0D09\u0D38\u0D4D\u0D24\u0D3E\u0D26\u0D4D") && (prompt.includes("\u0D32\u0D40\u0D35\u0D4D \u0D32\u0D46\u0D31\u0D4D\u0D31\u0D7C") || prompt.includes("\u0D05\u0D35\u0D27\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37") || prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D7C") || prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D31\u0D46") || prompt.includes("\u0D39\u0D46\u0D21\u0D4D\u0D2E\u0D3E\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D7C") || prompt.includes("\u0D2A\u0D4D\u0D30\u0D27\u0D3E\u0D28\u0D3E\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D15") || (prompt.includes("\u0D38\u0D4D\u0D15\u0D42\u0D7E") || prompt.includes("\u0D38\u0D4D\u0D15\u0D42\u0D33\u0D3F\u0D7D") || prompt.includes("\u0D15\u0D4D\u0D32\u0D3E\u0D38\u0D4D")) && (prompt.includes("\u0D05\u0D35\u0D27\u0D3F") || prompt.includes("\u0D32\u0D40\u0D35\u0D4D") || /\bleave\b/i.test(norm)))) {
     const nonNameDativeWords = /* @__PURE__ */ new Set([
@@ -5861,6 +6570,23 @@ function matchGovFormFromPrompt(rawPrompt, currentLetter) {
     if (form) {
       const baseLetter = convertGovFormToLetterData(form);
       const { updated, extractedAny } = applyExtractedDetailsToGovLetter(prompt, baseLetter);
+      if (matchedFormId === "police-general-complaint") {
+        const { coreIncident } = extractCleanComplaintOrPetitionDetails(prompt);
+        if (coreIncident) {
+          updated.subject = `${coreIncident} \u2014 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D05\u0D28\u0D4D\u0D35\u0D47\u0D37\u0D23\u0D02 \u0D28\u0D1F\u0D24\u0D4D\u0D24\u0D3F \u0D09\u0D1A\u0D3F\u0D24\u0D2E\u0D3E\u0D2F \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D2A\u0D30\u0D3E\u0D24\u0D3F.`;
+          updated.bodyParagraphs = [
+            "\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D1E\u0D3E\u0D7B \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D31\u0D2F\u0D41\u0D28\u0D4D\u0D28 \u0D35\u0D3F\u0D37\u0D2F\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D05\u0D19\u0D4D\u0D19\u0D2F\u0D41\u0D1F\u0D46 \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D36\u0D4D\u0D30\u0D26\u0D4D\u0D27\u0D2F\u0D41\u0D02 \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D2F\u0D41\u0D02 \u0D24\u0D47\u0D1F\u0D3F\u0D15\u0D4D\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D4D \u0D2C\u0D4B\u0D27\u0D3F\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D2A\u0D30\u0D3E\u0D24\u0D3F.",
+            `\u0D38\u0D02\u0D2D\u0D35 \u0D35\u0D3F\u0D35\u0D30\u0D23\u0D02: ${coreIncident}. \u0D2A\u0D4D\u0D30\u0D38\u0D4D\u0D24\u0D41\u0D24 \u0D38\u0D02\u0D2D\u0D35\u0D02 \u0D2E\u0D42\u0D32\u0D02 \u0D0E\u0D28\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D02 \u0D15\u0D41\u0D1F\u0D41\u0D02\u0D2C\u0D24\u0D4D\u0D24\u0D3F\u0D28\u0D41\u0D02 \u0D35\u0D32\u0D3F\u0D2F \u0D06\u0D36\u0D19\u0D4D\u0D15\u0D2F\u0D41\u0D02 \u0D2C\u0D41\u0D26\u0D4D\u0D27\u0D3F\u0D2E\u0D41\u0D1F\u0D4D\u0D1F\u0D41\u0D02 \u0D28\u0D47\u0D30\u0D3F\u0D1F\u0D47\u0D23\u0D4D\u0D1F\u0D3F\u0D35\u0D28\u0D4D\u0D28\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D.`,
+            "\u0D06\u0D2F\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D2E\u0D47\u0D7D\u0D2A\u0D4D\u0D2A\u0D31\u0D1E\u0D4D\u0D1E \u0D38\u0D02\u0D2D\u0D35\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30\u0D2E\u0D3E\u0D2F\u0D3F \u0D05\u0D28\u0D4D\u0D35\u0D47\u0D37\u0D23\u0D02 \u0D28\u0D1F\u0D24\u0D4D\u0D24\u0D3F \u0D15\u0D41\u0D31\u0D4D\u0D31\u0D15\u0D4D\u0D15\u0D3E\u0D7C\u0D15\u0D4D\u0D15\u0D46\u0D24\u0D3F\u0D30\u0D46 \u0D09\u0D1A\u0D3F\u0D24\u0D2E\u0D3E\u0D2F \u0D28\u0D3F\u0D2F\u0D2E\u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D15\u0D7E \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D41\u0D02 \u0D0E\u0D28\u0D3F\u0D15\u0D4D\u0D15\u0D4D \u0D28\u0D40\u0D24\u0D3F\u0D2F\u0D41\u0D02 \u0D38\u0D02\u0D30\u0D15\u0D4D\u0D37\u0D23\u0D35\u0D41\u0D02 \u0D32\u0D2D\u0D4D\u0D2F\u0D2E\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D41\u0D02 \u0D35\u0D3F\u0D28\u0D40\u0D24\u0D2E\u0D3E\u0D2F\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41."
+          ];
+          if (updated.structuredFields) {
+            const subjFld = updated.structuredFields.find((f) => f.id === "complaintSubject");
+            if (subjFld) subjFld.value = coreIncident;
+            const detFld = updated.structuredFields.find((f) => f.id === "incidentDetails");
+            if (detFld) detFld.value = coreIncident;
+          }
+        }
+      }
       const followUps = buildFollowUpsForGovForm(form, updated);
       let subFormPromptTitle;
       let subFormOptions;
@@ -5869,9 +6595,7 @@ function matchGovFormFromPrompt(rawPrompt, currentLetter) {
         subFormPromptTitle = "\u{1F693} \u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D47\u0D37\u0D28\u0D3F\u0D7D \u0D0F\u0D24\u0D4D \u0D24\u0D30\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D2A\u0D30\u0D3E\u0D24\u0D3F\u0D2F\u0D3E\u0D23\u0D4D / \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D2F\u0D3E\u0D23\u0D4D \u0D28\u0D7D\u0D15\u0D47\u0D23\u0D4D\u0D1F\u0D24\u0D4D? \u0D24\u0D3E\u0D34\u0D46 \u0D15\u0D3E\u0D23\u0D41\u0D28\u0D4D\u0D28 \u0D32\u0D3F\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D3F\u0D7D \u0D28\u0D3F\u0D28\u0D4D\u0D28\u0D4D \u0D28\u0D3F\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D1F\u0D46 \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D02 \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D15:";
         subFormOptions = POLICE_SUB_FORM_OPTIONS;
         if (matchedFormId === "police-general-complaint") {
-          customIntro = `\u{1F693} \u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D47\u0D37\u0D28\u0D3F\u0D7D \u0D28\u0D7D\u0D15\u0D3E\u0D35\u0D41\u0D28\u0D4D\u0D28 5 \u0D24\u0D30\u0D02 \u0D2A\u0D30\u0D3E\u0D24\u0D3F\u0D15\u0D33\u0D41\u0D1F\u0D46 \u0D32\u0D3F\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D4D \u0D24\u0D3E\u0D34\u0D46 \u0D28\u0D7D\u0D15\u0D3F\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D! \u0D28\u0D3F\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D1F\u0D46 \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D02 \u0D0F\u0D24\u0D3E\u0D23\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D24\u0D3F\u0D7D \u0D28\u0D3F\u0D28\u0D4D\u0D28\u0D4D \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D3E\u0D02.
-
-(\u0D28\u0D3F\u0D32\u0D35\u0D3F\u0D7D "\u0D2A\u0D4A\u0D24\u0D41\u0D35\u0D3E\u0D2F \u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D2A\u0D30\u0D3E\u0D24\u0D3F" \u0D2E\u0D3E\u0D24\u0D43\u0D15\u0D2F\u0D3E\u0D23\u0D4D \u0D24\u0D41\u0D31\u0D28\u0D4D\u0D28\u0D3F\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D4D. \u0D30\u0D47\u0D16\u0D15\u0D7E \u0D28\u0D37\u0D4D\u0D1F\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F\u0D24\u0D3E\u0D23\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D32\u0D4B \u0D38\u0D48\u0D2C\u0D7C \u0D24\u0D1F\u0D4D\u0D1F\u0D3F\u0D2A\u0D4D\u0D2A\u0D3E\u0D23\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D32\u0D4B \u0D24\u0D3E\u0D34\u0D46 \u0D15\u0D3E\u0D23\u0D41\u0D28\u0D4D\u0D28 \u0D2C\u0D1F\u0D4D\u0D1F\u0D23\u0D41\u0D15\u0D33\u0D3F\u0D7D \u0D12\u0D28\u0D4D\u0D28\u0D4D \u0D24\u0D4A\u0D1F\u0D4D\u0D1F\u0D3E\u0D7D \u0D09\u0D1F\u0D7B \u0D06 \u0D2B\u0D4B\u0D2E\u0D3F\u0D32\u0D47\u0D15\u0D4D\u0D15\u0D4D \u0D2E\u0D3E\u0D31\u0D41\u0D02!)`;
+          customIntro = `\u{1F693} \u0D28\u0D3F\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D1F\u0D46 \u0D2A\u0D30\u0D3E\u0D24\u0D3F \u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D! (\u0D2E\u0D31\u0D4D\u0D31\u0D4D 5 \u0D2A\u0D4B\u0D32\u0D40\u0D38\u0D4D \u0D2A\u0D30\u0D3E\u0D24\u0D3F \u0D2E\u0D3E\u0D24\u0D43\u0D15\u0D15\u0D33\u0D3F\u0D7D \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D2E\u0D41\u0D33\u0D4D\u0D33\u0D24\u0D4D \u0D24\u0D3E\u0D34\u0D46 \u0D28\u0D3F\u0D28\u0D4D\u0D28\u0D4D \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D3E\u0D02.)`;
         }
       } else if (matchedFormId === "edistrict-income" && (norm.includes("\u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38") || norm.includes("village office")) && !norm.includes("\u0D35\u0D30\u0D41\u0D2E\u0D3E\u0D28") && !norm.includes("income")) {
         subFormPromptTitle = "\u{1F3DB}\uFE0F \u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D3F\u0D7D \u0D0F\u0D24\u0D4D \u0D38\u0D7C\u0D1F\u0D4D\u0D1F\u0D3F\u0D2B\u0D3F\u0D15\u0D4D\u0D15\u0D31\u0D4D\u0D31\u0D3F\u0D28\u0D3E\u0D23\u0D4D \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D47\u0D23\u0D4D\u0D1F\u0D24\u0D4D? \u0D24\u0D3E\u0D34\u0D46 \u0D15\u0D3E\u0D23\u0D41\u0D28\u0D4D\u0D28 \u0D32\u0D3F\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D3F\u0D7D \u0D28\u0D3F\u0D28\u0D4D\u0D28\u0D4D \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D15:";
@@ -6616,33 +7340,36 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
   }
   const isResignationPrompt = prompt.includes("\u0D30\u0D3E\u0D1C\u0D3F") || prompt.includes("\u0D30\u0D3E\u0D1C\u0D4D\u0D2F\u0D15\u0D4D\u0D15\u0D24\u0D4D\u0D24\u0D4D") || lower.includes("resign") || lower.includes("relieving");
   const isReligiousBody = prompt.includes("\u0D2A\u0D33\u0D4D\u0D33\u0D3F") || prompt.includes("\u0D2E\u0D39\u0D32\u0D4D\u0D32\u0D4D") || prompt.includes("\u0D1C\u0D2E\u0D3E\u0D05\u0D24\u0D4D\u0D24\u0D4D") || prompt.includes("\u0D15\u0D2E\u0D4D\u0D2E\u0D3F\u0D31\u0D4D\u0D31\u0D3F") || prompt.includes("\u0D38\u0D2E\u0D3F\u0D24\u0D3F") || prompt.includes("\u0D15\u0D4D\u0D37\u0D47\u0D24\u0D4D\u0D30\u0D02") || prompt.includes("\u0D07\u0D1F\u0D35\u0D15") || lower.includes("mahallu") || lower.includes("mosque") || lower.includes("committee") || lower.includes("parish");
-  const isGulfCvPrompt = !isExplicitLetterOrGovPrompt && (preferredCategory === "gulf_cv" || prompt.includes("\u0D38\u0D3F\u0D35\u0D3F") || prompt.includes("\u0D2C\u0D2F\u0D4B\u0D21\u0D3E\u0D31\u0D4D\u0D31") || prompt.includes("\u0D17\u0D7E\u0D2B\u0D4D") || prompt.includes("\u0D26\u0D41\u0D2C\u0D3E\u0D2F\u0D4D") || prompt.includes("\u0D2F\u0D41\u0D0E\u0D07") || prompt.includes("\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") || prompt.includes("\u0D15\u0D41\u0D15\u0D4D\u0D15\u0D4D") || /\bcv\b/i.test(prompt) || lower.includes("biodata") || lower.includes("resume") || lower.includes("work history") || lower.includes("professional summary") || lower.includes("visa") || lower.includes("dubai") || lower.includes("uae"));
+  const isGulfCvPrompt = !isExplicitLetterOrGovPrompt && (preferredCategory === "gulf_cv" || prompt.includes("\u0D38\u0D3F\u0D35\u0D3F") || prompt.includes("\u0D2C\u0D2F\u0D4B\u0D21\u0D3E\u0D31\u0D4D\u0D31") || prompt.includes("\u0D17\u0D7E\u0D2B\u0D4D") || prompt.includes("\u0D26\u0D41\u0D2C\u0D3E\u0D2F\u0D4D") || prompt.includes("\u0D2F\u0D41\u0D0E\u0D07") || prompt.includes("\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") || prompt.includes("\u0D15\u0D41\u0D15\u0D4D\u0D15\u0D4D") || /\bcv\b/i.test(prompt) || lower.includes("biodata") || lower.includes("resume") || lower.includes("work history") || lower.includes("professional summary") || lower.includes("visa") || lower.includes("dubai") || lower.includes("uae") || lower.includes("saudi") || lower.includes("qatar") || lower.includes("oman") || lower.includes("kuwait") || lower.includes("bahrain") || /\b\d+\s*(?:years?|yrs?)\s+(?:of\s+)?experience\b/i.test(prompt) || /\bmy\s+name\s+is\b/i.test(prompt));
   const isAgreementPrompt = !isGulfCvPrompt && !isExplicitLetterOrGovPrompt && (preferredCategory === "rental_agreement" || prompt.includes("\u0D35\u0D3E\u0D1F\u0D15") || prompt.includes("\u0D15\u0D30\u0D3E\u0D7C") || prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") || prompt.includes("\u0D2E\u0D41\u0D26\u0D4D\u0D30\u0D2A\u0D4D\u0D2A\u0D24\u0D4D\u0D30\u0D02") || /\brent\b/i.test(prompt) || /\brental\b/i.test(prompt) || /\bagreement\b/i.test(prompt) || /\baffidavit\b/i.test(prompt));
   const isSchoolSpeechPrompt = prompt.includes("\u0D2A\u0D4D\u0D30\u0D38\u0D02\u0D17\u0D02") || prompt.includes("\u0D05\u0D38\u0D02\u0D2C\u0D4D\u0D32\u0D3F") || lower.includes("speech");
   const isProjectCoverPrompt = prompt.includes("\u0D2A\u0D4D\u0D30\u0D4B\u0D1C\u0D15\u0D4D\u0D31\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D15\u0D35\u0D7C \u0D2A\u0D47\u0D1C\u0D4D") || prompt.includes("\u0D2B\u0D4D\u0D30\u0D23\u0D4D\u0D1F\u0D4D \u0D2A\u0D47\u0D1C\u0D4D") || lower.includes("project cover") || lower.includes("front page");
   const isSchoolLeavePrompt = !isResignationPrompt && (prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D31\u0D46") || prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D7C") || prompt.includes("\u0D15\u0D4D\u0D32\u0D3E\u0D38\u0D4D \u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D7C") || prompt.includes("\u0D39\u0D46\u0D21\u0D4D\u0D2E\u0D3E\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D7C") || prompt.includes("\u0D2A\u0D4D\u0D30\u0D27\u0D3E\u0D28\u0D3E\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D15") || prompt.includes("\u0D2A\u0D28\u0D3F") || prompt.includes("\u0D38\u0D4D\u0D15\u0D42\u0D33\u0D3F\u0D7D \u0D35\u0D30\u0D3E\u0D7B") || prompt.includes("\u0D38\u0D4D\u0D15\u0D42\u0D33\u0D3F\u0D7D") || prompt.includes("\u0D32\u0D40\u0D35\u0D4D \u0D32\u0D46\u0D31\u0D4D\u0D31\u0D7C") || prompt.includes("\u0D05\u0D35\u0D27\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37") || (prompt.includes("\u0D38\u0D4D\u0D15\u0D42\u0D7E") || prompt.includes("\u0D15\u0D4D\u0D32\u0D3E\u0D38\u0D4D")) && (prompt.includes("\u0D05\u0D35\u0D27\u0D3F") || prompt.includes("\u0D32\u0D40\u0D35\u0D4D") || lower.includes("leave")));
-  let letterHeading = "\u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37";
+  const cleanFallbackLetter = buildCleanCustomLetterFromPrompt(
+    prompt,
+    currentDocument?.letterData
+  );
+  let letterHeading = cleanFallbackLetter.documentHeading || "\u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37";
   let letterLayoutVariant = "official_letter";
-  let recipientTitle = "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D13\u0D2B\u0D40\u0D38\u0D7C / \u0D38\u0D46\u0D15\u0D4D\u0D30\u0D1F\u0D4D\u0D1F\u0D31\u0D3F \u0D05\u0D35\u0D7C\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D,";
-  let recipientOffice = "\u0D17\u0D4D\u0D30\u0D3E\u0D2E\u0D2A\u0D1E\u0D4D\u0D1A\u0D3E\u0D2F\u0D24\u0D4D\u0D24\u0D4D / \u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D \u0D13\u0D2B\u0D40\u0D38\u0D4D \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D3E\u0D32\u0D2F\u0D02,";
-  let recipientPlace = "\u0D15\u0D47\u0D30\u0D33\u0D02.";
-  let subjectText = "\u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30 \u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D05\u0D2D\u0D4D\u0D2F\u0D7C\u0D24\u0D4D\u0D25\u0D3F\u0D1A\u0D4D\u0D1A\u0D41\u0D15\u0D4A\u0D23\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37.";
+  let recipientTitle = cleanFallbackLetter.recipientTitle;
+  let recipientOffice = cleanFallbackLetter.recipientOffice;
+  let recipientPlace = cleanFallbackLetter.recipientPlace || "\u0D15\u0D47\u0D30\u0D33\u0D02.";
+  let subjectText = cleanFallbackLetter.subject;
   let salutationText = isReligiousBody ? "\u0D2C\u0D39\u0D41\u0D2E\u0D3E\u0D28\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D2D\u0D3E\u0D30\u0D35\u0D3E\u0D39\u0D3F\u0D15\u0D7E," : "\u0D38\u0D7C / \u0D2E\u0D3E\u0D21\u0D02,";
-  let bodyParagraphsText = [
-    `\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D1E\u0D3E\u0D7B \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D31\u0D2F\u0D41\u0D28\u0D4D\u0D28 \u0D35\u0D3F\u0D37\u0D2F\u0D02 \u0D05\u0D19\u0D4D\u0D19\u0D2F\u0D41\u0D1F\u0D46 \u0D36\u0D4D\u0D30\u0D26\u0D4D\u0D27\u0D2F\u0D3F\u0D7D\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D28\u0D4D\u0D28\u0D41: ${prompt}`,
-    "\u0D08 \u0D35\u0D3F\u0D37\u0D2F\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D05\u0D1F\u0D3F\u0D2F\u0D28\u0D4D\u0D24\u0D30\u0D2E\u0D3E\u0D2F\u0D3F \u0D30\u0D47\u0D16\u0D15\u0D7E \u0D2A\u0D30\u0D3F\u0D36\u0D4B\u0D27\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D05\u0D28\u0D41\u0D2F\u0D4B\u0D1C\u0D4D\u0D2F\u0D2E\u0D3E\u0D2F \u0D28\u0D1F\u0D2A\u0D1F\u0D3F \u0D38\u0D4D\u0D35\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D23\u0D2E\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D35\u0D3F\u0D28\u0D40\u0D24\u0D2E\u0D3E\u0D2F\u0D3F \u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41."
-  ];
-  let enclosuresList = ["\u0D06\u0D27\u0D3E\u0D7C \u0D15\u0D3E\u0D7C\u0D21\u0D4D \u0D2A\u0D15\u0D7C\u0D2A\u0D4D\u0D2A\u0D4D"];
+  let bodyParagraphsText = cleanFallbackLetter.bodyParagraphs;
+  let enclosuresList = cleanFallbackLetter.enclosures || ["\u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D15\u0D28\u0D4D\u0D31\u0D46 \u0D24\u0D3F\u0D30\u0D3F\u0D1A\u0D4D\u0D1A\u0D31\u0D3F\u0D2F\u0D7D \u0D30\u0D47\u0D16 (\u0D09\u0D23\u0D4D\u0D1F\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D7D)"];
   const inlineNameMatch = prompt.match(
-    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|ഉടമയുടെ പേര്|വാടകക്കാരന്റെ പേര്|my\s+name\s+is|i\s+am|i'm|this\s+is|candidate\s+name|applicant\s+name|name\s*(?:is|:))\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|from\b|living\s+in|residing|aged?\b|\d+\s*(?:years?|yrs?|വർഷ)|working\s+as|with\s+\d|\.|$))/i
+  ) || prompt.match(
+    /(?:^|[\s,.])പേര്\s*[:\-]\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
   );
   const extractedKeralaLoc = extractKeralaPlaceAndDistrict(prompt);
   const inlinePhoneMatch = prompt.match(
     /(\+\d{1,3}[\s\-]?\d{2,4}[\s\-]?\d{3,4}[\s\-]?\d{3,4}|\b(?:\+?91[\s\-]?)?[6-9]\d{4}[\s\-]?\d{5}\b)/
   );
   const inlineEmailMatch = prompt.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-  const inlineAgeMatch = prompt.match(/(\d{2})\s*വയസ്സ്/);
-  const inlineExpYearsMatch = prompt.match(/(\d{1,2})\s*വർഷ(?:ം|മായി|ത്തെ)/);
+  const inlineAgeMatch = prompt.match(/(\d{2})\s*(?:വയസ്സ്|years?\s*old)/i);
+  const inlineExpYearsMatch = prompt.match(/(\d{1,2})\s*(?:വർഷ(?:ം|മായി|ത്തെ)|years?|yrs?)/i);
   const inlinePassportMatch = prompt.match(/(?:പാസ്പോർട്ട്\s*(?:നമ്പർ)?|passport\s*(?:no|number)?)\s*[:\-]?\s*([A-Z]\d{7})/i);
   let cleanSenderName = "\u0D30\u0D3E\u0D1C\u0D7B \u0D15\u0D46. \u0D35\u0D3F.";
   if (inlineNameMatch?.[1]?.trim()) {
@@ -6663,7 +7390,8 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
     cleanDistrict = cleanPlace;
   }
   recipientPlace = cleanPlace !== cleanDistrict ? `${cleanPlace}, ${cleanDistrict}.` : `${cleanPlace}.`;
-  const cleanPhone = inlinePhoneMatch?.[1]?.trim() || currentDocument?.letterData?.senderPhone || "9847123456";
+  const existingPhone = currentDocument?.letterData?.senderPhone && currentDocument.letterData.senderPhone !== "9847123456" ? currentDocument.letterData.senderPhone : "";
+  const cleanPhone = inlinePhoneMatch?.[1]?.trim() || existingPhone;
   if (isSchoolSpeechPrompt) {
     letterLayoutVariant = "school_speech";
     letterHeading = "\u0D38\u0D4D\u0D15\u0D42\u0D7E \u0D05\u0D38\u0D02\u0D2C\u0D4D\u0D32\u0D3F \u0D2A\u0D4D\u0D30\u0D38\u0D02\u0D17\u0D02";
@@ -6878,11 +7606,13 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
     ];
     enclosuresList = [];
   }
+  const effectiveSenderName = inlineNameMatch?.[1]?.trim() || (currentDocument?.letterData?.senderName && currentDocument.letterData.senderName !== "\u0D30\u0D3E\u0D1C\u0D7B \u0D15\u0D46. \u0D35\u0D3F." && !currentDocument.letterData.senderName.includes("[") ? currentDocument.letterData.senderName : cleanFallbackLetter.senderName);
+  const effectiveSenderAddress = extractedKeralaLoc.found || currentDocument?.letterData?.senderAddress && !currentDocument.letterData.senderAddress.includes("[") ? cleanSenderAddress : cleanFallbackLetter.senderAddress;
   const defaultLetter = {
     documentHeading: letterHeading,
     letterLayoutVariant,
-    senderName: cleanSenderName,
-    senderAddress: cleanSenderAddress,
+    senderName: effectiveSenderName,
+    senderAddress: effectiveSenderAddress,
     senderPhone: cleanPhone,
     recipientTitle,
     recipientOffice,
@@ -6892,7 +7622,7 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
     salutation: salutationText,
     bodyParagraphs: bodyParagraphsText,
     closingPhrase: "\u0D35\u0D3F\u0D36\u0D4D\u0D35\u0D38\u0D4D\u0D24\u0D24\u0D2F\u0D4B\u0D1F\u0D46,",
-    place: cleanPlace,
+    place: extractedKeralaLoc.found ? cleanPlace : cleanFallbackLetter.place,
     date: todayMl,
     enclosures: enclosuresList
   };
@@ -6912,7 +7642,7 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
   );
   const isDriverRole = prompt.includes("\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F") || prompt.includes("\u0D24\u0D32\u0D2C\u0D3E\u0D24\u0D4D\u0D24\u0D4D") || prompt.includes("\u0D28\u0D42\u0D7A") || prompt.includes("\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") || lower.includes("driver");
   const hasTalabatOrNoon = prompt.includes("\u0D24\u0D32\u0D2C\u0D3E\u0D24\u0D4D\u0D24\u0D4D") || prompt.includes("\u0D28\u0D42\u0D7A") || lower.includes("talabat") || lower.includes("noon");
-  const detectedRoleEn = prompt.includes("\u0D10\u0D1F\u0D3F") || prompt.includes("\u0D38\u0D4B\u0D2B\u0D4D\u0D31\u0D4D\u0D31\u0D4D\u200C\u0D35\u0D46\u0D2F\u0D7C") || prompt.includes("\u0D15\u0D2E\u0D4D\u0D2A\u0D4D\u0D2F\u0D42\u0D1F\u0D4D\u0D1F\u0D7C") || lower.includes("software") || lower.includes("developer") || lower.includes("engineer") ? "FULL STACK SOFTWARE ENGINEER & IT SPECIALIST" : prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D7C") || prompt.includes("\u0D05\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D15") || prompt.includes("\u0D05\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D3F\u0D15") || lower.includes("teacher") || lower.includes("faculty") ? "POST GRADUATE TEACHER (PGT) & ACADEMIC EDUCATOR" : prompt.includes("\u0D28\u0D47\u0D34\u0D4D\u0D38\u0D4D") || prompt.includes("\u0D28\u0D34\u0D4D\u0D38\u0D4D") || prompt.includes("\u0D06\u0D36\u0D41\u0D2A\u0D24\u0D4D\u0D30\u0D3F") || lower.includes("nurse") || lower.includes("medical") ? "REGISTERED STAFF NURSE (B.Sc NURSING \u2014 ICU & EMERGENCY)" : prompt.includes("\u0D2B\u0D4D\u0D30\u0D37\u0D7C") || prompt.includes("\u0D15\u0D4B\u0D33\u0D47\u0D1C\u0D4D") || lower.includes("fresher") || lower.includes("trainee") ? "GRADUATE TRAINEE & JUNIOR OPERATIONS EXECUTIVE (FRESHER)" : prompt.includes("\u0D05\u0D15\u0D4D\u0D15\u0D57\u0D23\u0D4D\u0D1F\u0D28\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D13\u0D2B\u0D40\u0D38\u0D4D") || lower.includes("accountant") || lower.includes("admin") ? "SENIOR ACCOUNTANT & OFFICE ADMINISTRATOR (TALLY PRIME & GST)" : prompt.includes("\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F") || prompt.includes("\u0D24\u0D32\u0D2C\u0D3E\u0D24\u0D4D\u0D24\u0D4D") || prompt.includes("\u0D28\u0D42\u0D7A") ? "DELIVERY RIDER / LOGISTICS DRIVER" : prompt.includes("\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") || lower.includes("driver") ? "LIGHT & HEAVY COMMERCIAL VEHICLE DRIVER" : prompt.includes("\u0D2C\u0D15\u0D4D\u0D15\u0D3E\u0D32") || prompt.includes("\u0D38\u0D42\u0D2A\u0D4D\u0D2A\u0D7C\u0D2E\u0D3E\u0D7C\u0D15\u0D4D\u0D15\u0D31\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D38\u0D46\u0D2F\u0D3F\u0D7D\u0D38\u0D4D") || lower.includes("sales") ? "SHOWROOM SALES EXECUTIVE & CUSTOMER RELATIONS ASSOCIATE" : prompt.includes("\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D4B\u0D7C") || lower.includes("storekeeper") ? "WAREHOUSE STOREKEEPER & INVENTORY CONTROLLER" : prompt.includes("\u0D07\u0D32\u0D15\u0D4D\u0D1F\u0D4D\u0D30\u0D40\u0D37\u0D4D\u0D2F\u0D7B") || prompt.includes("\u0D2A\u0D4D\u0D32\u0D02\u0D2C\u0D7C") || prompt.includes("\u0D1F\u0D46\u0D15\u0D4D\u0D28\u0D40\u0D37\u0D4D\u0D2F\u0D7B") ? "ELECTRICAL & BUILDING MAINTENANCE TECHNICIAN" : prompt.includes("\u0D15\u0D41\u0D15\u0D4D\u0D15\u0D4D") || prompt.includes("\u0D37\u0D46\u0D2B\u0D4D") ? "PROFESSIONAL CHEF & CULINARY SPECIALIST" : "OPERATIONS & ADMINISTRATION PROFESSIONAL";
+  const detectedRoleEn = prompt.includes("\u0D10\u0D1F\u0D3F") || prompt.includes("\u0D38\u0D4B\u0D2B\u0D4D\u0D31\u0D4D\u0D31\u0D4D\u200C\u0D35\u0D46\u0D2F\u0D7C") || prompt.includes("\u0D15\u0D2E\u0D4D\u0D2A\u0D4D\u0D2F\u0D42\u0D1F\u0D4D\u0D1F\u0D7C") || lower.includes("software") || lower.includes("developer") || lower.includes("engineer") ? "FULL STACK SOFTWARE ENGINEER & IT SPECIALIST" : prompt.includes("\u0D1F\u0D40\u0D1A\u0D4D\u0D1A\u0D7C") || prompt.includes("\u0D05\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D15") || prompt.includes("\u0D05\u0D27\u0D4D\u0D2F\u0D3E\u0D2A\u0D3F\u0D15") || lower.includes("teacher") || lower.includes("faculty") ? "POST GRADUATE TEACHER (PGT) & ACADEMIC EDUCATOR" : prompt.includes("\u0D28\u0D47\u0D34\u0D4D\u0D38\u0D4D") || prompt.includes("\u0D28\u0D34\u0D4D\u0D38\u0D4D") || prompt.includes("\u0D06\u0D36\u0D41\u0D2A\u0D24\u0D4D\u0D30\u0D3F") || lower.includes("nurse") || lower.includes("medical") ? "REGISTERED STAFF NURSE (B.Sc NURSING \u2014 ICU & EMERGENCY)" : prompt.includes("\u0D2B\u0D4D\u0D30\u0D37\u0D7C") || prompt.includes("\u0D15\u0D4B\u0D33\u0D47\u0D1C\u0D4D") || lower.includes("fresher") || lower.includes("trainee") ? "GRADUATE TRAINEE & JUNIOR OPERATIONS EXECUTIVE (FRESHER)" : prompt.includes("\u0D05\u0D15\u0D4D\u0D15\u0D57\u0D23\u0D4D\u0D1F\u0D28\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D13\u0D2B\u0D40\u0D38\u0D4D") || lower.includes("accountant") || lower.includes("admin") ? "SENIOR ACCOUNTANT & OFFICE ADMINISTRATOR (TALLY PRIME & GST)" : prompt.includes("\u0D21\u0D46\u0D32\u0D3F\u0D35\u0D31\u0D3F") || prompt.includes("\u0D24\u0D32\u0D2C\u0D3E\u0D24\u0D4D\u0D24\u0D4D") || prompt.includes("\u0D28\u0D42\u0D7A") ? "DELIVERY RIDER / LOGISTICS DRIVER" : lower.includes("heavy truck") || lower.includes("heavy driver") || prompt.includes("\u0D39\u0D46\u0D35\u0D3F \u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") ? "HEAVY TRUCK / COMMERCIAL VEHICLE DRIVER" : prompt.includes("\u0D21\u0D4D\u0D30\u0D48\u0D35\u0D7C") || lower.includes("driver") ? "LIGHT & HEAVY COMMERCIAL VEHICLE DRIVER" : prompt.includes("\u0D2C\u0D15\u0D4D\u0D15\u0D3E\u0D32") || prompt.includes("\u0D38\u0D42\u0D2A\u0D4D\u0D2A\u0D7C\u0D2E\u0D3E\u0D7C\u0D15\u0D4D\u0D15\u0D31\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D38\u0D46\u0D2F\u0D3F\u0D7D\u0D38\u0D4D") || lower.includes("sales") ? "SHOWROOM SALES EXECUTIVE & CUSTOMER RELATIONS ASSOCIATE" : prompt.includes("\u0D38\u0D4D\u0D31\u0D4D\u0D31\u0D4B\u0D7C") || lower.includes("storekeeper") ? "WAREHOUSE STOREKEEPER & INVENTORY CONTROLLER" : prompt.includes("\u0D07\u0D32\u0D15\u0D4D\u0D1F\u0D4D\u0D30\u0D40\u0D37\u0D4D\u0D2F\u0D7B") || prompt.includes("\u0D2A\u0D4D\u0D32\u0D02\u0D2C\u0D7C") || prompt.includes("\u0D1F\u0D46\u0D15\u0D4D\u0D28\u0D40\u0D37\u0D4D\u0D2F\u0D7B") ? "ELECTRICAL & BUILDING MAINTENANCE TECHNICIAN" : prompt.includes("\u0D15\u0D41\u0D15\u0D4D\u0D15\u0D4D") || prompt.includes("\u0D37\u0D46\u0D2B\u0D4D") ? "PROFESSIONAL CHEF & CULINARY SPECIALIST" : "OPERATIONS & ADMINISTRATION PROFESSIONAL";
   const detectedLocEn = prompt.includes("\u0D26\u0D41\u0D2C\u0D3E\u0D2F\u0D4D") || prompt.includes("\u0D26\u0D41\u0D2C\u0D3E\u0D2F\u0D3F") || lower.includes("dubai") ? "Dubai, UAE" : prompt.includes("\u0D37\u0D3E\u0D7C\u0D1C") || lower.includes("sharjah") ? "Sharjah, UAE" : prompt.includes("\u0D05\u0D2C\u0D41\u0D26\u0D3E\u0D2C\u0D3F") || lower.includes("abu dhabi") ? "Abu Dhabi, UAE" : prompt.includes("\u0D16\u0D24\u0D4D\u0D24\u0D7C") || prompt.includes("\u0D16\u0D24\u0D4D\u0D24\u0D31\u0D3F") || prompt.includes("\u0D26\u0D4B\u0D39") || lower.includes("qatar") ? "Doha, Qatar" : prompt.includes("\u0D38\u0D57\u0D26\u0D3F") || prompt.includes("\u0D31\u0D3F\u0D2F\u0D3E\u0D26\u0D4D") || prompt.includes("\u0D31\u0D3F\u0D2F\u0D3E\u0D26\u0D3F") || prompt.includes("\u0D1C\u0D3F\u0D26\u0D4D\u0D26") || lower.includes("saudi") ? "Riyadh, Saudi Arabia" : prompt.includes("\u0D12\u0D2E\u0D3E\u0D7B") || prompt.includes("\u0D12\u0D2E\u0D3E\u0D28\u0D3F") || prompt.includes("\u0D2E\u0D38\u0D4D\u0D15\u0D31\u0D4D\u0D31\u0D4D") || lower.includes("oman") ? "Muscat, Oman" : prompt.includes("\u0D15\u0D41\u0D35\u0D48\u0D31\u0D4D\u0D31\u0D4D") || prompt.includes("\u0D15\u0D41\u0D35\u0D48\u0D31\u0D4D\u0D31\u0D3F") || lower.includes("kuwait") ? "Kuwait City, Kuwait" : prompt.includes("\u0D2C\u0D39\u0D4D\u0D31\u0D48\u0D7B") || prompt.includes("\u0D2C\u0D39\u0D4D\u0D31\u0D48\u0D28\u0D3F") || lower.includes("bahrain") ? "Manama, Bahrain" : prompt.includes("\u0D2F\u0D41.\u0D15\u0D46") || prompt.includes("\u0D32\u0D23\u0D4D\u0D1F\u0D7B") || lower.includes("uk") || lower.includes("london") ? "London, United Kingdom" : prompt.includes("\u0D15\u0D3E\u0D28\u0D21") || lower.includes("canada") ? "Toronto, Canada" : prompt.includes("\u0D2F\u0D42\u0D31\u0D4B\u0D2A\u0D4D\u0D2A\u0D4D") || lower.includes("europe") ? "Berlin, Germany (EU)" : prompt.includes("\u0D2C\u0D3E\u0D02\u0D17\u0D4D\u0D32\u0D42\u0D7C") || prompt.includes("\u0D2C\u0D46\u0D02\u0D17\u0D33\u0D42\u0D30\u0D41") || lower.includes("bangalore") ? "Bengaluru, Karnataka, India" : prompt.includes("\u0D1A\u0D46\u0D28\u0D4D\u0D28\u0D48") || lower.includes("chennai") ? "Chennai, Tamil Nadu, India" : engHometown;
   const detectedVisaEn = !isGulfOrAbroadExplicit ? "-" : prompt.includes("\u0D07\u0D16\u0D3E\u0D2E") || lower.includes("iqama") ? "Valid Residency ID (Iqama - Transferable / NOC Available)" : prompt.includes("\u0D35\u0D3F\u0D38\u0D3F\u0D31\u0D4D\u0D31\u0D4D \u0D35\u0D3F\u0D38") || lower.includes("visit visa") ? "Visit Visa (Ready to Join Immediately)" : "Ready for Immediate Relocation / Work Visa";
   const detectedLicenseEn = isDriverRole || prompt.includes("\u0D2E\u0D41\u0D7D\u0D15\u0D3F\u0D2F") || prompt.includes("\u0D32\u0D48\u0D38\u0D7B\u0D38\u0D4D") ? isGulfOrAbroadExplicit ? `Valid GCC & Indian Driving License (${detectedLocEn.split(",")[1]?.trim() || "UAE"})` : "Valid Indian LMV & HMV Driving License (Badge Holder)" : "-";
@@ -6921,8 +7651,8 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
     fullName: engCandidateName,
     jobTitle: detectedRoleEn,
     photoDataUrl: currentDocument?.gulfCvData?.photoDataUrl || "",
-    phone: cleanPhone,
-    whatsapp: cleanPhone,
+    phone: cleanPhone || "+91 98470 00000",
+    whatsapp: cleanPhone || "+91 98470 00000",
     email: inlineEmailMatch?.[0]?.toLowerCase() || `${engCandidateName.toLowerCase().replace(/[^a-z0-9]/g, ".").replace(/\.+/g, ".").replace(/^\.|\.$/g, "")}@gmail.com`,
     currentLocation: isGulfOrAbroadExplicit ? `${detectedLocEn} (Hometown: ${engHometown})` : detectedLocEn,
     nationality: "Indian",
@@ -6991,41 +7721,87 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
   };
   const defaultGulfCv = applyLocalLanguageConversionToCv(rawGulfCv, "en");
   const ownerMatch = prompt.match(
-    /(?:വീട്ടുടമസ്ഥൻ|കെട്ടിട\s*ഉടമസ്ഥൻ|കെട്ടിട\s*ഉടമ|വീട്ടുടമ|ഉടമസ്ഥൻ|ഉടമ|ഒന്നാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|വാടകക്കാരൻ|രണ്ടാം\s*കക്ഷി|മാസവാടക|\.|$))/i
+    /(?:വീട്ടുടമസ്ഥൻ|കെട്ടിട\s*ഉടമസ്ഥൻ|കെട്ടിട\s*ഉടമ|വീട്ടുടമ|ഉടമസ്ഥൻ|ഉടമ|ഒന്നാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി|മാസവാടക|വാടക|അഡ്വാൻസ|മുൻകൂർ|\.|$))/i
   );
   const tenantMatch = prompt.match(
-    /(?:വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|മാസവാടക|വാടക|അഡ്വാൻസ്|\.|$))/i
+    /(?:വാടകക്കാരൻ|വാടകക്കാരി|രണ്ടാം\s*കക്ഷി)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ഉടമ|ഒന്നാം\s*കക്ഷി|മാസവാടക|വാടക|അഡ്വാൻസ|മുൻകൂർ|\.|$))/i
   );
-  const allRentMatches = [...prompt.matchAll(/(?:മാസവാടക|വാടക)\s*(?:₹|രൂപ)?\s*([\d,]+)/g)];
-  const rentAmt = allRentMatches.length > 0 ? allRentMatches[allRentMatches.length - 1][1].trim() : "12,000";
-  const allAdvMatches = [...prompt.matchAll(/(?:അഡ്വാൻസ്|മുൻകൂർ)\s*(?:₹|രൂപ)?\s*([\d,]+)/g)];
-  const advAmt = allAdvMatches.length > 0 ? allAdvMatches[allAdvMatches.length - 1][1].trim() : "50,000";
+  const collectAmountMatches = (patterns) => {
+    const found = [];
+    for (const rx of patterns) {
+      for (const m of prompt.matchAll(rx)) {
+        const rawDigits = (m[1] || "").replace(/,/g, "").trim();
+        if (rawDigits && /^\d+$/.test(rawDigits)) {
+          found.push({
+            index: m.index ?? 0,
+            value: Number(rawDigits).toLocaleString("en-IN")
+          });
+        }
+      }
+    }
+    found.sort((a, b) => a.index - b.index);
+    return found.map((f) => f.value);
+  };
+  const allRentMatches = collectAmountMatches([
+    /(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക)\s*(?:ആയി|യായി|:|-)?\s*(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})(?!\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ|മുൻകൂ|advance|deposit))/gi,
+    /(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക)(?:യും|യ്ക്ക്|യായി|ക്ക്)?/gi
+  ]);
+  const rentAmt = allRentMatches.length > 0 ? allRentMatches[allRentMatches.length - 1] : "12,000";
+  const allAdvMatches = collectAmountMatches([
+    /(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ്|മുൻകൂർ)\s*(?:ആയി|യായി|തുക|:|-)?\s*(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})(?!\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:പ്രതിമാസ\s*വാടക|മാസവാടക|വാടക|rent))/gi,
+    /(?:₹|Rs\.?|INR)?\s*([\d,]{3,9})\s*(?:\/\-)?\s*(?:രൂപ(?:യുടെ|യും|യ്ക്ക്|ക്ക്)?|₹)?\s*(?:സെക്യൂരിറ്റി\s*ഡെപ്പോസിറ്റ്|അഡ്വാൻസ(?:്|ും|ായി|ിന്)?|മുൻകൂ(?:ർ|റായി)|advance|deposit)/gi
+  ]);
+  const advAmt = allAdvMatches.length > 0 ? allAdvMatches[allAdvMatches.length - 1] : "50,000";
   const tenureMatch = prompt.match(/(\d{1,2})\s*(?:മാസം|മാസത്തേക്ക്|months?)/i);
   const tenureMonths = tenureMatch ? tenureMatch[1] : "11";
-  const ownerName = ownerMatch?.[1]?.trim() || cleanSenderName;
-  const tenantName = tenantMatch?.[1]?.trim() || "\u0D05\u0D28\u0D42\u0D2A\u0D4D \u0D1C\u0D4B\u0D38\u0D2B\u0D4D";
+  const isAffidavitPrompt = prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") || lower.includes("affidavit");
+  const isNameCorrectionAffidavit = isAffidavitPrompt && (prompt.includes("\u0D2A\u0D47\u0D30\u0D4D \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24") || prompt.includes("\u0D2A\u0D47\u0D30\u0D4D \u0D2E\u0D3E\u0D31\u0D4D\u0D31") || prompt.includes("\u0D2A\u0D47\u0D30\u0D3F\u0D7D") || lower.includes("name correction") || lower.includes("change of name"));
+  const hasExplicitLocation = extractedKeralaLoc.found;
+  const ownerName = ownerMatch?.[1]?.trim() || (inlineNameMatch?.[1]?.trim() ? cleanSenderName : "........................");
+  const tenantName = tenantMatch?.[1]?.trim() || "........................";
+  const firstPartyLocPrefix = hasExplicitLocation ? cleanPlace === cleanDistrict ? `${cleanPlace} \u0D38\u0D4D\u0D35\u0D26\u0D47\u0D36\u0D3F\u0D2F\u0D3E\u0D2F ` : `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32\u0D2F\u0D3F\u0D7D ${cleanPlace} \u0D38\u0D4D\u0D35\u0D26\u0D47\u0D36\u0D3F\u0D2F\u0D3E\u0D2F ` : "";
+  const secondPartyLocPrefix = hasExplicitLocation ? cleanPlace === cleanDistrict ? `${cleanPlace} \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ` : `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32\u0D2F\u0D3F\u0D7D ${cleanPlace} \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ` : "";
+  const schedLocPrefix = hasExplicitLocation ? cleanPlace === cleanDistrict ? `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32` : `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32, ${cleanPlace}` : "";
+  const hasSpecificAffidavitOffice = /വില്ലേജ്|പഞ്ചായത്ത്|തഹസിൽദാർ|കലക്ടർ|പാസ്പോർട്ട്|സ്കൂൾ|കോളേജ്|കോടതി|ബാങ്ക്|മജിസ്‌ട്രേറ്റ്|നഗരസഭ|മുൻസിപ്പാലിറ്റി/.test(
+    prompt
+  );
+  const affidavitSecondParty = hasSpecificAffidavitOffice ? `${recipientOffice}${hasExplicitLocation ? ` ${recipientPlace}` : ""}` : "\u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F / \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D3E\u0D32\u0D2F\u0D02, \u0D15\u0D47\u0D30\u0D33\u0D02.";
+  const affidavitClauses = isNameCorrectionAffidavit ? [
+    `1. \u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${ownerName} \u0D06\u0D2F \u0D1E\u0D3E\u0D7B \u0D24\u0D28\u0D4D\u0D28\u0D46\u0D2F\u0D3E\u0D23\u0D4D \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D30\u0D47\u0D16\u0D15\u0D33\u0D3F\u0D7D \u0D35\u0D4D\u0D2F\u0D24\u0D4D\u0D2F\u0D38\u0D4D\u0D24\u0D2E\u0D3E\u0D2F\u0D3F / \u0D24\u0D46\u0D31\u0D4D\u0D31\u0D3E\u0D2F\u0D3F \u0D30\u0D47\u0D16\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D41\u0D24\u0D4D\u0D24\u0D3F\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D2A\u0D47\u0D30\u0D3F\u0D28\u0D41\u0D02 \u0D2F\u0D25\u0D3E\u0D7C\u0D24\u0D4D\u0D25 \u0D09\u0D1F\u0D2E\u0D2F\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D07\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D38\u0D24\u0D4D\u0D2F\u0D2A\u0D4D\u0D30\u0D24\u0D3F\u0D1C\u0D4D\u0D1E \u0D1A\u0D46\u0D2F\u0D4D\u0D2F\u0D41\u0D28\u0D4D\u0D28\u0D41.`,
+    "2. \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D36\u0D30\u0D3F\u0D2F\u0D3E\u0D2F \u0D2A\u0D47\u0D30\u0D4D \u0D30\u0D47\u0D16\u0D15\u0D33\u0D3F\u0D7D \u0D15\u0D43\u0D24\u0D4D\u0D2F\u0D2E\u0D3E\u0D2F\u0D3F \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D3F \u0D1A\u0D47\u0D7C\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3F\u0D28\u0D41\u0D02 \u0D24\u0D41\u0D1F\u0D7C\u0D28\u0D1F\u0D2A\u0D1F\u0D3F\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D41\u0D2E\u0D3E\u0D2F\u0D3F \u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F\u0D15\u0D7E\u0D15\u0D4D\u0D15\u0D4D \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3F\u0D28\u0D41\u0D2E\u0D3E\u0D23\u0D4D \u0D08 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 \u0D28\u0D7D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D4D.",
+    "3. \u0D2E\u0D47\u0D7D \u0D2A\u0D4D\u0D30\u0D38\u0D4D\u0D24\u0D3E\u0D35\u0D3F\u0D1A\u0D4D\u0D1A \u0D35\u0D3F\u0D35\u0D30\u0D19\u0D4D\u0D19\u0D7E \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23 \u0D05\u0D31\u0D3F\u0D35\u0D3F\u0D32\u0D41\u0D02 \u0D35\u0D3F\u0D36\u0D4D\u0D35\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D02 \u0D24\u0D3F\u0D15\u0D1A\u0D4D\u0D1A\u0D41\u0D02 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D41\u0D02 \u0D36\u0D30\u0D3F\u0D2F\u0D41\u0D2E\u0D3E\u0D23\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D1E\u0D3E\u0D7B \u0D07\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D4D\u0D2F\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D28\u0D4D\u0D28\u0D41; \u0D07\u0D24\u0D3F\u0D7D \u0D2F\u0D3E\u0D24\u0D4A\u0D30\u0D41\u0D35\u0D3F\u0D27 \u0D35\u0D38\u0D4D\u0D24\u0D41\u0D24\u0D3E\u0D35\u0D3F\u0D30\u0D41\u0D26\u0D4D\u0D27\u0D2E\u0D3E\u0D2F \u0D35\u0D3F\u0D35\u0D30\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D02 \u0D2E\u0D31\u0D1A\u0D4D\u0D1A\u0D41\u0D35\u0D46\u0D1A\u0D4D\u0D1A\u0D3F\u0D1F\u0D4D\u0D1F\u0D3F\u0D32\u0D4D\u0D32."
+  ] : [
+    `1. \u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${ownerName} \u0D06\u0D2F \u0D1E\u0D3E\u0D7B \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23 \u0D38\u0D4D\u0D35\u0D2C\u0D4B\u0D27\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D41\u0D02 \u0D15\u0D42\u0D1F\u0D3F \u0D08 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 \u0D2C\u0D4B\u0D27\u0D3F\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D41.`,
+    "2. \u0D2C\u0D28\u0D4D\u0D27\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D4D\u0D1F \u0D38\u0D7C\u0D15\u0D4D\u0D15\u0D3E\u0D7C / \u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D19\u0D4D\u0D19\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D2F\u0D3F \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D2E\u0D47\u0D7D\u0D2A\u0D4D\u0D2A\u0D31\u0D1E\u0D4D\u0D1E \u0D35\u0D3F\u0D35\u0D30\u0D19\u0D4D\u0D19\u0D7E \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23\u0D2E\u0D3E\u0D2F\u0D41\u0D02 \u0D38\u0D24\u0D4D\u0D2F\u0D38\u0D28\u0D4D\u0D27\u0D35\u0D41\u0D02 \u0D28\u0D3F\u0D2F\u0D2E\u0D3E\u0D28\u0D41\u0D38\u0D43\u0D24\u0D35\u0D41\u0D2E\u0D3E\u0D23\u0D4D.",
+    "3. \u0D07\u0D24\u0D3F\u0D7D \u0D2A\u0D4D\u0D30\u0D38\u0D4D\u0D24\u0D3E\u0D35\u0D3F\u0D1A\u0D4D\u0D1A\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D3E\u0D30\u0D4D\u0D2F\u0D19\u0D4D\u0D19\u0D7E \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D05\u0D31\u0D3F\u0D35\u0D3F\u0D32\u0D41\u0D02 \u0D35\u0D3F\u0D36\u0D4D\u0D35\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D02 \u0D24\u0D3F\u0D15\u0D1A\u0D4D\u0D1A\u0D41\u0D02 \u0D36\u0D30\u0D3F\u0D2F\u0D3E\u0D23\u0D46\u0D28\u0D4D\u0D28\u0D4D \u0D1E\u0D3E\u0D7B \u0D07\u0D24\u0D3F\u0D28\u0D3E\u0D7D \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D4D\u0D2F\u0D2A\u0D4D\u0D2A\u0D46\u0D1F\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D28\u0D4D\u0D28\u0D41."
+  ];
   const defaultAgreement = {
-    subType: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (Affidavit)" : "\u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C (Rent Agreement)",
-    titleMalayalam: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (AFFIDAVIT)" : "\u0D35\u0D3E\u0D1F\u0D15 \u0D1A\u0D40\u0D1F\u0D4D\u0D1F\u0D4D (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02)",
+    subType: isAffidavitPrompt ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (Affidavit)" : "\u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C (Rent Agreement)",
+    titleMalayalam: isAffidavitPrompt ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (AFFIDAVIT)" : "\u0D35\u0D3E\u0D1F\u0D15 \u0D1A\u0D40\u0D1F\u0D4D\u0D1F\u0D4D (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D35\u0D3E\u0D1F\u0D15 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02)",
     stampPaperHeaderSpaceMm: 90,
     executionDate: todayMl,
-    executionPlace: cleanPlace || "\u0D0E\u0D31\u0D23\u0D3E\u0D15\u0D41\u0D33\u0D02",
-    firstPartyLabel: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D2F\u0D3E\u0D7E" : "\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D09\u0D1F\u0D2E)",
-    firstPartyDetails: `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32\u0D2F\u0D3F\u0D7D ${cleanPlace} \u0D38\u0D4D\u0D35\u0D26\u0D47\u0D36\u0D3F\u0D2F\u0D3E\u0D2F ${ownerName} (\u0D2B\u0D4B\u0D7A: ${cleanPhone}).`,
-    secondPartyLabel: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? "\u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D13\u0D2B\u0D40\u0D38\u0D4D / \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F" : "\u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D35\u0D3E\u0D1F\u0D15\u0D15\u0D4D\u0D15\u0D3E\u0D30\u0D7B)",
-    secondPartyDetails: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? `${recipientOffice} ${recipientPlace}` : `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32\u0D2F\u0D3F\u0D7D ${cleanPlace} \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${tenantName}.`,
-    preambleParagraph: prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? `\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${ownerName} \u0D06\u0D2F \u0D1E\u0D3E\u0D7B \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23 \u0D05\u0D31\u0D3F\u0D35\u0D4B\u0D1F\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D41\u0D02 \u0D15\u0D42\u0D1F\u0D3F \u0D2C\u0D4B\u0D27\u0D3F\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02: ${prompt}` : `\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 (${ownerName}) \u0D09\u0D1F\u0D2E\u0D38\u0D4D\u0D25\u0D24\u0D2F\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D02 \u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D4D (${tenantName}) ${tenureMonths} \u0D2E\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D47\u0D15\u0D4D\u0D15\u0D4D \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D31\u0D2F\u0D41\u0D28\u0D4D\u0D28 \u0D35\u0D4D\u0D2F\u0D35\u0D38\u0D4D\u0D25\u0D15\u0D33\u0D3F\u0D7D \u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D4D\u0D15\u0D4D\u0D15\u0D4D \u0D28\u0D7D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3F\u0D28\u0D4D \u0D07\u0D30\u0D41 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D33\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D0E\u0D34\u0D41\u0D24\u0D3F \u0D12\u0D2A\u0D4D\u0D2A\u0D3F\u0D1F\u0D41\u0D28\u0D4D\u0D28 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02.`,
-    clauses: [
+    executionPlace: hasExplicitLocation ? cleanPlace : "........................",
+    firstPartyLabel: isAffidavitPrompt ? "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D2F\u0D3E\u0D7E" : "\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D09\u0D1F\u0D2E)",
+    firstPartyDetails: hasExplicitLocation ? `${firstPartyLocPrefix}${ownerName}${cleanPhone ? ` (\u0D2B\u0D4B\u0D7A: ${cleanPhone})` : ""}.` : `${ownerName} (\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D02: ........................${cleanPhone ? `, \u0D2B\u0D4B\u0D7A: ${cleanPhone}` : ""}).`,
+    secondPartyLabel: isAffidavitPrompt ? "\u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D13\u0D2B\u0D40\u0D38\u0D4D / \u0D05\u0D27\u0D3F\u0D15\u0D3E\u0D30\u0D3F" : "\u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F (\u0D35\u0D3E\u0D1F\u0D15\u0D15\u0D4D\u0D15\u0D3E\u0D30\u0D7B)",
+    secondPartyDetails: isAffidavitPrompt ? affidavitSecondParty : hasExplicitLocation ? `${secondPartyLocPrefix}${tenantName}.` : `${tenantName} (\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D02: ........................).`,
+    preambleParagraph: isAffidavitPrompt ? isNameCorrectionAffidavit ? `\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${ownerName} \u0D06\u0D2F \u0D1E\u0D3E\u0D7B \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23 \u0D05\u0D31\u0D3F\u0D35\u0D4B\u0D1F\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D41\u0D02 \u0D15\u0D42\u0D1F\u0D3F, \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D14\u0D26\u0D4D\u0D2F\u0D4B\u0D17\u0D3F\u0D15 \u0D30\u0D47\u0D16\u0D15\u0D33\u0D3F\u0D32\u0D46 \u0D2A\u0D47\u0D30\u0D4D \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D4D / \u0D38\u0D4D\u0D25\u0D3F\u0D30\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D4D \u0D38\u0D02\u0D2C\u0D28\u0D4D\u0D27\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D2C\u0D4B\u0D27\u0D3F\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02:` : `\u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D24\u0D3E\u0D2E\u0D38\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 ${ownerName} \u0D06\u0D2F \u0D1E\u0D3E\u0D7B \u0D0E\u0D28\u0D4D\u0D31\u0D46 \u0D2A\u0D42\u0D7C\u0D23\u0D4D\u0D23 \u0D05\u0D31\u0D3F\u0D35\u0D4B\u0D1F\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D41\u0D02 \u0D15\u0D42\u0D1F\u0D3F \u0D2C\u0D4B\u0D27\u0D3F\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (\u0D38\u0D24\u0D4D\u0D2F\u0D2A\u0D4D\u0D30\u0D24\u0D3F\u0D1C\u0D4D\u0D1E\u0D3E \u0D2A\u0D24\u0D4D\u0D30\u0D02):` : `\u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 (${ownerName}) \u0D09\u0D1F\u0D2E\u0D38\u0D4D\u0D25\u0D24\u0D2F\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D02 \u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D4D (${tenantName}) ${tenureMonths} \u0D2E\u0D3E\u0D38\u0D24\u0D4D\u0D24\u0D47\u0D15\u0D4D\u0D15\u0D4D \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D31\u0D2F\u0D41\u0D28\u0D4D\u0D28 \u0D35\u0D4D\u0D2F\u0D35\u0D38\u0D4D\u0D25\u0D15\u0D33\u0D3F\u0D7D \u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D4D\u0D15\u0D4D\u0D15\u0D4D \u0D28\u0D7D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3F\u0D28\u0D4D \u0D07\u0D30\u0D41 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D33\u0D41\u0D02 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D0E\u0D34\u0D41\u0D24\u0D3F \u0D12\u0D2A\u0D4D\u0D2A\u0D3F\u0D1F\u0D41\u0D28\u0D4D\u0D28 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D24\u0D4D\u0D30\u0D02.`,
+    clauses: isAffidavitPrompt ? affidavitClauses : [
       `1. \u0D2A\u0D4D\u0D30\u0D24\u0D3F\u0D2E\u0D3E\u0D38 \u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D3E\u0D2F\u0D3F \u0D28\u0D3F\u0D36\u0D4D\u0D1A\u0D2F\u0D3F\u0D1A\u0D4D\u0D1A\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D33\u0D4D\u0D33 \u20B9${rentAmt}/- \u0D30\u0D42\u0D2A \u0D0E\u0D32\u0D4D\u0D32\u0D3E \u0D2E\u0D3E\u0D38\u0D35\u0D41\u0D02 5-\u0D3E\u0D02 \u0D24\u0D40\u0D2F\u0D24\u0D3F\u0D15\u0D4D\u0D15\u0D15\u0D02 \u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F \u0D12\u0D28\u0D4D\u0D28\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D4D\u0D15\u0D4D \u0D28\u0D7D\u0D15\u0D47\u0D23\u0D4D\u0D1F\u0D24\u0D3E\u0D23\u0D4D.`,
       `2. \u0D2A\u0D32\u0D3F\u0D36\u0D2F\u0D3F\u0D32\u0D4D\u0D32\u0D3E\u0D24\u0D4D\u0D24 \u0D05\u0D21\u0D4D\u0D35\u0D3E\u0D7B\u0D38\u0D4D \u0D24\u0D41\u0D15\u0D2F\u0D3E\u0D2F \u20B9${advAmt}/- \u0D30\u0D42\u0D2A \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D02 \u0D12\u0D34\u0D3F\u0D2F\u0D41\u0D2E\u0D4D\u0D2A\u0D4B\u0D7E \u0D15\u0D41\u0D1F\u0D3F\u0D36\u0D4D\u0D36\u0D3F\u0D15\u0D2F\u0D4B \u0D15\u0D47\u0D1F\u0D41\u0D2A\u0D3E\u0D1F\u0D41\u0D15\u0D33\u0D4B \u0D09\u0D23\u0D4D\u0D1F\u0D46\u0D19\u0D4D\u0D15\u0D3F\u0D7D \u0D15\u0D3F\u0D34\u0D3F\u0D1A\u0D4D\u0D1A\u0D4D \u0D24\u0D3F\u0D30\u0D3F\u0D15\u0D46 \u0D28\u0D7D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3E\u0D23\u0D4D.`,
       `3. \u0D15\u0D30\u0D3E\u0D7C \u0D15\u0D3E\u0D32\u0D3E\u0D35\u0D27\u0D3F ${tenureMonths} \u0D2E\u0D3E\u0D38\u0D2E\u0D3E\u0D2F\u0D3F\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D02. \u0D15\u0D3E\u0D32\u0D3E\u0D35\u0D27\u0D3F\u0D15\u0D4D\u0D15\u0D4D \u0D36\u0D47\u0D37\u0D02 \u0D07\u0D30\u0D41 \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D33\u0D41\u0D1F\u0D46\u0D2F\u0D41\u0D02 \u0D2A\u0D30\u0D38\u0D4D\u0D2A\u0D30 \u0D38\u0D2E\u0D4D\u0D2E\u0D24\u0D24\u0D4D\u0D24\u0D4B\u0D1F\u0D46 \u0D15\u0D30\u0D3E\u0D7C \u0D2A\u0D41\u0D24\u0D41\u0D15\u0D4D\u0D15\u0D3E\u0D35\u0D41\u0D28\u0D4D\u0D28\u0D24\u0D3E\u0D23\u0D4D.`,
       "4. \u0D35\u0D48\u0D26\u0D4D\u0D2F\u0D41\u0D24\u0D3F \u0D1A\u0D3E\u0D7C\u0D1C\u0D4D\u0D1C\u0D4D, \u0D35\u0D46\u0D33\u0D4D\u0D33\u0D15\u0D4D\u0D15\u0D30\u0D02 \u0D0E\u0D28\u0D4D\u0D28\u0D3F\u0D35 \u0D30\u0D23\u0D4D\u0D1F\u0D3E\u0D02 \u0D15\u0D15\u0D4D\u0D37\u0D3F \u0D24\u0D28\u0D4D\u0D28\u0D46 \u0D05\u0D24\u0D3E\u0D24\u0D4D \u0D2E\u0D3E\u0D38\u0D02 \u0D05\u0D1F\u0D2F\u0D4D\u0D15\u0D4D\u0D15\u0D47\u0D23\u0D4D\u0D1F\u0D24\u0D3E\u0D23\u0D4D.",
       "5. \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D02 \u0D15\u0D40\u0D34\u0D4D\u200C\u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D4D\u0D15\u0D4D\u0D15\u0D4D \u0D15\u0D4A\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D35\u0D3E\u0D28\u0D4B \u0D30\u0D42\u0D2A\u0D2E\u0D3E\u0D31\u0D4D\u0D31\u0D02 \u0D35\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D41\u0D35\u0D3E\u0D28\u0D4B \u0D2A\u0D3E\u0D1F\u0D41\u0D33\u0D4D\u0D33\u0D24\u0D32\u0D4D\u0D32."
     ],
-    schedulePropertyDetails: `${cleanDistrict} \u0D1C\u0D3F\u0D32\u0D4D\u0D32, ${cleanPlace} \u0D24\u0D26\u0D4D\u0D26\u0D47\u0D36 \u0D38\u0D4D\u0D35\u0D2F\u0D02\u0D2D\u0D30\u0D23 \u0D2A\u0D30\u0D3F\u0D27\u0D3F\u0D2F\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D35\u0D41\u0D02 \u0D05\u0D28\u0D41\u0D2C\u0D28\u0D4D\u0D27 \u0D38\u0D57\u0D15\u0D30\u0D4D\u0D2F\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D02.`,
-    witnesses: [
-      `1. \u0D05\u0D2C\u0D4D\u0D26\u0D41\u0D7E \u0D38\u0D32\u0D3E\u0D02, ${cleanPlace} (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: ...........................)`,
-      `2. \u0D35\u0D3F\u0D28\u0D4B\u0D26\u0D4D \u0D15\u0D46. \u0D06\u0D7C., ${cleanPlace} (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: ...........................)`
+    ...isAffidavitPrompt ? {} : {
+      schedulePropertyDetails: hasExplicitLocation ? `${schedLocPrefix} \u0D24\u0D26\u0D4D\u0D26\u0D47\u0D36 \u0D38\u0D4D\u0D35\u0D2F\u0D02\u0D2D\u0D30\u0D23 \u0D2A\u0D30\u0D3F\u0D27\u0D3F\u0D2F\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D35\u0D41\u0D02 \u0D05\u0D28\u0D41\u0D2C\u0D28\u0D4D\u0D27 \u0D38\u0D57\u0D15\u0D30\u0D4D\u0D2F\u0D19\u0D4D\u0D19\u0D33\u0D41\u0D02.` : "\u0D35\u0D38\u0D4D\u0D24\u0D41\u0D35\u0D3F\u0D28\u0D4D\u0D31\u0D46 / \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F\u0D24\u0D4D\u0D24\u0D3F\u0D28\u0D4D\u0D31\u0D46 \u0D35\u0D3F\u0D35\u0D30\u0D23\u0D02 (\u0D1C\u0D3F\u0D32\u0D4D\u0D32, \u0D24\u0D3E\u0D32\u0D42\u0D15\u0D4D\u0D15\u0D4D, \u0D35\u0D3F\u0D32\u0D4D\u0D32\u0D47\u0D1C\u0D4D, \u0D35\u0D3E\u0D7C\u0D21\u0D4D, \u0D15\u0D46\u0D1F\u0D4D\u0D1F\u0D3F\u0D1F \u0D28\u0D2E\u0D4D\u0D2A\u0D7C): ........................"
+    },
+    witnesses: hasExplicitLocation ? [
+      `1. \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02: ........................, ${cleanPlace} (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: .................)`,
+      `2. \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02: ........................, ${cleanPlace} (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: .................)`
+    ] : [
+      "1. \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02: ........................ (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: .................)",
+      "2. \u0D38\u0D3E\u0D15\u0D4D\u0D37\u0D3F\u0D2F\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02: ........................ (\u0D12\u0D2A\u0D4D\u0D2A\u0D4D: .................)"
     ]
   };
   if (isGulfCvPrompt) {
@@ -7070,8 +7846,21 @@ function buildSmartFallbackResponse(rawPrompt, preferredCategory, currentDocumen
       detectedType: "rental_agreement",
       outputLanguage: "ml",
       isComplete: true,
-      assistantReplyMalayalam: "\u0D2E\u0D41\u0D26\u0D4D\u0D30\u0D2A\u0D4D\u0D2A\u0D24\u0D4D\u0D30\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D2A\u0D4D\u0D30\u0D3F\u0D28\u0D4D\u0D31\u0D4D \u0D1A\u0D46\u0D2F\u0D4D\u0D2F\u0D3E\u0D7B \u0D2A\u0D3E\u0D15\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D30\u0D3E\u0D7C \u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D! \u0D24\u0D3E\u0D34\u0D46\u0D2F\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D4B\u0D33\u0D19\u0D4D\u0D19\u0D33\u0D3F\u0D7D \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D33\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D2E\u0D3E\u0D38\u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D41\u0D02 \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D3E\u0D02:",
-      followUpQuestions: [
+      assistantReplyMalayalam: isAffidavitPrompt ? "\u0D2E\u0D41\u0D26\u0D4D\u0D30\u0D2A\u0D4D\u0D2A\u0D24\u0D4D\u0D30\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D2A\u0D4D\u0D30\u0D3F\u0D28\u0D4D\u0D31\u0D4D \u0D1A\u0D46\u0D2F\u0D4D\u0D2F\u0D3E\u0D7B \u0D2A\u0D3E\u0D15\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (Affidavit) \u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D! \u0D24\u0D3E\u0D34\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02 \u0D06\u0D35\u0D36\u0D4D\u0D2F\u0D3E\u0D28\u0D41\u0D38\u0D30\u0D23\u0D02 \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D3E\u0D02:" : "\u0D2E\u0D41\u0D26\u0D4D\u0D30\u0D2A\u0D4D\u0D2A\u0D24\u0D4D\u0D30\u0D24\u0D4D\u0D24\u0D3F\u0D7D \u0D2A\u0D4D\u0D30\u0D3F\u0D28\u0D4D\u0D31\u0D4D \u0D1A\u0D46\u0D2F\u0D4D\u0D2F\u0D3E\u0D7B \u0D2A\u0D3E\u0D15\u0D24\u0D4D\u0D24\u0D3F\u0D32\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D30\u0D3E\u0D7C \u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D2F\u0D3F\u0D1F\u0D4D\u0D1F\u0D41\u0D23\u0D4D\u0D1F\u0D4D! \u0D24\u0D3E\u0D34\u0D46\u0D2F\u0D41\u0D33\u0D4D\u0D33 \u0D15\u0D4B\u0D33\u0D19\u0D4D\u0D19\u0D33\u0D3F\u0D7D \u0D15\u0D15\u0D4D\u0D37\u0D3F\u0D15\u0D33\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D2E\u0D3E\u0D38\u0D35\u0D3E\u0D1F\u0D15\u0D2F\u0D41\u0D02 \u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D3E\u0D02:",
+      followUpQuestions: isAffidavitPrompt ? [
+        {
+          id: "q-af-person",
+          fieldLabelMalayalam: "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 \u0D38\u0D2E\u0D7C\u0D2A\u0D4D\u0D2A\u0D3F\u0D15\u0D4D\u0D15\u0D41\u0D28\u0D4D\u0D28\u0D2F\u0D3E\u0D33\u0D41\u0D1F\u0D46 \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02",
+          questionMalayalam: "\u0D05\u0D2A\u0D47\u0D15\u0D4D\u0D37\u0D15\u0D28\u0D4D\u0D31\u0D46 \u0D2E\u0D41\u0D34\u0D41\u0D35\u0D7B \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D2E\u0D47\u0D7D\u0D35\u0D3F\u0D32\u0D3E\u0D38\u0D35\u0D41\u0D02 \u0D28\u0D7D\u0D15\u0D41\u0D15:",
+          quickSuggestions: []
+        },
+        {
+          id: "q-af-detail",
+          fieldLabelMalayalam: "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D24\u0D4D\u0D24\u0D3F\u0D28\u0D4D\u0D31\u0D46 \u0D15\u0D43\u0D24\u0D4D\u0D2F\u0D2E\u0D3E\u0D2F \u0D35\u0D3F\u0D35\u0D30\u0D02",
+          questionMalayalam: "\u0D24\u0D3F\u0D30\u0D41\u0D24\u0D4D\u0D24\u0D47\u0D23\u0D4D\u0D1F / \u0D38\u0D4D\u0D25\u0D3F\u0D30\u0D40\u0D15\u0D30\u0D3F\u0D15\u0D4D\u0D15\u0D47\u0D23\u0D4D\u0D1F \u0D35\u0D3F\u0D35\u0D30\u0D19\u0D4D\u0D19\u0D7E (\u0D09\u0D26\u0D3E: \u0D2A\u0D34\u0D2F \u0D2A\u0D47\u0D30\u0D41\u0D02 \u0D2A\u0D41\u0D24\u0D3F\u0D2F \u0D2A\u0D47\u0D30\u0D41\u0D02):",
+          quickSuggestions: []
+        }
+      ] : [
         {
           id: "q-ag-parties",
           fieldLabelMalayalam: "\u0D09\u0D1F\u0D2E\u0D2F\u0D41\u0D1F\u0D46\u0D2F\u0D41\u0D02 \u0D35\u0D3E\u0D1F\u0D15\u0D15\u0D4D\u0D15\u0D3E\u0D30\u0D28\u0D4D\u0D31\u0D46\u0D2F\u0D41\u0D02 \u0D2A\u0D47\u0D30\u0D4D",
@@ -7487,12 +8276,15 @@ User Input: "${prompt}"${targetLangInstruction}${contextString}`;
         parsed.gulfCvData = fbCv;
       } else {
         const aiCv = parsed.gulfCvData;
+        const hasExplicitFallbackName = Boolean(fbCv.fullName) && fbCv.fullName !== "RAJAN K. V." && !fbCv.fullName.includes("[");
+        const aiKeptGenericOrPrevName = !aiCv.fullName || aiCv.fullName === "RAJAN K. V." || aiCv.fullName.includes("[") || currentDocument?.gulfCvData?.fullName && aiCv.fullName === currentDocument.gulfCvData.fullName && hasExplicitFallbackName && fbCv.fullName !== currentDocument.gulfCvData.fullName;
+        const resolvedFullName = aiKeptGenericOrPrevName ? fbCv.fullName : aiCv.fullName;
         parsed.gulfCvData = {
           ...fbCv,
           ...aiCv,
-          fullName: !aiCv.fullName || aiCv.fullName === "RAJAN K. V." || aiCv.fullName.includes("[") ? fbCv.fullName : aiCv.fullName,
+          fullName: resolvedFullName,
           jobTitle: aiCv.jobTitle && aiCv.jobTitle.trim().length > 2 ? aiCv.jobTitle.trim() : fbCv.jobTitle,
-          currentLocation: !aiCv.currentLocation || /Kerala\s*,\s*Kerala/i.test(aiCv.currentLocation) || fbCv.currentLocation.includes("UAE") && !aiCv.currentLocation.includes("UAE") ? fbCv.currentLocation : aiCv.currentLocation,
+          currentLocation: !aiCv.currentLocation || /Kerala\s*,\s*Kerala/i.test(aiCv.currentLocation) || fbCv.currentLocation.includes("Hometown:") && !aiCv.currentLocation.includes("Hometown:") || fbCv.currentLocation.includes("UAE") && !aiCv.currentLocation.includes("UAE") ? fbCv.currentLocation : aiCv.currentLocation,
           visaStatus: aiCv.visaStatus && aiCv.visaStatus.trim().length > 2 ? aiCv.visaStatus.trim() : fbCv.visaStatus,
           drivingLicense: aiCv.drivingLicense && aiCv.drivingLicense.trim().length > 2 ? aiCv.drivingLicense.trim() : fbCv.drivingLicense,
           professionalSummary: aiCv.professionalSummary && aiCv.professionalSummary.trim().length > 15 ? aiCv.professionalSummary.trim() : fbCv.professionalSummary,
@@ -7501,7 +8293,7 @@ User Input: "${prompt}"${targetLangInstruction}${contextString}`;
           coreSkills: Array.isArray(aiCv.coreSkills) && aiCv.coreSkills.length > 0 ? aiCv.coreSkills : fbCv.coreSkills,
           languages: Array.isArray(aiCv.languages) && aiCv.languages.length > 0 ? aiCv.languages : fbCv.languages,
           declaration: aiCv.declaration && aiCv.declaration.trim().length > 10 ? aiCv.declaration.trim() : fbCv.declaration,
-          signatureName: !aiCv.fullName || aiCv.fullName === "RAJAN K. V." || aiCv.fullName.includes("[") ? fbCv.fullName : aiCv.signatureName || aiCv.fullName
+          signatureName: aiKeptGenericOrPrevName ? fbCv.fullName : aiCv.signatureName || resolvedFullName
         };
       }
     }
@@ -7528,20 +8320,60 @@ User Input: "${prompt}"${targetLangInstruction}${contextString}`;
   }
   if (parsed.detectedType === "rental_agreement" && deterministicFallback?.agreementData) {
     const fbAg = deterministicFallback.agreementData;
+    const isAffidavit = prompt.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") || prompt.toLowerCase().includes("affidavit");
+    const hasLoc = extractKeralaPlaceAndDistrict(prompt).found;
     if (!parsed.agreementData) {
       parsed.agreementData = fbAg;
     } else {
-      if (!parsed.agreementData.executionPlace || parsed.agreementData.executionPlace.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.executionPlace.includes("[") || parsed.outputLanguage === "ml" && /[A-Za-z]/.test(parsed.agreementData.executionPlace)) {
+      if (isAffidavit) {
+        parsed.agreementData.subType = "\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02 (Affidavit)";
+        parsed.agreementData.titleMalayalam = parsed.agreementData.titleMalayalam && parsed.agreementData.titleMalayalam.includes("\u0D38\u0D24\u0D4D\u0D2F\u0D35\u0D3E\u0D19\u0D4D\u0D2E\u0D42\u0D32\u0D02") ? parsed.agreementData.titleMalayalam : fbAg.titleMalayalam;
+        parsed.agreementData.firstPartyLabel = fbAg.firstPartyLabel;
+        parsed.agreementData.secondPartyLabel = fbAg.secondPartyLabel;
+        delete parsed.agreementData.schedulePropertyDetails;
+      }
+      if (!parsed.agreementData.executionPlace || parsed.agreementData.executionPlace.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.executionPlace.includes("[") || !hasLoc && /കേരളം/.test(parsed.agreementData.executionPlace) || parsed.outputLanguage === "ml" && /[A-Za-z]/.test(parsed.agreementData.executionPlace)) {
         parsed.agreementData.executionPlace = fbAg.executionPlace;
       }
-      if (!parsed.agreementData.firstPartyDetails || parsed.agreementData.firstPartyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.firstPartyDetails.includes("[")) {
+      if (!parsed.agreementData.firstPartyDetails || parsed.agreementData.firstPartyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.firstPartyDetails.includes("[") || parsed.agreementData.firstPartyDetails.includes("9847123456") || /([^\s]+)\s+ജില്ലയിൽ\s+\1\s+സ്വദേശിയായ/.test(parsed.agreementData.firstPartyDetails) || !hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.firstPartyDetails)) {
         parsed.agreementData.firstPartyDetails = fbAg.firstPartyDetails;
       }
-      if (!parsed.agreementData.secondPartyDetails || parsed.agreementData.secondPartyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.secondPartyDetails.includes("[")) {
+      if (!parsed.agreementData.secondPartyDetails || parsed.agreementData.secondPartyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.secondPartyDetails.includes("[") || !hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.secondPartyDetails)) {
         parsed.agreementData.secondPartyDetails = fbAg.secondPartyDetails;
       }
-      if (!parsed.agreementData.schedulePropertyDetails || parsed.agreementData.schedulePropertyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.schedulePropertyDetails.includes("[")) {
-        parsed.agreementData.schedulePropertyDetails = fbAg.schedulePropertyDetails;
+      if (!isAffidavit) {
+        if (!parsed.agreementData.schedulePropertyDetails || parsed.agreementData.schedulePropertyDetails.includes("\u0D24\u0D2F\u0D4D\u0D2F\u0D3E\u0D31\u0D3E\u0D15\u0D4D\u0D15\u0D23\u0D02") || parsed.agreementData.schedulePropertyDetails.includes("[") || /([^\s]+)\s+ജില്ല,\s+\1\s+തദ്ദേശ/.test(parsed.agreementData.schedulePropertyDetails) || !hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.schedulePropertyDetails)) {
+          parsed.agreementData.schedulePropertyDetails = fbAg.schedulePropertyDetails;
+        }
+      }
+      if (!Array.isArray(parsed.agreementData.witnesses) || parsed.agreementData.witnesses.length === 0 || !hasLoc && parsed.agreementData.witnesses.some((w) => /അബ്ദുൾ സലാം|വിനോദ് കെ|കേരളം/.test(w))) {
+        parsed.agreementData.witnesses = fbAg.witnesses;
+      }
+      if (isAffidavit) {
+        const aiClauses = Array.isArray(parsed.agreementData.clauses) ? parsed.agreementData.clauses : [];
+        const hasRentalLeak = aiClauses.some(
+          (c) => /പ്രതിമാസ\s*വാടക|അഡ്വാൻസ്|12,000|50,000|വൈദ്യുതി\s*ചാർജ്ജ്|കീഴ്‌വാടക/.test(c)
+        );
+        if (aiClauses.length === 0 || hasRentalLeak) {
+          parsed.agreementData.clauses = fbAg.clauses;
+        }
+      } else {
+        const fbRentMatch = fbAg.clauses?.[0]?.match(/₹([\d,]+)\/-/);
+        const fbAdvMatch = fbAg.clauses?.[1]?.match(/₹([\d,]+)\/-/);
+        const aiClauses = Array.isArray(parsed.agreementData.clauses) ? [...parsed.agreementData.clauses] : [...fbAg.clauses];
+        if (fbRentMatch?.[1]) {
+          const fbRentDigits = fbRentMatch[1].replace(/,/g, "");
+          if (!aiClauses[0] || !aiClauses[0].replace(/,/g, "").includes(fbRentDigits)) {
+            aiClauses[0] = fbAg.clauses[0];
+          }
+        }
+        if (fbAdvMatch?.[1]) {
+          const fbAdvDigits = fbAdvMatch[1].replace(/,/g, "");
+          if (!aiClauses[1] || !aiClauses[1].replace(/,/g, "").includes(fbAdvDigits)) {
+            aiClauses[1] = fbAg.clauses[1];
+          }
+        }
+        parsed.agreementData.clauses = aiClauses;
       }
     }
   }
@@ -7576,6 +8408,12 @@ User Input: "${prompt}"${targetLangInstruction}${contextString}`;
     merged.gulfCvData = await translateCvDataToTargetLanguage(
       merged.gulfCvData,
       effectiveCvLang
+    );
+  }
+  if (merged.agreementData && merged.outputLanguage && merged.outputLanguage !== "ml") {
+    merged.agreementData = await translateAgreementDataToTargetLanguage(
+      merged.agreementData,
+      merged.outputLanguage
     );
   }
   return merged;
@@ -7634,7 +8472,11 @@ async function translateSingleTextServer(text, targetLang) {
   if (trimmed.startsWith("data:") || trimmed.startsWith("http") || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed) || /^[\d\s+\-().\/]+$/.test(trimmed)) {
     return trimmed;
   }
-  const localMapped = translateSingleStringLocal(trimmed, targetLang);
+  const semanticHit = translateAgreementTextSemantic(trimmed, targetLang);
+  if (semanticHit !== null && semanticHit.trim()) {
+    return semanticHit;
+  }
+  const localMapped = translateSingleStringLocal(trimmed, targetLang, false, false);
   if (localMapped !== trimmed) {
     if (targetLang === "ml" && /[\u0D00-\u0D7F]/.test(localMapped) && !/[a-zA-Z]{2,}/.test(localMapped))
       return localMapped;
@@ -7684,133 +8526,339 @@ async function translateSingleTextServer(text, targetLang) {
   }
   return localMapped;
 }
+async function translateTextsBatchWithGemini(texts, targetLang) {
+  if (!hasGeminiApiKey() || texts.length === 0) return null;
+  const langLabelMap = {
+    ml: "Malayalam (\u0D2E\u0D32\u0D2F\u0D3E\u0D33\u0D02)",
+    en: "Formal Professional English",
+    ar: "Formal Arabic (\u0627\u0644\u0639\u0631\u0628\u064A\u0629)",
+    ur: "Formal Urdu (\u0627\u0631\u062F\u0648)",
+    hi: "Formal Hindi (\u0939\u093F\u0928\u094D\u0926\u0940)",
+    ta: "Formal Tamil (\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD)"
+  };
+  const ai = getGenAIClient();
+  const candidateModels = ["gemini-2.5-flash", "gemini-3-flash-preview", "gemini-flash-latest"];
+  const promptText = `Translate EVERY string in the JSON array "items" completely and naturally into ${langLabelMap[targetLang] || "English"}.
+STRICT RULES:
+1. Return ONLY JSON object: {"translations": [...]} with the EXACT same length (${texts.length}) and order.
+2. NEVER leave any Malayalam words untranslated when target is not Malayalam, and NEVER concatenate English/Arabic prefixes onto Malayalam suffixes.
+3. Preserve numbers, currency symbols (\u20B918,000/-), dates, email addresses, URLs, and dotted blanks ("........................") verbatim.
+4. Transliterate proper person names and places cleanly into the target script.
+items: ${JSON.stringify(texts)}`;
+  for (const modelName of candidateModels) {
+    try {
+      const response = await ai.models.generateContent({
+        model: modelName,
+        contents: promptText,
+        config: {
+          systemInstruction: 'You are a certified legal and official document translator. Output ONLY valid JSON {"translations": [...]}.',
+          responseMimeType: "application/json",
+          thinkingConfig: { thinkingBudget: 0 }
+        }
+      });
+      const parsed = JSON.parse((response.text ?? "{}").trim());
+      if (Array.isArray(parsed?.translations) && parsed.translations.length === texts.length) {
+        return parsed.translations.map(
+          (item, idx) => typeof item === "string" && item.trim() ? item.trim() : texts[idx]
+        );
+      }
+    } catch (err) {
+      console.warn(`Batch translate model ${modelName} warning:`, err?.message);
+    }
+  }
+  return null;
+}
+async function translateManyTextsServer(rawItems, localItems, targetLang) {
+  const results = new Array(rawItems.length);
+  const pendingIndices = [];
+  const pendingTexts = [];
+  for (let i = 0; i < rawItems.length; i++) {
+    const rawStr = rawItems[i] || "";
+    const localStr = localItems[i] || "";
+    const chosen = (localStr || rawStr).trim();
+    if (!chosen || chosen === "-" || /^[.\s\-_]+$/.test(chosen) || chosen.startsWith("data:") || chosen.startsWith("http") || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(chosen) || /^[\d\s+\-().\/₹,]+$/.test(chosen)) {
+      results[i] = localStr || rawStr;
+      continue;
+    }
+    const semanticHit = translateAgreementTextSemantic(rawStr, targetLang);
+    if (semanticHit !== null && semanticHit.trim() && (targetLang === "ml" || !/[\u0D00-\u0D7F]/.test(semanticHit))) {
+      results[i] = semanticHit;
+      continue;
+    }
+    if (localStr && localStr !== rawStr) {
+      const hasMal = /[\u0D00-\u0D7F]/.test(localStr);
+      if (targetLang === "ml" && hasMal && !/[a-zA-Z]{2,}/.test(localStr)) {
+        results[i] = localStr;
+        continue;
+      }
+      if (targetLang !== "ml" && !hasMal) {
+        results[i] = localStr;
+        continue;
+      }
+    }
+    if (targetLang === "en" && !/[\u0D00-\u0D7F\u0600-\u06FF\u0900-\u097F\u0B80-\u0BFF]/.test(chosen)) {
+      results[i] = chosen;
+      continue;
+    }
+    if (targetLang === "ml" && /[\u0D00-\u0D7F]/.test(chosen) && !/[a-zA-Z]{2,}/.test(chosen)) {
+      results[i] = chosen;
+      continue;
+    }
+    pendingIndices.push(i);
+    pendingTexts.push(rawStr || chosen);
+  }
+  if (pendingTexts.length > 0) {
+    const geminiBatch = await translateTextsBatchWithGemini(pendingTexts, targetLang);
+    if (geminiBatch) {
+      for (let j = 0; j < pendingIndices.length; j++) {
+        const idx = pendingIndices[j];
+        const trText = geminiBatch[j];
+        if (targetLang !== "ml" && /[\u0D00-\u0D7F]/.test(trText)) {
+          results[idx] = await translateSingleTextServer(pendingTexts[j], targetLang);
+        } else {
+          results[idx] = trText;
+        }
+      }
+    } else {
+      const gtxResults = await Promise.all(
+        pendingTexts.map((txt) => translateSingleTextServer(txt, targetLang))
+      );
+      for (let j = 0; j < pendingIndices.length; j++) {
+        results[pendingIndices[j]] = gtxResults[j];
+      }
+    }
+  }
+  return results;
+}
 async function translateCvDataToTargetLanguage(cv, targetLang) {
   if (!cv) return cv;
-  const localConverted = applyLocalLanguageConversionToCv(cv, targetLang);
-  const tr = (s) => translateSingleTextServer(s || "", targetLang);
-  const [
-    fullName,
-    jobTitle,
-    currentLocation,
-    visaStatus,
-    drivingLicense,
-    maritalStatus,
-    professionalSummary,
-    declaration,
-    cvPlace,
-    signatureName,
-    languages,
-    coreSkills,
-    workExperience,
-    education
-  ] = await Promise.all([
-    tr(localConverted.fullName),
-    tr(localConverted.jobTitle),
-    tr(localConverted.currentLocation),
-    tr(localConverted.visaStatus),
-    tr(localConverted.drivingLicense),
-    tr(localConverted.maritalStatus),
-    tr(localConverted.professionalSummary),
-    tr(localConverted.declaration),
-    tr(localConverted.cvPlace || ""),
-    tr(localConverted.signatureName || localConverted.fullName),
-    Promise.all((localConverted.languages || []).map(tr)),
-    Promise.all((localConverted.coreSkills || []).map(tr)),
-    Promise.all(
-      (localConverted.workExperience || []).map(async (exp) => ({
-        ...exp,
-        role: await tr(exp.role),
-        company: await tr(exp.company),
-        location: await tr(exp.location),
-        duration: await tr(exp.duration),
-        highlights: await Promise.all((exp.highlights || []).map(tr))
-      }))
-    ),
-    Promise.all(
-      (localConverted.education || []).map(async (edu) => ({
-        ...edu,
-        degree: await tr(edu.degree),
-        institution: await tr(edu.institution),
-        year: await tr(edu.year)
-      }))
-    )
-  ]);
+  const localConverted = applyLocalLanguageConversionToCv(cv, targetLang, true);
+  const rawQueue = [];
+  const localQueue = [];
+  const pushItem = (rawVal, localVal) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || "");
+    localQueue.push(localVal || "");
+    return idx;
+  };
+  const iFullName = pushItem(cv.fullName, localConverted.fullName);
+  const iJobTitle = pushItem(cv.jobTitle, localConverted.jobTitle);
+  const iLocation = pushItem(cv.currentLocation, localConverted.currentLocation);
+  const iVisa = pushItem(cv.visaStatus, localConverted.visaStatus);
+  const iLicense = pushItem(cv.drivingLicense, localConverted.drivingLicense);
+  const iMarital = pushItem(cv.maritalStatus, localConverted.maritalStatus);
+  const iSummary = pushItem(cv.professionalSummary, localConverted.professionalSummary);
+  const iDecl = pushItem(cv.declaration, localConverted.declaration);
+  const iPlace = pushItem(cv.cvPlace || "", localConverted.cvPlace || "");
+  const iSign = pushItem(cv.signatureName || cv.fullName, localConverted.signatureName || localConverted.fullName);
+  const iLangs = (cv.languages || []).map(
+    (l, k) => pushItem(l, localConverted.languages?.[k] ?? l)
+  );
+  const iSkills = (cv.coreSkills || []).map(
+    (s, k) => pushItem(s, localConverted.coreSkills?.[k] ?? s)
+  );
+  const iExp = (cv.workExperience || []).map((exp, k) => {
+    const lExp = localConverted.workExperience?.[k] || exp;
+    return {
+      ...exp,
+      _role: pushItem(exp.role, lExp.role),
+      _company: pushItem(exp.company, lExp.company),
+      _location: pushItem(exp.location, lExp.location),
+      _duration: pushItem(exp.duration, lExp.duration),
+      _highlights: (exp.highlights || []).map(
+        (h, hIdx) => pushItem(h, lExp.highlights?.[hIdx] ?? h)
+      )
+    };
+  });
+  const iEdu = (cv.education || []).map((edu, k) => {
+    const lEdu = localConverted.education?.[k] || edu;
+    return {
+      ...edu,
+      _degree: pushItem(edu.degree, lEdu.degree),
+      _institution: pushItem(edu.institution, lEdu.institution),
+      _year: pushItem(edu.year, lEdu.year)
+    };
+  });
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
+  const fullName = tr[iFullName];
+  const jobTitle = tr[iJobTitle];
+  const signatureName = tr[iSign];
   return {
     ...localConverted,
     fullName: targetLang === "en" ? fullName.toUpperCase() : fullName,
     jobTitle: targetLang === "en" ? jobTitle.toUpperCase() : jobTitle,
-    currentLocation,
-    visaStatus,
-    drivingLicense,
-    maritalStatus,
-    professionalSummary,
-    declaration,
-    cvPlace,
+    currentLocation: tr[iLocation],
+    visaStatus: tr[iVisa],
+    drivingLicense: tr[iLicense],
+    maritalStatus: tr[iMarital],
+    professionalSummary: tr[iSummary],
+    declaration: tr[iDecl],
+    cvPlace: tr[iPlace],
     signatureName: targetLang === "en" ? signatureName.toUpperCase() : signatureName,
-    languages,
-    coreSkills,
-    workExperience,
-    education
+    languages: iLangs.map((idx) => tr[idx]),
+    coreSkills: iSkills.map((idx) => tr[idx]),
+    workExperience: iExp.map((e) => ({
+      id: e.id,
+      role: tr[e._role],
+      company: tr[e._company],
+      location: tr[e._location],
+      duration: tr[e._duration],
+      highlights: e._highlights.map((idx) => tr[idx])
+    })),
+    education: iEdu.map((e) => ({
+      id: e.id,
+      degree: tr[e._degree],
+      institution: tr[e._institution],
+      year: tr[e._year]
+    }))
   };
 }
 async function translateLetterDataToTargetLanguage(letter, targetLang) {
   if (!letter) return letter;
-  const localConverted = applyLocalLanguageConversionToLetter(letter, targetLang);
-  const tr = (s) => translateSingleTextServer(s || "", targetLang);
-  const [
-    documentHeading,
-    senderName,
-    senderAddress,
-    recipientTitle,
-    recipientOffice,
-    recipientPlace,
-    subject,
-    salutation,
-    bodyParagraphs,
-    closingPhrase,
-    place,
-    enclosures,
-    structuredFields
-  ] = await Promise.all([
-    tr(localConverted.documentHeading),
-    tr(localConverted.senderName),
-    tr(localConverted.senderAddress),
-    tr(localConverted.recipientTitle),
-    tr(localConverted.recipientOffice),
-    tr(localConverted.recipientPlace),
-    tr(localConverted.subject),
-    tr(localConverted.salutation),
-    Promise.all((localConverted.bodyParagraphs || []).map(tr)),
-    tr(localConverted.closingPhrase),
-    tr(localConverted.place),
-    Promise.all((localConverted.enclosures || []).map(tr)),
-    localConverted.structuredFields ? Promise.all(
-      localConverted.structuredFields.map(async (f) => ({
-        ...f,
-        label: await tr(f.label),
-        value: await tr(f.value)
-      }))
-    ) : Promise.resolve(void 0)
-  ]);
+  const localConverted = applyLocalLanguageConversionToLetter(letter, targetLang, true);
+  const rawQueue = [];
+  const localQueue = [];
+  const pushItem = (rawVal, localVal) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || "");
+    localQueue.push(localVal || "");
+    return idx;
+  };
+  const iHeading = pushItem(letter.documentHeading, localConverted.documentHeading);
+  const iSenderName = pushItem(letter.senderName, localConverted.senderName);
+  const iSenderAddr = pushItem(letter.senderAddress, localConverted.senderAddress);
+  const iRecTitle = pushItem(letter.recipientTitle, localConverted.recipientTitle);
+  const iRecOffice = pushItem(letter.recipientOffice, localConverted.recipientOffice);
+  const iRecPlace = pushItem(letter.recipientPlace, localConverted.recipientPlace);
+  const iSubject = pushItem(letter.subject, localConverted.subject);
+  const iSalutation = pushItem(letter.salutation, localConverted.salutation);
+  const iBody = (letter.bodyParagraphs || []).map(
+    (p, k) => pushItem(p, localConverted.bodyParagraphs?.[k] ?? p)
+  );
+  const iClosing = pushItem(letter.closingPhrase, localConverted.closingPhrase);
+  const iPlace = pushItem(letter.place, localConverted.place);
+  const iEnclosures = (letter.enclosures || []).map(
+    (enc, k) => pushItem(enc, localConverted.enclosures?.[k] ?? enc)
+  );
+  const iFields = (letter.structuredFields || []).map((f, k) => {
+    const lf = localConverted.structuredFields?.[k] || f;
+    return {
+      ...f,
+      _label: pushItem(f.label, lf.label),
+      _value: pushItem(f.value, lf.value)
+    };
+  });
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
   return {
     ...localConverted,
-    documentHeading,
-    senderName,
-    senderAddress,
-    recipientTitle,
-    recipientOffice,
-    recipientPlace,
-    subject,
-    salutation,
-    bodyParagraphs,
-    closingPhrase,
-    place,
-    enclosures,
-    ...structuredFields ? { structuredFields } : {}
+    documentHeading: tr[iHeading],
+    senderName: tr[iSenderName],
+    senderAddress: tr[iSenderAddr],
+    recipientTitle: tr[iRecTitle],
+    recipientOffice: tr[iRecOffice],
+    recipientPlace: tr[iRecPlace],
+    subject: tr[iSubject],
+    salutation: tr[iSalutation],
+    bodyParagraphs: iBody.map((idx) => tr[idx]),
+    closingPhrase: tr[iClosing],
+    place: tr[iPlace],
+    enclosures: iEnclosures.map((idx) => tr[idx]),
+    ...letter.structuredFields ? {
+      structuredFields: iFields.map((f) => ({
+        id: f.id,
+        label: tr[f._label],
+        value: tr[f._value],
+        placeholder: f.placeholder
+      }))
+    } : {}
   };
+}
+async function translateAgreementDataToTargetLanguage(agreement, targetLang) {
+  if (!agreement) return agreement;
+  const localConverted = applyLocalLanguageConversionToAgreement(agreement, targetLang, false);
+  const rawQueue = [];
+  const localQueue = [];
+  const pushItem = (rawVal, localVal) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || "");
+    localQueue.push(localVal || "");
+    return idx;
+  };
+  const iTitle = pushItem(agreement.titleMalayalam, localConverted.titleMalayalam);
+  const iExecPlace = pushItem(agreement.executionPlace, localConverted.executionPlace);
+  const iFpLabel = pushItem(agreement.firstPartyLabel, localConverted.firstPartyLabel);
+  const iFpDetails = pushItem(agreement.firstPartyDetails, localConverted.firstPartyDetails);
+  const iSpLabel = pushItem(agreement.secondPartyLabel, localConverted.secondPartyLabel);
+  const iSpDetails = pushItem(agreement.secondPartyDetails, localConverted.secondPartyDetails);
+  const iPreamble = pushItem(agreement.preambleParagraph, localConverted.preambleParagraph);
+  const iClauses = (agreement.clauses || []).map(
+    (c, k) => pushItem(c, localConverted.clauses?.[k] ?? c)
+  );
+  const hasSchedule = agreement.schedulePropertyDetails !== void 0;
+  const iSchedule = hasSchedule ? pushItem(agreement.schedulePropertyDetails || "", localConverted.schedulePropertyDetails || "") : -1;
+  const iWitnesses = (agreement.witnesses || []).map(
+    (w, k) => pushItem(w, localConverted.witnesses?.[k] ?? w)
+  );
+  const optKeys = [
+    "scheduleHeadingOverride",
+    "witnessesHeadingOverride",
+    "placeLabelOverride",
+    "dateLabelOverride",
+    "firstPartySignLabelOverride",
+    "firstPartySignatureLabelOverride",
+    "secondPartySignLabelOverride",
+    "secondPartySignatureLabelOverride"
+  ];
+  const optIdx = {};
+  for (const key of optKeys) {
+    if (agreement[key] || localConverted[key]) {
+      optIdx[key] = pushItem(agreement[key] || "", localConverted[key] || "");
+    }
+  }
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
+  const out = {
+    ...localConverted,
+    titleMalayalam: tr[iTitle],
+    executionPlace: tr[iExecPlace],
+    firstPartyLabel: tr[iFpLabel],
+    firstPartyDetails: tr[iFpDetails],
+    secondPartyLabel: tr[iSpLabel],
+    secondPartyDetails: tr[iSpDetails],
+    preambleParagraph: tr[iPreamble],
+    clauses: iClauses.map((idx) => tr[idx]),
+    witnesses: iWitnesses.map((idx) => tr[idx])
+  };
+  if (hasSchedule && iSchedule >= 0) {
+    out.schedulePropertyDetails = tr[iSchedule];
+  } else {
+    delete out.schedulePropertyDetails;
+  }
+  for (const key of optKeys) {
+    if (optIdx[key] !== void 0) {
+      out[key] = tr[optIdx[key]];
+    }
+  }
+  return out;
 }
 var app = express();
 app.use(express.json({ limit: "30mb" }));
+app.get("/favicon.ico", (_req, res) => {
+  const icoPath = path.resolve(process.cwd(), "public", "favicon.ico");
+  if (fs.existsSync(icoPath)) {
+    res.setHeader("Content-Type", "image/x-icon");
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.sendFile(icoPath);
+    return;
+  }
+  const svgPath = path.resolve(process.cwd(), "public", "icon.svg");
+  if (fs.existsSync(svgPath)) {
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.sendFile(svgPath);
+    return;
+  }
+  res.status(204).end();
+});
 var resolvePublicOrigin = (req) => {
   try {
     if (fs.existsSync(OWNER_CONFIG_FILE)) {
@@ -8479,6 +9527,11 @@ Return a JSON object with a "boxes" array. Each item must have:
         out.gulfCvData = await translateCvDataToTargetLanguage(gulfCvData, targetLanguage);
       } else if (category === "malayalam_letter" && letterData) {
         out.letterData = await translateLetterDataToTargetLanguage(letterData, targetLanguage);
+      } else if (category === "rental_agreement" && agreementData) {
+        out.agreementData = await translateAgreementDataToTargetLanguage(
+          agreementData,
+          targetLanguage
+        );
       } else {
         if (gulfCvData) {
           out.gulfCvData = await translateCvDataToTargetLanguage(gulfCvData, targetLanguage);
@@ -8486,8 +9539,19 @@ Return a JSON object with a "boxes" array. Each item must have:
         if (letterData) {
           out.letterData = await translateLetterDataToTargetLanguage(letterData, targetLanguage);
         }
+        if (agreementData) {
+          out.agreementData = await translateAgreementDataToTargetLanguage(
+            agreementData,
+            targetLanguage
+          );
+        }
       }
-      if (agreementData) out.agreementData = agreementData;
+      if (!out.agreementData && agreementData) {
+        out.agreementData = await translateAgreementDataToTargetLanguage(
+          agreementData,
+          targetLanguage
+        );
+      }
       if (markListData) out.markListData = markListData;
       res.json(normalizePayloadNFC(out));
     } catch (err) {

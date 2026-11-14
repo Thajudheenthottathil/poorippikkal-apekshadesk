@@ -939,7 +939,28 @@ export function App() {
         setAgreementData(nextAg);
       }
       if (data.markListData) {
-        nextMl = data.markListData;
+        const rawMl = data.markListData as any;
+        nextMl = {
+          ...markListData,
+          ...rawMl,
+          schoolName: String(rawMl.schoolName || markListData.schoolName).trim(),
+          examTitle: String(rawMl.examTitle || rawMl.examinationTitle || markListData.examTitle).trim(),
+          classAndDivision: String(rawMl.classAndDivision || markListData.classAndDivision).trim(),
+          academicYear: String(rawMl.academicYear || markListData.academicYear).trim(),
+          classTeacherName: String(rawMl.classTeacherName || rawMl.teacherName || markListData.classTeacherName).trim(),
+          maxMarksPerSubject:
+            Number(rawMl.maxMarksPerSubject) > 0
+              ? Number(rawMl.maxMarksPerSubject)
+              : markListData.maxMarksPerSubject,
+          subjects:
+            Array.isArray(rawMl.subjects) && rawMl.subjects.length > 0
+              ? rawMl.subjects
+              : markListData.subjects,
+          students:
+            Array.isArray(rawMl.students) && rawMl.students.length > 0
+              ? rawMl.students
+              : markListData.students,
+        };
         setMarkListData(nextMl);
       }
 

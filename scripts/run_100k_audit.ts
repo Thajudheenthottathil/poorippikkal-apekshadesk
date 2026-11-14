@@ -460,7 +460,7 @@ const noRedundantMobileButtons =
   !appTsx.includes('⬇ PDF ആക്കുക (Download)') &&
   !appTsx.includes('🖨 പ്രിന്റ്') &&
   !botPanelTsx.includes('A4 PDF ഡൗൺലോഡ്') &&
-  appTsx.includes('grid grid-cols-2 gap-1.5 bg-white');
+  appTsx.includes('lg:hidden fixed bottom-0');
 
 for (let i = 0; i < 5000; i++) {
   const passedAllUiPdfChecks =

@@ -12,6 +12,7 @@ import {
   FileAudio,
   FileSpreadsheet,
   FileText,
+  Globe,
   Image as ImageIcon,
   Loader2,
   MessageSquare,
@@ -967,6 +968,40 @@ export const WhatsAppBotPanel: React.FC<WhatsAppBotPanelProps> = ({
           )}
         </div>
       </div>
+
+      {/* Prominent 6-Language Document Output Switcher (Visible on Mobile & Desktop) */}
+      {onSelectOutputLanguage && (
+        <div className="bg-slate-900 px-3 py-2 border-b border-emerald-800/60 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-1 text-[11px] font-malayalam font-extrabold text-amber-300 shrink-0">
+            {isTranslatingLanguage ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+            ) : (
+              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+            )}
+            <span>ഭാഷ:</span>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {OUTPUT_LANGUAGE_OPTIONS.map((lang) => {
+              const active = outputLanguage === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  disabled={isTranslatingLanguage}
+                  onClick={() => onSelectOutputLanguage(lang.code)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer border ${
+                    active
+                      ? 'bg-emerald-500 text-slate-950 border-emerald-300 shadow-sm font-black'
+                      : 'bg-white/10 hover:bg-white/20 text-white/90 border-white/15'
+                  }`}
+                >
+                  {lang.nativeLabel}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {subTab === 'chat' ? (
         <>

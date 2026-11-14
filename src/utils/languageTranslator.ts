@@ -2496,6 +2496,19 @@ const MALAYALAM_TO_ENGLISH_SEMANTIC_MAP: Array<[string, string]> = [
   ['താലൂക്ക്', 'Taluk'],
   ['വില്ലേജ്', 'Village'],
   ['പഞ്ചായത്ത്', 'Panchayat'],
+  ['പ്രവൃത്തിപരിചയം', 'Work Experience'],
+  ['പ്രവർത്തനങ്ങൾ', 'Operations'],
+  ['കൃത്യമായി', 'Accurately'],
+  ['കൈകാര്യം ചെയ്തു', 'Managed'],
+  ['മേഖലയിൽ', 'Sector'],
+  ['മേഖല', 'Sector'],
+  ['വർഷത്തെ', 'Years'],
+  ['സ്വദേശിയാണ്', 'Native'],
+  ['സ്വദേശി', 'Native'],
+  ['എക്സിക്യൂട്ടീവ്', 'Executive'],
+  ['ഗ്രൂപ്പ്', 'Group'],
+  ['അൽ മദീന', 'Al Madina'],
+  ['അൽ നൂർ', 'Al Noor'],
   ['വേണം', ''],
   ['ആണ്', ''],
   ['ഉണ്ട്', ''],
@@ -3048,8 +3061,17 @@ export function applyLocalLanguageConversionToCv(
   serverSafeMode = false
 ): GulfCvData {
   const allowFallback = !serverSafeMode;
-  const tr = (s: string) =>
-    translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+  const ensurePureEnglishForCv = (val: string): string => {
+    if (targetLang !== 'en' || serverSafeMode || !/[\u0D00-\u0D7F]/.test(val)) return val;
+    return convertMalayalamToEnglish(val, true);
+  };
+  const tr = (s: string) => {
+    const firstPass = translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+    if (targetLang === 'en' && !serverSafeMode && /[\u0D00-\u0D7F]/.test(firstPass)) {
+      return ensurePureEnglishForCv(firstPass);
+    }
+    return firstPass;
+  };
   const trName = (s: string) =>
     translateSingleStringLocal(s, targetLang, true, allowFallback, allowFallback);
   return {
