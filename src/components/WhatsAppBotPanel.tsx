@@ -46,6 +46,8 @@ import {
 import {
   OUTPUT_LANGUAGE_OPTIONS,
   convertMalayalamToEnglish,
+  mergeSpeechRecognitionPieces,
+  normalizeSpokenMalayalamTranscript,
 } from '../utils/languageTranslator';
 import {
   GovFormTemplate,
@@ -476,11 +478,13 @@ export const WhatsAppBotPanel: React.FC<WhatsAppBotPanelProps> = ({
         rec.continuous = true;
         rec.interimResults = true;
         rec.onresult = (ev: any) => {
-          let text = '';
+          const pieces: string[] = [];
           for (let i = 0; i < ev.results.length; i++) {
-            text += (ev.results[i][0]?.transcript || '') + ' ';
+            const piece = (ev.results[i][0]?.transcript || '').trim();
+            if (piece) pieces.push(piece);
           }
-          const cleaned = normalizeInlineVoiceValueForBox(boxKey, text);
+          const merged = normalizeSpokenMalayalamTranscript(mergeSpeechRecognitionPieces(pieces));
+          const cleaned = normalizeInlineVoiceValueForBox(boxKey, merged);
           if (cleaned) {
             inlineLiveTranscriptRef.current = cleaned;
             onFillValue(cleaned);

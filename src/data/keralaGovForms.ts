@@ -1911,6 +1911,148 @@ function buildFollowUpsForGovForm(form: GovFormTemplate, currentLetter?: Malayal
 }
 
 /**
+ * Strips bot/meta-request filler phrases ("എനിക്ക് ഒരു പരാതി തയ്യാറാക്കി തരുമോ", etc.)
+ * and Android SpeechRecognition stutters to extract the clean core subject & incident description.
+ */
+export function extractCleanComplaintOrPetitionDetails(rawPrompt: string): {
+  cleanedPrompt: string;
+  coreIncident: string;
+  isComplaint: boolean;
+} {
+  const cleanedPrompt = normalizeSpokenMalayalamTranscript(rawPrompt || '').normalize('NFC').trim();
+  const isComplaint =
+    /പരാതി|അതിനെതിരെ|ഇതിനെതിരെ|കടിച്ചു|നക്കി|ആക്രമ|ഉപദ്രവ|ഭീഷണി|മോഷണം|തട്ടിപ്പ്|ശല്യം|\bcomplaint\b/i.test(
+      cleanedPrompt
+    );
+
+  let core = cleanedPrompt
+    .replace(
+      /(?:ദയവായി\s*)?(?:എനിക്ക്\s*)?(?:ഒരു\s*)?(?:പോലീസ്\s*സ്റ്റേഷനിൽ|പഞ്ചായത്തിൽ|വില്ലേജ്\s*ഓഫീസിൽ)?\s*(?:കൊടുക്കാൻ|സമർപ്പിക്കാൻ)?\s*(?:ഒരു\s*)?(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|ഫോം)?\s*(?:തയ്യാറാക്കി|ഉണ്ടാക്കി|എഴുതി|നിർമ്മിച്ച്)\s*(?:തരുമോ|തരൂ|തരാമോ|തരുക|നൽകുമോ|നൽകൂ|വേണം)?/gi,
+      ' '
+    )
+    .replace(/(?:അതിനെതിരെയാണ്|ഇതിനെതിരെയാണ്|അതിനെതിരെ|ഇതിനെതിരെ)\s*(?:പരാതി|കേസ്)?/gi, ' ')
+    .replace(/^(?:ദയവായി|ഹലോ|നമസ്കാരം|സർ)\s+/gi, ' ')
+    .replace(
+      /\bplease\s+(?:write|prepare|make|create|draft)\s+(?:a\s+)?(?:complaint|letter|application|petition)(?:\s+for\s+me)?\b/gi,
+      ' '
+    )
+    .replace(/\s{2,}/g, ' ')
+    .replace(/^[,.\-–—\s]+|[,.\-–—\s]+$/g, '')
+    .trim();
+
+  if (!core || /^(?:പരാതി|അപേക്ഷ|കത്ത്|നിവേദനം|പോലീസ്\s*പരാതി)$/i.test(core)) {
+    core = '';
+  }
+
+  return {
+    cleanedPrompt,
+    coreIncident: core,
+    isComplaint,
+  };
+}
+
+/**
+ * Builds a clean, standalone official Malayalam letter or complaint from user voice/text input
+ * WITHOUT leaking unrelated enclosures/recipients from any previous template or pasting raw bot-request filler.
+ */
+export function buildCleanCustomLetterFromPrompt(
+  rawPrompt: string,
+  currentLetter?: MalayalamLetterData | null
+): MalayalamLetterData {
+  const { cleanedPrompt, coreIncident, isComplaint } =
+    extractCleanComplaintOrPetitionDetails(rawPrompt);
+
+  const todayMl = new Date().toLocaleDateString('ml-IN');
+  const loc = extractKeralaPlaceAndDistrict(cleanedPrompt);
+
+  const hasUserSenderName =
+    Boolean(currentLetter?.senderName?.trim()) &&
+    currentLetter?.senderName !== 'രാജൻ കെ. വി.' &&
+    !currentLetter?.senderName?.includes('[');
+
+  const cleanPlace = loc.found
+    ? loc.place
+    : currentLetter?.place && currentLetter.place !== 'കേരളം'
+    ? currentLetter.place
+    : 'കേരളം';
+
+  const cleanSenderAddress = loc.found
+    ? loc.place !== loc.district
+      ? `${loc.place}, ${loc.district} ജില്ല, കേരളം`
+      : `${loc.place}, കേരളം`
+    : currentLetter?.senderAddress && !currentLetter.senderAddress.includes('[')
+    ? currentLetter.senderAddress
+    : '';
+
+  const isPoliceOrAnimalIncident =
+    isComplaint &&
+    /പോലീസ്|സ്റ്റേഷൻ|കടിച്ചു|നക്കി|ആക്രമ|മോഷണം|ഭീഷണി|തല്ലി|അടിച്ചു|പൂച്ച|നായ|പട്ടി|\bpolice\b/i.test(
+      cleanedPrompt
+    );
+
+  const documentHeading = isComplaint ? 'പരാതി (COMPLAINT)' : 'ഔദ്യോഗിക അപേക്ഷ';
+  const recipientTitle = isPoliceOrAnimalIncident
+    ? 'ബഹുമാനപ്പെട്ട സ്റ്റേഷൻ ഹൗസ് ഓഫീസർ (SHO) / ബന്ധപ്പെട്ട അധികാരി അവർകൾക്ക്,'
+    : 'ബഹുമാനപ്പെട്ട അധികാരി / സെക്രട്ടറി അവർകൾക്ക്,';
+  const recipientOffice = isPoliceOrAnimalIncident
+    ? cleanPlace !== 'കേരളം'
+      ? `${cleanPlace} പോലീസ് സ്റ്റേഷൻ,`
+      : 'പോലീസ് സ്റ്റേഷൻ,'
+    : cleanPlace !== 'കേരളം'
+    ? `${cleanPlace} ഗ്രാമപഞ്ചായത്ത് / ബന്ധപ്പെട്ട ഓഫീസ്,`
+    : 'ബന്ധപ്പെട്ട കാര്യാലയം,';
+  const recipientPlace = loc.found ? `${loc.district}.` : `${cleanPlace}.`;
+
+  const incidentDisplay = coreIncident || cleanedPrompt;
+
+  const subject = isComplaint
+    ? coreIncident
+      ? `${incidentDisplay} — അടിയന്തര അന്വേഷണം നടത്തി ഉചിതമായ നിയമനടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള പരാതി.`
+      : 'അടിയന്തര അന്വേഷണം നടത്തി ഉചിതമായ നിയമനടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള പരാതി.'
+    : coreIncident
+    ? `${incidentDisplay} സംബന്ധിച്ച അടിയന്തര അപേക്ഷ.`
+    : 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.';
+
+  const bodyParagraphs = isComplaint
+    ? [
+        'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ അങ്ങയുടെ അടിയന്തര ശ്രദ്ധയിലേക്കും നിയമനടപടിക്കുമായി സമർപ്പിക്കുന്ന പരാതി.',
+        coreIncident
+          ? `സംഭവ വിവരണം: ${incidentDisplay}. ഈ സംഭവം മൂലം എനിക്കും കുടുംബത്തിനും വലിയ ആശങ്കയും ബുദ്ധിമുട്ടും നേരിടേണ്ടിവന്നിട്ടുണ്ട്.`
+          : 'പ്രസ്തുത സംഭവം മൂലം എനിക്കും കുടുംബത്തിനും വലിയ ആശങ്കയും ബുദ്ധിമുട്ടും നേരിടേണ്ടിവന്നിട്ടുണ്ട്.',
+        'ആയതിനാൽ മേൽപ്പറഞ്ഞ വിഷയത്തിൽ അടിയന്തരമായി സ്ഥലവും സാഹചര്യവും പരിശോധിച്ച് കുറ്റക്കാർക്കെതിരെ / ഉത്തരവാദികൾക്കെതിരെ ഉചിതമായ നിയമനടപടികൾ സ്വീകരിക്കണമെന്നും ഇത്തരം സംഭവങ്ങൾ ആവർത്തിക്കാതിരിക്കാൻ വേണ്ട സംരക്ഷണം നൽകണമെന്നും വിനീതമായി അപേക്ഷിക്കുന്നു.',
+      ]
+    : [
+        coreIncident
+          ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ അടിയന്തര ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${incidentDisplay}.`
+          : 'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ എന്റെ ഔദ്യോഗിക ആവശ്യത്തിലേക്കായി ഈ അപേക്ഷ സമർപ്പിക്കുന്നു.',
+        'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ തുടർനടപടികൾ സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+      ];
+
+  const enclosures = isComplaint
+    ? ['അപേക്ഷകന്റെ തിരിച്ചറിയൽ രേഖ (ആധാർ കാർഡ് പകർപ്പ്)', 'സംഭവവുമായി ബന്ധപ്പെട്ട ഫോട്ടോ / തെളിവുകൾ (ഉണ്ടെങ്കിൽ)']
+    : ['അപേക്ഷകന്റെ തിരിച്ചറിയൽ രേഖ (ഉണ്ടെങ്കിൽ)'];
+
+  return {
+    documentHeading,
+    letterLayoutVariant: 'official_letter',
+    senderName: hasUserSenderName ? currentLetter!.senderName : '',
+    senderAddress: cleanSenderAddress,
+    senderPhone: currentLetter?.senderPhone || '',
+    recipientTitle,
+    recipientOffice,
+    recipientPlace,
+    subject,
+    reference: '',
+    salutation: 'സർ / മാഡം,',
+    bodyParagraphs,
+    closingPhrase: 'വിശ്വസ്തതയോടെ,',
+    place: cleanPlace,
+    date: todayMl,
+    enclosures,
+  };
+}
+
+/**
  * Matches a user voice/chat prompt to any of the official Kerala Government / Akshaya forms
  * (or updates the currently open Gov Form when the user replies with their details).
  */
@@ -2140,9 +2282,8 @@ export function matchGovFormFromPrompt(
     }
   } else if (
     norm.includes('പോലീസ്') ||
-    norm.includes('പരാതി കൊടുക്ക') ||
-    norm.includes('പരാതി നൽക') ||
-    /\b(police|police\s*station|police\s*complaint|petition)\b/i.test(norm)
+    norm.includes('പരാതി') ||
+    /\b(police|police\s*station|police\s*complaint|complaint|petition)\b/i.test(norm)
   ) {
     // Default to General Police Station Complaint (NOT Lost Passport!) and present all 5 Police complaint options!
     matchedFormId = 'police-general-complaint';
@@ -2361,6 +2502,25 @@ export function matchGovFormFromPrompt(
     if (form) {
       const baseLetter = convertGovFormToLetterData(form);
       const { updated, extractedAny } = applyExtractedDetailsToGovLetter(prompt, baseLetter);
+
+      if (matchedFormId === 'police-general-complaint') {
+        const { coreIncident } = extractCleanComplaintOrPetitionDetails(prompt);
+        if (coreIncident) {
+          updated.subject = `${coreIncident} — അടിയന്തര അന്വേഷണം നടത്തി ഉചിതമായ നിയമനടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള പരാതി.`;
+          updated.bodyParagraphs = [
+            'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയത്തിൽ അങ്ങയുടെ അടിയന്തര ശ്രദ്ധയും നിയമനടപടിയും തേടിക്കൊണ്ട് ബോധിപ്പിക്കുന്ന പരാതി.',
+            `സംഭവ വിവരണം: ${coreIncident}. പ്രസ്തുത സംഭവം മൂലം എനിക്കും കുടുംബത്തിനും വലിയ ആശങ്കയും ബുദ്ധിമുട്ടും നേരിടേണ്ടിവന്നിട്ടുണ്ട്.`,
+            'ആയതിനാൽ മേൽപ്പറഞ്ഞ സംഭവത്തിൽ അടിയന്തരമായി അന്വേഷണം നടത്തി കുറ്റക്കാർക്കെതിരെ ഉചിതമായ നിയമനടപടികൾ സ്വീകരിക്കണമെന്നും എനിക്ക് നീതിയും സംരക്ഷണവും ലഭ്യമാക്കണമെന്നും വിനീതമായി അപേക്ഷിക്കുന്നു.',
+          ];
+          if (updated.structuredFields) {
+            const subjFld = updated.structuredFields.find((f) => f.id === 'complaintSubject');
+            if (subjFld) subjFld.value = coreIncident;
+            const detFld = updated.structuredFields.find((f) => f.id === 'incidentDetails');
+            if (detFld) detFld.value = coreIncident;
+          }
+        }
+      }
+
       const followUps = buildFollowUpsForGovForm(form, updated);
 
       // Attach sub-form option list whenever the category has multiple distinct complaint/application types!
@@ -2373,7 +2533,7 @@ export function matchGovFormFromPrompt(
           '🚓 പോലീസ് സ്റ്റേഷനിൽ ഏത് തരത്തിലുള്ള പരാതിയാണ് / അപേക്ഷയാണ് നൽകേണ്ടത്? താഴെ കാണുന്ന ലിസ്റ്റിൽ നിന്ന് നിങ്ങളുടെ ആവശ്യം തിരഞ്ഞെടുക്കുക:';
         subFormOptions = POLICE_SUB_FORM_OPTIONS;
         if (matchedFormId === 'police-general-complaint') {
-          customIntro = `🚓 പോലീസ് സ്റ്റേഷനിൽ നൽകാവുന്ന 5 തരം പരാതികളുടെ ലിസ്റ്റ് താഴെ നൽകിയിട്ടുണ്ട്! നിങ്ങളുടെ ആവശ്യം ഏതാണെന്ന് അതിൽ നിന്ന് തിരഞ്ഞെടുക്കാം.\n\n(നിലവിൽ "പൊതുവായ പോലീസ് പരാതി" മാതൃകയാണ് തുറന്നിരിക്കുന്നത്. രേഖകൾ നഷ്ടപ്പെട്ടതാണെങ്കിലോ സൈബർ തട്ടിപ്പാണെങ്കിലോ താഴെ കാണുന്ന ബട്ടണുകളിൽ ഒന്ന് തൊട്ടാൽ ഉടൻ ആ ഫോമിലേക്ക് മാറും!)`;
+          customIntro = `🚓 നിങ്ങളുടെ പരാതി തയ്യാറായിട്ടുണ്ട്! (മറ്റ് 5 പോലീസ് പരാതി മാതൃകകളിൽ ആവശ്യമുള്ളത് താഴെ നിന്ന് തിരഞ്ഞെടുക്കാം.)`;
         }
       } else if (
         matchedFormId === 'edistrict-income' &&

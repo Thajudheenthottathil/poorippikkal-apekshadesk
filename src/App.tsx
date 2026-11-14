@@ -81,6 +81,7 @@ import {
   KERALA_GOV_FORMS_MASTER,
   matchesGovFormSearch,
   matchGovFormFromPrompt,
+  buildCleanCustomLetterFromPrompt,
 } from './data/keralaGovForms';
 import { useMalayalamVoice, RecordedAudioPayload } from './hooks/useMalayalamVoice';
 import { usePWAInstall } from './hooks/usePWAInstall';
@@ -1003,6 +1004,249 @@ export function App() {
     showToast('നിങ്ങളുടെ ചോദ്യത്തിനുള്ള മറുപടി താഴെ നൽകിയിട്ടുണ്ട്.');
   };
 
+  // Shared Category-Aware Deterministic Fallback (works for BOTH Voice Recording & Text Chat)
+  const applyDeterministicLocalFallback = (
+    cleanedInput: string,
+    preferredCategory: DocumentCategory | 'auto' = 'auto',
+    spokenTranscript?: string
+  ) => {
+    // 1. Check multi-line CV paste
+    const cvCheck = parseStructuredCvFromText(cleanedInput, gulfCvData);
+    if (cvCheck.isMultiLineCv && cvCheck.gulfCvData) {
+      const nextCv: GulfCvData = {
+        ...gulfCvData,
+        ...cvCheck.gulfCvData,
+        photoDataUrl: gulfCvData.photoDataUrl || '',
+      };
+      applyAiDocumentResult({
+        detectedType: 'gulf_cv',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: true,
+        assistantReplyMalayalam:
+          '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് സിവി (CV / Resume) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്!',
+        followUpQuestions: buildEditableQuestionsForDocument(
+          'gulf_cv',
+          letterData,
+          nextCv,
+          agreementData,
+          markListData
+        ),
+        gulfCvData: nextCv,
+      });
+      return;
+    }
+
+    // 2. Check instant Mark List count / pasted student names
+    const mlCheck = parseInstantMarkListCommandOrNames(
+      cleanedInput,
+      markListData,
+      preferredCategory !== 'auto' ? preferredCategory : activeCategory
+    );
+    if (mlCheck && mlCheck.matched) {
+      const updatedMl = mlCheck.markListData;
+      applyAiDocumentResult({
+        detectedType: 'teacher_marklist',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: true,
+        assistantReplyMalayalam:
+          mlCheck.replyMalayalam ||
+          `✅ ${updatedMl.students.length} കുട്ടികളുടെ മാർക്ക് ലിസ്റ്റ് തയ്യാറായിട്ടുണ്ട്!`,
+        followUpQuestions: buildEditableQuestionsForDocument(
+          'teacher_marklist',
+          letterData,
+          gulfCvData,
+          agreementData,
+          updatedMl
+        ),
+        markListData: updatedMl,
+      });
+      return;
+    }
+
+    // 3. Determine active target category intelligently without ever clobbering Rental Agreement / CV / Mark List
+    const explicitGovMatch = matchGovFormFromPrompt(
+      cleanedInput,
+      activeCategory === 'malayalam_letter' ? letterData : null
+    );
+
+    const effectiveTargetCat: DocumentCategory =
+      preferredCategory !== 'auto'
+        ? preferredCategory
+        : /\b(rent|rental|agreement|affidavit|vadaka|karar)\b|വാടക|കരാർ|മുദ്രപ്പത്രം|സത്യവാങ്മൂലം/i.test(
+            cleanedInput
+          )
+        ? 'rental_agreement'
+        : /\b(cv|resume|biodata|visa|passport)\b|സിവി|ബയോഡാറ്റ|റെസ്യൂം|റെസ്യൂമെ/i.test(
+            cleanedInput
+          )
+        ? 'gulf_cv'
+        : /\b(mark\s*list|attendance|grade\s*sheet)\b|മാർക്ക്\s*ലിസ്റ്റ്|ഹാജർ\s*പട്ടിക|ഗ്രേഡ്\s*പട്ടിക/i.test(
+            cleanedInput
+          )
+        ? 'teacher_marklist'
+        : explicitGovMatch
+        ? 'malayalam_letter'
+        : activeCategory;
+
+    if (effectiveTargetCat === 'rental_agreement') {
+      const nextAg: RentalAgreementData = {
+        ...agreementData,
+        clauses: [...(agreementData.clauses || INITIAL_AGREEMENT_DATA.clauses)],
+        witnesses: [...(agreementData.witnesses || INITIAL_AGREEMENT_DATA.witnesses)],
+      };
+      if (/സത്യവാങ്മൂലം|affidavit/i.test(cleanedInput)) {
+        nextAg.subType = 'സത്യവാങ്മൂലം (Affidavit)';
+        nextAg.titleMalayalam = 'സത്യവാങ്മൂലം (AFFIDAVIT)';
+      }
+      const rentMatch = cleanedInput.match(
+        /(?:മാസവാടക|വാടക|rent)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
+      );
+      const advMatch = cleanedInput.match(
+        /(?:അഡ്വാൻസ്|advance|deposit)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
+      );
+      const allNums = Array.from(cleanedInput.matchAll(/\b(\d{4,7})\b/g)).map((m) => m[1]);
+      const rentVal = rentMatch ? rentMatch[1].replace(/,/g, '') : allNums[0];
+      const advVal = advMatch ? advMatch[1].replace(/,/g, '') : allNums[1];
+
+      if (rentVal && nextAg.clauses.length > 0) {
+        const formattedRent = Number(rentVal).toLocaleString('en-IN');
+        nextAg.clauses[0] = `1. ടി കെട്ടിടത്തിന് പ്രതിമാസം ₹${formattedRent}/- വാടക നിശ്ചയിച്ചിട്ടുള്ളതും, ആയത് എല്ലാ ഇംഗ്ലീഷ് മാസവും 5-ാം തീയതിക്കകം രണ്ടാം കക്ഷി ഒന്നാം കക്ഷിക്ക് നൽകി രസീത് വാങ്ങേണ്ടതുമാകുന്നു.`;
+      }
+      if (advVal && nextAg.clauses.length > 1) {
+        const formattedAdv = Number(advVal).toLocaleString('en-IN');
+        nextAg.clauses[1] = `2. വാടക ഉറപ്പിലേക്കായി പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായി ₹${formattedAdv}/- രണ്ടാം കക്ഷി ഇന്ന് ഒന്നാം കക്ഷിയെ ഏൽപ്പിച്ചിട്ടുള്ളതും, കരാർ കാലാവധി കഴിഞ്ഞ് കെട്ടിടം ഒഴിയുമ്പോൾ വാടക കുടിശ്ശികയോ കേടുപാടുകളോ ഉണ്ടെങ്കിൽ ആയത് കിഴിച്ച് ബാക്കി തുക തിരികെ നൽകുന്നതുമാകുന്നു.`;
+      }
+      const lines = cleanedInput.split(/\r?\n/);
+      for (const line of lines) {
+        const kv = line.match(/^([^:]+):\s*(.+)$/);
+        if (!kv) continue;
+        const k = kv[1].trim();
+        const v = kv[2].trim();
+        if (/ഒന്നാം കക്ഷി|ഉടമ|owner|landlord|first/i.test(k)) nextAg.firstPartyDetails = v;
+        else if (/രണ്ടാം കക്ഷി|വാടകക്കാരൻ|tenant|second/i.test(k)) nextAg.secondPartyDetails = v;
+        else if (/സ്ഥലം|place/i.test(k)) nextAg.executionPlace = v;
+        else if (/വസ്തു|കെട്ടിട|property|schedule/i.test(k)) nextAg.schedulePropertyDetails = v;
+      }
+      applyAiDocumentResult({
+        detectedType: 'rental_agreement',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: true,
+        assistantReplyMalayalam:
+          '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് വാടക കരാർ (Rental Agreement) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിലോ വിവരങ്ങൾ തിരുത്താം.',
+        followUpQuestions: buildEditableQuestionsForDocument(
+          'rental_agreement',
+          letterData,
+          gulfCvData,
+          nextAg,
+          markListData
+        ),
+        agreementData: nextAg,
+      });
+      return;
+    }
+
+    if (effectiveTargetCat === 'gulf_cv') {
+      const nextCv: GulfCvData = cvCheck.gulfCvData
+        ? { ...gulfCvData, ...cvCheck.gulfCvData, photoDataUrl: gulfCvData.photoDataUrl || '' }
+        : { ...gulfCvData };
+      const lines = cleanedInput.split(/\r?\n/);
+      for (const line of lines) {
+        const kv = line.match(/^([^:]+):\s*(.+)$/);
+        if (!kv) continue;
+        const k = kv[1].trim();
+        const v = kv[2].trim();
+        if (/പേര്|name/i.test(k)) nextCv.fullName = v;
+        else if (/തസ്തിക|ജോലി|role|job|title|position/i.test(k)) nextCv.jobTitle = v;
+        else if (/ഫോൺ|മൊബൈൽ|phone|mobile/i.test(k)) nextCv.phone = v;
+        else if (/ഇമെയിൽ|email/i.test(k)) nextCv.email = v;
+        else if (/സ്ഥലം|വിലാസം|location|address/i.test(k)) nextCv.currentLocation = v;
+      }
+      applyAiDocumentResult({
+        detectedType: 'gulf_cv',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: true,
+        assistantReplyMalayalam:
+          '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് സിവി (CV / Resume) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്!',
+        followUpQuestions: buildEditableQuestionsForDocument(
+          'gulf_cv',
+          letterData,
+          nextCv,
+          agreementData,
+          markListData
+        ),
+        gulfCvData: nextCv,
+      });
+      return;
+    }
+
+    if (effectiveTargetCat === 'teacher_marklist') {
+      const nextMl: TeacherMarkListData = { ...markListData };
+      const lines = cleanedInput.split(/\r?\n/);
+      for (const line of lines) {
+        const kv = line.match(/^([^:]+):\s*(.+)$/);
+        if (!kv) continue;
+        const k = kv[1].trim();
+        const v = kv[2].trim();
+        if (/സ്കൂൾ|മദ്രസ|school|institution/i.test(k)) nextMl.schoolName = v;
+        else if (/ക്ലാസ്|ഡിവിഷൻ|class/i.test(k)) nextMl.classAndDivision = v;
+        else if (/പരീക്ഷ|exam|title/i.test(k)) nextMl.examTitle = v;
+        else if (/ടീച്ചർ|ഉസ്താദ്|teacher/i.test(k)) nextMl.classTeacherName = v;
+      }
+      applyAiDocumentResult({
+        detectedType: 'teacher_marklist',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: true,
+        assistantReplyMalayalam:
+          '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് മാർക്ക് ലിസ്റ്റ് പുതുക്കിയിട്ടുണ്ട്!',
+        followUpQuestions: buildEditableQuestionsForDocument(
+          'teacher_marklist',
+          letterData,
+          gulfCvData,
+          agreementData,
+          nextMl
+        ),
+        markListData: nextMl,
+      });
+      return;
+    }
+
+    if (explicitGovMatch) {
+      applyAiDocumentResult({
+        detectedType: 'malayalam_letter',
+        documentUpdated: true,
+        ...(spokenTranscript ? { spokenTranscript } : {}),
+        isComplete: explicitGovMatch.isComplete,
+        assistantReplyMalayalam: explicitGovMatch.assistantReplyMalayalam,
+        followUpQuestions: explicitGovMatch.followUpQuestions,
+        subFormPromptTitle: explicitGovMatch.subFormPromptTitle,
+        subFormOptions: explicitGovMatch.subFormOptions,
+        letterData: explicitGovMatch.letterData,
+      });
+      return;
+    }
+
+    const customFallbackLetter: MalayalamLetterData = buildCleanCustomLetterFromPrompt(
+      cleanedInput,
+      letterData
+    );
+    applyAiDocumentResult({
+      detectedType: 'malayalam_letter',
+      documentUpdated: true,
+      ...(spokenTranscript ? { spokenTranscript } : {}),
+      isComplete: false,
+      assistantReplyMalayalam: spokenTranscript
+        ? '✅ നിങ്ങളുടെ വോയ്‌സ് സന്ദേശത്തിൽ നിന്നുള്ള വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.'
+        : '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
+      followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
+      letterData: customFallbackLetter,
+    });
+  };
+
   // 1. Process Recorded Voice Note OR Uploaded WhatsApp Audio File directly via Gemini Multimodal Audio
   const handleProcessAudioPayload = async (payload: RecordedAudioPayload) => {
     const nowTime = new Date().toLocaleTimeString('en-IN', {
@@ -1067,45 +1311,11 @@ export function App() {
         const effectiveText = payload.fieldContextLabel
           ? `${payload.fieldContextLabel}: ${fallbackSpoken}`
           : fallbackSpoken;
-        const localMatch = matchGovFormFromPrompt(
+        applyDeterministicLocalFallback(
           effectiveText,
-          activeCategory === 'malayalam_letter' ? letterData : null
+          payload.fieldContextLabel ? activeCategory : 'auto',
+          fallbackSpoken
         );
-        if (localMatch) {
-          applyAiDocumentResult({
-            detectedType: 'malayalam_letter',
-            documentUpdated: true,
-            spokenTranscript: fallbackSpoken,
-            isComplete: localMatch.isComplete,
-            assistantReplyMalayalam: localMatch.assistantReplyMalayalam,
-            followUpQuestions: localMatch.followUpQuestions,
-            subFormPromptTitle: localMatch.subFormPromptTitle,
-            subFormOptions: localMatch.subFormOptions,
-            letterData: localMatch.letterData,
-          });
-        } else {
-          const customFallbackLetter: MalayalamLetterData = {
-            ...letterData,
-            documentHeading: 'ഔദ്യോഗിക അപേക്ഷ',
-            letterLayoutVariant: 'official_letter',
-            subject: 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
-            bodyParagraphs: [
-              `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${fallbackSpoken}`,
-              'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
-            ],
-            date: new Date().toLocaleDateString('ml-IN'),
-          };
-          applyAiDocumentResult({
-            detectedType: 'malayalam_letter',
-            documentUpdated: true,
-            spokenTranscript: fallbackSpoken,
-            isComplete: false,
-            assistantReplyMalayalam:
-              '✅ നിങ്ങളുടെ വോയ്‌സ് സന്ദേശത്തിൽ നിന്നുള്ള വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
-            followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
-            letterData: customFallbackLetter,
-          });
-        }
       } else {
         showToast('നിങ്ങളുടെ ശബ്ദം വ്യക്തമായി കേൾക്കാൻ സാധിച്ചില്ല. ദയവായി ഒരിക്കൽ കൂടി പറയുകയോ ടൈപ്പ് ചെയ്യുകയോ ചെയ്യുക.');
       }
@@ -2059,178 +2269,7 @@ export function App() {
       const data = await response.json();
       applyAiDocumentResult(data);
     } catch {
-      // Category-aware deterministic client-side fallback so Rental Agreement, Gulf CV, Mark List, and School/Gov forms
-      // NEVER get overwritten into a generic "ഔദ്യോഗിക അപേക്ഷ" when offline or when serverless API is unavailable!
-      const effectiveTargetCat: DocumentCategory =
-        preferredCategory !== 'auto'
-          ? preferredCategory
-          : /\b(rent|rental|agreement|affidavit|vadaka|karar)\b|വാടക|കരാർ|മുദ്രപ്പത്രം|സത്യവാങ്മൂലം/i.test(
-              cleanedInput
-            )
-          ? 'rental_agreement'
-          : /\b(cv|resume|biodata|visa|passport)\b|സിവി|ബയോഡാറ്റ|റെസ്യൂം|റെസ്യൂമെ/i.test(cleanedInput)
-          ? 'gulf_cv'
-          : /\b(mark\s*list|attendance|grade\s*sheet)\b|മാർക്ക്\s*ലിസ്റ്റ്|ഹാജർ\s*പട്ടിക|ഗ്രേഡ്\s*പട്ടിക/i.test(
-              cleanedInput
-            )
-          ? 'teacher_marklist'
-          : activeCategory;
-
-      if (effectiveTargetCat === 'rental_agreement') {
-        const nextAg: RentalAgreementData = {
-          ...agreementData,
-          clauses: [...(agreementData.clauses || INITIAL_AGREEMENT_DATA.clauses)],
-          witnesses: [...(agreementData.witnesses || INITIAL_AGREEMENT_DATA.witnesses)],
-        };
-        if (/സത്യവാങ്മൂലം|affidavit/i.test(cleanedInput)) {
-          nextAg.subType = 'സത്യവാങ്മൂലം (Affidavit)';
-          nextAg.titleMalayalam = 'സത്യവാങ്മൂലം (AFFIDAVIT)';
-        }
-        const rentMatch = cleanedInput.match(
-          /(?:മാസവാടക|വാടക|rent)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
-        );
-        const advMatch = cleanedInput.match(
-          /(?:അഡ്വാൻസ്|advance|deposit)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
-        );
-        const allNums = Array.from(cleanedInput.matchAll(/\b(\d{4,7})\b/g)).map((m) => m[1]);
-        const rentVal = rentMatch ? rentMatch[1].replace(/,/g, '') : allNums[0];
-        const advVal = advMatch ? advMatch[1].replace(/,/g, '') : allNums[1];
-
-        if (rentVal && nextAg.clauses.length > 0) {
-          const formattedRent = Number(rentVal).toLocaleString('en-IN');
-          nextAg.clauses[0] = `1. ടി കെട്ടിടത്തിന് പ്രതിമാസം ₹${formattedRent}/- വാടക നിശ്ചയിച്ചിട്ടുള്ളതും, ആയത് എല്ലാ ഇംഗ്ലീഷ് മാസവും 5-ാം തീയതിക്കകം രണ്ടാം കക്ഷി ഒന്നാം കക്ഷിക്ക് നൽകി രസീത് വാങ്ങേണ്ടതുമാകുന്നു.`;
-        }
-        if (advVal && nextAg.clauses.length > 1) {
-          const formattedAdv = Number(advVal).toLocaleString('en-IN');
-          nextAg.clauses[1] = `2. വാടക ഉറപ്പിലേക്കായി പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായി ₹${formattedAdv}/- രണ്ടാം കക്ഷി ഇന്ന് ഒന്നാം കക്ഷിയെ ഏൽപ്പിച്ചിട്ടുള്ളതും, കരാർ കാലാവധി കഴിഞ്ഞ് കെട്ടിടം ഒഴിയുമ്പോൾ വാടക കുടിശ്ശികയോ കേടുപാടുകളോ ഉണ്ടെങ്കിൽ ആയത് കിഴിച്ച് ബാക്കി തുക തിരികെ നൽകുന്നതുമാകുന്നു.`;
-        }
-        const lines = cleanedInput.split(/\r?\n/);
-        for (const line of lines) {
-          const kv = line.match(/^([^:]+):\s*(.+)$/);
-          if (!kv) continue;
-          const k = kv[1].trim();
-          const v = kv[2].trim();
-          if (/ഒന്നാം കക്ഷി|ഉടമ|owner|landlord|first/i.test(k)) nextAg.firstPartyDetails = v;
-          else if (/രണ്ടാം കക്ഷി|വാടകക്കാരൻ|tenant|second/i.test(k)) nextAg.secondPartyDetails = v;
-          else if (/സ്ഥലം|place/i.test(k)) nextAg.executionPlace = v;
-          else if (/വസ്തു|കെട്ടിട|property|schedule/i.test(k)) nextAg.schedulePropertyDetails = v;
-        }
-        applyAiDocumentResult({
-          detectedType: 'rental_agreement',
-          documentUpdated: true,
-          isComplete: true,
-          assistantReplyMalayalam:
-            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് വാടക കരാർ (Rental Agreement) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിലോ വിവരങ്ങൾ തിരുത്താം.',
-          followUpQuestions: buildEditableQuestionsForDocument(
-            'rental_agreement',
-            letterData,
-            gulfCvData,
-            nextAg,
-            markListData
-          ),
-          agreementData: nextAg,
-        });
-      } else if (effectiveTargetCat === 'gulf_cv') {
-        const parsedCv = parseStructuredCvFromText(cleanedInput, gulfCvData);
-        const nextCv: GulfCvData = parsedCv.gulfCvData
-          ? { ...gulfCvData, ...parsedCv.gulfCvData, photoDataUrl: gulfCvData.photoDataUrl || '' }
-          : { ...gulfCvData };
-        const lines = cleanedInput.split(/\r?\n/);
-        for (const line of lines) {
-          const kv = line.match(/^([^:]+):\s*(.+)$/);
-          if (!kv) continue;
-          const k = kv[1].trim();
-          const v = kv[2].trim();
-          if (/പേര്|name/i.test(k)) nextCv.fullName = v;
-          else if (/തസ്തിക|ജോലി|role|job|title|position/i.test(k)) nextCv.jobTitle = v;
-          else if (/ഫോൺ|മൊബൈൽ|phone|mobile/i.test(k)) nextCv.phone = v;
-          else if (/ഇമെയിൽ|email/i.test(k)) nextCv.email = v;
-          else if (/സ്ഥലം|വിലാസം|location|address/i.test(k)) nextCv.currentLocation = v;
-        }
-        applyAiDocumentResult({
-          detectedType: 'gulf_cv',
-          documentUpdated: true,
-          isComplete: true,
-          assistantReplyMalayalam:
-            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് സിവി (CV / Resume) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്!',
-          followUpQuestions: buildEditableQuestionsForDocument(
-            'gulf_cv',
-            letterData,
-            nextCv,
-            agreementData,
-            markListData
-          ),
-          gulfCvData: nextCv,
-        });
-      } else if (effectiveTargetCat === 'teacher_marklist') {
-        const nextMl: TeacherMarkListData = { ...markListData };
-        const lines = cleanedInput.split(/\r?\n/);
-        for (const line of lines) {
-          const kv = line.match(/^([^:]+):\s*(.+)$/);
-          if (!kv) continue;
-          const k = kv[1].trim();
-          const v = kv[2].trim();
-          if (/സ്കൂൾ|മദ്രസ|school|institution/i.test(k)) nextMl.schoolName = v;
-          else if (/ക്ലാസ്|ഡിവിഷൻ|class/i.test(k)) nextMl.classAndDivision = v;
-          else if (/പരീക്ഷ|exam|title/i.test(k)) nextMl.examTitle = v;
-          else if (/ടീച്ചർ|ഉസ്താദ്|teacher/i.test(k)) nextMl.classTeacherName = v;
-        }
-        applyAiDocumentResult({
-          detectedType: 'teacher_marklist',
-          documentUpdated: true,
-          isComplete: true,
-          assistantReplyMalayalam:
-            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് മാർക്ക് ലിസ്റ്റ് പുതുക്കിയിട്ടുണ്ട്!',
-          followUpQuestions: buildEditableQuestionsForDocument(
-            'teacher_marklist',
-            letterData,
-            gulfCvData,
-            agreementData,
-            nextMl
-          ),
-          markListData: nextMl,
-        });
-      } else {
-        const fallbackGovMatch = matchGovFormFromPrompt(
-          cleanedInput,
-          activeCategory === 'malayalam_letter' ? letterData : null
-        );
-        if (fallbackGovMatch) {
-          applyAiDocumentResult({
-            detectedType: 'malayalam_letter',
-            documentUpdated: true,
-            isComplete: fallbackGovMatch.isComplete,
-            assistantReplyMalayalam: fallbackGovMatch.assistantReplyMalayalam,
-            followUpQuestions: fallbackGovMatch.followUpQuestions,
-            subFormPromptTitle: fallbackGovMatch.subFormPromptTitle,
-            subFormOptions: fallbackGovMatch.subFormOptions,
-            letterData: fallbackGovMatch.letterData,
-          });
-        } else {
-          const customFallbackLetter: MalayalamLetterData = {
-            ...letterData,
-            documentHeading: letterData.documentHeading || 'ഔദ്യോഗിക അപേക്ഷ',
-            letterLayoutVariant: letterData.letterLayoutVariant || 'official_letter',
-            subject:
-              letterData.subject ||
-              'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
-            bodyParagraphs: [
-              `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${cleanedInput}`,
-              'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
-            ],
-            date: new Date().toLocaleDateString('ml-IN'),
-          };
-          applyAiDocumentResult({
-            detectedType: 'malayalam_letter',
-            documentUpdated: true,
-            isComplete: false,
-            assistantReplyMalayalam:
-              '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
-            followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
-            letterData: customFallbackLetter,
-          });
-        }
-      }
+      applyDeterministicLocalFallback(cleanedInput, preferredCategory);
     } finally {
       setIsGenerating(false);
     }

@@ -540,6 +540,158 @@ const PHRASE_MAP: Array<{
     ta: 'மேலே அளிக்கப்பட்டுள்ள அனைத்து விவரங்களும் எனது அறிவிற்கும் நம்பிக்கைக்கும் உட்பட்டு உண்மையானவை என உறுதியளிக்கிறேன்.',
   },
   {
+    ml: 'അപേക്ഷ / നിവേദനം',
+    en: 'Application / Petition',
+    ar: 'طلب / التماس رسمي',
+    ur: 'درخواست / عرضداشت',
+    hi: 'आवेदन / निवेदन',
+    ta: 'விண்ணப்பம் / மனு',
+  },
+  {
+    ml: 'ഔദ്യോഗിക അപേക്ഷ',
+    en: 'Official Application',
+    ar: 'طلب رسمي',
+    ur: 'سرکاری درخواست',
+    hi: 'आधिकारिक आवेदन',
+    ta: 'அலுவலக விண்ணப்பம்',
+  },
+  {
+    ml: 'അപേക്ഷ',
+    en: 'Application',
+    ar: 'طلب رسمي',
+    ur: 'درخواست',
+    hi: 'आवेदन पत्र',
+    ta: 'விண்ணப்பம்',
+  },
+  {
+    ml: 'ബഹു. ഓഫീസർ',
+    en: 'Hon. Officer',
+    ar: 'سعادة المسؤول المحترم',
+    ur: 'محترم آفیسر',
+    hi: 'माननीय अधिकारी',
+    ta: 'மதிப்பிற்குரிய அதிகாரி',
+  },
+  {
+    ml: 'ബഹുമാനപ്പെട്ട',
+    en: 'Respected',
+    ar: 'المحترم / الموقر',
+    ur: 'محترم',
+    hi: 'माननीय',
+    ta: 'மதிப்பிற்குரிய',
+  },
+  {
+    ml: 'സർ / മാഡം',
+    en: 'Sir / Madam',
+    ar: 'سيدي / سيدتي',
+    ur: 'جناب / محترمہ',
+    hi: 'महोदय / महोदया',
+    ta: 'ஐயா / அம்மா',
+  },
+  {
+    ml: 'സർ',
+    en: 'Sir',
+    ar: 'سيدي',
+    ur: 'جناب',
+    hi: 'महोदय',
+    ta: 'ஐயா',
+  },
+  {
+    ml: 'മാഡം',
+    en: 'Madam',
+    ar: 'سيدتي',
+    ur: 'محترمہ',
+    hi: 'महोदया',
+    ta: 'அம்மா',
+  },
+  {
+    ml: 'വിശ്വസ്തതയോടെ',
+    en: 'Yours faithfully',
+    ar: 'مع خالص التقدير والاحترام',
+    ur: 'آپ کا مخلص',
+    hi: 'भवदीय',
+    ta: 'தங்கள் உண்மையுள்ள',
+  },
+  {
+    ml: 'വില്ലേജ് ഓഫീസർ',
+    en: 'Village Officer',
+    ar: 'مسؤول القرية (مكتب القرية)',
+    ur: 'ولیج آفیسر',
+    hi: 'ग्राम अधिकारी',
+    ta: 'கிராம நிர்வாக அதிகாரி',
+  },
+  {
+    ml: 'വില്ലേജ് ഓഫീസ്',
+    en: 'Village Office',
+    ar: 'مكتب القرية',
+    ur: 'ولیج آفس',
+    hi: 'ग्राम कार्यालय',
+    ta: 'கிராம நிர்வாக அலுவலகம்',
+  },
+  {
+    ml: 'പഞ്ചായത്ത് സെക്രട്ടറി',
+    en: 'Panchayat Secretary',
+    ar: 'سكرتير البانشايات',
+    ur: 'پنچایت سیکرٹری',
+    hi: 'पंचायत सचिव',
+    ta: 'ஊராட்சி செயலாளர்',
+  },
+  {
+    ml: 'ഗ്രാമപഞ്ചായത്ത് ഓഫീസ്',
+    en: 'Grama Panchayat Office',
+    ar: 'مكتب غراما بانشايات',
+    ur: 'گرام پنچایت آفس',
+    hi: 'ग्राम पंचायत कार्यालय',
+    ta: 'கிராம ஊராட்சி அலுவலகம்',
+  },
+  {
+    ml: 'തഹസിൽദാർ',
+    en: 'Tahsildar',
+    ar: 'تحصيلدار',
+    ur: 'تحصیلدار',
+    hi: 'तहसीलदार',
+    ta: 'வட்டாட்சியர்',
+  },
+  {
+    ml: 'താലൂക്ക് ഓഫീസ്',
+    en: 'Taluk Office',
+    ar: 'مكتب التالوك',
+    ur: 'تعلقہ آفس',
+    hi: 'तालुक कार्यालय',
+    ta: 'வட்டாட்சியர் அலுவலகம்',
+  },
+  {
+    ml: 'വരുമാന സർട്ടിഫിക്കറ്റ്',
+    en: 'Income Certificate',
+    ar: 'شهادة الدخل',
+    ur: 'آمدنی کا سرٹیفکیٹ',
+    hi: 'आय प्रमाण पत्र',
+    ta: 'வருமானச் சான்றிதழ்',
+  },
+  {
+    ml: 'ജാതി സർട്ടിഫിക്കറ്റ്',
+    en: 'Caste Certificate',
+    ar: 'شهادة الفئة / الطائفة',
+    ur: 'ذات کا سرٹیفکیٹ',
+    hi: 'जाति प्रमाण पत्र',
+    ta: 'சாதிச் சான்றிதழ்',
+  },
+  {
+    ml: 'നേറ്റിവിറ്റി സർട്ടിഫിക്കറ്റ്',
+    en: 'Nativity Certificate',
+    ar: 'شهادة الإقامة الأصلية',
+    ur: 'سکونت کا سرٹیفکیٹ',
+    hi: 'निवास प्रमाण पत्र',
+    ta: 'பிறப்பிடச் சான்றிதழ்',
+  },
+  {
+    ml: 'പ്രധാനാധ്യാപകൻ / പ്രിൻസിപ്പൽ',
+    en: 'Headmaster / Principal',
+    ar: 'مدير المدرسة',
+    ur: 'ہیڈ ماسٹر / پرنسپل',
+    hi: 'प्रधानाध्यापक / प्राचार्य',
+    ta: 'தலைமை ஆசிரியர் / முதல்வர்',
+  },
+  {
     ml: 'കാന്റൺ, ജോർജിയ 30114',
     en: 'Canton, Georgia 30114',
     ar: 'كانتون، جورجيا 30114',
@@ -1541,15 +1693,161 @@ export function transliterateManglishWordToMalayalam(rawWord: string): string {
   return out || rawWord;
 }
 
+const SPOKEN_DIGIT_STOP_SET = new Set([
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'പൂജ്യം', 'ഒന്ന്', 'രണ്ട്', 'മൂന്ന്', 'നാല്', 'അഞ്ച്', 'ആറ്', 'ഏഴ്', 'എട്ട്', 'ഒമ്പത്', 'ഒൻപത്',
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+]);
+
+/**
+ * Eliminates Android Chrome SpeechRecognition stuttering & progressive-prefix duplication
+ * (e.g. "എനിക്ക് എനിക്ക് പോലീസ് എനിക്ക് പോലീസ് സ്റ്റേഷനിൽ..." -> "എനിക്ക് പോലീസ് സ്റ്റേഷനിൽ...")
+ * by collapsing consecutive identical n-grams of any length >= 1 (except numeric phone digits).
+ */
+export function deduplicateStutteredSpeech(text: string): string {
+  if (!text || !text.trim()) return text;
+  const words = normalizeMalayalamChillaksharam(text)
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean);
+
+  if (words.length <= 1) return words.join(' ');
+
+  const normToken = (w: string) =>
+    w.replace(/^[,.;:!?()"'“”‘’🎙️]+|[,.;:!?()"'“”‘’🎙️]+$/g, '').toLowerCase();
+
+  let current = [...words];
+  let changed = true;
+  let guard = 0;
+
+  while (changed && guard < 40) {
+    changed = false;
+    guard++;
+
+    const maxLen = Math.floor(current.length / 2);
+    outer: for (let L = 1; L <= maxLen; L++) {
+      for (let i = 0; i <= current.length - 2 * L; i++) {
+        // Never collapse consecutive numeric/spoken digits (e.g. phone numbers like "0 0" or "9 9")
+        const sliceA = current.slice(i, i + L);
+        if (sliceA.every((tok) => SPOKEN_DIGIT_STOP_SET.has(normToken(tok)) || /^\d+$/.test(normToken(tok)))) {
+          continue;
+        }
+
+        let allMatch = true;
+        for (let k = 0; k < L; k++) {
+          const a = normToken(current[i + k]);
+          const b = normToken(current[i + L + k]);
+          if (!a || a !== b) {
+            allMatch = false;
+            break;
+          }
+        }
+
+        if (allMatch) {
+          // Keep the version that preserves more punctuation if second has trailing punctuation
+          const keepSecond = /[,.;:!?]$/.test(current[i + 2 * L - 1]);
+          if (keepSecond) {
+            current.splice(i, L);
+          } else {
+            current.splice(i + L, L);
+          }
+          changed = true;
+          break outer;
+        }
+      }
+    }
+  }
+
+  return current.join(' ').replace(/\s{2,}/g, ' ').trim();
+}
+
+/**
+ * Merges Web Speech API result segments cleanly without Android Chrome's cumulative-prefix duplication.
+ */
+export function mergeSpeechRecognitionPieces(pieces: string[]): string {
+  let accWords: string[] = [];
+
+  const normWord = (w: string) =>
+    w.replace(/^[,.;:!?()"'“”‘’]+|[,.;:!?()"'“”‘’]+$/g, '').toLowerCase();
+
+  for (const rawPiece of pieces) {
+    const cleanPiece = normalizeMalayalamChillaksharam(rawPiece || '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!cleanPiece) continue;
+
+    const pWords = cleanPiece.split(' ').filter(Boolean);
+    if (pWords.length === 0) continue;
+
+    if (accWords.length === 0) {
+      accWords = pWords;
+      continue;
+    }
+
+    // 1. If the new piece is a progressive expansion starting with all of accWords
+    if (pWords.length >= accWords.length) {
+      let startsWithAcc = true;
+      for (let k = 0; k < accWords.length; k++) {
+        if (normWord(pWords[k]) !== normWord(accWords[k])) {
+          startsWithAcc = false;
+          break;
+        }
+      }
+      if (startsWithAcc) {
+        accWords = pWords;
+        continue;
+      }
+    }
+
+    // 2. If accWords already ends with the entire pWords sequence (exact duplicate piece)
+    if (pWords.length <= accWords.length) {
+      const offset = accWords.length - pWords.length;
+      let endsWithPiece = true;
+      for (let k = 0; k < pWords.length; k++) {
+        if (normWord(accWords[offset + k]) !== normWord(pWords[k])) {
+          endsWithPiece = false;
+          break;
+        }
+      }
+      if (endsWithPiece) {
+        continue;
+      }
+    }
+
+    // 3. Find longest suffix of accWords matching prefix of pWords
+    const maxOverlap = Math.min(accWords.length, pWords.length);
+    let overlap = 0;
+    for (let k = maxOverlap; k >= 1; k--) {
+      let match = true;
+      for (let j = 0; j < k; j++) {
+        if (normWord(accWords[accWords.length - k + j]) !== normWord(pWords[j])) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        overlap = k;
+        break;
+      }
+    }
+
+    accWords = [...accWords, ...pWords.slice(overlap)];
+  }
+
+  return deduplicateStutteredSpeech(accWords.join(' '));
+}
+
 /**
  * Pre-processes spoken Malayalam / Manglish voice transcripts:
- * 1. Resolves inline self-corrections ("28... അല്ല സോറി 29" -> "29", "35,000... അല്ല സോറി 45,000" -> "45,000").
- * 2. Converts spoken English/Malayalam phone number words ("പ്ലസ് നയൻ സെവൻ വൺ..." -> "+971...") into digits.
- * 3. Converts spoken emails ("rahman dot kt at gmail dot com" -> "rahman.kt@gmail.com").
+ * 1. Eliminates Android Chrome speech recognition stuttering & progressive-prefix duplication.
+ * 2. Resolves inline self-corrections ("28... അല്ല സോറി 29" -> "29", "35,000... അല്ല സോറി 45,000" -> "45,000").
+ * 3. Converts spoken English/Malayalam phone number words ("പ്ലസ് നയൻ സെവൻ വൺ..." -> "+971...") into digits.
+ * 4. Converts spoken emails ("rahman dot kt at gmail dot com" -> "rahman.kt@gmail.com").
  */
 export function normalizeSpokenMalayalamTranscript(text: string): string {
   if (!text || !text.trim()) return text;
-  let result = normalizeMalayalamChillaksharam(text);
+  let result = deduplicateStutteredSpeech(normalizeMalayalamChillaksharam(text));
 
   // 1. Resolve self-corrections for numbers/amounts/ages/years/wards:
   // e.g. "28... അല്ല സോറി 29" -> "29", "35,000 രൂപ, അല്ല തെറ്റിപ്പോയി 45,000 രൂപ" -> "45,000 രൂപ"
@@ -2585,19 +2883,20 @@ export function applyLocalLanguageConversionToLetter(
   targetLang: DocumentOutputLanguage
 ): MalayalamLetterData {
   const tr = (s: string) => translateSingleStringLocal(s, targetLang);
+  const trName = (s: string) => translateSingleStringLocal(s, targetLang, true);
   return {
     ...letter,
     documentHeading: tr(letter.documentHeading),
-    senderName: tr(letter.senderName),
-    senderAddress: tr(letter.senderAddress),
+    senderName: trName(letter.senderName),
+    senderAddress: trName(letter.senderAddress),
     recipientTitle: tr(letter.recipientTitle),
     recipientOffice: tr(letter.recipientOffice),
-    recipientPlace: tr(letter.recipientPlace),
+    recipientPlace: trName(letter.recipientPlace),
     subject: tr(letter.subject),
     salutation: tr(letter.salutation),
     bodyParagraphs: (letter.bodyParagraphs || []).map(tr),
     closingPhrase: tr(letter.closingPhrase),
-    place: tr(letter.place),
+    place: trName(letter.place),
     enclosures: (letter.enclosures || []).map(tr),
     structuredFields: letter.structuredFields
       ? letter.structuredFields.map((f) => ({

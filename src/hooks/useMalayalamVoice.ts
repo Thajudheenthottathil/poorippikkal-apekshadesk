@@ -1,4 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
+import {
+  mergeSpeechRecognitionPieces,
+  normalizeSpokenMalayalamTranscript,
+} from '../utils/languageTranslator';
 
 export interface RecordedAudioPayload {
   audioBase64: string;
@@ -43,15 +47,12 @@ export function useMalayalamVoice({ onAudioReady, onError }: UseMalayalamVoiceOp
   const usingPureSpeechRecognitionRef = useRef<boolean>(false);
 
   const getCombinedTranscript = () => {
-    return [
+    const merged = mergeSpeechRecognitionPieces([
       completedSessionsFinalRef.current,
       currentSessionFinalRef.current,
       currentInterimRef.current,
-    ]
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .join(' ')
-      .trim();
+    ]);
+    return normalizeSpokenMalayalamTranscript(merged);
   };
 
   const clearTimer = () => {
@@ -234,18 +235,19 @@ export function useMalayalamVoice({ onAudioReady, onError }: UseMalayalamVoiceOp
           rec.maxAlternatives = 1;
 
           rec.onresult = (ev: any) => {
-            let sessionFinal = '';
-            let sessionInterim = '';
+            const finalPieces: string[] = [];
+            const interimPieces: string[] = [];
             for (let i = 0; i < ev.results.length; i++) {
-              const transcriptPiece = ev.results[i][0]?.transcript || '';
+              const transcriptPiece = (ev.results[i][0]?.transcript || '').trim();
+              if (!transcriptPiece) continue;
               if (ev.results[i].isFinal) {
-                sessionFinal += transcriptPiece + ' ';
+                finalPieces.push(transcriptPiece);
               } else {
-                sessionInterim += transcriptPiece + ' ';
+                interimPieces.push(transcriptPiece);
               }
             }
-            currentSessionFinalRef.current = sessionFinal.trim();
-            currentInterimRef.current = sessionInterim.trim();
+            currentSessionFinalRef.current = mergeSpeechRecognitionPieces(finalPieces);
+            currentInterimRef.current = mergeSpeechRecognitionPieces(interimPieces);
             const fullNow = getCombinedTranscript();
             if (fullNow) {
               setLiveTranscript(fullNow);
@@ -282,15 +284,7 @@ export function useMalayalamVoice({ onAudioReady, onError }: UseMalayalamVoiceOp
           };
 
           rec.onend = () => {
-            const mergedSession = [
-              completedSessionsFinalRef.current,
-              currentSessionFinalRef.current,
-              currentInterimRef.current,
-            ]
-              .map((s) => s.trim())
-              .filter(Boolean)
-              .join(' ')
-              .trim();
+            const mergedSession = getCombinedTranscript();
 
             completedSessionsFinalRef.current = mergedSession;
             currentSessionFinalRef.current = '';

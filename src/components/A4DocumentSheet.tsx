@@ -834,23 +834,23 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             {/* Top Document Heading & Official Form Code */}
             <div className="text-center mb-6 space-y-1">
               {letterData.formCode && (
-                <input
-                  type="text"
+                <textarea
+                  rows={Math.max(1, Math.ceil(letterData.formCode.length / 58))}
                   value={letterData.formCode}
                   onChange={(e) =>
                     onUpdateLetter({ ...letterData, formCode: e.target.value })
                   }
-                  className={`${touchBoxClass(letterData.formCode)} text-center text-[11px] font-bold uppercase tracking-wider text-slate-600`}
+                  className={`${touchBoxClass(letterData.formCode)} text-center text-[11px] font-bold uppercase tracking-wider text-slate-600 resize-none leading-snug`}
                 />
               )}
-              <input
-                type="text"
+              <textarea
+                rows={Math.max(1, Math.ceil((letterData.documentHeading || '').length / 32))}
                 value={letterData.documentHeading}
                 onChange={(e) =>
                   onUpdateLetter({ ...letterData, documentHeading: e.target.value })
                 }
                 title="ഇവിടെ ക്ലിക്ക് ചെയ്ത് തലക്കെട്ട് തിരുത്താം"
-                className={`${touchBoxClass(letterData.documentHeading)} text-center text-lg font-bold tracking-wide underline underline-offset-8 decoration-slate-400`}
+                className={`${touchBoxClass(letterData.documentHeading)} text-center text-lg font-bold tracking-wide underline underline-offset-8 decoration-slate-400 resize-none leading-relaxed`}
               />
             </div>
 
@@ -1031,119 +1031,10 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
               )}
             </div>
 
-            {/* Official Structured Government / Akshaya Form Table */}
-            {letterData.structuredFields && letterData.structuredFields.length > 0 && (
-              <div
-                data-audit-section="structured_fields"
-                className={`mb-6 ${sectionHighlightClass('structured_fields')}`}
-              >
-                {renderSectionMistakeBadge('structured_fields')}
-                <div className="flex items-center justify-between mb-1.5 gap-2">
-                  <input
-                    type="text"
-                    value={
-                      letterData.structuredTableHeadingOverride ??
-                      'അപേക്ഷാ വിവര പട്ടിക (Application Particulars) :'
-                    }
-                    onChange={(e) =>
-                      onUpdateLetter({
-                        ...letterData,
-                        structuredTableHeadingOverride: e.target.value,
-                      })
-                    }
-                    className={`${touchBoxClass(
-                      letterData.structuredTableHeadingOverride ??
-                        'അപേക്ഷാ വിവര പട്ടിക (Application Particulars) :'
-                    )} font-bold text-xs sm:text-sm text-slate-900`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const nextFields = [
-                        ...(letterData.structuredFields || []),
-                        {
-                          id: `fld-${Date.now()}`,
-                          label: 'പുതിയ വിവരം',
-                          value: '',
-                          placeholder: 'ഇവിടെ പൂരിപ്പിക്കുക',
-                        },
-                      ];
-                      onUpdateLetter({ ...letterData, structuredFields: nextFields });
-                    }}
-                    className="no-print px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer"
-                  >
-                    <Plus className="w-3 h-3" />
-                    <span>വരി ചേർക്കുക</span>
-                  </button>
-                </div>
-                <table className="w-full border-collapse border border-slate-400 text-xs sm:text-[13px]">
-                  <tbody>
-                    {letterData.structuredFields.map((fld, fIdx) => (
-                      <tr key={fld.id || fIdx} className="border-b border-slate-300">
-                        <td className="border border-slate-400 px-2 py-1.5 w-8 text-center font-mono-num font-semibold bg-slate-50/70">
-                          {fIdx + 1}
-                        </td>
-                        <td className="border border-slate-400 px-2.5 py-1.5 w-[42%] font-semibold text-slate-900 bg-slate-50/40">
-                          <input
-                            type="text"
-                            value={fld.label}
-                            onChange={(e) => {
-                              const next = [...(letterData.structuredFields || [])];
-                              next[fIdx] = { ...fld, label: e.target.value };
-                              onUpdateLetter({ ...letterData, structuredFields: next });
-                            }}
-                            className={touchBoxClass(fld.label)}
-                          />
-                        </td>
-                        <td className="border border-slate-400 px-2.5 py-1.5 font-medium text-slate-900">
-                          <input
-                            type="text"
-                            value={/^ഉദാ\s*:/i.test((fld.value || '').trim()) ? '' : fld.value}
-                            placeholder={
-                              /^ഉദാ\s*:/i.test((fld.value || '').trim())
-                                ? fld.value
-                                : fld.placeholder || 'ഇവിടെ ടൈപ്പ് ചെയ്യുക...'
-                            }
-                            onChange={(e) => {
-                              const newVal = e.target.value;
-                              const next = [...(letterData.structuredFields || [])];
-                              next[fIdx] = { ...fld, value: newVal };
-                              const nextLetter = { ...letterData, structuredFields: next };
-                              if (fIdx === 0 && newVal.trim()) {
-                                nextLetter.senderName = newVal;
-                              } else if (
-                                fld.id === 'address' ||
-                                fld.label.includes('വിലാസ') ||
-                                fld.label.includes('മേൽവിലാസ')
-                              ) {
-                                nextLetter.senderAddress = newVal;
-                              } else if (
-                                fld.id === 'policeStation' ||
-                                fld.id === 'villageOffice' ||
-                                fld.label.includes('സ്റ്റേഷൻ') ||
-                                fld.label.includes('ഓഫീസ്') ||
-                                fld.label.includes('വില്ലേജ്')
-                              ) {
-                                nextLetter.recipientOffice = newVal;
-                              }
-                              onUpdateLetter(nextLetter);
-                            }}
-                            className={touchBoxClass(
-                              /^ഉദാ\s*:/i.test((fld.value || '').trim()) ? '' : fld.value
-                            )}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* Body Paragraphs (Directly Touch-Editable in Place) */}
+            {/* Body Paragraphs (Directly Touch-Editable in Place — precedes Application Particulars Table) */}
             <div
               data-audit-section="body"
-              className={`space-y-3 text-justify mb-8 ${sectionHighlightClass('body')}`}
+              className={`space-y-3 text-justify mb-6 ${sectionHighlightClass('body')}`}
             >
               {renderSectionMistakeBadge('body')}
               {letterData.bodyParagraphs.map((paragraph, idx) => (
@@ -1193,6 +1084,119 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 </button>
               </div>
             </div>
+
+            {/* Official Structured Government / Akshaya Form Table ("താഴെ പട്ടികയിൽ") */}
+            {letterData.structuredFields && letterData.structuredFields.length > 0 && (
+              <div
+                data-audit-section="structured_fields"
+                className={`mb-7 ${sectionHighlightClass('structured_fields')}`}
+              >
+                {renderSectionMistakeBadge('structured_fields')}
+                <div className="flex items-center justify-between mb-1.5 gap-2">
+                  <input
+                    type="text"
+                    value={
+                      letterData.structuredTableHeadingOverride ??
+                      'അപേക്ഷാ വിവര പട്ടിക (Application Particulars) :'
+                    }
+                    onChange={(e) =>
+                      onUpdateLetter({
+                        ...letterData,
+                        structuredTableHeadingOverride: e.target.value,
+                      })
+                    }
+                    className={`${touchBoxClass(
+                      letterData.structuredTableHeadingOverride ??
+                        'അപേക്ഷാ വിവര പട്ടിക (Application Particulars) :'
+                    )} font-bold text-xs sm:text-sm text-slate-900`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextFields = [
+                        ...(letterData.structuredFields || []),
+                        {
+                          id: `fld-${Date.now()}`,
+                          label: 'പുതിയ വിവരം',
+                          value: '',
+                          placeholder: 'ഇവിടെ പൂരിപ്പിക്കുക',
+                        },
+                      ];
+                      onUpdateLetter({ ...letterData, structuredFields: nextFields });
+                    }}
+                    className="no-print px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer shrink-0"
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span>വരി ചേർക്കുക</span>
+                  </button>
+                </div>
+                <table className="w-full border-collapse border border-slate-400 text-xs sm:text-[13px]">
+                  <tbody>
+                    {letterData.structuredFields.map((fld, fIdx) => {
+                      const isEx = /^ഉദാ\s*:/i.test((fld.value || '').trim());
+                      const displayVal = isEx ? '' : fld.value;
+                      const placeholderVal = isEx
+                        ? fld.value
+                        : fld.placeholder || 'ഇവിടെ ടൈപ്പ് ചെയ്യുക...';
+                      return (
+                        <tr key={fld.id || fIdx} className="border-b border-slate-300 align-top">
+                          <td className="border border-slate-400 px-2 py-1.5 w-8 text-center font-mono-num font-semibold bg-slate-50/70">
+                            {fIdx + 1}
+                          </td>
+                          <td className="border border-slate-400 px-2.5 py-1.5 w-[42%] font-semibold text-slate-900 bg-slate-50/40">
+                            <textarea
+                              rows={Math.max(1, Math.ceil((fld.label || '').length / 20))}
+                              value={fld.label}
+                              onChange={(e) => {
+                                const next = [...(letterData.structuredFields || [])];
+                                next[fIdx] = { ...fld, label: e.target.value };
+                                onUpdateLetter({ ...letterData, structuredFields: next });
+                              }}
+                              className={`${touchBoxClass(fld.label)} resize-none leading-snug`}
+                            />
+                          </td>
+                          <td className="border border-slate-400 px-2.5 py-1.5 font-medium text-slate-900">
+                            <textarea
+                              rows={Math.max(
+                                1,
+                                Math.ceil((displayVal || placeholderVal || '').length / 26)
+                              )}
+                              value={displayVal}
+                              placeholder={placeholderVal}
+                              onChange={(e) => {
+                                const newVal = e.target.value;
+                                const next = [...(letterData.structuredFields || [])];
+                                next[fIdx] = { ...fld, value: newVal };
+                                const nextLetter = { ...letterData, structuredFields: next };
+                                if (fIdx === 0 && newVal.trim()) {
+                                  nextLetter.senderName = newVal;
+                                } else if (
+                                  fld.id === 'address' ||
+                                  fld.label.includes('വിലാസ') ||
+                                  fld.label.includes('മേൽവിലാസ')
+                                ) {
+                                  nextLetter.senderAddress = newVal;
+                                } else if (
+                                  fld.id === 'policeStation' ||
+                                  fld.id === 'villageOffice' ||
+                                  fld.label.includes('സ്റ്റേഷൻ') ||
+                                  fld.label.includes('ഓഫീസ്') ||
+                                  fld.label.includes('വില്ലേജ്')
+                                ) {
+                                  nextLetter.recipientOffice = newVal;
+                                }
+                                onUpdateLetter(nextLetter);
+                              }}
+                              className={`${touchBoxClass(displayVal)} resize-none leading-snug`}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
             {/* Place, Date & Signature Footer */}
             <div

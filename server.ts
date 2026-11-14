@@ -16,7 +16,10 @@ import {
   normalizeSpokenMalayalamTranscript,
   translateSingleStringLocal,
 } from './src/utils/languageTranslator.ts';
-import { matchGovFormFromPrompt } from './src/data/keralaGovForms.ts';
+import {
+  buildCleanCustomLetterFromPrompt,
+  matchGovFormFromPrompt,
+} from './src/data/keralaGovForms.ts';
 import {
   MARKLIST_PRESET_MODELS,
   type DocumentOutputLanguage,
@@ -1124,7 +1127,37 @@ function buildSmartFallbackResponse(
       selectedPreset = MARKLIST_PRESET_MODELS[7];
     }
 
-    const defaultMarkList = selectedPreset ? selectedPreset.buildData() : currentDocument?.markListData;
+    let defaultMarkList = selectedPreset ? selectedPreset.buildData() : currentDocument?.markListData;
+    const countMatch = prompt.match(
+      /(\d{1,3})\s*(?:കുട്ടികൾ|കുട്ടികളുടെ|കുട്ടികളുള്ള|വിദ്യാർത്ഥികൾ|വിദ്യാർത്ഥികളുടെ|students?|rows?|പേർ|പേരുടെ)/i
+    );
+    if (defaultMarkList && countMatch) {
+      const targetCount = Math.min(120, Math.max(1, parseInt(countMatch[1], 10)));
+      const colCount = defaultMarkList.subjects?.length || 4;
+      const existing = defaultMarkList.students || [];
+      if (targetCount < existing.length) {
+        defaultMarkList = {
+          ...defaultMarkList,
+          students: existing.slice(0, targetCount),
+        };
+      } else if (targetCount > existing.length) {
+        const extraRows = [];
+        for (let i = existing.length; i < targetCount; i++) {
+          extraRows.push({
+            id: `stu-${i + 1}`,
+            admissionNo: String(101 + i),
+            rollNo: String(i + 1),
+            name: '',
+            marks: Array(colCount).fill(-1),
+            remarks: '',
+          });
+        }
+        defaultMarkList = {
+          ...defaultMarkList,
+          students: [...existing, ...extraRows],
+        };
+      }
+    }
 
     return {
       intent: 'document_request' as const,
@@ -1133,7 +1166,7 @@ function buildSmartFallbackResponse(
       detectedType: 'teacher_marklist' as const,
       isComplete: false,
       assistantReplyMalayalam:
-        'സ്കൂൾ / മദ്രസ മാർക്ക് ലിസ്റ്റ് A4 പട്ടിക തയ്യാറായിട്ടുണ്ട്! കേരളത്തിലെ LP/UP ഗ്രേഡ് നിയമപ്രകാരമുള്ള മോഡലുകളും മദ്രസ മോഡലുകളും ഉൾപ്പെടെ 8 മാതൃകകൾ മുകളിൽ നൽകിയിട്ടുണ്ട്. ഹെഡ്മാസ്റ്റർ / സദർ മുഅല്ലിം ഒപ്പ് ഉൾപ്പെടെ പേപ്പറിലെ ഏത് അക്ഷരവും തൊട്ട് മാറ്റുകയോ മായ്ച്ചു കളയുകയോ ചെയ്യാം!',
+        `സ്കൂൾ / മദ്രസ മാർക്ക് ലിസ്റ്റ് (${defaultMarkList?.students?.length || 10} കുട്ടികൾ) A4 പട്ടിക തയ്യാറായിട്ടുണ്ട്! കേരളത്തിലെ LP/UP ഗ്രേഡ് നിയമപ്രകാരമുള്ള മോഡലുകളും മദ്രസ മോഡലുകളും ഉൾപ്പെടെ 8 മാതൃകകൾ മുകളിൽ നൽകിയിട്ടുണ്ട്. ഹെഡ്മാസ്റ്റർ / സദർ മുഅല്ലിം ഒപ്പ് ഉൾപ്പെടെ പേപ്പറിലെ ഏത് അക്ഷരവും തൊട്ട് മാറ്റുകയോ മായ്ച്ചു കളയുകയോ ചെയ്യാം!`,
       followUpQuestions: [
         {
           id: 'q-ml-school',
@@ -1231,21 +1264,22 @@ function buildSmartFallbackResponse(
       ((prompt.includes('സ്കൂൾ') || prompt.includes('ക്ലാസ്')) &&
         (prompt.includes('അവധി') || prompt.includes('ലീവ്') || lower.includes('leave'))));
 
-  let letterHeading = 'ഔദ്യോഗിക അപേക്ഷ';
+  const cleanFallbackLetter = buildCleanCustomLetterFromPrompt(
+    prompt,
+    currentDocument?.letterData
+  );
+  let letterHeading = cleanFallbackLetter.documentHeading || 'ഔദ്യോഗിക അപേക്ഷ';
   let letterLayoutVariant: 'official_letter' | 'school_leave' | 'school_speech' | 'project_cover' =
     'official_letter';
-  let recipientTitle = 'ബഹുമാനപ്പെട്ട ഓഫീസർ / സെക്രട്ടറി അവർകൾക്ക്,';
-  let recipientOffice = 'ഗ്രാമപഞ്ചായത്ത് / വില്ലേജ് ഓഫീസ് കാര്യാലയം,';
-  let recipientPlace = 'കേരളം.';
-  let subjectText = 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.';
+  let recipientTitle = cleanFallbackLetter.recipientTitle;
+  let recipientOffice = cleanFallbackLetter.recipientOffice;
+  let recipientPlace = cleanFallbackLetter.recipientPlace || 'കേരളം.';
+  let subjectText = cleanFallbackLetter.subject;
   let salutationText = isReligiousBody
     ? 'ബഹുമാനപ്പെട്ട ഭാരവാഹികൾ,'
     : 'സർ / മാഡം,';
-  let bodyParagraphsText: string[] = [
-    `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${prompt}`,
-    'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
-  ];
-  let enclosuresList = ['ആധാർ കാർഡ് പകർപ്പ്'];
+  let bodyParagraphsText: string[] = cleanFallbackLetter.bodyParagraphs;
+  let enclosuresList = cleanFallbackLetter.enclosures || ['അപേക്ഷകന്റെ തിരിച്ചറിയൽ രേഖ (ഉണ്ടെങ്കിൽ)'];
 
   // Extract inline persona details from prompt so ZERO [...] placeholders remain
   const inlineNameMatch = prompt.match(
@@ -5877,12 +5911,13 @@ Return ONLY valid JSON with this exact schema:
 registerApiRoutes();
 
 async function startServer() {
-  if (process.env.VERCEL) {
+  if (process.env.VERCEL || process.env.VERCEL_ENV || process.env.AWS_LAMBDA_FUNCTION_NAME) {
     return;
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
+    const vitePkg = 'vite';
+    const { createServer: createViteServer } = await import(/* @vite-ignore */ vitePkg);
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
@@ -5933,7 +5968,9 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL && !process.env.VERCEL_ENV && !process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  startServer();
+}
 
 export default app;
 
