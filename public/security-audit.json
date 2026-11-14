@@ -6,8 +6,7 @@
     "productionUrl": "https://poorippikkal-apekshadesk.vercel.app/",
     "openSourceRepository": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk",
     "license": "MIT",
-    "isAccessibleForFree": true,
-    "priceINR": 0
+    "pricingModel": "Freemium Utility — Reading 55+ sample formats is free; PDF downloads are currently ₹0 during Promotional Free Mode and may optionally carry a small upfront UPI service fee (e.g., ₹5–₹20) when Paid Mode is enabled by the administrator."
   },
   "verifiedPublisher": {
     "initiativeName": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് — കേരള ഓപ്പൺ സോഴ്സ് മലയാളം ഡി.ടി.പി സംരംഭം (Poorippikkal Apekshadesk — Open-Source Malayalam DTP & Civic-Tech Initiative)",

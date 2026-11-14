@@ -95,6 +95,7 @@ import { UserGuideModal } from './components/UserGuideModal';
 import { ThreeDServiceCarousel } from './components/ThreeDServiceCarousel';
 import { PrintCartAndDeliveryModal } from './components/PrintCartAndDeliveryModal';
 import { FreemiumSampleLibraryAndGeoSection } from './components/FreemiumSampleLibraryAndGeoSection';
+import { AtsResumeTailorModal } from './components/AtsResumeTailorModal';
 import {
   extractReadableTextFromPdfBuffer,
   generateAndDownloadA4Pdf,
@@ -3409,6 +3410,19 @@ export function App() {
                         </button>
                       )}
 
+                      {/* 1-Click English ATS Resume Tailor, Match Score & Cover Letter Studio (Jobsuit-style) */}
+                      {activeCategory === 'gulf_cv' && (
+                        <button
+                          type="button"
+                          onClick={() => setIsAutoFillCvModalOpen(true)}
+                          className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white border border-indigo-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#312e81] active:translate-y-0.5 transition-all"
+                          title="Job Description പേസ്റ്റ് ചെയ്ത് ATS Match Score (%) പരിശോധിക്കാനും ഇംഗ്ലീഷ് Resume & Cover Letter തയ്യാറാക്കാനും"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                          <span>🎯 ATS Resume Tailor &amp; Match %</span>
+                        </button>
+                      )}
+
                       <button
                         type="button"
                         onClick={() => triggerProtectedAction('whatsapp')}
@@ -3946,24 +3960,35 @@ export function App() {
         </div>
       )}
 
-      {isAutoFillCvModalOpen && (
-        <div className="no-print fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-2.5">
-                <Sparkles className="w-6 h-6 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-malayalam text-base sm:text-lg font-extrabold text-slate-900">✨ സിവി ഓട്ടോ-ഫിൽ</h3>
-                </div>
-              </div>
-            </div>
-            <textarea rows={10} value={autoFillCvText} onChange={(e) => setAutoFillCvText(e.target.value)} className="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-emerald-600 font-mono text-xs text-slate-900 focus:outline-none" />
-            <div className="flex justify-end gap-2.5 pt-2">
-               <button type="button" onClick={handleExecuteAutoFillCv} className="px-6 py-2.5 rounded-xl bg-emerald-700 text-white text-xs font-malayalam font-extrabold cursor-pointer">ഓട്ടോ-ഫിൽ ചെയ്ത് തുടങ്ങാം</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AtsResumeTailorModal
+        isOpen={isAutoFillCvModalOpen}
+        gulfCvData={gulfCvData}
+        outputLanguage={outputLanguage}
+        onChangeOutputLanguage={handleSelectOutputLanguage}
+        autoFillCvText={autoFillCvText}
+        onChangeAutoFillCvText={setAutoFillCvText}
+        onExecuteAutoFillCv={handleExecuteAutoFillCv}
+        isGeneratingAutoFill={isGenerating}
+        onApplyTailoredCv={(updatedCv, lang) => {
+          setOutputLanguage(lang);
+          setAutoFitOnePage(true);
+          setGulfCvData(updatedCv);
+          setActiveCategory('gulf_cv');
+          setIsEditMode(true);
+          setMobileViewTab('preview');
+          playDocumentReadyChime();
+        }}
+        onApplyCoverLetter={(coverLetter, lang) => {
+          setOutputLanguage(lang);
+          setLetterData(coverLetter);
+          setActiveCategory('malayalam_letter');
+          setIsEditMode(true);
+          setMobileViewTab('preview');
+          playDocumentReadyChime();
+        }}
+        onClose={() => setIsAutoFillCvModalOpen(false)}
+        onShowToast={showToast}
+      />
 
       <PrintCartAndDeliveryModal
         isOpen={isCartModalOpen}
@@ -4176,10 +4201,15 @@ export function App() {
 
       <UserGuideModal isOpen={isUserGuideModalOpen} onClose={() => setIsUserGuideModalOpen(false)} onSelectCategory={(cat) => { setIsPdfEditSession(false); setActiveCategory(cat); setMobileViewTab('input'); }} onOpenPdfUpload={() => pdfEditUploadInputRef.current?.click()} customVideoUrl={ownerConfig.guideVideoUrl} />
 
-      <footer className="no-print mt-auto pt-8 pb-20 lg:pb-6 px-4 sm:px-8 border-t border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 font-malayalam">
-          <span>© 2026 {ownerConfig.shopName || 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)'}</span>
-          <button type="button" onClick={() => { setIsAdminBackendRoute(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-slate-500 hover:text-emerald-800 underline cursor-pointer font-semibold">Admin Portal</button>
+      <footer className="no-print mt-auto pt-4 pb-20 lg:pb-4 px-4 sm:px-8 border-t border-slate-200 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[10px] text-slate-400 font-malayalam">
+          <span>
+            © 2026 {ownerConfig.shopName || 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)'} · Thajudheen Thottathil ·{' '}
+            <a href="mailto:thajukolari786@gmail.com" className="hover:text-slate-600 underline">
+              thajukolari786@gmail.com
+            </a>
+          </span>
+          <button type="button" onClick={() => { setIsAdminBackendRoute(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-slate-400 hover:text-emerald-800 underline cursor-pointer">Admin Portal</button>
         </div>
       </footer>
     </div>

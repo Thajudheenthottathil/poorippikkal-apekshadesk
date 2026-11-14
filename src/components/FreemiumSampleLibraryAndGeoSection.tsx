@@ -422,26 +422,26 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
     (ownerConfig.customDomainUrl || '').trim().replace(/\/+$/, '') ||
     window.location.origin.replace('ais-dev-', 'ais-pre-');
 
-  const viralForwardMessage = `📌 സാധാരണക്കാർക്ക് ഉപകാരപ്രദമായ വിവരം — സേവ് ചെയ്തു വെക്കുക:\n\nവില്ലേജ് ഓഫീസ്, പഞ്ചായത്ത്, KSEB, പോലീസ് സ്റ്റേഷൻ, ബാങ്ക് എന്നിവിടങ്ങളിലേക്ക് മലയാളത്തിൽ അപേക്ഷ എഴുതാൻ ഇനി ആരുടെയും പുറകെ നടക്കേണ്ടതില്ല.\n\nഫോണിൽ മലയാളത്തിൽ കാര്യം പറഞ്ഞാൽ 10 സെക്കൻഡിൽ 55+ ഔദ്യോഗിക അപേക്ഷകളും, വാടക കരാറും, പ്രവാസി ഗൾഫ് ബയോഡാറ്റയും, സ്കൂൾ-മദ്രസ മാർക്ക് ലിസ്റ്റും A4 PDF ആയി തയ്യാറാക്കി തരുന്ന സംവിധാനം (പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് | Poorippikkal Apekshadesk):\n👉 ${publicSiteUrl}\n\n(മറ്റുള്ളവർക്കും ഉപകാരപ്പെടാൻ ഷെയർ ചെയ്യുക)`;
+  const viralForwardMessage = `📌 ഏവർക്കും ഉപകാരപ്രദമായ വിവരം — സേവ് ചെയ്തു വെക്കുക:\n\nവില്ലേജ് ഓഫീസ്, പഞ്ചായത്ത്, KSEB, പോലീസ് സ്റ്റേഷൻ, ബാങ്ക് എന്നിവിടങ്ങളിലേക്കുള്ള അപേക്ഷകൾ, വാടക കരാർ, ബയോഡാറ്റ (CV), മാർക്ക് ലിസ്റ്റ് എന്നിവ മിനിറ്റുകൾക്കുള്ളിൽ ഫോണിലോ കമ്പ്യൂട്ടറിലോ തയ്യാറാക്കി പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള A4 PDF ആക്കി മാറ്റുന്ന വെബ്‌സൈറ്റ്:\n\n🌐 പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)\n👉 ${publicSiteUrl}\n\n✨ പ്രധാന സേവനങ്ങൾ:\n• സംസാരിച്ചോ ടൈപ്പ് ചെയ്തോ അപേക്ഷ തയ്യാറാക്കാം: നിങ്ങളുടെ ആവശ്യം മൈക്കിൽ പറയുകയോ ടൈപ്പ് ചെയ്യുകയോ ചെയ്താൽ പ്രേഷിതൻ, സ്വീകർത്താവ്, വിഷയം എല്ലാം ചേർത്ത പൂർണ്ണമായ ഔദ്യോഗിക അപേക്ഷ തയ്യാറാക്കാം.\n• 55+ റെഡിമെയ്ഡ് ഫോമുകൾ: വരുമാനം, പോക്കുവരവ്, കൈവശാവകാശം, മരം മുറിക്കൽ, വീട്ടുനികുതി, റേഷൻ കാർഡ്, KSEB, പോലീസ് പരാതി തുടങ്ങിയവ.\n• 11 മാസത്തെ വാടക കരാർ: വീട് / കടമുറി വാടക കരാർ മുദ്രപ്പത്രത്തിൽ പ്രിന്റ് ചെയ്യാൻ പാകത്തിൽ തയ്യാറാക്കാം.\n• പ്രവാസി ഗൾഫ് CV & രാജിക്കത്ത്: പാസ്‌പോർട്ട് ഫോട്ടോ വെച്ച പ്രൊഫഷണൽ ഇംഗ്ലീഷ് ബയോഡാറ്റയും (Gulf CV) ജോലി രാജിക്കത്തും.\n• സ്കൂൾ & മദ്രസ മാർക്ക് ലിസ്റ്റ്: കുട്ടികളുടെ പേരും മാർക്കും നൽകിയാൽ Total, %, Grade, Rank എന്നിവ തനിയെ കണക്കാക്കുന്ന A4 PDF ടേബിൾ.\n• കയ്യിലുള്ള PDF തിരുത്തിയെഴുതാനും മലയാളം, ഇംഗ്ലീഷ്, അറബിക്, ഹിന്ദി ഭാഷകളിലേക്ക് മാറ്റാനും (Translate) സൗകര്യം!\n\n(എല്ലാവർക്കും ഉപകാരപ്പെടാൻ ഷെയർ ചെയ്യുക)`;
 
   return (
     <div className="no-print mt-6 space-y-6 w-full max-w-full overflow-x-hidden">
       {/* =====================================================================
-          0. ZERO-SERVER-STORAGE PRIVACY & SECURITY ASSURANCE BANNER
+          0. POSITIVE FEATURE & PRIVACY ASSURANCE BANNER
          ===================================================================== */}
       <div className="bg-emerald-950/90 border border-emerald-500/40 rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-malayalam text-emerald-100 shadow-md">
         <div className="flex items-start sm:items-center gap-2">
-          <span className="text-base shrink-0">🔒</span>
+          <span className="text-base shrink-0">✨</span>
           <span>
-            <strong className="text-amber-300">വ്യക്തിഗത വിവരങ്ങൾ 100% ഓപ്ഷണൽ (Blank Form Mode):</strong>{' '}
-            പേരോ വിലാസമോ ഓൺലൈനിൽ നൽകാൻ താല്പര്യമില്ലാത്തവർക്ക് <strong>&ldquo;📝 കാലി ഫോം&rdquo;</strong> ബട്ടൺ അമർത്തി വിവരങ്ങൾ നൽകാതെ പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതാം. 55+ ഫോമുകളും PDF നിർമ്മാണവും ബ്രൗസറിലും, ഓപ്ഷണൽ AI വോയ്‌സ്/ചാറ്റ് സഹായി Google Gemini / Hugging Face API വഴിയും പ്രവർത്തിക്കുന്നു (സെർവറിൽ ഡാറ്റാബേസോ ഫയൽ സ്റ്റോറേജോ ഇല്ല).
+            <strong className="text-amber-300">വേഗത്തിൽ അപേക്ഷകളും ഫോമുകളും തയ്യാറാക്കാം:</strong>{' '}
+            മൈക്കിൽ സംസാരിച്ചോ ടൈപ്പ് ചെയ്തോ നിമിഷങ്ങൾക്കുള്ളിൽ പ്രിന്റ് എടുക്കാൻ പാകത്തിലുള്ള A4 PDF ആക്കാം (കാലി ഫോം പ്രിന്റ് എടുത്ത് പേന കൊണ്ടും പൂരിപ്പിക്കാം). നൽകുന്ന വിവരങ്ങൾ സെർവറിൽ സൂക്ഷിക്കുന്നില്ല.
           </span>
         </div>
         <a
           href="/about-privacy-disclaimer.html"
           className="text-amber-300 hover:text-amber-200 underline font-extrabold shrink-0"
         >
-          സ്വകാര്യതാ നയം &amp; നിരാകരണം →
+          ഞങ്ങളെക്കുറിച്ച് &amp; വിവരങ്ങൾ →
         </a>
       </div>
 
@@ -651,57 +651,41 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
           ))}
         </div>
 
-        {/* Verified Engineering Architecture, GitHub CodeQL Security Audit, Blank Form Mode & Privacy Policy */}
-        <div className="pt-3 border-t border-slate-200 text-[11px] font-malayalam text-slate-600 space-y-2.5">
-          <p className="font-bold text-slate-800">
-            ഔദ്യോഗിക സാങ്കേതിക വിവരണം (Verified Engineering &amp; Security Summary — പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് / Poorippikkal Apekshadesk):
-          </p>
-          <p className="leading-relaxed">
-            <strong>100% ഓപ്ഷണൽ വ്യക്തിഗത വിവരങ്ങൾ (Blank Form Print Mode):</strong> പേരോ വിലാസമോ ഫോൺ നമ്പറോ ടൈപ്പ് ചെയ്യാൻ താല്പര്യമില്ലാത്തവർക്ക് ഒരു വിവരവും നൽകാതെ തന്നെ <strong>"📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)"</strong> ബട്ടൺ അമർത്തി നേരിട്ട് A4 PDF പ്രിന്റ് എടുക്കാം! ·{' '}
-            <strong>സാങ്കേതിക വിദ്യ (Dual-Mode Architecture):</strong> 55+ റെഡിമെയ്ഡ് ഫോമുകളും A4 PDF നിർമ്മാണവും ബ്രൗസറിനുള്ളിലും (<code>jsPDF</code>), ഓപ്ഷണൽ AI വോയ്‌സ്/ചാറ്റ് സഹായി Google Gemini / Hugging Face API വഴിയും പ്രവർത്തിക്കുന്നു (സെർവറിൽ ഡാറ്റാബേസോ ഫയൽ സ്റ്റോറേജോ ഇല്ല) ·{' '}
-            <strong>പ്രസാധക വിവരങ്ങൾ (Verified Publisher):</strong> താജുദ്ദീൻ തോട്ടത്തിൽ (Thajudheen Thottathil, Kolari, Kannur District, Kerala - PIN: 670702 | ഇമെയിൽ: thajukolari786@gmail.com) ·{' '}
-            <strong>GitHub Official CodeQL &amp; Security Audit:</strong>{' '}
+        {/* Compact, Small-Print Disclaimer & Links */}
+        <div className="pt-2.5 border-t border-slate-200 text-[9px] font-malayalam text-slate-400 space-y-1.5 leading-normal">
+          <p>
+            ഈ വെബ് ആപ്ലിക്കേഷൻ (poorippikkal-apekshadesk.vercel.app) കേരള സർക്കാരിന്റെയോ അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് അല്ല; അപേക്ഷാ കത്തുകൾ, വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ തയ്യാറാക്കി A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി സോഫ്റ്റ്‌വെയർ ആണ്. Developer: Thajudheen Thottathil (thajukolari786@gmail.com) ·{' '}
             <a
               href="https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/blob/main/SECURITY.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline font-bold text-emerald-800"
+              className="underline hover:text-slate-600"
             >
-              SECURITY.md &amp; Automated Code Audit
+              SECURITY.md
             </a>
-            .
           </p>
-
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-1.5 text-[11px] text-slate-700">
-            <p className="font-bold text-slate-900">
-              🛡️ സുരക്ഷാ സാക്ഷ്യപത്രവും ഔദ്യോഗിക നിരാകരണവും (GitHub CodeQL Audited &amp; 100% Optional Details):
-            </p>
-            <p className="leading-relaxed">
-              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി (DTP) സോഫ്റ്റ്‌വെയർ</strong> ആണ്. <strong>ഇതിൽ പേരോ വിലാസമോ നൽകൽ നിർബന്ധമേയല്ല (100% Optional)</strong> — വിവരങ്ങൾ നൽകാതെ കാലി ഫോം പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്നതാണ്.
-            </p>
-            <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 font-bold text-emerald-800">
-              <a href="/village-office-applications-malayalam.html" className="underline hover:text-emerald-600">
-                വരുമാന സർട്ടിഫിക്കറ്റ് &amp; വില്ലേജ് അപേക്ഷകൾ
-              </a>
-              <a href="/panchayat-kseb-applications-malayalam.html" className="underline hover:text-emerald-600">
-                മരം മുറിക്കൽ &amp; പഞ്ചായത്ത് അപേക്ഷകൾ
-              </a>
-              <a href="/rental-agreement-format-malayalam.html" className="underline hover:text-emerald-600">
-                11 മാസത്തെ വാടക കരാർ ഫോം
-              </a>
-              <a href="/school-mark-list-software-kerala.html" className="underline hover:text-emerald-600">
-                മാർക്ക് ലിസ്റ്റ് സോഫ്റ്റ്‌വെയർ
-              </a>
-              <a href="/gulf-cv-biodata-maker-malayalam.html" className="underline hover:text-emerald-600">
-                ഗൾഫ് CV &amp; ബയോഡാറ്റ
-              </a>
-              <a href="/resignation-leave-letter-malayalam.html" className="underline hover:text-emerald-600">
-                ജോലി രാജിക്കത്ത് &amp; ലീവ് ലെറ്റർ
-              </a>
-              <a href="/about-privacy-disclaimer.html" className="underline hover:text-emerald-600">
-                About Us, Developer Contact &amp; Privacy Policy
-              </a>
-            </div>
+          <div className="flex flex-wrap gap-x-2.5 gap-y-1 text-slate-400">
+            <a href="/village-office-applications-malayalam.html" className="underline hover:text-slate-600">
+              വില്ലേജ് അപേക്ഷകൾ
+            </a>
+            <a href="/panchayat-kseb-applications-malayalam.html" className="underline hover:text-slate-600">
+              പഞ്ചായത്ത് അപേക്ഷകൾ
+            </a>
+            <a href="/rental-agreement-format-malayalam.html" className="underline hover:text-slate-600">
+              വാടക കരാർ ഫോം
+            </a>
+            <a href="/school-mark-list-software-kerala.html" className="underline hover:text-slate-600">
+              മാർക്ക് ലിസ്റ്റ് സോഫ്റ്റ്‌വെയർ
+            </a>
+            <a href="/gulf-cv-biodata-maker-malayalam.html" className="underline hover:text-slate-600">
+              ഗൾഫ് CV &amp; ബയോഡാറ്റ
+            </a>
+            <a href="/resignation-leave-letter-malayalam.html" className="underline hover:text-slate-600">
+              ജോലി രാജിക്കത്ത്
+            </a>
+            <a href="/about-privacy-disclaimer.html" className="underline hover:text-slate-600">
+              About &amp; Privacy Policy
+            </a>
           </div>
         </div>
       </section>

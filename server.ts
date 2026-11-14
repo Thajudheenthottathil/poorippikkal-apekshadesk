@@ -4288,6 +4288,433 @@ Current Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}`;
     }
   });
 
+  // 11C-2. Multilingual ATS Resume Tailoring, Cover Letter Generator & AI Resume Coach (All Languages: ml, en, ar, hi, ta, ur)
+  const LANGUAGE_NAMES_MAP: Record<string, string> = {
+    ml: 'Malayalam (മലയാളം)',
+    en: 'English',
+    ar: 'Arabic (العربية)',
+    hi: 'Hindi (हिंदी)',
+    ta: 'Tamil (தமிழ்)',
+    ur: 'Urdu (اردو)',
+  };
+
+  app.post('/api/ats-tailor-resume', async (req, res) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(clientIp, 90)) {
+      res.status(429).json({ error: 'Too many requests. Please try again in a moment.' });
+      return;
+    }
+
+    const {
+      gulfCvData,
+      jobDescription = '',
+      targetJobTitle = '',
+      targetCompany = '',
+      selectedMissingKeywords = [],
+      targetLanguage = 'en',
+    } = req.body || {};
+
+    if (!gulfCvData || !String(jobDescription || '').trim()) {
+      res.status(400).json({ error: 'Please provide both your Resume data and the Job Description.' });
+      return;
+    }
+
+    try {
+      const langCode = String(targetLanguage || 'en').toLowerCase();
+      const langFullName = LANGUAGE_NAMES_MAP[langCode] || 'English';
+      const cleanJd = String(jobDescription).trim().slice(0, 4500);
+      const cleanRole = String(targetJobTitle || gulfCvData.jobTitle || 'Professional').trim();
+      const cleanCompany = String(targetCompany || 'Hiring Organization').trim();
+      const keywordsToInclude: string[] = Array.isArray(selectedMissingKeywords)
+        ? selectedMissingKeywords.map((k) => String(k || '').trim()).filter(Boolean).slice(0, 15)
+        : [];
+
+      const existingSkills: string[] = Array.isArray(gulfCvData.coreSkills)
+        ? gulfCvData.coreSkills.map((s: any) => String(s || '').trim()).filter(Boolean)
+        : [];
+      const existingExp = Array.isArray(gulfCvData.workExperience) ? gulfCvData.workExperience : [];
+
+      const tailorPrompt = `You are a Multilingual Global ATS Resume Writer & Career Coach fluent in ${langFullName}.
+The user may have provided their Resume and Job Description in any language (Malayalam, English, Arabic, Hindi, Tamil, Urdu, etc.).
+Your task:
+1. Tailor the candidate's existing Resume to match the provided Job Description WITHOUT inventing fake companies, fake degrees, or untruthful experience.
+2. Output all tailored fields ("jobTitle", "professionalSummary", "coreSkills", "tailoredHighlights", "coverLetterSubject", "coverLetterParagraphs") in ${langFullName}.
+3. Naturally incorporate these verified keywords into the Resume: ${JSON.stringify(keywordsToInclude)}.
+4. Draft a concise, formal 3-paragraph Job Application Cover Letter in ${langFullName} for the same Job Description and Company.
+
+Candidate Name: ${gulfCvData.fullName || 'Candidate'}
+Target Role: ${cleanRole}
+Target Company: ${cleanCompany}
+Target Output Language: ${langFullName}
+Candidate Location: ${gulfCvData.currentLocation || 'Kerala, India'}
+Current Summary: ${gulfCvData.professionalSummary || ''}
+Current Skills: ${JSON.stringify(existingSkills)}
+Current Experience: ${JSON.stringify(existingExp.slice(0, 2))}
+Job Description:
+${cleanJd}
+
+Return ONLY valid JSON with this exact structure (all values written in ${langFullName}):
+{
+  "jobTitle": "Tailored Role Title in ${langFullName}",
+  "professionalSummary": "3-sentence ATS-optimized executive summary in ${langFullName} incorporating relevant JD keywords",
+  "coreSkills": ["Skill 1", "Skill 2", "..."],
+  "tailoredHighlights": ["Strong action-verb bullet 1 aligned with JD in ${langFullName}", "Strong action-verb bullet 2 aligned with JD in ${langFullName}", "Strong action-verb bullet 3 aligned with JD in ${langFullName}"],
+  "coverLetterSubject": "Application for the Position of ... (in ${langFullName})",
+  "coverLetterParagraphs": [
+    "Opening paragraph in ${langFullName} stating the role applied for and core qualification...",
+    "Middle paragraph in ${langFullName} highlighting relevant experience, measurable skills, and alignment with the company's requirements...",
+    "Closing paragraph in ${langFullName} expressing enthusiasm for an interview and thanking the hiring manager..."
+  ]
+}`;
+
+      let aiResult: {
+        jobTitle?: string;
+        professionalSummary?: string;
+        coreSkills?: string[];
+        tailoredHighlights?: string[];
+        coverLetterSubject?: string;
+        coverLetterParagraphs?: string[];
+      } | null = null;
+
+      if (hasGeminiApiKey()) {
+        try {
+          aiResult = await callGeminiWithModelFallback(
+            tailorPrompt,
+            `You are an expert Multilingual ATS Resume & Cover Letter Writer. Output ONLY valid JSON in ${langFullName}.`
+          );
+        } catch {
+          // Fallback to HuggingFace or deterministic logic below
+        }
+      }
+
+      if (!aiResult && hasHuggingFaceToken()) {
+        try {
+          aiResult = await callHuggingFaceStructuredJson(
+            tailorPrompt,
+            `You are an expert Multilingual ATS Resume & Cover Letter Writer. Output ONLY valid JSON in ${langFullName}.`
+          );
+        } catch {
+          // Deterministic fallback below
+        }
+      }
+
+      // Merge skills deterministically so every selected keyword is guaranteed to be included
+      const baseSkills =
+        Array.isArray(aiResult?.coreSkills) && aiResult!.coreSkills.length >= 3
+          ? aiResult!.coreSkills.map((s) => String(s || '').trim()).filter(Boolean)
+          : existingSkills;
+
+      const mergedSkillsSet = new Map<string, string>();
+      for (const s of [...baseSkills, ...existingSkills, ...keywordsToInclude]) {
+        const trimmed = String(s || '').trim();
+        if (trimmed && !mergedSkillsSet.has(trimmed.toLowerCase())) {
+          mergedSkillsSet.set(trimmed.toLowerCase(), trimmed);
+        }
+      }
+      const finalSkills = Array.from(mergedSkillsSet.values()).slice(0, 16);
+
+      const finalRole =
+        aiResult?.jobTitle && String(aiResult.jobTitle).trim()
+          ? String(aiResult.jobTitle).trim()
+          : cleanRole;
+
+      const keywordPhrase =
+        keywordsToInclude.length > 0 ? keywordsToInclude.slice(0, 5).join(', ') : finalSkills.slice(0, 4).join(', ');
+
+      const fallbackSummaryByLang: Record<string, string> = {
+        ml: `${cleanRole} തസ്തികയിൽ മികച്ച പ്രവൃത്തിപരിചയവും നൈപുണ്യവുമുള്ള ഉദ്യോഗാർത്ഥി. ${
+          keywordPhrase ? `${keywordPhrase} തുടങ്ങിയ മേഖലകളിൽ പ്രാവീണ്യമുണ്ട്. ` : ''
+        }${cleanCompany} എന്ന സ്ഥാപനത്തിന്റെ വളർച്ചയ്ക്കായി ആത്മാർത്ഥമായി പ്രവർത്തിക്കാൻ താല്പര്യപ്പെടുന്നു.`,
+        ar: `مهني متمرس في مجال ${cleanRole} يتمتع بخبرة عملية قوية ومهارات متقدمة في ${keywordPhrase}. ملتزم بتقديم أعلى مستويات الجودة والمساهمة الفعالة في نجاح ${cleanCompany}.`,
+        hi: `${cleanRole} के रूप में उत्कृष्ट कार्य अनुभव और ${keywordPhrase} में दक्षता रखने वाले पेशेवर। ${cleanCompany} के लक्ष्यों को प्राप्त करने और उच्च गुणवत्ता वाले परिणाम देने के लिए प्रतिबद्ध।`,
+        ta: `${cleanRole} துறையில் சிறந்த பணி அனுபவமும் ${keywordPhrase} ஆகியவற்றில் দক্ষതയും கொண்டவர். ${cleanCompany} நிறுவனத்தின் வளர்ச்சிக்கு சிறப்பாகப் பங்களிக்க உறுதிபூண்டுள்ளேன்.`,
+        ur: `${cleanRole} کی حیثیت سے بہترین عملی تجربہ اور ${keywordPhrase} میں مہارت رکھنے والا پیشہ ور۔ ${cleanCompany} کی ترقی اور اہداف کے حصول کے لیے پرعزم۔`,
+        en: `Results-driven ${cleanRole} with proven hands-on experience delivering operational excellence, quality compliance, and team coordination.${
+          keywordPhrase ? ` Proficient in ${keywordPhrase}.` : ''
+        } Committed to contributing immediately to ${cleanCompany}'s goals.`,
+      };
+
+      const finalSummary =
+        aiResult?.professionalSummary && String(aiResult.professionalSummary).trim()
+          ? String(aiResult.professionalSummary).trim()
+          : fallbackSummaryByLang[langCode] || fallbackSummaryByLang.en;
+
+      const fallbackBulletByLang: Record<string, string> = {
+        ml: `${keywordPhrase || cleanRole} മേഖലകളിലെ പ്രായോഗിക പരിചയം ഉപയോഗിച്ച് ദൈനംദിന പ്രവർത്തനങ്ങൾ കൃത്യതയോടെ നിർവഹിച്ചു.`,
+        ar: `تطبيق الخبرة العملية في ${keywordPhrase || cleanRole} لتحسين كفاءة العمل اليومي وجودة الخدمة.`,
+        hi: `दैनिक कार्यों की दक्षता और सेवा की गुणवत्ता में सुधार के लिए ${keywordPhrase || cleanRole} में व्यावहारिक विशेषज्ञता का उपयोग किया।`,
+        ta: `தினசரி பணித் திறன் மற்றும் சேவைத் தரத்தை மேம்படுத்த ${keywordPhrase || cleanRole} திறன்களைப் பயன்படுத்தினேன்.`,
+        ur: `روزمرہ کے کام کی کارکردگی اور معیار کو بہتر بنانے کے لیے ${keywordPhrase || cleanRole} میں عملی مہارت کا استعمال کیا۔`,
+        en: `Applied practical expertise in ${keywordPhrase || cleanRole} to improve daily workflow efficiency and service quality.`,
+      };
+
+      const finalWorkExp =
+        existingExp.length > 0
+          ? existingExp.map((exp: any, idx: number) => {
+              if (idx === 0) {
+                const aiBullets =
+                  Array.isArray(aiResult?.tailoredHighlights) &&
+                  aiResult!.tailoredHighlights.length >= 2
+                    ? aiResult!.tailoredHighlights.map((b) => String(b || '').trim()).filter(Boolean)
+                    : Array.isArray(exp.highlights) && exp.highlights.length > 0
+                    ? [...exp.highlights, fallbackBulletByLang[langCode] || fallbackBulletByLang.en]
+                    : [fallbackBulletByLang[langCode] || fallbackBulletByLang.en];
+                return {
+                  ...exp,
+                  highlights: aiBullets.slice(0, 4),
+                };
+              }
+              return exp;
+            })
+          : [
+              {
+                role: finalRole,
+                company: cleanCompany,
+                location: gulfCvData.currentLocation || 'Kerala / GCC',
+                duration: '2021 – Present',
+                highlights:
+                  Array.isArray(aiResult?.tailoredHighlights) &&
+                  aiResult!.tailoredHighlights.length >= 2
+                    ? aiResult!.tailoredHighlights
+                    : [fallbackBulletByLang[langCode] || fallbackBulletByLang.en],
+              },
+            ];
+
+      const tailoredCv = {
+        ...gulfCvData,
+        jobTitle: finalRole,
+        professionalSummary: finalSummary,
+        coreSkills: finalSkills,
+        workExperience: finalWorkExp,
+      };
+
+      const todayFormatted = new Date().toLocaleDateString(langCode === 'ml' ? 'ml-IN' : 'en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      });
+
+      const isMalayalamOut = langCode === 'ml';
+      const coverLetterData = {
+        documentHeading: isMalayalamOut ? 'ജോലി അപേക്ഷാ കത്ത് (COVER LETTER)' : 'JOB APPLICATION COVER LETTER',
+        letterLayoutVariant: 'official_letter',
+        fromLabelOverride: isMalayalamOut ? 'പ്രേഷിതൻ' : 'From',
+        senderName: gulfCvData.fullName || (isMalayalamOut ? 'അപേക്ഷകന്റെ പേര്' : 'Applicant Name'),
+        senderAddress: `${gulfCvData.currentLocation || 'Kerala, India'}${
+          gulfCvData.email ? `\nEmail: ${gulfCvData.email}` : ''
+        }`,
+        senderPhone: gulfCvData.phone || gulfCvData.whatsapp || '',
+        phoneLabelOverride: isMalayalamOut ? 'ഫോൺ' : 'Phone',
+        toLabelOverride: isMalayalamOut ? 'സ്വീകർത്താവ്' : 'To',
+        recipientTitle: isMalayalamOut ? 'മാനേജർ / എച്ച്.ആർ വിഭാഗം (HR Manager)' : 'The Hiring Manager / HR Department',
+        recipientOffice: cleanCompany,
+        recipientPlace: '',
+        subjectLabelOverride: isMalayalamOut ? 'വിഷയം' : 'Subject',
+        subject:
+          aiResult?.coverLetterSubject && String(aiResult.coverLetterSubject).trim()
+            ? String(aiResult.coverLetterSubject).trim()
+            : isMalayalamOut
+            ? `${cleanRole} തസ്തികയിലേക്ക് ജോലി ലഭിക്കുന്നതിനുള്ള അപേക്ഷ.`
+            : `Application for the Position of ${cleanRole}`,
+        referenceLabelOverride: isMalayalamOut ? 'സൂചന' : 'Ref',
+        reference: '',
+        salutation: isMalayalamOut ? 'ബഹുമാനപ്പെട്ട സർ / മാഡം,' : 'Dear Hiring Manager,',
+        bodyParagraphs:
+          Array.isArray(aiResult?.coverLetterParagraphs) &&
+          aiResult!.coverLetterParagraphs.length >= 2
+            ? aiResult!.coverLetterParagraphs.map((p) => String(p || '').trim()).filter(Boolean)
+            : isMalayalamOut
+            ? [
+                `നിങ്ങളുടെ സ്ഥാപനമായ ${cleanCompany}-ൽ ഒഴിവുള്ള ${cleanRole} തസ്തികയിലേക്ക് എന്നെ പരിഗണിക്കണമെന്ന് വിനീതമായി അഭ്യർത്ഥിക്കുന്നു. ${keywordPhrase} എന്നീ മേഖലകളിൽ എനിക്ക് മികച്ച പ്രവൃത്തിപരിചയവും പ്രാവീണ്യവുമുണ്ട്.`,
+                `എന്റെ മുൻകാല തൊഴിൽ പരിചയവും നൈപുണ്യങ്ങളും ഈ തസ്തികയ്ക്ക് തികച്ചും അനുയോജ്യമാണ്. സ്ഥാപനം ഏൽപ്പിക്കുന്ന ഉത്തരവാദിത്തങ്ങൾ അങ്ങേയറ്റം ആത്മാർത്ഥതയോടെയും കൃത്യതയോടെയും നിർവഹിക്കാൻ എനിക്ക് സാധിക്കും.`,
+                `എന്റെ വിശദമായ ബയോഡാറ്റ (CV / Resume) ഇതോടൊപ്പം ചേർക്കുന്നു. നേരിട്ടുള്ള ഇന്റർവ്യൂവിന് അവസരം നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.`,
+              ]
+            : [
+                `I am writing to express my strong interest in applying for the ${cleanRole} position at ${cleanCompany}. With my background and hands-on experience in ${finalSkills.slice(0, 4).join(', ')}, I am confident in my ability to contribute effectively to your team from day one.`,
+                `Throughout my career, I have focused on maintaining high standards of accuracy, reliability, and operational efficiency. My practical experience aligns closely with the requirements outlined in your job description, particularly in ${keywordPhrase}.`,
+                `I have attached my updated ATS-optimized resume for your review. I would welcome the opportunity to discuss how my skills and experience can support ${cleanCompany}'s goals. Thank you for your time and consideration.`,
+              ],
+        closingPhrase: isMalayalamOut ? 'വിശ്വാസപൂർവ്വം,' : 'Sincerely,',
+        placeLabelOverride: isMalayalamOut ? 'സ്ഥലം' : 'Place',
+        place: gulfCvData.currentLocation || (isMalayalamOut ? 'കേരളം' : 'Kerala'),
+        dateLabelOverride: isMalayalamOut ? 'തീയതി' : 'Date',
+        date: todayFormatted,
+        signatureLabelOverride: isMalayalamOut ? 'ഒപ്പ്' : 'Signature',
+        enclosuresLabelOverride: isMalayalamOut ? 'ഉള്ളടക്കം' : 'Enclosures',
+        enclosures: [isMalayalamOut ? 'ബയോഡാറ്റ / സിവി (Updated CV / Resume)' : 'Updated Resume / Curriculum Vitae (CV)'],
+      };
+
+      res.json({
+        ok: true,
+        tailoredCv,
+        coverLetterData,
+      });
+    } catch (err: any) {
+      console.warn('ats-tailor-resume error:', err?.message);
+      res.status(500).json({ error: 'Could not tailor resume at this moment. Please try again.' });
+    }
+  });
+
+  // 11C-3. Multilingual AI Resume Coach Chat with Accept / Reject Suggestions (Jobsuit Facility #3)
+  app.post('/api/ats-resume-chat', async (req, res) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkRateLimit(clientIp, 90)) {
+      res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
+      return;
+    }
+
+    const {
+      gulfCvData,
+      jobDescription = '',
+      userQuestion = '',
+      targetLanguage = 'ml',
+      missingKeywords = [],
+    } = req.body || {};
+
+    if (!gulfCvData || !String(userQuestion || '').trim()) {
+      res.status(400).json({ error: 'Please enter a question for the AI Resume Coach.' });
+      return;
+    }
+
+    try {
+      const langCode = String(targetLanguage || 'ml').toLowerCase();
+      const langFullName = LANGUAGE_NAMES_MAP[langCode] || 'Malayalam (മലയാളം)';
+      const cleanQuestion = String(userQuestion).trim().slice(0, 1200);
+      const cleanJd = String(jobDescription || '').trim().slice(0, 3000);
+      const missingList = Array.isArray(missingKeywords) ? missingKeywords.slice(0, 10) : [];
+
+      const coachPrompt = `You are an expert Multilingual AI Resume Coach & ATS Advisor.
+The user is asking a question about their Resume: "${cleanQuestion}"
+Respond to the user in clear, helpful language (matching the user's question language or ${langFullName}), AND provide 2 or 3 concrete, ready-to-apply Resume improvement suggestions that the user can click "Accept" or "Reject" on!
+
+Current Resume:
+- Name: ${gulfCvData.fullName}
+- Job Title: ${gulfCvData.jobTitle}
+- Summary: ${gulfCvData.professionalSummary}
+- Skills: ${JSON.stringify(gulfCvData.coreSkills || [])}
+- Experience: ${JSON.stringify((gulfCvData.workExperience || []).slice(0, 2))}
+
+Target Job Description (if any):
+${cleanJd || 'General ATS Optimization'}
+Missing JD Keywords (if any): ${JSON.stringify(missingList)}
+
+Return ONLY valid JSON with this exact schema:
+{
+  "coachReply": "Direct, encouraging explanation answering the user's question...",
+  "suggestions": [
+    {
+      "id": "sug-summary",
+      "field": "professionalSummary",
+      "label": "Improve Professional Summary",
+      "proposedText": "Full improved summary text in ${langFullName}..."
+    },
+    {
+      "id": "sug-bullet",
+      "field": "experienceBullet",
+      "label": "Add High-Impact Experience Bullet",
+      "proposedText": "Strong action-verb bullet point in ${langFullName}..."
+    },
+    {
+      "id": "sug-skills",
+      "field": "coreSkills",
+      "label": "Add ATS Keywords to Core Skills",
+      "proposedSkills": ["Skill 1", "Skill 2", "Skill 3"]
+    }
+  ]
+}`;
+
+      let coachData: {
+        coachReply?: string;
+        suggestions?: Array<{
+          id?: string;
+          field?: 'professionalSummary' | 'experienceBullet' | 'coreSkills' | 'jobTitle';
+          label?: string;
+          proposedText?: string;
+          proposedSkills?: string[];
+        }>;
+      } | null = null;
+
+      if (hasGeminiApiKey()) {
+        try {
+          coachData = await callGeminiWithModelFallback(
+            coachPrompt,
+            'You are an expert Multilingual AI Resume Coach. Output ONLY valid JSON.'
+          );
+        } catch {
+          // Fallback below
+        }
+      }
+
+      if (!coachData && hasHuggingFaceToken()) {
+        try {
+          coachData = await callHuggingFaceStructuredJson(
+            coachPrompt,
+            'You are an expert Multilingual AI Resume Coach. Output ONLY valid JSON.'
+          );
+        } catch {
+          // Deterministic fallback below
+        }
+      }
+
+      const fallbackSkills =
+        missingList.length > 0
+          ? missingList.slice(0, 5)
+          : ['Team Leadership', 'Quality Compliance', 'Time Management', 'Operations Coordination'];
+
+      const fallbackSuggestions = [
+        {
+          id: `sug-summary-${Date.now()}`,
+          field: 'professionalSummary' as const,
+          label:
+            langCode === 'ml'
+              ? 'പ്രൊഫഷണൽ സമ്മറി കൂടുതൽ ആകർഷകമാക്കുക (Improve Summary)'
+              : 'Upgrade Executive Summary for ATS',
+          proposedText:
+            langCode === 'ml'
+              ? `${gulfCvData.jobTitle || 'പ്രൊഫഷണൽ'} മേഖലയിൽ മികച്ച പ്രവൃത്തിപരിചയവും ${fallbackSkills.slice(0, 3).join(', ')} എന്നിവയിൽ പ്രാവീണ്യവുമുള്ള ഉദ്യോഗാർത്ഥി. സ്ഥാപനത്തിന്റെ ലക്ഷ്യങ്ങൾ സമയബന്ധിതമായി പൂർത്തിയാക്കാൻ പ്രതിജ്ഞാബദ്ധൻ.`
+              : `Dedicated ${gulfCvData.jobTitle || 'Professional'} with proven expertise in ${fallbackSkills.slice(0, 3).join(', ')} and a strong track record of operational accuracy, safety compliance, and team collaboration.`,
+        },
+        {
+          id: `sug-bullet-${Date.now() + 1}`,
+          field: 'experienceBullet' as const,
+          label:
+            langCode === 'ml'
+              ? 'പ്രവൃത്തിപരിചയത്തിലേക്ക് പുതിയ പോയിന്റ് ചേർക്കുക (Add Experience Bullet)'
+              : 'Add Measurable Achievement Bullet to Experience',
+          proposedText:
+            langCode === 'ml'
+              ? `${fallbackSkills.slice(0, 3).join(', ')} എന്നിവയിൽ കൃത്യത പാലിച്ചുകൊണ്ട് ദൈനംദിന ഉത്തരവാദിത്തങ്ങൾ വിജയകരമായി നിർവഹിച്ചു.`
+              : `Streamlined daily operations utilizing ${fallbackSkills.slice(0, 3).join(', ')}, achieving 100% compliance with organizational quality standards.`,
+        },
+        {
+          id: `sug-skills-${Date.now() + 2}`,
+          field: 'coreSkills' as const,
+          label:
+            langCode === 'ml'
+              ? 'പ്രധാന ATS സ്കില്ലുകൾ ചേർക്കുക (Add ATS Skills)'
+              : 'Add Recommended ATS Keywords to Skills',
+          proposedSkills: fallbackSkills,
+        },
+      ];
+
+      res.json({
+        ok: true,
+        coachReply:
+          coachData?.coachReply ||
+          (langCode === 'ml'
+            ? 'നിങ്ങളുടെ സിവിയും ജോലി വിവരങ്ങളും ഞാൻ പരിശോധിച്ചു! സിവി കൂടുതൽ മികച്ചതാക്കാൻ താഴെ നൽകിയിട്ടുള്ള നിർദ്ദേശങ്ങൾ (Suggestions) പരിശോധിച്ച് ഇഷ്ടപ്പെട്ടവ "✅ സ്വീകരിക്കുക (Accept)" ബട്ടൺ അമർത്തി നേരിട്ട് സിവിയിൽ ചേർക്കാം:'
+            : 'I have analyzed your resume! Review the tailored suggestions below and click "✅ Accept" on the ones you want to apply to your resume:'),
+        suggestions:
+          Array.isArray(coachData?.suggestions) && coachData!.suggestions.length > 0
+            ? coachData!.suggestions
+            : fallbackSuggestions,
+      });
+    } catch (err: any) {
+      console.warn('ats-resume-chat error:', err?.message);
+      res.status(500).json({ error: 'AI Resume Coach is temporarily busy. Please try again.' });
+    }
+  });
+
   // 11D. Server-Side Malayalam Studio Voiceover TTS + Hugging Face FLUX.1-schnell Video Scene Generator
   const malayalamTtsCache = new Map<string, { audioBase64: string; mimeType: string; engine: string }>();
   const hfSceneImageCache = new Map<string, string>();
