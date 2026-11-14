@@ -658,20 +658,16 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
           </p>
           <p className="leading-relaxed">
             <strong>ഔദ്യോഗിക പേരുകൾ (Unified Brand Names):</strong> പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് · പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് · Poorippikkal Apekshadesk · Poorippikkam – Apeksha Desk ·{' '}
-            <strong>സേവന മേഖല:</strong> കേരളത്തിലെ 14 ജില്ലകളിലും വിദേശ മലയാളികൾക്കും 24×7 ഓൺലൈൻ അപേക്ഷാ ഫോം പൂരിപ്പിക്കൽ &amp; A4 PDF നിർമ്മാണം ·{' '}
-            <strong>സമയം:</strong> മൈക്കിൽ മലയാളത്തിൽ സംസാരിച്ചാൽ 10 സെക്കൻഡിൽ ചില്ലക്ഷരങ്ങൾ ഉടയാത്ത A4 PDF (ടൈപ്പിംഗ് ആവശ്യമില്ല) ·{' '}
-            <strong>നിരക്കുകൾ:</strong>{' '}
-            {ownerConfig.freeModeEnabled
-              ? 'എല്ലാ സേവനങ്ങളും ഇപ്പോൾ സൗജന്യമാണ് (Free Mode Enabled)'
-              : `അപേക്ഷകൾ ₹${ownerConfig.pricing.malayalam_letter || 5}, ഗൾഫ് CV ₹${ownerConfig.pricing.gulf_cv || 5}, വാടക കരാർ ₹${ownerConfig.pricing.rental_agreement || 5}, മാർക്ക് ലിസ്റ്റ് ₹${ownerConfig.pricing.teacher_marklist || 5}, PDF എഡിറ്റിംഗ് ₹${ownerConfig.pricing.pdf_edit || 5}.`}
+            <strong>ഡെവലപ്പർ &amp; ഓപ്പൺ സോഴ്സ് (Developer &amp; Open-Source):</strong> താജുദ്ദീൻ തോട്ടത്തിൽ (Thajudheen Thottathil, Kolari, Kannur, Kerala | ഇമെയിൽ: thajukolari786@gmail.com | സോഴ്സ് കോഡ്: github.com/Thajudheenthottathil/poorippikkal-apekshadesk) ·{' '}
+            <strong>നിരക്കുകൾ:</strong> 100% സൗജന്യ പൊതുജന സേവനം (100% Free Public Utility — ₹0, No Hidden Charges, No Login, No APK Download).
           </p>
 
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-1.5 text-[11px] text-slate-700">
             <p className="font-bold text-slate-900">
-              🛡️ ഔദ്യോഗിക നിരാകരണം &amp; സ്വകാര്യതാ നയം (Official Non-Government Disclaimer &amp; Zero-Storage Privacy Policy):
+              🛡️ സുരക്ഷാ ഉറപ്പും ഔദ്യോഗിക നിരാകരണവും (100% Free, No Aadhaar/OTP Needed &amp; Zero-Storage Privacy Policy):
             </p>
             <p className="leading-relaxed">
-              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ കമ്പ്യൂട്ടർ ടൈപ്പിംഗ് അറിയാത്ത സാധാരണക്കാർക്കും ഓപ്പറേറ്റർമാർക്കും ഫോണിലൂടെ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓൺലൈൻ ഡി.ടി.പി &amp; ഡോക്യുമെന്റ് ഫോർമാറ്റിംഗ് സഹായി (Independent Online Document Formatting &amp; Typing Utility)</strong> മാത്രമാണ്. ഉപയോക്താക്കൾ നൽകുന്ന പേര്, വിലാസം, ഫോൺ നമ്പർ എന്നിവയൊന്നും സെർവറിൽ സൂക്ഷിക്കുന്നില്ല (100% Client-Side Browser PDF Generation &amp; Zero Data Storage).
+              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി &amp; ഡോക്യുമെന്റ് ഫോർമാറ്റിംഗ് സഹായി</strong> മാത്രമാണ്. <strong>ഇതിൽ ആധാർ നമ്പറോ, ബാങ്ക് അക്കൗണ്ട് വിവരങ്ങളോ, പാസ്‌വേഡുകളോ, OTP-യോ ടൈപ്പ് ചെയ്യേണ്ടതില്ല</strong> (അപേക്ഷ പ്രിന്റ് എടുത്ത ശേഷം ആവശ്യമെങ്കിൽ ഐഡി നമ്പർ പേന കൊണ്ട് എഴുതാം). ഉപയോക്താക്കൾ നൽകുന്ന പേരോ വിലാസമോ സെർവറിൽ സൂക്ഷിക്കുന്നില്ല (100% Client-Side Browser PDF Generation).
             </p>
             <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 font-bold text-emerald-800">
               <a href="/village-office-applications-malayalam.html" className="underline hover:text-emerald-600">
@@ -693,7 +689,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
                 ജോലി രാജിക്കത്ത് &amp; ലീവ് ലെറ്റർ
               </a>
               <a href="/about-privacy-disclaimer.html" className="underline hover:text-emerald-600">
-                About Us, Disclaimer &amp; Privacy Policy
+                About Us, Developer Contact &amp; Privacy Policy
               </a>
             </div>
           </div>
