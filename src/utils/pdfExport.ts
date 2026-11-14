@@ -427,11 +427,13 @@ async function renderCleanA4Canvas(
       target.replaceWith(rep);
     });
 
-    // Clean up empty structured table rows from government / application forms if at least 2 rows are filled
+    // Clean up unedited example ("ഉദാ: ...") rows in 2-3 column government forms only (never touch marklists or dotted blank forms!)
     const tables = Array.from(clone.querySelectorAll('table'));
     for (const table of tables) {
       const rows = Array.from(table.querySelectorAll('tbody tr, tr'));
       if (rows.length >= 3) {
+        const isMultiColMarkList = rows.some((r) => r.querySelectorAll('td, th').length >= 4);
+        if (isMultiColMarkList) continue;
         const filledRows = rows.filter((r) => {
           const cells = Array.from(r.querySelectorAll('td'));
           if (cells.length < 2) return true;
@@ -445,7 +447,7 @@ async function renderCleanA4Canvas(
             if (cells.length >= 2) {
               const valCell = cells[cells.length - 1];
               const text = (valCell.textContent || '').trim();
-              if (!text || /^ഉദാ\s*:/i.test(text) || text === '-') {
+              if ((!text || /^ഉദാ\s*:/i.test(text) || text === '-') && !text.includes('....')) {
                 r.remove();
               }
             }
@@ -1168,11 +1170,26 @@ export async function shareDocumentOnWhatsApp(
           format: 'a4',
           compress: true,
         });
+        const pdfWidth = 210;
+        const pageHeight = 297;
         for (let i = 0; i < explicitPages.length; i++) {
           if (i > 0) generatedPdf.addPage('a4', 'portrait');
-          const { canvas: pCanvas } = await renderCleanA4Canvas(explicitPages[i], 2.8);
-          const imgH = Math.min(297, (pCanvas.height * 210) / pCanvas.width);
-          generatedPdf.addImage(pCanvas.toDataURL('image/png'), 'PNG', 0, 0, 210, imgH, undefined, 'FAST');
+          const { canvas: pCanvas } = await renderCleanA4Canvas(explicitPages[i], 2.8, false);
+          const rawHeightMm = (pCanvas.height * pdfWidth) / pCanvas.width;
+          const scaleFactor = rawHeightMm > pageHeight ? pageHeight / rawHeightMm : 1;
+          const fittedWidthMm = pdfWidth * scaleFactor;
+          const fittedHeightMm = Math.min(pageHeight, rawHeightMm * scaleFactor);
+          const offsetXMm = Math.max(0, (pdfWidth - fittedWidthMm) / 2);
+          generatedPdf.addImage(
+            pCanvas.toDataURL('image/png'),
+            'PNG',
+            offsetXMm,
+            0,
+            fittedWidthMm,
+            fittedHeightMm,
+            undefined,
+            'FAST'
+          );
         }
       } else {
         const { canvas, textEntries } = await renderCleanA4Canvas(element, 2.8);

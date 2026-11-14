@@ -349,6 +349,13 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
   const [showBulkPasteBox, setShowBulkPasteBox] = useState(false);
   const [bulkPasteNamesText, setBulkPasteNamesText] = useState('');
   const [showMarkListControls, setShowMarkListControls] = useState(false);
+  const [customStudentCountInput, setCustomStudentCountInput] = useState<string>(
+    String(markListData.students.length)
+  );
+
+  useEffect(() => {
+    setCustomStudentCountInput(String(markListData.students.length));
+  }, [markListData.students.length]);
 
   const isGradeOnlyMode = markListData.evaluationMode === 'lp_up_grade_only';
   const showTotalAndPct =
@@ -432,16 +439,29 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
   };
 
   const handleSetExactStudentCount = (targetCount: number) => {
+    const clamped = Math.max(1, Math.min(300, targetCount));
+    setCustomStudentCountInput(String(clamped));
     const current = [...markListData.students];
-    if (targetCount <= current.length) {
+    if (clamped <= current.length) {
       onUpdateMarkList({
         ...markListData,
-        students: current.slice(0, Math.max(1, targetCount)),
+        students: current.slice(0, clamped),
       });
       return;
     }
-    const extraCount = targetCount - current.length;
+    const extraCount = clamped - current.length;
     handleAddStudentRows(extraCount);
+  };
+
+  const commitCustomStudentCountInput = () => {
+    const parsed = parseInt(customStudentCountInput.trim(), 10);
+    if (!Number.isNaN(parsed) && parsed >= 1 && parsed <= 300) {
+      if (parsed !== markListData.students.length) {
+        handleSetExactStudentCount(parsed);
+      }
+    } else {
+      setCustomStudentCountInput(String(markListData.students.length));
+    }
   };
 
   const handleApplyBulkPastedNames = () => {
@@ -1959,25 +1979,73 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             style={{ height: `${agreementData.stampPaperHeaderSpaceMm}mm` }}
             className="w-full relative flex items-center justify-center border-b border-dashed border-amber-300/80 mb-6 transition-all"
           >
-            <div className="no-print text-center px-4 py-2 rounded-xl bg-amber-50/90 border border-amber-200/90 text-amber-950 text-xs shadow-2xs">
+            <div className="no-print text-center px-4 py-2 rounded-xl bg-amber-50/90 border border-amber-200/90 text-amber-950 text-xs shadow-2xs space-y-1.5">
               <p className="font-bold">
-                മുദ്രപ്പത്രത്തിന്റെ തലഭാഗം ഒഴിച്ചിടുക:{' '}
+                മുദ്രപ്പത്രത്തിന്റെ മൂല്യവും തലഭാഗത്തെ ഒഴിച്ചിടേണ്ട സ്ഥലവും:{' '}
                 <span className="text-amber-700 font-extrabold">
                   {(agreementData.stampPaperHeaderSpaceMm / 25.4).toFixed(1)} ഇഞ്ച്
                 </span>{' '}
                 ({agreementData.stampPaperHeaderSpaceMm} mm)
               </p>
-              <p className="text-[11px] text-amber-800 mt-0.5">
-                സാധാരണ ₹100 / ₹200 കേരള മുദ്രപ്പത്രത്തിന് <strong>4.5 ഇഞ്ച് (114mm)</strong> അല്ലെങ്കിൽ{' '}
-                <strong>3.5 ഇഞ്ച് (90mm)</strong> തിരഞ്ഞെടുക്കാം. പ്രിന്റ് എടുക്കുമ്പോൾ ഈ ബോക്സ് തനിയെ മാറും.
-              </p>
-              <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-center gap-1.5">
+                <span className="text-[10.5px] font-extrabold text-amber-900">മുദ്രപ്പത്രം:</span>
+                {[
+                  { label: '₹200 മുദ്രപത്രം', denom: '₹200', defaultMm: 90 },
+                  { label: '₹500 മുദ്രപത്രം', denom: '₹500', defaultMm: 90 },
+                  { label: '₹100 മുദ്രപത്രം', denom: '₹100', defaultMm: 90 },
+                  { label: 'വെള്ള പേപ്പർ (Plain A4)', denom: 'plain', defaultMm: 20 },
+                ].map((stampOpt) => {
+                  const isSelected =
+                    stampOpt.denom === 'plain'
+                      ? agreementData.stampPaperHeaderSpaceMm <= 25 &&
+                        !/₹(100|200|500)\s*രൂപയുടെ\s*മുദ്രപ്പത്രത്തിൽ/.test(
+                          agreementData.preambleParagraph
+                        )
+                      : agreementData.preambleParagraph.includes(
+                          `${stampOpt.denom} രൂപയുടെ മുദ്രപ്പത്രത്തിൽ`
+                        );
+                  return (
+                    <button
+                      key={stampOpt.denom}
+                      type="button"
+                      onClick={() => {
+                        const basePreamble = agreementData.preambleParagraph
+                          .replace(/\s*\(₹\d+\s*രൂപയുടെ\s*മുദ്രപ്പത്രത്തിൽ\s*തയ്യാറാക്കുന്നത്\)\.?\s*/g, '')
+                          .replace(/\.$/, '');
+                        const nextPreamble =
+                          stampOpt.denom === 'plain'
+                            ? `${basePreamble}.`
+                            : `${basePreamble} (${stampOpt.denom} രൂപയുടെ മുദ്രപ്പത്രത്തിൽ തയ്യാറാക്കുന്നത്).`;
+                        onUpdateAgreement({
+                          ...agreementData,
+                          stampPaperHeaderSpaceMm:
+                            stampOpt.denom === 'plain'
+                              ? 20
+                              : agreementData.stampPaperHeaderSpaceMm <= 25
+                              ? stampOpt.defaultMm
+                              : agreementData.stampPaperHeaderSpaceMm,
+                          preambleParagraph: nextPreamble,
+                        });
+                      }}
+                      className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-emerald-700 text-white shadow-2xs'
+                          : 'bg-white text-emerald-950 border border-emerald-300 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {stampOpt.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 pt-0.5">
+                <span className="text-[10px] font-bold text-amber-800">തലഭാഗം ഗ്യാപ്പ്:</span>
                 {[
                   { label: '0 ഇഞ്ച് (സാധാ പേപ്പർ)', mm: 20 },
                   { label: '3 ഇഞ്ച് (75mm)', mm: 75 },
                   { label: '3.5 ഇഞ്ച് (90mm)', mm: 90 },
                   { label: '4 ഇഞ്ച് (100mm)', mm: 100 },
-                  { label: '⚡ 4.5 ഇഞ്ച് (114mm - Stamp Paper Mode)', mm: 114 },
+                  { label: '⚡ 4.5 ഇഞ്ച് (114mm - Stamp Paper)', mm: 114 },
                 ].map((preset) => (
                   <button
                     key={preset.mm}
@@ -2363,16 +2431,26 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                     min={1}
                     max={300}
                     aria-label="കുട്ടികളുടെ എണ്ണം ടൈപ്പ് ചെയ്യുക"
-                    title="ഇഷ്ടമുള്ള കുട്ടികളുടെ എണ്ണം ടൈപ്പ് ചെയ്യാം (1 - 300)"
-                    value={markListData.students.length}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value, 10);
-                      if (!Number.isNaN(val) && val >= 1 && val <= 300) {
-                        handleSetExactStudentCount(val);
+                    title="ഇഷ്ടമുള്ള കുട്ടികളുടെ എണ്ണം ടൈപ്പ് ചെയ്ത് Enter അമർത്തുക (1 - 300)"
+                    value={customStudentCountInput}
+                    onChange={(e) => setCustomStudentCountInput(e.target.value)}
+                    onBlur={commitCustomStudentCountInput}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        commitCustomStudentCountInput();
                       }
                     }}
                     className="w-12 px-1 py-0.5 rounded bg-white text-slate-950 font-mono-num font-extrabold text-center text-[11px] focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
+                  <button
+                    type="button"
+                    onClick={commitCustomStudentCountInput}
+                    title="കുട്ടികളുടെ എണ്ണം ക്രമീകരിക്കുക"
+                    className="px-1.5 py-0.5 rounded bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-[10px] cursor-pointer"
+                  >
+                    ✓
+                  </button>
                 </div>
 
                 <button
@@ -3057,10 +3135,15 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                                       type="number"
                                       min={0}
                                       max={markListData.maxMarksPerSubject}
-                                      value={student.marks[mIdx] ?? 0}
+                                      value={
+                                        student.marks[mIdx] !== undefined && student.marks[mIdx] >= 0
+                                          ? student.marks[mIdx]
+                                          : ''
+                                      }
                                       onChange={(e) => {
+                                        const rawVal = e.target.value;
                                         const nextMarks = [...student.marks];
-                                        nextMarks[mIdx] = Number(e.target.value) || 0;
+                                        nextMarks[mIdx] = rawVal === '' ? -1 : Number(rawVal) || 0;
                                         const nextStudents = [...markListData.students];
                                         nextStudents[globalIdx] = {
                                           ...student,

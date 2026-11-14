@@ -698,7 +698,7 @@ export function App() {
     const sourceLetter = letterData;
     setOutputLanguage(newLang);
 
-    // 1. Instant local dictionary & semantic conversion (0ms, no Manglish sentence corruption)
+    // 1. Instant local dictionary & semantic conversion (0ms, works 100% offline/client-side)
     const nextCv = applyLocalLanguageConversionToCv(sourceCv, newLang);
     const nextLetter = applyLocalLanguageConversionToLetter(sourceLetter, newLang);
     setGulfCvData(nextCv);
@@ -707,7 +707,7 @@ export function App() {
     const langObj = OUTPUT_LANGUAGE_OPTIONS.find((o) => o.code === newLang);
     showToast(`🌐 പ്രിന്റ് ഭാഷ "${langObj?.nativeLabel || newLang}" ആയി മാറ്റി — A4 PDF വിവർത്തനം ചെയ്യുന്നു...`);
 
-    // 2. Full server-side translation for all sentences, skills, locations, and names
+    // 2. Full server-side translation for all sentences, skills, locations, and names (with seamless local fallback)
     setIsTranslatingLanguage(true);
     try {
       const trData = await translateActiveDocumentViaServer({
@@ -729,10 +729,8 @@ export function App() {
       }
       showToast(`✓ A4 PDF പൂർണ്ണമായും "${langObj?.nativeLabel || newLang}" ഭാഷയിലേക്ക് മാറ്റി!`);
     } catch {
-      const failMsg =
-        '⚠️ വിവർത്തനത്തിൽ തടസ്സം നേരിട്ടു. ദയവായി ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.';
-      setAssistantBannerMessage(failMsg);
-      showToast(failMsg);
+      // Local dictionary & semantic conversion (nextCv / nextLetter) is already applied above!
+      showToast(`✓ A4 PDF "${langObj?.nativeLabel || newLang}" ഭാഷയിലേക്ക് മാറ്റി!`);
     } finally {
       setIsTranslatingLanguage(false);
     }
@@ -1396,6 +1394,7 @@ export function App() {
 
   // Instant 0ms Template Loader for QUICK_TEMPLATES (so selecting ANY example immediately opens in the touch-to-edit display AND WhatsApp column editor!)
   const handleSelectQuickTemplateInstantly = (tpl: QuickTemplateItem, stayInChat = false) => {
+    setPreBlankSnapshot(null);
     setShowDirectPdfCanvas(false);
     setIsPdfEditSession(false);
     setSheetOverlayItems([]);
@@ -2060,43 +2059,177 @@ export function App() {
       const data = await response.json();
       applyAiDocumentResult(data);
     } catch {
-      // Offline / API fallback: match local gov form or school leave letter or build clean custom Malayalam letter
-      const fallbackGovMatch = matchGovFormFromPrompt(
-        cleanedInput,
-        activeCategory === 'malayalam_letter' ? letterData : null
-      );
-      if (fallbackGovMatch) {
+      // Category-aware deterministic client-side fallback so Rental Agreement, Gulf CV, Mark List, and School/Gov forms
+      // NEVER get overwritten into a generic "ഔദ്യോഗിക അപേക്ഷ" when offline or when serverless API is unavailable!
+      const effectiveTargetCat: DocumentCategory =
+        preferredCategory !== 'auto'
+          ? preferredCategory
+          : /\b(rent|rental|agreement|affidavit|vadaka|karar)\b|വാടക|കരാർ|മുദ്രപ്പത്രം|സത്യവാങ്മൂലം/i.test(
+              cleanedInput
+            )
+          ? 'rental_agreement'
+          : /\b(cv|resume|biodata|visa|passport)\b|സിവി|ബയോഡാറ്റ|റെസ്യൂം|റെസ്യൂമെ/i.test(cleanedInput)
+          ? 'gulf_cv'
+          : /\b(mark\s*list|attendance|grade\s*sheet)\b|മാർക്ക്\s*ലിസ്റ്റ്|ഹാജർ\s*പട്ടിക|ഗ്രേഡ്\s*പട്ടിക/i.test(
+              cleanedInput
+            )
+          ? 'teacher_marklist'
+          : activeCategory;
+
+      if (effectiveTargetCat === 'rental_agreement') {
+        const nextAg: RentalAgreementData = {
+          ...agreementData,
+          clauses: [...(agreementData.clauses || INITIAL_AGREEMENT_DATA.clauses)],
+          witnesses: [...(agreementData.witnesses || INITIAL_AGREEMENT_DATA.witnesses)],
+        };
+        if (/സത്യവാങ്മൂലം|affidavit/i.test(cleanedInput)) {
+          nextAg.subType = 'സത്യവാങ്മൂലം (Affidavit)';
+          nextAg.titleMalayalam = 'സത്യവാങ്മൂലം (AFFIDAVIT)';
+        }
+        const rentMatch = cleanedInput.match(
+          /(?:മാസവാടക|വാടക|rent)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
+        );
+        const advMatch = cleanedInput.match(
+          /(?:അഡ്വാൻസ്|advance|deposit)\s*[:\-]?\s*₹?\s*([\d,]{3,9})/i
+        );
+        const allNums = Array.from(cleanedInput.matchAll(/\b(\d{4,7})\b/g)).map((m) => m[1]);
+        const rentVal = rentMatch ? rentMatch[1].replace(/,/g, '') : allNums[0];
+        const advVal = advMatch ? advMatch[1].replace(/,/g, '') : allNums[1];
+
+        if (rentVal && nextAg.clauses.length > 0) {
+          const formattedRent = Number(rentVal).toLocaleString('en-IN');
+          nextAg.clauses[0] = `1. ടി കെട്ടിടത്തിന് പ്രതിമാസം ₹${formattedRent}/- വാടക നിശ്ചയിച്ചിട്ടുള്ളതും, ആയത് എല്ലാ ഇംഗ്ലീഷ് മാസവും 5-ാം തീയതിക്കകം രണ്ടാം കക്ഷി ഒന്നാം കക്ഷിക്ക് നൽകി രസീത് വാങ്ങേണ്ടതുമാകുന്നു.`;
+        }
+        if (advVal && nextAg.clauses.length > 1) {
+          const formattedAdv = Number(advVal).toLocaleString('en-IN');
+          nextAg.clauses[1] = `2. വാടക ഉറപ്പിലേക്കായി പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായി ₹${formattedAdv}/- രണ്ടാം കക്ഷി ഇന്ന് ഒന്നാം കക്ഷിയെ ഏൽപ്പിച്ചിട്ടുള്ളതും, കരാർ കാലാവധി കഴിഞ്ഞ് കെട്ടിടം ഒഴിയുമ്പോൾ വാടക കുടിശ്ശികയോ കേടുപാടുകളോ ഉണ്ടെങ്കിൽ ആയത് കിഴിച്ച് ബാക്കി തുക തിരികെ നൽകുന്നതുമാകുന്നു.`;
+        }
+        const lines = cleanedInput.split(/\r?\n/);
+        for (const line of lines) {
+          const kv = line.match(/^([^:]+):\s*(.+)$/);
+          if (!kv) continue;
+          const k = kv[1].trim();
+          const v = kv[2].trim();
+          if (/ഒന്നാം കക്ഷി|ഉടമ|owner|landlord|first/i.test(k)) nextAg.firstPartyDetails = v;
+          else if (/രണ്ടാം കക്ഷി|വാടകക്കാരൻ|tenant|second/i.test(k)) nextAg.secondPartyDetails = v;
+          else if (/സ്ഥലം|place/i.test(k)) nextAg.executionPlace = v;
+          else if (/വസ്തു|കെട്ടിട|property|schedule/i.test(k)) nextAg.schedulePropertyDetails = v;
+        }
         applyAiDocumentResult({
-          detectedType: 'malayalam_letter',
+          detectedType: 'rental_agreement',
           documentUpdated: true,
-          isComplete: fallbackGovMatch.isComplete,
-          assistantReplyMalayalam: fallbackGovMatch.assistantReplyMalayalam,
-          followUpQuestions: fallbackGovMatch.followUpQuestions,
-          subFormPromptTitle: fallbackGovMatch.subFormPromptTitle,
-          subFormOptions: fallbackGovMatch.subFormOptions,
-          letterData: fallbackGovMatch.letterData,
+          isComplete: true,
+          assistantReplyMalayalam:
+            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് വാടക കരാർ (Rental Agreement) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിലോ വിവരങ്ങൾ തിരുത്താം.',
+          followUpQuestions: buildEditableQuestionsForDocument(
+            'rental_agreement',
+            letterData,
+            gulfCvData,
+            nextAg,
+            markListData
+          ),
+          agreementData: nextAg,
+        });
+      } else if (effectiveTargetCat === 'gulf_cv') {
+        const parsedCv = parseStructuredCvFromText(cleanedInput, gulfCvData);
+        const nextCv: GulfCvData = parsedCv.gulfCvData
+          ? { ...gulfCvData, ...parsedCv.gulfCvData, photoDataUrl: gulfCvData.photoDataUrl || '' }
+          : { ...gulfCvData };
+        const lines = cleanedInput.split(/\r?\n/);
+        for (const line of lines) {
+          const kv = line.match(/^([^:]+):\s*(.+)$/);
+          if (!kv) continue;
+          const k = kv[1].trim();
+          const v = kv[2].trim();
+          if (/പേര്|name/i.test(k)) nextCv.fullName = v;
+          else if (/തസ്തിക|ജോലി|role|job|title|position/i.test(k)) nextCv.jobTitle = v;
+          else if (/ഫോൺ|മൊബൈൽ|phone|mobile/i.test(k)) nextCv.phone = v;
+          else if (/ഇമെയിൽ|email/i.test(k)) nextCv.email = v;
+          else if (/സ്ഥലം|വിലാസം|location|address/i.test(k)) nextCv.currentLocation = v;
+        }
+        applyAiDocumentResult({
+          detectedType: 'gulf_cv',
+          documentUpdated: true,
+          isComplete: true,
+          assistantReplyMalayalam:
+            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് സിവി (CV / Resume) A4 ഷീറ്റിൽ പുതുക്കിയിട്ടുണ്ട്!',
+          followUpQuestions: buildEditableQuestionsForDocument(
+            'gulf_cv',
+            letterData,
+            nextCv,
+            agreementData,
+            markListData
+          ),
+          gulfCvData: nextCv,
+        });
+      } else if (effectiveTargetCat === 'teacher_marklist') {
+        const nextMl: TeacherMarkListData = { ...markListData };
+        const lines = cleanedInput.split(/\r?\n/);
+        for (const line of lines) {
+          const kv = line.match(/^([^:]+):\s*(.+)$/);
+          if (!kv) continue;
+          const k = kv[1].trim();
+          const v = kv[2].trim();
+          if (/സ്കൂൾ|മദ്രസ|school|institution/i.test(k)) nextMl.schoolName = v;
+          else if (/ക്ലാസ്|ഡിവിഷൻ|class/i.test(k)) nextMl.classAndDivision = v;
+          else if (/പരീക്ഷ|exam|title/i.test(k)) nextMl.examTitle = v;
+          else if (/ടീച്ചർ|ഉസ്താദ്|teacher/i.test(k)) nextMl.classTeacherName = v;
+        }
+        applyAiDocumentResult({
+          detectedType: 'teacher_marklist',
+          documentUpdated: true,
+          isComplete: true,
+          assistantReplyMalayalam:
+            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് മാർക്ക് ലിസ്റ്റ് പുതുക്കിയിട്ടുണ്ട്!',
+          followUpQuestions: buildEditableQuestionsForDocument(
+            'teacher_marklist',
+            letterData,
+            gulfCvData,
+            agreementData,
+            nextMl
+          ),
+          markListData: nextMl,
         });
       } else {
-        const customFallbackLetter: MalayalamLetterData = {
-          ...letterData,
-          documentHeading: 'ഔദ്യോഗിക അപേക്ഷ',
-          letterLayoutVariant: 'official_letter',
-          subject: 'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
-          bodyParagraphs: [
-            `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${cleanedInput}`,
-            'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
-          ],
-          date: new Date().toLocaleDateString('ml-IN'),
-        };
-        applyAiDocumentResult({
-          detectedType: 'malayalam_letter',
-          documentUpdated: true,
-          isComplete: false,
-          assistantReplyMalayalam:
-            '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
-          followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
-          letterData: customFallbackLetter,
-        });
+        const fallbackGovMatch = matchGovFormFromPrompt(
+          cleanedInput,
+          activeCategory === 'malayalam_letter' ? letterData : null
+        );
+        if (fallbackGovMatch) {
+          applyAiDocumentResult({
+            detectedType: 'malayalam_letter',
+            documentUpdated: true,
+            isComplete: fallbackGovMatch.isComplete,
+            assistantReplyMalayalam: fallbackGovMatch.assistantReplyMalayalam,
+            followUpQuestions: fallbackGovMatch.followUpQuestions,
+            subFormPromptTitle: fallbackGovMatch.subFormPromptTitle,
+            subFormOptions: fallbackGovMatch.subFormOptions,
+            letterData: fallbackGovMatch.letterData,
+          });
+        } else {
+          const customFallbackLetter: MalayalamLetterData = {
+            ...letterData,
+            documentHeading: letterData.documentHeading || 'ഔദ്യോഗിക അപേക്ഷ',
+            letterLayoutVariant: letterData.letterLayoutVariant || 'official_letter',
+            subject:
+              letterData.subject ||
+              'അടിയന്തര നടപടി സ്വീകരിക്കണമെന്ന് അഭ്യർത്ഥിച്ചുകൊണ്ടുള്ള അപേക്ഷ.',
+            bodyParagraphs: [
+              `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ താഴെ പറയുന്ന വിഷയം അങ്ങയുടെ ശ്രദ്ധയിൽപ്പെടുത്തുന്നു: ${cleanedInput}`,
+              'ഈ വിഷയത്തിൽ അടിയന്തരമായി രേഖകൾ പരിശോധിച്ച് അനുയോജ്യമായ നടപടി സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+            ],
+            date: new Date().toLocaleDateString('ml-IN'),
+          };
+          applyAiDocumentResult({
+            detectedType: 'malayalam_letter',
+            documentUpdated: true,
+            isComplete: false,
+            assistantReplyMalayalam:
+              '✅ നിങ്ങൾ നൽകിയ വിവരങ്ങൾ ചേർത്ത് A4 അപേക്ഷ തയ്യാറായിട്ടുണ്ട്! താഴെ കാണുന്ന കോളങ്ങളിലോ A4 പേപ്പറിൽ നേരിട്ടോ വിവരങ്ങൾ തിരുത്താം.',
+            followUpQuestions: buildEditableQuestionsForLetter(customFallbackLetter),
+            letterData: customFallbackLetter,
+          });
+        }
       }
     } finally {
       setIsGenerating(false);
@@ -2345,18 +2478,86 @@ export function App() {
     }
   };
 
+  const [preBlankSnapshot, setPreBlankSnapshot] = useState<{
+    category: DocumentCategory;
+    letterData: MalayalamLetterData;
+    agreementData: RentalAgreementData;
+    markListData: TeacherMarkListData;
+    gulfCvData: GulfCvData;
+  } | null>(null);
+
+  const handleRestoreSampleFromBlankForm = () => {
+    if (!preBlankSnapshot) return;
+    setLetterData(preBlankSnapshot.letterData);
+    setAgreementData(preBlankSnapshot.agreementData);
+    setMarkListData(preBlankSnapshot.markListData);
+    setGulfCvData(preBlankSnapshot.gulfCvData);
+    setPreBlankSnapshot(null);
+    showToast('↺ സാമ്പിൾ വിവരങ്ങൾ (Sample Form) തിരികെ കൊണ്ടുവന്നു!');
+  };
+
   const handleConvertToBlankHandFillableForm = () => {
+    setPreBlankSnapshot({
+      category: activeCategory,
+      letterData: JSON.parse(JSON.stringify(letterData)),
+      agreementData: JSON.parse(JSON.stringify(agreementData)),
+      markListData: JSON.parse(JSON.stringify(markListData)),
+      gulfCvData: JSON.parse(JSON.stringify(gulfCvData)),
+    });
+
     const dots = '........................................';
+    const shortDots = '........................';
+
+    const sanitizeBodyParagraphForBlankForm = (text: string): string => {
+      return text
+        .replace(/\[[^\]]+\]/g, shortDots)
+        .replace(/അർജുൻ\s*വിജയനെ?/g, shortDots)
+        .replace(/അർജുൻ\s*വി\.?/g, shortDots)
+        .replace(/വിജയൻ\s*കെ\.?/g, shortDots)
+        .replace(/ആദിത്യൻ\s*കെ\.?/g, shortDots)
+        .replace(/അനന്യ\s*ആർ\.?/g, shortDots)
+        .replace(/ശ്രീമതി\.\s*രാധിക\s*കെ\.?/g, shortDots)
+        .replace(/ശ്രീമതി\.\s*സുജാത\s*ടീച്ചർ/g, shortDots)
+        .replace(/രാഹുൽ\s*നായർ/g, shortDots)
+        .replace(/\(അഡ്മിഷൻ\s*നമ്പർ\s*:\s*[^)]+\)/g, '(അഡ്മിഷൻ നമ്പർ: ................)')
+        .replace(
+          /\(റോൾ\s*നമ്പർ\s*:\s*\d+\s*,\s*അഡ്മിഷൻ\s*നമ്പർ\s*:\s*[^)]+\)/g,
+          '(റോൾ നമ്പർ: .........., അഡ്മിഷൻ നമ്പർ: ................)'
+        )
+        .replace(
+          /(?:ആറാം|ഏഴാം|എട്ടാം|ഒമ്പതാം|പത്താം|അഞ്ചാം)\s*ക്ലാസ്(?:\s*[A-Z]\s*ഡിവിഷ(?:നിൽ|ൻ))?/g,
+          '.................. ക്ലാസ് ....... ഡിവിഷൻ'
+        )
+        .replace(/എറണാകുളത്തേക്ക്/g, '........................-ലേക്ക്')
+        .replace(/12\s*ദിവസത്തെ/g, '........ ദിവസത്തെ')
+        .replace(/98470\s*\d{5}/g, shortDots);
+    };
+
     if (activeCategory === 'malayalam_letter') {
+      const cleanedRecipientOffice = /സെന്റ് തോമസ്|ഗവ\.\s*മോഡൽ|മലബാർ ട്രേഡേഴ്സ്/.test(
+        letterData.recipientOffice
+      )
+        ? dots
+        : letterData.recipientOffice.replace(
+            /,\s*(?:തൃശ്ശൂർ|കോഴിക്കോട്|എറണാകുളം|തിരുവനന്തപുരം|മലപ്പുറം|പാലക്കാട്|കണ്ണൂർ)\.?\s*$/g,
+            `, ${shortDots}`
+          );
+
       const nextLetter: MalayalamLetterData = {
         ...letterData,
         senderName: dots,
         senderAddress: dots,
-        senderPhone: '........................',
-        place: '........................',
-        bodyParagraphs: (letterData.bodyParagraphs || []).map((p) =>
-          p.replace(/\[[^\]]+\]/g, '........................')
-        ),
+        senderPhone: shortDots,
+        recipientOffice: cleanedRecipientOffice,
+        recipientPlace: shortDots,
+        recipientTitle:
+          letterData.letterLayoutVariant === 'project_cover' ? dots : letterData.recipientTitle,
+        parentOrGuardianName: letterData.parentOrGuardianName
+          ? dots
+          : letterData.parentOrGuardianName,
+        place: shortDots,
+        date: shortDots,
+        bodyParagraphs: (letterData.bodyParagraphs || []).map(sanitizeBodyParagraphForBlankForm),
         structuredFields: letterData.structuredFields
           ? letterData.structuredFields.map((f) => ({
               ...f,
@@ -2368,14 +2569,53 @@ export function App() {
     } else if (activeCategory === 'rental_agreement') {
       setAgreementData({
         ...agreementData,
+        executionPlace: shortDots,
+        executionDate: shortDots,
         firstPartyDetails:
-          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, പിൻകോഡ്: ..................',
+          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, ഫോൺ: ........................',
         secondPartyDetails:
-          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, പിൻകോഡ്: ..................',
+          'പേര്: ........................................, വയസ്സ്: ......, പിതാവ്: ........................................, വീട്ടുപേര്: ........................................, സ്ഥലം: ........................, ഫോൺ: ........................',
+        clauses: (agreementData.clauses || []).map((cl) =>
+          cl
+            .replace(
+              /₹\s*[\d,]+\/-\s*(?:\([^)]+\))?/g,
+              '₹................/- (................................................ രൂപ മാത്രം)'
+            )
+            .replace(/\d+-ാം\s*തീയതിക്കകം/g, '......-ാം തീയതിക്കകം')
+        ),
+        schedulePropertyDetails:
+          'ജില്ല: ........................, താലൂക്ക്: ........................, വില്ലേജ്: ........................, പഞ്ചായത്ത്/നഗരസഭ: ...................................., വാർഡ് നമ്പർ: ........., കെട്ടിട നമ്പർ: .................., വിസ്തീർണ്ണം: .................. ച.അടി.',
+        witnesses: [
+          '1. പേര് & വിലാസം: ............................................................ (ഒപ്പ്: ...........................)',
+          '2. പേര് & വിലാസം: ............................................................ (ഒപ്പ്: ...........................)',
+        ],
+      });
+    } else if (activeCategory === 'teacher_marklist') {
+      setMarkListData({
+        ...markListData,
+        schoolName: '........................................................................',
+        classAndDivision: 'ക്ലാസ് & ഡിവിഷൻ : ........................',
+        classTeacherName: '................................................',
+        place: shortDots,
+        date: shortDots,
+        showSummaryBox: false,
+        showSummaryCards: false,
+        students: markListData.students.map((st, idx) => ({
+          ...st,
+          rollNo: String(idx + 1),
+          studentName: '',
+          marks: markListData.subjects.map(() => -1),
+          subjectGrades: markListData.subjects.map(() => ''),
+          totalOverride: '',
+          percentageOverride: '',
+          overallGradeOverride: '',
+          rankOverride: '',
+          remarks: '',
+        })),
       });
     }
     showToast(
-      '✓ വ്യക്തിഗത വിവരങ്ങൾ ഇല്ലാതെ പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) റെഡി! ഇനി നേരിട്ട് പ്രിന്റ് / PDF എടുക്കാം.'
+      '✓ വ്യക്തിഗത വിവരങ്ങൾ ഒഴിവാക്കി പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) റെഡി! തിരികെ മാറ്റാൻ "↺ സാമ്പിൾ ഫോം" അമർത്താം.'
     );
   };
 
@@ -2438,6 +2678,7 @@ export function App() {
   };
 
   const handleSelectGovForm = (form: GovFormTemplate, stayInChat = false) => {
+    setPreBlankSnapshot(null);
     const converted = convertGovFormToLetterData(form);
     const questions = buildEditableQuestionsForLetter(converted);
     setShowDirectPdfCanvas(false);
@@ -3397,17 +3638,31 @@ export function App() {
                         <span>പ്രിന്റ്</span>
                       </button>
 
-                      {/* 1-Click Blank Form Mode (No Personal Details Needed — Print & Fill with Pen) */}
-                      {(activeCategory === 'malayalam_letter' || activeCategory === 'rental_agreement') && (
-                        <button
-                          type="button"
-                          onClick={handleConvertToBlankHandFillableForm}
-                          className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-slate-100 to-slate-200 hover:from-white hover:to-slate-100 text-slate-900 border border-slate-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#475569] active:translate-y-0.5 transition-all"
-                          title="വ്യക്തിഗത വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാതെ പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) ആക്കാൻ"
-                        >
-                          <FileText className="w-3.5 h-3.5 text-slate-800 shrink-0" />
-                          <span>📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)</span>
-                        </button>
+                      {/* 1-Click Blank Form Mode & Restore Sample Toggle (Works for Letters, Rental Agreements, and Mark Lists!) */}
+                      {(activeCategory === 'malayalam_letter' ||
+                        activeCategory === 'rental_agreement' ||
+                        activeCategory === 'teacher_marklist') && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={handleConvertToBlankHandFillableForm}
+                            className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-slate-100 to-slate-200 hover:from-white hover:to-slate-100 text-slate-900 border border-slate-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#475569] active:translate-y-0.5 transition-all"
+                            title="വ്യക്തിഗത വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാതെ പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്ന കാലി ഫോം (Blank Form) ആക്കാൻ"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-slate-800 shrink-0" />
+                            <span>📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)</span>
+                          </button>
+                          {preBlankSnapshot && preBlankSnapshot.category === activeCategory && (
+                            <button
+                              type="button"
+                              onClick={handleRestoreSampleFromBlankForm}
+                              className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-emerald-100 to-emerald-200 hover:from-emerald-50 hover:to-emerald-100 text-emerald-950 border border-emerald-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#047857] active:translate-y-0.5 transition-all"
+                              title="സാമ്പിൾ വിവരങ്ങൾ തിരികെ കൊണ്ടുവരാൻ (Restore Sample Form)"
+                            >
+                              <span>↺ സാമ്പിൾ ഫോം തിരിച്ചെടുക്കുക</span>
+                            </button>
+                          )}
+                        </>
                       )}
 
                       {/* 1-Click English ATS Resume Tailor, Match Score & Cover Letter Studio (Jobsuit-style) */}

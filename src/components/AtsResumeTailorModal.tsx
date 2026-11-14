@@ -20,6 +20,10 @@ import {
   GulfCvData,
   MalayalamLetterData,
 } from '../types/documents';
+import {
+  applyLocalLanguageConversionToCv,
+  applyLocalLanguageConversionToLetter,
+} from '../utils/languageTranslator';
 
 interface AtsResumeTailorModalProps {
   isOpen: boolean;
@@ -425,6 +429,157 @@ export const AtsResumeTailorModal: React.FC<AtsResumeTailorModalProps> = ({
     setTrackedJobs((prev) => [newEntry, ...prev.slice(0, 29)]);
   };
 
+  const buildDeterministicTailoredResult = () => {
+    const cleanRole = (targetJobTitle || gulfCvData.jobTitle || 'Professional').trim();
+    const cleanCompany = (targetCompany || 'Hiring Manager').trim();
+    const kwsToAdd =
+      selectedMissingKeywords.length > 0
+        ? selectedMissingKeywords
+        : analysis.missingKeywords.slice(0, 8);
+
+    const existingSkills = Array.isArray(gulfCvData.coreSkills) ? [...gulfCvData.coreSkills] : [];
+    const mergedSkillsSet = new Set<string>([...existingSkills, ...kwsToAdd]);
+    const updatedSkills = Array.from(mergedSkillsSet).slice(0, 16);
+
+    const topKwString = kwsToAdd.slice(0, 4).join(', ');
+    let updatedSummary = gulfCvData.professionalSummary || '';
+    if (topKwString) {
+      if (targetLanguage === 'ml') {
+        updatedSummary = `${cleanRole} തസ്തികയിൽ മികച്ച പ്രവൃത്തിപരിചയവും ${topKwString} എന്നിവയിൽ പ്രത്യേക പ്രാവീണ്യവുമുള്ള ഉദ്യോഗാർത്ഥി. ${updatedSummary}`;
+      } else {
+        updatedSummary = `Results-driven ${cleanRole} with proven expertise in ${topKwString}. ${updatedSummary}`;
+      }
+    }
+
+    const updatedExperience = Array.isArray(gulfCvData.workExperience)
+      ? gulfCvData.workExperience.map((exp, idx) => {
+          if (idx === 0 && kwsToAdd.length > 0) {
+            const extraBullet =
+              targetLanguage === 'ml'
+                ? `${kwsToAdd.slice(0, 3).join(', ')} എന്നിവ പ്രയോജനപ്പെടുത്തി സ്ഥാപനത്തിന്റെ പ്രവർത്തന മികവ് വർദ്ധിപ്പിച്ചു.`
+                : `Applied strong proficiency in ${kwsToAdd.slice(0, 3).join(', ')} to streamline daily operations and achieve organizational quality targets.`;
+            const currentHighlights = Array.isArray(exp.highlights) ? exp.highlights : [];
+            const hasAlready = currentHighlights.some((h) =>
+              h.toLowerCase().includes(kwsToAdd[0].toLowerCase())
+            );
+            return {
+              ...exp,
+              highlights: hasAlready
+                ? currentHighlights
+                : [...currentHighlights, extraBullet].slice(0, 5),
+            };
+          }
+          return exp;
+        })
+      : [];
+
+    const rawTailoredCv: GulfCvData = {
+      ...gulfCvData,
+      jobTitle: cleanRole.toUpperCase(),
+      professionalSummary: updatedSummary.trim(),
+      coreSkills: updatedSkills,
+      workExperience: updatedExperience,
+    };
+
+    const tailoredCv = applyLocalLanguageConversionToCv(rawTailoredCv, targetLanguage);
+    const todayFormatted = new Date().toLocaleDateString(
+      targetLanguage === 'ml' ? 'ml-IN' : 'en-GB'
+    );
+
+    const baseCoverLetter: MalayalamLetterData =
+      targetLanguage === 'ml'
+        ? {
+            documentHeading: `ജോലി അപേക്ഷാ കവർ ലെറ്റർ (Cover Letter — ${cleanRole})`,
+            letterLayoutVariant: 'official_letter',
+            fromLabelOverride: 'അപേക്ഷകൻ (Applicant)',
+            senderName: tailoredCv.fullName || 'ഉദ്യോഗാർത്ഥി',
+            senderAddress: `${tailoredCv.currentLocation || 'കേരളം'}\nEmail: ${tailoredCv.email || ''}`,
+            senderPhone: tailoredCv.phone || '',
+            toLabelOverride: 'സ്വീകർത്താവ് (To)',
+            recipientTitle: 'ബഹുമാനപ്പെട്ട എച്ച്.ആർ മാനേജർ (HR / Hiring Manager) മുമ്പാകെ,',
+            recipientOffice: cleanCompany,
+            recipientPlace: tailoredCv.currentLocation || 'കേരളം',
+            subjectLabelOverride: 'വിഷയം',
+            subject: `${cleanRole} തസ്തികയിലേക്കുള്ള ജോലി അപേക്ഷ സംബന്ധിച്ച്.`,
+            reference: '',
+            salutation: 'ബഹുമാനപ്പെട്ട സർ / മാഡം,',
+            bodyParagraphs: [
+              `നിങ്ങളുടെ സ്ഥാപനത്തിലെ ${cleanRole} തസ്തികയിലേക്ക് അപേക്ഷിക്കുന്നതിനായി എന്റെ പുതുക്കിയ ബയോഡാറ്റ (ATS Resume) ഇതോടൊപ്പം സമർപ്പിക്കുന്നു. ഈ മേഖലയിലുള്ള എന്റെ പ്രവൃത്തിപരിചയവും ${updatedSkills.slice(0, 5).join(', ')} എന്നിവയിലുള്ള പ്രാവീണ്യവും ഈ തസ്തികയ്ക്ക് തികച്ചും അനുയോജ്യമാണ്.`,
+              `സ്ഥാപനത്തിന്റെ ലക്ഷ്യങ്ങൾ കൈവരിക്കുന്നതിനായി ആത്മാർത്ഥതയോടെയും കൃത്യനിഷ്ഠയോടെയും പ്രവർത്തിക്കാൻ ഞാൻ സന്നദ്ധനാണ്. എന്റെ യോഗ്യതകൾ നേരിട്ട് ബോധ്യപ്പെടുത്തുന്നതിനായി ഒരു ഇന്റർവ്യൂ അവസരം നൽകണമെന്ന് വിനീതമായി അഭ്യർത്ഥിക്കുന്നു.`,
+            ],
+            closingPhrase: 'വിശ്വസ്തതയോടെ,',
+            placeLabelOverride: 'സ്ഥലം',
+            place: tailoredCv.cvPlace || tailoredCv.currentLocation || 'കേരളം',
+            dateLabelOverride: 'തീയതി',
+            date: todayFormatted,
+            signatureLabelOverride: 'ഒപ്പ്',
+            enclosures: ['1. പുതുക്കിയ ബയോഡാറ്റ (ATS Resume)', '2. സർട്ടിഫിക്കറ്റുകളുടെ പകർപ്പ്'],
+          }
+        : {
+            documentHeading: `COVER LETTER — APPLICATION FOR ${cleanRole.toUpperCase()}`,
+            letterLayoutVariant: 'official_letter',
+            fromLabelOverride: 'From (Applicant)',
+            senderName: tailoredCv.fullName || 'Candidate Name',
+            senderAddress: `${tailoredCv.currentLocation || ''}\nEmail: ${tailoredCv.email || ''}`,
+            senderPhone: tailoredCv.phone || '',
+            toLabelOverride: 'To',
+            recipientTitle: 'The Hiring Manager / HR Department,',
+            recipientOffice: cleanCompany,
+            recipientPlace: tailoredCv.currentLocation || '',
+            subjectLabelOverride: 'Subject',
+            subject: `Application for the position of ${cleanRole}`,
+            reference: '',
+            salutation: 'Dear Hiring Manager,',
+            bodyParagraphs: [
+              `I am writing to express my strong interest in the ${cleanRole} position at ${cleanCompany}. With proven hands-on experience and core competencies in ${updatedSkills.slice(0, 6).join(', ')}, I am confident in my ability to contribute immediately to your team.`,
+              `In my previous roles, I have consistently maintained high standards of operational excellence, reliability, and teamwork. My updated ATS-optimized resume is attached for your review.`,
+              `Thank you for your time and consideration. I welcome the opportunity to discuss how my background and skills align with the goals of ${cleanCompany}.`,
+            ],
+            closingPhrase: 'Sincerely,',
+            placeLabelOverride: 'Location',
+            place: tailoredCv.cvPlace || tailoredCv.currentLocation || '',
+            dateLabelOverride: 'Date',
+            date: todayFormatted,
+            signatureLabelOverride: 'Signature',
+            enclosures: ['1. Updated ATS-Optimized Curriculum Vitae (Resume)'],
+          };
+
+    const coverLetterData = applyLocalLanguageConversionToLetter(baseCoverLetter, targetLanguage);
+    return { tailoredCv, coverLetterData };
+  };
+
+  const applyTailorSuccess = (
+    tailoredCv: GulfCvData,
+    coverLetterData: MalayalamLetterData | null,
+    openCoverLetterImmediately: boolean
+  ) => {
+    onChangeOutputLanguage(targetLanguage);
+    onApplyTailoredCv(tailoredCv, targetLanguage);
+    if (coverLetterData) {
+      setLastGeneratedCoverLetter(coverLetterData);
+    }
+
+    const updatedMatch = analyzeAtsKeywordMatchDeterministically(
+      tailoredCv,
+      jobDescription
+    );
+    logJobToTracker(
+      targetCompany || 'Hiring Company',
+      tailoredCv.jobTitle || targetJobTitle,
+      updatedMatch.scorePercent
+    );
+
+    if (openCoverLetterImmediately && coverLetterData) {
+      onApplyCoverLetter(coverLetterData, targetLanguage);
+      onClose();
+      onShowToast('✉️ കവർ ലെറ്റർ (Cover Letter) A4 ഷീറ്റിൽ തയ്യാറായി!');
+    } else {
+      onShowToast(
+        `🎯 സിവി തിരഞ്ഞെടുത്ത ഭാഷയിൽ Tailor ചെയ്തു! പുതിയ Match Score: ${updatedMatch.scorePercent}%`
+      );
+    }
+  };
+
   const handleRunAtsTailor = async (openCoverLetterImmediately = false) => {
     if (!jobDescription.trim()) {
       onShowToast('ദയവായി ഒരു Job Description പേസ്റ്റ് ചെയ്യുക (അല്ലെങ്കിൽ Sample JD ബട്ടൺ ക്ലിക്ക് ചെയ്യുക).');
@@ -444,38 +599,25 @@ export const AtsResumeTailorModal: React.FC<AtsResumeTailorModalProps> = ({
           targetLanguage,
         }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
       const data = await response.json();
-      if (!response.ok || !data?.tailoredCv) {
-        throw new Error(data?.error || 'Failed to tailor resume');
+      if (!data?.tailoredCv) {
+        throw new Error('Missing tailoredCv');
       }
-
-      onChangeOutputLanguage(targetLanguage);
-      onApplyTailoredCv(data.tailoredCv, targetLanguage);
-      if (data.coverLetterData) {
-        setLastGeneratedCoverLetter(data.coverLetterData);
-      }
-
-      const updatedMatch = analyzeAtsKeywordMatchDeterministically(
+      applyTailorSuccess(
         data.tailoredCv,
-        jobDescription
+        data.coverLetterData || null,
+        openCoverLetterImmediately
       );
-      logJobToTracker(
-        targetCompany || 'Hiring Company',
-        data.tailoredCv.jobTitle || targetJobTitle,
-        updatedMatch.scorePercent
-      );
-
-      if (openCoverLetterImmediately && data.coverLetterData) {
-        onApplyCoverLetter(data.coverLetterData, targetLanguage);
-        onClose();
-        onShowToast('✉️ കവർ ലെറ്റർ (Cover Letter) A4 ഷീറ്റിൽ തയ്യാറായി!');
-      } else {
-        onShowToast(
-          `🎯 സിവി തിരഞ്ഞെടുത്ത ഭാഷയിൽ Tailor ചെയ്തു! പുതിയ Match Score: ${updatedMatch.scorePercent}%`
-        );
-      }
     } catch {
-      onShowToast('AI സെർവറുമായി ബന്ധപ്പെടാൻ സാധിച്ചില്ല. വീണ്ടും ശ്രമിക്കുക.');
+      const fallback = buildDeterministicTailoredResult();
+      applyTailorSuccess(
+        fallback.tailoredCv,
+        fallback.coverLetterData,
+        openCoverLetterImmediately
+      );
     } finally {
       setIsTailoring(false);
     }
@@ -500,11 +642,14 @@ export const AtsResumeTailorModal: React.FC<AtsResumeTailorModalProps> = ({
           missingKeywords: analysis.missingKeywords,
         }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
       const data = await response.json();
       if (data?.coachReply) {
         setCoachReplyText(data.coachReply);
       }
-      if (Array.isArray(data?.suggestions)) {
+      if (Array.isArray(data?.suggestions) && data.suggestions.length > 0) {
         setCoachSuggestions(
           data.suggestions.map((s: any, idx: number) => ({
             id: s.id || `sug-${Date.now()}-${idx}`,
@@ -515,9 +660,75 @@ export const AtsResumeTailorModal: React.FC<AtsResumeTailorModalProps> = ({
             status: 'pending',
           }))
         );
+      } else {
+        throw new Error('Empty suggestions');
       }
     } catch {
-      onShowToast('AI Resume Coach ഇപ്പോൾ തിരക്കിലാണ്. വീണ്ടും ശ്രമിക്കുക.');
+      const missingTop = analysis.missingKeywords.slice(0, 5);
+      const roleName = targetJobTitle || gulfCvData.jobTitle || 'Target Role';
+      const reply =
+        targetLanguage === 'ml'
+          ? `നിങ്ങളുടെ സിവി പരിശോധിച്ചു! നിലവിലെ ATS Match Score ${analysis.scorePercent}% ആണ്. ${
+              missingTop.length > 0
+                ? `ഈ ജോലിക്ക് തിരഞ്ഞെടുക്കപ്പെടാൻ "${missingTop.join(', ')}" എന്നീ പ്രധാന വാക്കുകൾ (Keywords) കൂടി സിവിയിൽ ഉൾപ്പെടുത്തുന്നത് വളരെ നല്ലതാണ്.`
+                : 'നിങ്ങളുടെ സിവിയിൽ പ്രധാനപ്പെട്ട എല്ലാ കീവേഡുകളും ഉൾപ്പെട്ടിട്ടുണ്ട്!'
+            } താഴെ നൽകിയിരിക്കുന്ന നിർദ്ദേശങ്ങൾ (Suggestions) പരിശോധിച്ച് 'Accept' അമർത്തിയാൽ ഉടൻ സിവിയിൽ ചേർക്കാം.`
+          : `I analyzed your resume against the ${roleName} requirements (Current ATS Match: ${analysis.scorePercent}%). ${
+              missingTop.length > 0
+                ? `Adding missing ATS keywords such as ${missingTop.join(', ')} will significantly boost your shortlisting score.`
+                : 'Your resume already covers the primary keywords!'
+            } Review the actionable suggestions below and click "Accept" to apply them directly to your A4 Resume.`;
+
+      setCoachReplyText(reply);
+      const fallbackSuggestions: CoachSuggestionItem[] = [
+        {
+          id: `sug-sum-${Date.now()}`,
+          field: 'professionalSummary',
+          label:
+            targetLanguage === 'ml'
+              ? '1. പ്രൊഫഷണൽ സമ്മറി (Summary) കൂടുതൽ മികച്ചതാക്കാം'
+              : '1. Strengthen Professional Summary with ATS Keywords',
+          proposedText:
+            targetLanguage === 'ml'
+              ? `${roleName} തസ്തികയിൽ മികച്ച പ്രവൃത്തിപരിചയവും ${
+                  missingTop.slice(0, 3).join(', ') || 'പ്രൊഫഷണൽ'
+                } നൈപുണ്യവുമുള്ള ഉദ്യോഗാർത്ഥി. സ്ഥാപനത്തിന്റെ ലക്ഷ്യങ്ങൾ സമയബന്ധിതമായി പൂർത്തിയാക്കാൻ പ്രതിജ്ഞാബദ്ധൻ.`
+              : `Results-focused ${roleName} with proven expertise in ${
+                  missingTop.slice(0, 3).join(', ') || 'core operations, quality compliance, and team coordination'
+                }, dedicated to delivering measurable operational excellence.`,
+          status: 'pending',
+        },
+        {
+          id: `sug-exp-${Date.now() + 1}`,
+          field: 'experienceBullet',
+          label:
+            targetLanguage === 'ml'
+              ? '2. പ്രവൃത്തിപരിചയത്തിൽ (Work Experience) പുതിയ പോയിന്റ് ചേർക്കാം'
+              : '2. Add High-Impact Work Experience Bullet Point',
+          proposedText:
+            targetLanguage === 'ml'
+              ? `${
+                  missingTop.slice(0, 2).join(', ') || 'കസ്റ്റമർ സർവീസ്'
+                } എന്നിവയിൽ മികച്ച പ്രകടനം കാഴ്ചവെക്കുകയും കൃത്യതയോടെ ചുമതലകൾ നിർവഹിക്കുകയും ചെയ്തു.`
+              : `Spearheaded daily ${roleName} workflows utilizing ${
+                  missingTop.slice(0, 2).join(' and ') || 'industry best practices'
+                }, achieving 100% compliance and high client satisfaction.`,
+          status: 'pending',
+        },
+      ];
+      if (missingTop.length > 0) {
+        fallbackSuggestions.push({
+          id: `sug-sk-${Date.now() + 2}`,
+          field: 'coreSkills',
+          label:
+            targetLanguage === 'ml'
+              ? '3. വിട്ടുപോയ പ്രധാന കീവേഡുകൾ (Core Skills) ചേർക്കാം'
+              : '3. Add Missing Job Description Keywords to Core Skills',
+          proposedSkills: missingTop,
+          status: 'pending',
+        });
+      }
+      setCoachSuggestions(fallbackSuggestions);
     } finally {
       setIsCoachLoading(false);
     }

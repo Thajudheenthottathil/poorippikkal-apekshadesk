@@ -3,7 +3,6 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, Type } from '@google/genai';
 import { parseStructuredCvFromText } from './src/utils/cvParser.ts';
 import {
@@ -37,8 +36,10 @@ interface StoredFeedbackItem {
   activeDocumentTitle?: string;
 }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname =
+  typeof import.meta !== 'undefined' && import.meta.url
+    ? path.dirname(fileURLToPath(import.meta.url))
+    : process.cwd();
 const OWNER_CONFIG_FILE = path.join(__dirname, '.owner-config.json');
 const FEEDBACK_INBOX_FILE = path.join(__dirname, '.feedback-inbox.json');
 const DAILY_AUTOMATION_FILE = path.join(__dirname, '.daily-automation-state.json');
@@ -5881,6 +5882,7 @@ async function startServer() {
   }
 
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
