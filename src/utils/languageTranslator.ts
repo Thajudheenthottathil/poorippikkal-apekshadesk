@@ -108,6 +108,14 @@ const PHRASE_MAP: Array<{
     ta: 'இலகு மற்றும் கனரக வாகன ஓட்டுநர் / PRO ஓட்டுநர்',
   },
   {
+    ml: 'പ്രൊഫഷണൽ ഡ്രൈവർ',
+    en: 'Professional Driver',
+    ar: 'سائق محترف',
+    hi: 'पेशेवर ड्राइवर',
+    ur: 'پروفیشنل ڈرائیور',
+    ta: 'தொழில்முறை ஓட்டுநர்',
+  },
+  {
     ml: 'പ്രൊഫഷണൽ ലൈറ്റ് വെഹിക്കിൾ ഡ്രൈവർ / എക്സിക്യൂട്ടീവ് ഷോഫർ',
     en: 'PROFESSIONAL LIGHT VEHICLE DRIVER / EXECUTIVE CHAUFFEUR',
     ar: 'سائق مركبات خفيفة محترف / سائق تنفيذي خاص',
@@ -2269,6 +2277,7 @@ const MALAYALAM_TO_ENGLISH_SEMANTIC_MAP: Array<[string, string]> = [
   ['ഡെലിവറി റൈഡർ', 'Delivery Rider'],
   ['ഡെലിവറി ഡ്രൈവർ', 'Delivery & Logistics Driver'],
   ['ഡെലിവറി ബോയ്', 'Delivery Associate'],
+  ['പ്രൊഫഷണൽ ഡ്രൈവർ', 'Professional Driver'],
   ['ഡ്രൈവർ', 'Professional Driver'],
   ['സെയിൽസ് എക്സിക്യൂട്ടീവ്', 'Sales Executive'],
   ['സെയിൽസ്മാൻ', 'Salesman / Retail Associate'],
@@ -2905,9 +2914,9 @@ export function convertMalayalamToEnglish(
 
   // 3. For any remaining Malayalam proper nouns/tokens when target is English:
   // If allowProperNameTransliteration is true, transliterate names cleanly.
-  // If false, keep semantic English or avoid phonetic Manglish.
+  // If false and Malayalam characters still remain, NEVER return a corrupted half-Malayalam/half-English hybrid!
   if (!allowProperNameTransliteration) {
-    return dedupEnglishLocations(result);
+    return /[\u0D00-\u0D7F]/.test(result) ? text : dedupEnglishLocations(result);
   }
 
   const malConsonants: Record<string, string> = {
@@ -2974,7 +2983,8 @@ export function translateSingleStringLocal(
   text: string,
   targetLang: DocumentOutputLanguage,
   isProperName = false,
-  allowManglishFallback = true
+  allowManglishFallback = true,
+  allowSubstringReplace = true
 ): string {
   if (!text || !text.trim()) return text;
   // Clean any legacy prompt interpolation artifact from CV summary
@@ -2984,7 +2994,7 @@ export function translateSingleStringLocal(
     .trim();
   if (!cleanedText) return text;
 
-  // Exact match
+  // 1. Exact match in dictionary/phrase map (always safe & accurate)
   for (const entry of PHRASE_MAP) {
     const candidates = [entry.ml, entry.en, entry.ar, entry.hi, entry.ur, entry.ta].filter(
       Boolean
@@ -2994,22 +3004,37 @@ export function translateSingleStringLocal(
     }
   }
 
-  // Substring replacement for known phrases/places
+  // 2. NEVER splice phrases inside full Malayalam sentences (which causes broken hybrids like "Applicationിക്കുന്നു" or "Thrissur District യിലുള്ള കെട്ടിടം")
+  // And NEVER split inside Malayalam words even on short labels (check Malayalam char boundaries!)
   let result = cleanedText;
-  for (const entry of PHRASE_MAP) {
-    const targetVal = getPhraseTargetValue(entry, targetLang);
-    for (const srcKey of ['ml', 'en', 'ar', 'hi', 'ur', 'ta'] as const) {
-      if (srcKey === targetLang) continue;
-      const srcVal = entry[srcKey];
-      if (srcVal && srcVal.length >= 4 && result.includes(srcVal)) {
-        result = result.split(srcVal).join(targetVal);
+  const isFullMalayalamSentence =
+    /[\u0D00-\u0D7F]/.test(cleanedText) &&
+    (cleanedText.split(/\s+/).filter(Boolean).length >= 3 || /[.\u0964!?]$/.test(cleanedText));
+
+  if (allowSubstringReplace && !isFullMalayalamSentence) {
+    const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    for (const entry of PHRASE_MAP) {
+      const targetVal = getPhraseTargetValue(entry, targetLang);
+      for (const srcKey of ['ml', 'en', 'ar', 'hi', 'ur', 'ta'] as const) {
+        if (srcKey === targetLang) continue;
+        const srcVal = entry[srcKey];
+        if (!srcVal || srcVal.length < 4 || !result.includes(srcVal)) continue;
+        // Require non-Malayalam boundary around Malayalam tokens so "അപേക്ഷ" never corrupts "അപേക്ഷിക്കുന്നു"
+        if (/[\u0D00-\u0D7F]/.test(srcVal)) {
+          const boundedRx = new RegExp(
+            `(?<![\\u0D00-\\u0D7F])${escapeRegex(srcVal)}(?![\\u0D00-\\u0D7F])`,
+            'g'
+          );
+          result = result.replace(boundedRx, targetVal);
+        } else {
+          result = result.split(srcVal).join(targetVal);
+        }
       }
     }
   }
 
-  // Bi-directional script enforcement:
-  // When allowManglishFallback=true (client-side instant offline preview) and target language is English ('en'), convert remaining Malayalam words/names
-  // When allowManglishFallback=false (server-side translation), preserve remaining Malayalam so Google Translate translates full sentences into genuine English!
+  // 3. Bi-directional script enforcement:
+  // Only convert remaining Malayalam to English/Manglish when allowManglishFallback=true (client-side instant preview)
   if (allowManglishFallback && targetLang === 'en' && /[\u0D00-\u0D7F]/.test(result)) {
     result = convertMalayalamToEnglish(result, isProperName);
   }
@@ -3019,10 +3044,14 @@ export function translateSingleStringLocal(
 
 export function applyLocalLanguageConversionToCv(
   cv: GulfCvData,
-  targetLang: DocumentOutputLanguage
+  targetLang: DocumentOutputLanguage,
+  serverSafeMode = false
 ): GulfCvData {
-  const tr = (s: string) => translateSingleStringLocal(s, targetLang, false);
-  const trName = (s: string) => translateSingleStringLocal(s, targetLang, true);
+  const allowFallback = !serverSafeMode;
+  const tr = (s: string) =>
+    translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+  const trName = (s: string) =>
+    translateSingleStringLocal(s, targetLang, true, allowFallback, allowFallback);
   return {
     ...cv,
     fullName: trName(cv.fullName),
@@ -3057,10 +3086,14 @@ export function applyLocalLanguageConversionToCv(
 
 export function applyLocalLanguageConversionToLetter(
   letter: MalayalamLetterData,
-  targetLang: DocumentOutputLanguage
+  targetLang: DocumentOutputLanguage,
+  serverSafeMode = false
 ): MalayalamLetterData {
-  const tr = (s: string) => translateSingleStringLocal(s, targetLang);
-  const trName = (s: string) => translateSingleStringLocal(s, targetLang, true);
+  const allowFallback = !serverSafeMode;
+  const tr = (s: string) =>
+    translateSingleStringLocal(s, targetLang, false, allowFallback, allowFallback);
+  const trName = (s: string) =>
+    translateSingleStringLocal(s, targetLang, true, allowFallback, allowFallback);
   return {
     ...letter,
     documentHeading: tr(letter.documentHeading),
@@ -3091,6 +3124,40 @@ export function translateAgreementTextSemantic(
 ): string | null {
   const s = normalizeMalayalamChillaksharam(raw || '').trim();
   if (!s) return s;
+
+  // 0. Agreement / Affidavit Titles
+  if (/^വാടക\s*കരാർ(?:\s*\(.*\))?$/i.test(s)) {
+    switch (targetLang) {
+      case 'en':
+        return 'RENTAL AGREEMENT';
+      case 'ar':
+        return 'عقد إيجار';
+      case 'hi':
+        return 'किराया अनुबंध (RENTAL AGREEMENT)';
+      case 'ta':
+        return 'வாடகை ஒப்பந்தம்';
+      case 'ur':
+        return 'کرایہ نامہ (RENTAL AGREEMENT)';
+      default:
+        return null;
+    }
+  }
+  if (/^സത്യവാങ്മൂലം(?:\s*\(.*\))?$/i.test(s)) {
+    switch (targetLang) {
+      case 'en':
+        return 'SWORN AFFIDAVIT';
+      case 'ar':
+        return 'إقرار مشفوع باليمين';
+      case 'hi':
+        return 'शपथ पत्र (AFFIDAVIT)';
+      case 'ta':
+        return 'சத்தியப்பிரமாணப் பத்திரம்';
+      case 'ur':
+        return 'حلف نامہ (AFFIDAVIT)';
+      default:
+        return null;
+    }
+  }
 
   // 1. Party Details: "<Name> (വിലാസം: <addr>, ഫോൺ: <phone>)." or "<district> ജില്ലയിൽ <place> സ്വദേശിയായ <name>..."
   const partyAddrMatch = s.match(
@@ -3208,7 +3275,7 @@ export function translateAgreementTextSemantic(
   }
 
   const clause1Short = s.match(
-    /^(?:(\d+)\.\s*)?(?:പ്രതിമാസ\s*വാടക|മാസവാടക)\s*(?:[:\-]?\s*)?(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ(?:യാണ്)?)?\.?$/
+    /^(?:(\d+)\.\s*)?(?:പ്രതിമാസ\s*വാടക|മാസവാടക)\s*(?:[:\-]?\s*)?(?:₹\s*)?([\d,]+)\s*(?:\/\-)?\s*(?:രൂപ(?:യാണ്)?|ആണ്)?\.?$/
   );
   if (clause1Short) {
     const num = clause1Short[1] || '1';
@@ -3345,6 +3412,27 @@ export function translateAgreementTextSemantic(
     }
   }
 
+  const shortSchedMatch = s.match(
+    /^(.+?)\s*(?:യിലുള്ള|ലുള്ള)\s*കെട്ടിട(?:ം|വും)?(?:\s+.*)?\.?$/
+  );
+  if (shortSchedMatch) {
+    const place = translateSingleStringLocal(shortSchedMatch[1].trim(), targetLang, true);
+    switch (targetLang) {
+      case 'en':
+        return `Building and premises situated in ${place}.`;
+      case 'ar':
+        return `المبنى الواقع في ${place}.`;
+      case 'hi':
+        return `${place} में स्थित भवन।`;
+      case 'ta':
+        return `${place}-இல் அமைந்துள்ள கட்டிடம்.`;
+      case 'ur':
+        return `${place} میں واقع عمارت۔`;
+      default:
+        return null;
+    }
+  }
+
   // 5. Witness lines
   const witnessMatch = s.match(
     /^(\d+)\.\s*സാക്ഷിയുടെ പേരും വിലാസവും\s*:\s*(.+?)\s*\(\s*ഒപ്പ്\s*:\s*([^)]+)\s*\)$/
@@ -3381,13 +3469,16 @@ export function applyLocalLanguageConversionToAgreement(
   allowManglishFallback = true
 ): RentalAgreementData {
   if (targetLang === 'ml') return agreement;
-  const tr = (s: string) =>
-    translateSingleStringLocal(s, targetLang, false, allowManglishFallback);
+  const tr = (s: string) => {
+    const semantic = translateAgreementTextSemantic(s, targetLang);
+    if (semantic !== null) return semantic;
+    return translateSingleStringLocal(s, targetLang, false, allowManglishFallback, allowManglishFallback);
+  };
   const trName = (s: string) => {
     if (!s || /^[.\s\-_]+$/.test(s.trim())) return s;
     const semantic = translateAgreementTextSemantic(s, targetLang);
     if (semantic !== null) return semantic;
-    return translateSingleStringLocal(s, targetLang, true, allowManglishFallback);
+    return translateSingleStringLocal(s, targetLang, true, allowManglishFallback, allowManglishFallback);
   };
   return {
     ...agreement,

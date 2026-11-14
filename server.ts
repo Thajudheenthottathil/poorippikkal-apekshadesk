@@ -1290,10 +1290,14 @@ function buildSmartFallbackResponse(
   let bodyParagraphsText: string[] = cleanFallbackLetter.bodyParagraphs;
   let enclosuresList = cleanFallbackLetter.enclosures || ['അപേക്ഷകന്റെ തിരിച്ചറിയൽ രേഖ (ഉണ്ടെങ്കിൽ)'];
 
-  // Extract inline persona details from prompt (Malayalam & English) so ZERO sample names leak
-  const inlineNameMatch = prompt.match(
-    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|പേര്|my\s+name\s+is|i\s+am|i'm|this\s+is|candidate\s+name|applicant\s+name|name\s*(?:is|:))\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|from\b|living\s+in|residing|aged?\b|\d+\s*(?:years?|yrs?|വർഷ)|working\s+as|with\s+\d|\.|$))/i
-  );
+  // Extract inline persona details from prompt (Malayalam & English); match explicit introducers first so phrases like "പേര് തിരുത്തുന്നതിനുള്ള" are never captured as a person's name
+  const inlineNameMatch =
+    prompt.match(
+      /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|ഉടമയുടെ പേര്|വാടകക്കാരന്റെ പേര്|my\s+name\s+is|i\s+am|i'm|this\s+is|candidate\s+name|applicant\s+name|name\s*(?:is|:))\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|from\b|living\s+in|residing|aged?\b|\d+\s*(?:years?|yrs?|വർഷ)|working\s+as|with\s+\d|\.|$))/i
+    ) ||
+    prompt.match(
+      /(?:^|[\s,.])പേര്\s*[:\-]\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    );
   const extractedKeralaLoc = extractKeralaPlaceAndDistrict(prompt);
   const inlinePhoneMatch = prompt.match(
     /(\+\d{1,3}[\s\-]?\d{2,4}[\s\-]?\d{3,4}[\s\-]?\d{3,4}|\b(?:\+?91[\s\-]?)?[6-9]\d{4}[\s\-]?\d{5}\b)/
@@ -1976,52 +1980,105 @@ function buildSmartFallbackResponse(
   const tenureMatch = prompt.match(/(\d{1,2})\s*(?:മാസം|മാസത്തേക്ക്|months?)/i);
   const tenureMonths = tenureMatch ? tenureMatch[1] : '11';
 
+  const isAffidavitPrompt =
+    prompt.includes('സത്യവാങ്മൂലം') || lower.includes('affidavit');
+  const isNameCorrectionAffidavit =
+    isAffidavitPrompt &&
+    (prompt.includes('പേര് തിരുത്ത') ||
+      prompt.includes('പേര് മാറ്റ') ||
+      prompt.includes('പേരിൽ') ||
+      lower.includes('name correction') ||
+      lower.includes('change of name'));
   const hasExplicitLocation = extractedKeralaLoc.found;
   const ownerName =
     ownerMatch?.[1]?.trim() ||
     (inlineNameMatch?.[1]?.trim() ? cleanSenderName : '........................');
   const tenantName = tenantMatch?.[1]?.trim() || '........................';
 
+  const firstPartyLocPrefix = hasExplicitLocation
+    ? cleanPlace === cleanDistrict
+      ? `${cleanPlace} സ്വദേശിയായ `
+      : `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} സ്വദേശിയായ `
+    : '';
+  const secondPartyLocPrefix = hasExplicitLocation
+    ? cleanPlace === cleanDistrict
+      ? `${cleanPlace} താമസിക്കുന്ന `
+      : `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} താമസിക്കുന്ന `
+    : '';
+  const schedLocPrefix = hasExplicitLocation
+    ? cleanPlace === cleanDistrict
+      ? `${cleanDistrict} ജില്ല`
+      : `${cleanDistrict} ജില്ല, ${cleanPlace}`
+    : '';
+
+  const hasSpecificAffidavitOffice =
+    /വില്ലേജ്|പഞ്ചായത്ത്|തഹസിൽദാർ|കലക്ടർ|പാസ്പോർട്ട്|സ്കൂൾ|കോളേജ്|കോടതി|ബാങ്ക്|മജിസ്‌ട്രേറ്റ്|നഗരസഭ|മുൻസിപ്പാലിറ്റി/.test(
+      prompt
+    );
+  const affidavitSecondParty = hasSpecificAffidavitOffice
+    ? `${recipientOffice}${hasExplicitLocation ? ` ${recipientPlace}` : ''}`
+    : 'ബന്ധപ്പെട്ട അധികാരി / കാര്യാലയം, കേരളം.';
+
+  const affidavitClauses = isNameCorrectionAffidavit
+    ? [
+        `1. മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ തന്നെയാണ് എന്റെ ഔദ്യോഗിക രേഖകളിൽ വ്യത്യസ്തമായി / തെറ്റായി രേഖപ്പെടുത്തിയിട്ടുള്ള പേരിനും യഥാർത്ഥ ഉടമയെന്ന് ഇതിനാൽ സത്യപ്രതിജ്ഞ ചെയ്യുന്നു.`,
+        '2. എന്റെ ശരിയായ പേര് രേഖകളിൽ കൃത്യമായി തിരുത്തി ചേർക്കുന്നതിനും തുടർനടപടികൾക്കുമായി ബന്ധപ്പെട്ട അധികാരികൾക്ക് സമർപ്പിക്കുന്നതിനുമാണ് ഈ സത്യവാങ്മൂലം നൽകുന്നത്.',
+        '3. മേൽ പ്രസ്താവിച്ച വിവരങ്ങൾ എന്റെ പൂർണ്ണ അറിവിലും വിശ്വാസത്തിലും തികച്ചും സത്യവും ശരിയുമാണെന്ന് ഞാൻ ഇതിനാൽ സാക്ഷ്യപ്പെടുത്തുന്നു; ഇതിൽ യാതൊരുവിധ വസ്തുതാവിരുദ്ധമായ വിവരങ്ങളും മറച്ചുവെച്ചിട്ടില്ല.',
+      ]
+    : [
+        `1. മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ എന്റെ പൂർണ്ണ സ്വബോധത്തോടും സമ്മതത്തോടും കൂടി ഈ സത്യവാങ്മൂലം ബോധിപ്പിക്കുന്നു.`,
+        '2. ബന്ധപ്പെട്ട സർക്കാർ / ഔദ്യോഗിക ആവശ്യങ്ങൾക്കായി സമർപ്പിക്കുന്ന മേൽപ്പറഞ്ഞ വിവരങ്ങൾ പൂർണ്ണമായും സത്യസന്ധവും നിയമാനുസൃതവുമാണ്.',
+        '3. ഇതിൽ പ്രസ്താവിച്ചിട്ടുള്ള കാര്യങ്ങൾ എന്റെ അറിവിലും വിശ്വാസത്തിലും തികച്ചും ശരിയാണെന്ന് ഞാൻ ഇതിനാൽ സാക്ഷ്യപ്പെടുത്തുന്നു.',
+      ];
+
   const defaultAgreement = {
-    subType: (prompt.includes('സത്യവാങ്മൂലം')
+    subType: (isAffidavitPrompt
       ? 'സത്യവാങ്മൂലം (Affidavit)'
       : 'വാടക കരാർ (Rent Agreement)') as
       | 'വാടക കരാർ (Rent Agreement)'
       | 'സത്യവാങ്മൂലം (Affidavit)'
       | 'സമ്മതപത്രം (Consent Deed)',
-    titleMalayalam: prompt.includes('സത്യവാങ്മൂലം')
+    titleMalayalam: isAffidavitPrompt
       ? 'സത്യവാങ്മൂലം (AFFIDAVIT)'
       : 'വാടക ചീട്ട് (കെട്ടിട വാടക കരാർ പത്രം)',
     stampPaperHeaderSpaceMm: 90,
     executionDate: todayMl,
     executionPlace: hasExplicitLocation ? cleanPlace : '........................',
-    firstPartyLabel: prompt.includes('സത്യവാങ്മൂലം')
+    firstPartyLabel: isAffidavitPrompt
       ? 'സത്യവാങ്മൂലം സമർപ്പിക്കുന്നയാൾ'
       : 'ഒന്നാം കക്ഷി (കെട്ടിട ഉടമ)',
     firstPartyDetails: hasExplicitLocation
-      ? `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} സ്വദേശിയായ ${ownerName}${cleanPhone ? ` (ഫോൺ: ${cleanPhone})` : ''}.`
+      ? `${firstPartyLocPrefix}${ownerName}${cleanPhone ? ` (ഫോൺ: ${cleanPhone})` : ''}.`
       : `${ownerName} (വിലാസം: ........................${cleanPhone ? `, ഫോൺ: ${cleanPhone}` : ''}).`,
-    secondPartyLabel: prompt.includes('സത്യവാങ്മൂലം')
+    secondPartyLabel: isAffidavitPrompt
       ? 'സമർപ്പിക്കുന്ന ഓഫീസ് / അധികാരി'
       : 'രണ്ടാം കക്ഷി (വാടകക്കാരൻ)',
-    secondPartyDetails: prompt.includes('സത്യവാങ്മൂലം')
-      ? `${recipientOffice}${hasExplicitLocation ? ` ${recipientPlace}` : ''}`
+    secondPartyDetails: isAffidavitPrompt
+      ? affidavitSecondParty
       : hasExplicitLocation
-      ? `${cleanDistrict} ജില്ലയിൽ ${cleanPlace} താമസിക്കുന്ന ${tenantName}.`
+      ? `${secondPartyLocPrefix}${tenantName}.`
       : `${tenantName} (വിലാസം: ........................).`,
-    preambleParagraph: prompt.includes('സത്യവാങ്മൂലം')
-      ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ എന്റെ പൂർണ്ണ അറിവോടും സമ്മതത്തോടും കൂടി ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം: ${prompt}`
+    preambleParagraph: isAffidavitPrompt
+      ? isNameCorrectionAffidavit
+        ? `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ എന്റെ പൂർണ്ണ അറിവോടും സമ്മതത്തോടും കൂടി, എന്റെ ഔദ്യോഗിക രേഖകളിലെ പേര് തിരുത്തുന്നത് / സ്ഥിരീകരിക്കുന്നത് സംബന്ധിച്ച് ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം:`
+        : `മേൽവിലാസത്തിൽ താമസിക്കുന്ന ${ownerName} ആയ ഞാൻ എന്റെ പൂർണ്ണ അറിവോടും സമ്മതത്തോടും കൂടി ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം (സത്യപ്രതിജ്ഞാ പത്രം):`
       : `ഒന്നാം കക്ഷിയുടെ (${ownerName}) ഉടമസ്ഥതയിലുള്ള കെട്ടിടം രണ്ടാം കക്ഷിക്ക് (${tenantName}) ${tenureMonths} മാസത്തേക്ക് താഴെ പറയുന്ന വ്യവസ്ഥകളിൽ വാടകയ്ക്ക് നൽകുന്നതിന് ഇരു കക്ഷികളും സമ്മതിച്ച് എഴുതി ഒപ്പിടുന്ന കരാർ പത്രം.`,
-    clauses: [
-      `1. പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള ₹${rentAmt}/- രൂപ എല്ലാ മാസവും 5-ാം തീയതിക്കകം രണ്ടാം കക്ഷി ഒന്നാം കക്ഷിക്ക് നൽകേണ്ടതാണ്.`,
-      `2. പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായ ₹${advAmt}/- രൂപ കെട്ടിടം ഒഴിയുമ്പോൾ കുടിശ്ശികയോ കേടുപാടുകളോ ഉണ്ടെങ്കിൽ കിഴിച്ച് തിരികെ നൽകുന്നതാണ്.`,
-      `3. കരാർ കാലാവധി ${tenureMonths} മാസമായിരിക്കും. കാലാവധിക്ക് ശേഷം ഇരു കക്ഷികളുടെയും പരസ്പര സമ്മതത്തോടെ കരാർ പുതുക്കാവുന്നതാണ്.`,
-      '4. വൈദ്യുതി ചാർജ്ജ്, വെള്ളക്കരം എന്നിവ രണ്ടാം കക്ഷി തന്നെ അതാത് മാസം അടയ്ക്കേണ്ടതാണ്.',
-      '5. കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ രൂപമാറ്റം വരുത്തുവാനോ പാടുള്ളതല്ല.',
-    ],
-    schedulePropertyDetails: hasExplicitLocation
-      ? `${cleanDistrict} ജില്ല, ${cleanPlace} തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും.`
-      : 'വസ്തുവിന്റെ / കെട്ടിടത്തിന്റെ വിവരണം (ജില്ല, താലൂക്ക്, വില്ലേജ്, വാർഡ്, കെട്ടിട നമ്പർ): ........................',
+    clauses: isAffidavitPrompt
+      ? affidavitClauses
+      : [
+          `1. പ്രതിമാസ വാടകയായി നിശ്ചയിച്ചിട്ടുള്ള ₹${rentAmt}/- രൂപ എല്ലാ മാസവും 5-ാം തീയതിക്കകം രണ്ടാം കക്ഷി ഒന്നാം കക്ഷിക്ക് നൽകേണ്ടതാണ്.`,
+          `2. പലിശയില്ലാത്ത അഡ്വാൻസ് തുകയായ ₹${advAmt}/- രൂപ കെട്ടിടം ഒഴിയുമ്പോൾ കുടിശ്ശികയോ കേടുപാടുകളോ ഉണ്ടെങ്കിൽ കിഴിച്ച് തിരികെ നൽകുന്നതാണ്.`,
+          `3. കരാർ കാലാവധി ${tenureMonths} മാസമായിരിക്കും. കാലാവധിക്ക് ശേഷം ഇരു കക്ഷികളുടെയും പരസ്പര സമ്മതത്തോടെ കരാർ പുതുക്കാവുന്നതാണ്.`,
+          '4. വൈദ്യുതി ചാർജ്ജ്, വെള്ളക്കരം എന്നിവ രണ്ടാം കക്ഷി തന്നെ അതാത് മാസം അടയ്ക്കേണ്ടതാണ്.',
+          '5. കെട്ടിടം കീഴ്‌വാടകയ്ക്ക് കൊടുക്കുവാനോ രൂപമാറ്റം വരുത്തുവാനോ പാടുള്ളതല്ല.',
+        ],
+    ...(isAffidavitPrompt
+      ? {}
+      : {
+          schedulePropertyDetails: hasExplicitLocation
+            ? `${schedLocPrefix} തദ്ദേശ സ്വയംഭരണ പരിധിയിലുള്ള കെട്ടിടവും അനുബന്ധ സൗകര്യങ്ങളും.`
+            : 'വസ്തുവിന്റെ / കെട്ടിടത്തിന്റെ വിവരണം (ജില്ല, താലൂക്ക്, വില്ലേജ്, വാർഡ്, കെട്ടിട നമ്പർ): ........................',
+        }),
     witnesses: hasExplicitLocation
       ? [
           `1. സാക്ഷിയുടെ പേരും വിലാസവും: ........................, ${cleanPlace} (ഒപ്പ്: .................)`,
@@ -2077,22 +2134,38 @@ function buildSmartFallbackResponse(
       detectedType: 'rental_agreement' as const,
       outputLanguage: 'ml' as const,
       isComplete: true,
-      assistantReplyMalayalam:
-        'മുദ്രപ്പത്രത്തിൽ പ്രിന്റ് ചെയ്യാൻ പാകത്തിലുള്ള കരാർ തയ്യാറായിട്ടുണ്ട്! താഴെയുള്ള കോളങ്ങളിൽ കക്ഷികളുടെ പേരും മാസവാടകയും തിരുത്താം:',
-      followUpQuestions: [
-        {
-          id: 'q-ag-parties',
-          fieldLabelMalayalam: 'ഉടമയുടെയും വാടകക്കാരന്റെയും പേര്',
-          questionMalayalam: 'കെട്ടിട ഉടമയുടെ പേരും വാടകക്കാരന്റെ പേരും നൽകുക:',
-          quickSuggestions: [],
-        },
-        {
-          id: 'q-ag-rent',
-          fieldLabelMalayalam: 'മാസവാടകയും അഡ്വാൻസും',
-          questionMalayalam: 'മാസവാടക എത്ര രൂപയാണ്? അഡ്വാൻസ് തുക എത്രയാണ്?',
-          quickSuggestions: ['വാടക ₹10,000, അഡ്വാൻസ് ₹40,000', 'വാടക ₹15,000, അഡ്വാൻസ് ₹50,000'],
-        },
-      ],
+      assistantReplyMalayalam: isAffidavitPrompt
+        ? 'മുദ്രപ്പത്രത്തിൽ പ്രിന്റ് ചെയ്യാൻ പാകത്തിലുള്ള സത്യവാങ്മൂലം (Affidavit) തയ്യാറായിട്ടുണ്ട്! താഴെ പേരും വിലാസവും ആവശ്യാനുസരണം തിരുത്താം:'
+        : 'മുദ്രപ്പത്രത്തിൽ പ്രിന്റ് ചെയ്യാൻ പാകത്തിലുള്ള കരാർ തയ്യാറായിട്ടുണ്ട്! താഴെയുള്ള കോളങ്ങളിൽ കക്ഷികളുടെ പേരും മാസവാടകയും തിരുത്താം:',
+      followUpQuestions: isAffidavitPrompt
+        ? [
+            {
+              id: 'q-af-person',
+              fieldLabelMalayalam: 'സത്യവാങ്മൂലം സമർപ്പിക്കുന്നയാളുടെ പേരും വിലാസവും',
+              questionMalayalam: 'അപേക്ഷകന്റെ മുഴുവൻ പേരും മേൽവിലാസവും നൽകുക:',
+              quickSuggestions: [],
+            },
+            {
+              id: 'q-af-detail',
+              fieldLabelMalayalam: 'സത്യവാങ്മൂലത്തിന്റെ കൃത്യമായ വിവരം',
+              questionMalayalam: 'തിരുത്തേണ്ട / സ്ഥിരീകരിക്കേണ്ട വിവരങ്ങൾ (ഉദാ: പഴയ പേരും പുതിയ പേരും):',
+              quickSuggestions: [],
+            },
+          ]
+        : [
+            {
+              id: 'q-ag-parties',
+              fieldLabelMalayalam: 'ഉടമയുടെയും വാടകക്കാരന്റെയും പേര്',
+              questionMalayalam: 'കെട്ടിട ഉടമയുടെ പേരും വാടകക്കാരന്റെ പേരും നൽകുക:',
+              quickSuggestions: [],
+            },
+            {
+              id: 'q-ag-rent',
+              fieldLabelMalayalam: 'മാസവാടകയും അഡ്വാൻസും',
+              questionMalayalam: 'മാസവാടക എത്ര രൂപയാണ്? അഡ്വാൻസ് തുക എത്രയാണ്?',
+              quickSuggestions: ['വാടക ₹10,000, അഡ്വാൻസ് ₹40,000', 'വാടക ₹15,000, അഡ്വാൻസ് ₹50,000'],
+            },
+          ],
       letterData: defaultLetter,
       gulfCvData: defaultGulfCv,
       agreementData: defaultAgreement,
@@ -2680,13 +2753,26 @@ async function generateStructuredDocumentWithGemini(
     }
   }
 
-  // If it's a Rental Agreement, ensure deterministic place/landlord/tenant/rent/advance extraction cleans any bad AI placeholders or fake data
+  // If it's a Rental Agreement or Affidavit, ensure deterministic place/landlord/tenant/rent/advance/affidavit extraction cleans any bad AI placeholders or fake data
   if (parsed.detectedType === 'rental_agreement' && deterministicFallback?.agreementData) {
     const fbAg = deterministicFallback.agreementData;
+    const isAffidavit =
+      prompt.includes('സത്യവാങ്മൂലം') || prompt.toLowerCase().includes('affidavit');
     const hasLoc = extractKeralaPlaceAndDistrict(prompt).found;
     if (!parsed.agreementData) {
       parsed.agreementData = fbAg;
     } else {
+      if (isAffidavit) {
+        parsed.agreementData.subType = 'സത്യവാങ്മൂലം (Affidavit)';
+        parsed.agreementData.titleMalayalam =
+          parsed.agreementData.titleMalayalam && parsed.agreementData.titleMalayalam.includes('സത്യവാങ്മൂലം')
+            ? parsed.agreementData.titleMalayalam
+            : fbAg.titleMalayalam;
+        parsed.agreementData.firstPartyLabel = fbAg.firstPartyLabel;
+        parsed.agreementData.secondPartyLabel = fbAg.secondPartyLabel;
+        // Never allow rental schedule property block inside an Affidavit
+        delete parsed.agreementData.schedulePropertyDetails;
+      }
       if (
         !parsed.agreementData.executionPlace ||
         parsed.agreementData.executionPlace.includes('തയ്യാറാക്കണം') ||
@@ -2701,6 +2787,7 @@ async function generateStructuredDocumentWithGemini(
         parsed.agreementData.firstPartyDetails.includes('തയ്യാറാക്കണം') ||
         parsed.agreementData.firstPartyDetails.includes('[') ||
         parsed.agreementData.firstPartyDetails.includes('9847123456') ||
+        /([^\s]+)\s+ജില്ലയിൽ\s+\1\s+സ്വദേശിയായ/.test(parsed.agreementData.firstPartyDetails) ||
         (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.firstPartyDetails))
       ) {
         parsed.agreementData.firstPartyDetails = fbAg.firstPartyDetails;
@@ -2713,13 +2800,16 @@ async function generateStructuredDocumentWithGemini(
       ) {
         parsed.agreementData.secondPartyDetails = fbAg.secondPartyDetails;
       }
-      if (
-        !parsed.agreementData.schedulePropertyDetails ||
-        parsed.agreementData.schedulePropertyDetails.includes('തയ്യാറാക്കണം') ||
-        parsed.agreementData.schedulePropertyDetails.includes('[') ||
-        (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.schedulePropertyDetails))
-      ) {
-        parsed.agreementData.schedulePropertyDetails = fbAg.schedulePropertyDetails;
+      if (!isAffidavit) {
+        if (
+          !parsed.agreementData.schedulePropertyDetails ||
+          parsed.agreementData.schedulePropertyDetails.includes('തയ്യാറാക്കണം') ||
+          parsed.agreementData.schedulePropertyDetails.includes('[') ||
+          /([^\s]+)\s+ജില്ല,\s+\1\s+തദ്ദേശ/.test(parsed.agreementData.schedulePropertyDetails) ||
+          (!hasLoc && /കേരളം\s*ജില്ല/.test(parsed.agreementData.schedulePropertyDetails))
+        ) {
+          parsed.agreementData.schedulePropertyDetails = fbAg.schedulePropertyDetails;
+        }
       }
       if (
         !Array.isArray(parsed.agreementData.witnesses) ||
@@ -2728,25 +2818,37 @@ async function generateStructuredDocumentWithGemini(
       ) {
         parsed.agreementData.witnesses = fbAg.witnesses;
       }
-      // Enforce deterministic rent/advance clause amounts when prompt explicitly gave numbers
-      const fbRentMatch = fbAg.clauses?.[0]?.match(/₹([\d,]+)\/-/);
-      const fbAdvMatch = fbAg.clauses?.[1]?.match(/₹([\d,]+)\/-/);
-      const aiClauses = Array.isArray(parsed.agreementData.clauses)
-        ? [...parsed.agreementData.clauses]
-        : [...fbAg.clauses];
-      if (fbRentMatch?.[1]) {
-        const fbRentDigits = fbRentMatch[1].replace(/,/g, '');
-        if (!aiClauses[0] || !aiClauses[0].replace(/,/g, '').includes(fbRentDigits)) {
-          aiClauses[0] = fbAg.clauses[0];
+      if (isAffidavit) {
+        const aiClauses: string[] = Array.isArray(parsed.agreementData.clauses)
+          ? parsed.agreementData.clauses
+          : [];
+        const hasRentalLeak = aiClauses.some((c) =>
+          /പ്രതിമാസ\s*വാടക|അഡ്വാൻസ്|12,000|50,000|വൈദ്യുതി\s*ചാർജ്ജ്|കീഴ്‌വാടക/.test(c)
+        );
+        if (aiClauses.length === 0 || hasRentalLeak) {
+          parsed.agreementData.clauses = fbAg.clauses;
         }
-      }
-      if (fbAdvMatch?.[1]) {
-        const fbAdvDigits = fbAdvMatch[1].replace(/,/g, '');
-        if (!aiClauses[1] || !aiClauses[1].replace(/,/g, '').includes(fbAdvDigits)) {
-          aiClauses[1] = fbAg.clauses[1];
+      } else {
+        // Enforce deterministic rent/advance clause amounts when prompt explicitly gave numbers
+        const fbRentMatch = fbAg.clauses?.[0]?.match(/₹([\d,]+)\/-/);
+        const fbAdvMatch = fbAg.clauses?.[1]?.match(/₹([\d,]+)\/-/);
+        const aiClauses = Array.isArray(parsed.agreementData.clauses)
+          ? [...parsed.agreementData.clauses]
+          : [...fbAg.clauses];
+        if (fbRentMatch?.[1]) {
+          const fbRentDigits = fbRentMatch[1].replace(/,/g, '');
+          if (!aiClauses[0] || !aiClauses[0].replace(/,/g, '').includes(fbRentDigits)) {
+            aiClauses[0] = fbAg.clauses[0];
+          }
         }
+        if (fbAdvMatch?.[1]) {
+          const fbAdvDigits = fbAdvMatch[1].replace(/,/g, '');
+          if (!aiClauses[1] || !aiClauses[1].replace(/,/g, '').includes(fbAdvDigits)) {
+            aiClauses[1] = fbAg.clauses[1];
+          }
+        }
+        parsed.agreementData.clauses = aiClauses;
       }
-      parsed.agreementData.clauses = aiClauses;
     }
   }
 
@@ -2947,78 +3049,232 @@ async function translateSingleTextServer(
   return localMapped;
 }
 
+async function translateTextsBatchWithGemini(
+  texts: string[],
+  targetLang: DocumentOutputLanguage
+): Promise<string[] | null> {
+  if (!hasGeminiApiKey() || texts.length === 0) return null;
+  const langLabelMap: Record<DocumentOutputLanguage, string> = {
+    ml: 'Malayalam (മലയാളം)',
+    en: 'Formal Professional English',
+    ar: 'Formal Arabic (العربية)',
+    ur: 'Formal Urdu (اردو)',
+    hi: 'Formal Hindi (हिन्दी)',
+    ta: 'Formal Tamil (தமிழ்)',
+  };
+  const ai = getGenAIClient();
+  const candidateModels = ['gemini-2.5-flash', 'gemini-3-flash-preview', 'gemini-flash-latest'];
+  const promptText = `Translate EVERY string in the JSON array "items" completely and naturally into ${langLabelMap[targetLang] || 'English'}.
+STRICT RULES:
+1. Return ONLY JSON object: {"translations": [...]} with the EXACT same length (${texts.length}) and order.
+2. NEVER leave any Malayalam words untranslated when target is not Malayalam, and NEVER concatenate English/Arabic prefixes onto Malayalam suffixes.
+3. Preserve numbers, currency symbols (₹18,000/-), dates, email addresses, URLs, and dotted blanks ("........................") verbatim.
+4. Transliterate proper person names and places cleanly into the target script.
+items: ${JSON.stringify(texts)}`;
+
+  for (const modelName of candidateModels) {
+    try {
+      const response = await ai.models.generateContent({
+        model: modelName,
+        contents: promptText,
+        config: {
+          systemInstruction:
+            'You are a certified legal and official document translator. Output ONLY valid JSON {"translations": [...]}.',
+          responseMimeType: 'application/json',
+          thinkingConfig: { thinkingBudget: 0 },
+        },
+      });
+      const parsed = JSON.parse((response.text ?? '{}').trim());
+      if (
+        Array.isArray(parsed?.translations) &&
+        parsed.translations.length === texts.length
+      ) {
+        return parsed.translations.map((item: any, idx: number) =>
+          typeof item === 'string' && item.trim() ? item.trim() : texts[idx]
+        );
+      }
+    } catch (err: any) {
+      console.warn(`Batch translate model ${modelName} warning:`, err?.message);
+    }
+  }
+  return null;
+}
+
+async function translateManyTextsServer(
+  rawItems: string[],
+  localItems: string[],
+  targetLang: DocumentOutputLanguage
+): Promise<string[]> {
+  const results = new Array<string>(rawItems.length);
+  const pendingIndices: number[] = [];
+  const pendingTexts: string[] = [];
+
+  for (let i = 0; i < rawItems.length; i++) {
+    const rawStr = rawItems[i] || '';
+    const localStr = localItems[i] || '';
+    const chosen = (localStr || rawStr).trim();
+    if (
+      !chosen ||
+      chosen === '-' ||
+      /^[.\s\-_]+$/.test(chosen) ||
+      chosen.startsWith('data:') ||
+      chosen.startsWith('http') ||
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(chosen) ||
+      /^[\d\s+\-().\/₹,]+$/.test(chosen)
+    ) {
+      results[i] = localStr || rawStr;
+      continue;
+    }
+
+    // Check semantic agreement translator on original raw string first
+    const semanticHit = translateAgreementTextSemantic(rawStr, targetLang);
+    if (semanticHit !== null && semanticHit.trim() && (targetLang === 'ml' || !/[\u0D00-\u0D7F]/.test(semanticHit))) {
+      results[i] = semanticHit;
+      continue;
+    }
+
+    // Exact match from PHRASE_MAP (localStr differs from rawStr without Manglish/substring splicing)
+    if (localStr && localStr !== rawStr) {
+      const hasMal = /[\u0D00-\u0D7F]/.test(localStr);
+      if (targetLang === 'ml' && hasMal && !/[a-zA-Z]{2,}/.test(localStr)) {
+        results[i] = localStr;
+        continue;
+      }
+      if (targetLang !== 'ml' && !hasMal) {
+        results[i] = localStr;
+        continue;
+      }
+    }
+
+    // Already purely in target script
+    if (targetLang === 'en' && !/[\u0D00-\u0D7F\u0600-\u06FF\u0900-\u097F\u0B80-\u0BFF]/.test(chosen)) {
+      results[i] = chosen;
+      continue;
+    }
+    if (targetLang === 'ml' && /[\u0D00-\u0D7F]/.test(chosen) && !/[a-zA-Z]{2,}/.test(chosen)) {
+      results[i] = chosen;
+      continue;
+    }
+
+    pendingIndices.push(i);
+    pendingTexts.push(rawStr || chosen);
+  }
+
+  if (pendingTexts.length > 0) {
+    // 1. Try single-shot Gemini batch translation (translates full sentences fluently with ZERO word-swaps)
+    const geminiBatch = await translateTextsBatchWithGemini(pendingTexts, targetLang);
+    if (geminiBatch) {
+      for (let j = 0; j < pendingIndices.length; j++) {
+        const idx = pendingIndices[j];
+        const trText = geminiBatch[j];
+        // Verify no stray Malayalam remains when targetLang !== 'ml'
+        if (targetLang !== 'ml' && /[\u0D00-\u0D7F]/.test(trText)) {
+          results[idx] = await translateSingleTextServer(pendingTexts[j], targetLang);
+        } else {
+          results[idx] = trText;
+        }
+      }
+    } else {
+      // 2. Fallback to Google Translate GTX per string (with uncorrupted original sentences)
+      const gtxResults = await Promise.all(
+        pendingTexts.map((txt) => translateSingleTextServer(txt, targetLang))
+      );
+      for (let j = 0; j < pendingIndices.length; j++) {
+        results[pendingIndices[j]] = gtxResults[j];
+      }
+    }
+  }
+
+  return results;
+}
+
 async function translateCvDataToTargetLanguage(
   cv: any,
   targetLang: DocumentOutputLanguage
 ): Promise<any> {
   if (!cv) return cv;
-  const localConverted = applyLocalLanguageConversionToCv(cv, targetLang);
-  const tr = (s: string) => translateSingleTextServer(s || '', targetLang);
+  const localConverted = applyLocalLanguageConversionToCv(cv, targetLang, true);
+  const rawQueue: string[] = [];
+  const localQueue: string[] = [];
+  const pushItem = (rawVal: string, localVal: string) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || '');
+    localQueue.push(localVal || '');
+    return idx;
+  };
 
-  const [
-    fullName,
-    jobTitle,
-    currentLocation,
-    visaStatus,
-    drivingLicense,
-    maritalStatus,
-    professionalSummary,
-    declaration,
-    cvPlace,
-    signatureName,
-    languages,
-    coreSkills,
-    workExperience,
-    education,
-  ] = await Promise.all([
-    tr(localConverted.fullName),
-    tr(localConverted.jobTitle),
-    tr(localConverted.currentLocation),
-    tr(localConverted.visaStatus),
-    tr(localConverted.drivingLicense),
-    tr(localConverted.maritalStatus),
-    tr(localConverted.professionalSummary),
-    tr(localConverted.declaration),
-    tr(localConverted.cvPlace || ''),
-    tr(localConverted.signatureName || localConverted.fullName),
-    Promise.all((localConverted.languages || []).map(tr)),
-    Promise.all((localConverted.coreSkills || []).map(tr)),
-    Promise.all(
-      (localConverted.workExperience || []).map(async (exp: any) => ({
-        ...exp,
-        role: await tr(exp.role),
-        company: await tr(exp.company),
-        location: await tr(exp.location),
-        duration: await tr(exp.duration),
-        highlights: await Promise.all((exp.highlights || []).map(tr)),
-      }))
-    ),
-    Promise.all(
-      (localConverted.education || []).map(async (edu: any) => ({
-        ...edu,
-        degree: await tr(edu.degree),
-        institution: await tr(edu.institution),
-        year: await tr(edu.year),
-      }))
-    ),
-  ]);
+  const iFullName = pushItem(cv.fullName, localConverted.fullName);
+  const iJobTitle = pushItem(cv.jobTitle, localConverted.jobTitle);
+  const iLocation = pushItem(cv.currentLocation, localConverted.currentLocation);
+  const iVisa = pushItem(cv.visaStatus, localConverted.visaStatus);
+  const iLicense = pushItem(cv.drivingLicense, localConverted.drivingLicense);
+  const iMarital = pushItem(cv.maritalStatus, localConverted.maritalStatus);
+  const iSummary = pushItem(cv.professionalSummary, localConverted.professionalSummary);
+  const iDecl = pushItem(cv.declaration, localConverted.declaration);
+  const iPlace = pushItem(cv.cvPlace || '', localConverted.cvPlace || '');
+  const iSign = pushItem(cv.signatureName || cv.fullName, localConverted.signatureName || localConverted.fullName);
+  const iLangs = (cv.languages || []).map((l: string, k: number) =>
+    pushItem(l, localConverted.languages?.[k] ?? l)
+  );
+  const iSkills = (cv.coreSkills || []).map((s: string, k: number) =>
+    pushItem(s, localConverted.coreSkills?.[k] ?? s)
+  );
+  const iExp = (cv.workExperience || []).map((exp: any, k: number) => {
+    const lExp = localConverted.workExperience?.[k] || exp;
+    return {
+      ...exp,
+      _role: pushItem(exp.role, lExp.role),
+      _company: pushItem(exp.company, lExp.company),
+      _location: pushItem(exp.location, lExp.location),
+      _duration: pushItem(exp.duration, lExp.duration),
+      _highlights: (exp.highlights || []).map((h: string, hIdx: number) =>
+        pushItem(h, lExp.highlights?.[hIdx] ?? h)
+      ),
+    };
+  });
+  const iEdu = (cv.education || []).map((edu: any, k: number) => {
+    const lEdu = localConverted.education?.[k] || edu;
+    return {
+      ...edu,
+      _degree: pushItem(edu.degree, lEdu.degree),
+      _institution: pushItem(edu.institution, lEdu.institution),
+      _year: pushItem(edu.year, lEdu.year),
+    };
+  });
+
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
+  const fullName = tr[iFullName];
+  const jobTitle = tr[iJobTitle];
+  const signatureName = tr[iSign];
 
   return {
     ...localConverted,
     fullName: targetLang === 'en' ? fullName.toUpperCase() : fullName,
     jobTitle: targetLang === 'en' ? jobTitle.toUpperCase() : jobTitle,
-    currentLocation,
-    visaStatus,
-    drivingLicense,
-    maritalStatus,
-    professionalSummary,
-    declaration,
-    cvPlace,
+    currentLocation: tr[iLocation],
+    visaStatus: tr[iVisa],
+    drivingLicense: tr[iLicense],
+    maritalStatus: tr[iMarital],
+    professionalSummary: tr[iSummary],
+    declaration: tr[iDecl],
+    cvPlace: tr[iPlace],
     signatureName: targetLang === 'en' ? signatureName.toUpperCase() : signatureName,
-    languages,
-    coreSkills,
-    workExperience,
-    education,
+    languages: iLangs.map((idx: number) => tr[idx]),
+    coreSkills: iSkills.map((idx: number) => tr[idx]),
+    workExperience: iExp.map((e: any) => ({
+      id: e.id,
+      role: tr[e._role],
+      company: tr[e._company],
+      location: tr[e._location],
+      duration: tr[e._duration],
+      highlights: e._highlights.map((idx: number) => tr[idx]),
+    })),
+    education: iEdu.map((e: any) => ({
+      id: e.id,
+      degree: tr[e._degree],
+      institution: tr[e._institution],
+      year: tr[e._year],
+    })),
   };
 }
 
@@ -3027,62 +3283,67 @@ async function translateLetterDataToTargetLanguage(
   targetLang: DocumentOutputLanguage
 ): Promise<any> {
   if (!letter) return letter;
-  const localConverted = applyLocalLanguageConversionToLetter(letter, targetLang);
-  const tr = (s: string) => translateSingleTextServer(s || '', targetLang);
+  const localConverted = applyLocalLanguageConversionToLetter(letter, targetLang, true);
+  const rawQueue: string[] = [];
+  const localQueue: string[] = [];
+  const pushItem = (rawVal: string, localVal: string) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || '');
+    localQueue.push(localVal || '');
+    return idx;
+  };
 
-  const [
-    documentHeading,
-    senderName,
-    senderAddress,
-    recipientTitle,
-    recipientOffice,
-    recipientPlace,
-    subject,
-    salutation,
-    bodyParagraphs,
-    closingPhrase,
-    place,
-    enclosures,
-    structuredFields,
-  ] = await Promise.all([
-    tr(localConverted.documentHeading),
-    tr(localConverted.senderName),
-    tr(localConverted.senderAddress),
-    tr(localConverted.recipientTitle),
-    tr(localConverted.recipientOffice),
-    tr(localConverted.recipientPlace),
-    tr(localConverted.subject),
-    tr(localConverted.salutation),
-    Promise.all((localConverted.bodyParagraphs || []).map(tr)),
-    tr(localConverted.closingPhrase),
-    tr(localConverted.place),
-    Promise.all((localConverted.enclosures || []).map(tr)),
-    localConverted.structuredFields
-      ? Promise.all(
-          localConverted.structuredFields.map(async (f: any) => ({
-            ...f,
-            label: await tr(f.label),
-            value: await tr(f.value),
-          }))
-        )
-      : Promise.resolve(undefined),
-  ]);
+  const iHeading = pushItem(letter.documentHeading, localConverted.documentHeading);
+  const iSenderName = pushItem(letter.senderName, localConverted.senderName);
+  const iSenderAddr = pushItem(letter.senderAddress, localConverted.senderAddress);
+  const iRecTitle = pushItem(letter.recipientTitle, localConverted.recipientTitle);
+  const iRecOffice = pushItem(letter.recipientOffice, localConverted.recipientOffice);
+  const iRecPlace = pushItem(letter.recipientPlace, localConverted.recipientPlace);
+  const iSubject = pushItem(letter.subject, localConverted.subject);
+  const iSalutation = pushItem(letter.salutation, localConverted.salutation);
+  const iBody = (letter.bodyParagraphs || []).map((p: string, k: number) =>
+    pushItem(p, localConverted.bodyParagraphs?.[k] ?? p)
+  );
+  const iClosing = pushItem(letter.closingPhrase, localConverted.closingPhrase);
+  const iPlace = pushItem(letter.place, localConverted.place);
+  const iEnclosures = (letter.enclosures || []).map((enc: string, k: number) =>
+    pushItem(enc, localConverted.enclosures?.[k] ?? enc)
+  );
+  const iFields = (letter.structuredFields || []).map((f: any, k: number) => {
+    const lf = localConverted.structuredFields?.[k] || f;
+    return {
+      ...f,
+      _label: pushItem(f.label, lf.label),
+      _value: pushItem(f.value, lf.value),
+    };
+  });
+
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
 
   return {
     ...localConverted,
-    documentHeading,
-    senderName,
-    senderAddress,
-    recipientTitle,
-    recipientOffice,
-    recipientPlace,
-    subject,
-    salutation,
-    bodyParagraphs,
-    closingPhrase,
-    place,
-    enclosures,
-    ...(structuredFields ? { structuredFields } : {}),
+    documentHeading: tr[iHeading],
+    senderName: tr[iSenderName],
+    senderAddress: tr[iSenderAddr],
+    recipientTitle: tr[iRecTitle],
+    recipientOffice: tr[iRecOffice],
+    recipientPlace: tr[iRecPlace],
+    subject: tr[iSubject],
+    salutation: tr[iSalutation],
+    bodyParagraphs: iBody.map((idx: number) => tr[idx]),
+    closingPhrase: tr[iClosing],
+    place: tr[iPlace],
+    enclosures: iEnclosures.map((idx: number) => tr[idx]),
+    ...(letter.structuredFields
+      ? {
+          structuredFields: iFields.map((f: any) => ({
+            id: f.id,
+            label: tr[f._label],
+            value: tr[f._value],
+            placeholder: f.placeholder,
+          })),
+        }
+      : {}),
   };
 }
 
@@ -3091,90 +3352,97 @@ async function translateAgreementDataToTargetLanguage(
   targetLang: DocumentOutputLanguage
 ): Promise<any> {
   if (!agreement) return agreement;
-  // Pass allowManglishFallback=false so unmatched Malayalam sentences stay Malayalam for Google Translate
   const localConverted = applyLocalLanguageConversionToAgreement(agreement, targetLang, false);
-  const tr = async (rawStr: string, localStr: string) => {
-    const chosen = (localStr || rawStr || '').trim();
-    if (!chosen || /^[.\s\-_]+$/.test(chosen)) return chosen || rawStr;
-    // If local dictionary/semantic translator already converted all Malayalam into target language, return it
-    if (localStr && localStr !== rawStr && !/[\u0D00-\u0D7F]/.test(localStr)) {
-      return localStr;
+  const rawQueue: string[] = [];
+  const localQueue: string[] = [];
+  const pushItem = (rawVal: string, localVal: string) => {
+    const idx = rawQueue.length;
+    rawQueue.push(rawVal || '');
+    localQueue.push(localVal || '');
+    return idx;
+  };
+
+  const iTitle = pushItem(agreement.titleMalayalam, localConverted.titleMalayalam);
+  const iExecPlace = pushItem(agreement.executionPlace, localConverted.executionPlace);
+  const iFpLabel = pushItem(agreement.firstPartyLabel, localConverted.firstPartyLabel);
+  const iFpDetails = pushItem(agreement.firstPartyDetails, localConverted.firstPartyDetails);
+  const iSpLabel = pushItem(agreement.secondPartyLabel, localConverted.secondPartyLabel);
+  const iSpDetails = pushItem(agreement.secondPartyDetails, localConverted.secondPartyDetails);
+  const iPreamble = pushItem(agreement.preambleParagraph, localConverted.preambleParagraph);
+  const iClauses = (agreement.clauses || []).map((c: string, k: number) =>
+    pushItem(c, localConverted.clauses?.[k] ?? c)
+  );
+  const hasSchedule = agreement.schedulePropertyDetails !== undefined;
+  const iSchedule = hasSchedule
+    ? pushItem(agreement.schedulePropertyDetails || '', localConverted.schedulePropertyDetails || '')
+    : -1;
+  const iWitnesses = (agreement.witnesses || []).map((w: string, k: number) =>
+    pushItem(w, localConverted.witnesses?.[k] ?? w)
+  );
+  const optKeys = [
+    'scheduleHeadingOverride',
+    'witnessesHeadingOverride',
+    'placeLabelOverride',
+    'dateLabelOverride',
+    'firstPartySignLabelOverride',
+    'firstPartySignatureLabelOverride',
+    'secondPartySignLabelOverride',
+    'secondPartySignatureLabelOverride',
+  ] as const;
+  const optIdx: Record<string, number> = {};
+  for (const key of optKeys) {
+    if (agreement[key] || localConverted[key]) {
+      optIdx[key] = pushItem(agreement[key] || '', localConverted[key] || '');
     }
-    // Otherwise translate raw source via Google Translate / server translator
-    const translated = await translateSingleTextServer(rawStr || chosen, targetLang);
-    return translated || localStr || rawStr;
-  };
+  }
 
-  const rawClauses: string[] = Array.isArray(agreement.clauses) ? agreement.clauses : [];
-  const localClauses: string[] = Array.isArray(localConverted.clauses) ? localConverted.clauses : [];
-  const rawWitnesses: string[] = Array.isArray(agreement.witnesses) ? agreement.witnesses : [];
-  const localWitnesses: string[] = Array.isArray(localConverted.witnesses) ? localConverted.witnesses : [];
-
-  const [
-    titleMalayalam,
-    executionPlace,
-    firstPartyLabel,
-    firstPartyDetails,
-    secondPartyLabel,
-    secondPartyDetails,
-    preambleParagraph,
-    clauses,
-    schedulePropertyDetails,
-    witnesses,
-    scheduleHeadingOverride,
-    witnessesHeadingOverride,
-    placeLabelOverride,
-    dateLabelOverride,
-    firstPartySignLabelOverride,
-    firstPartySignatureLabelOverride,
-    secondPartySignLabelOverride,
-    secondPartySignatureLabelOverride,
-  ] = await Promise.all([
-    tr(agreement.titleMalayalam, localConverted.titleMalayalam),
-    tr(agreement.executionPlace, localConverted.executionPlace),
-    tr(agreement.firstPartyLabel, localConverted.firstPartyLabel),
-    tr(agreement.firstPartyDetails, localConverted.firstPartyDetails),
-    tr(agreement.secondPartyLabel, localConverted.secondPartyLabel),
-    tr(agreement.secondPartyDetails, localConverted.secondPartyDetails),
-    tr(agreement.preambleParagraph, localConverted.preambleParagraph),
-    Promise.all(rawClauses.map((c, idx) => tr(c, localClauses[idx] ?? c))),
-    tr(agreement.schedulePropertyDetails, localConverted.schedulePropertyDetails),
-    Promise.all(rawWitnesses.map((w, idx) => tr(w, localWitnesses[idx] ?? w))),
-    localConverted.scheduleHeadingOverride ? tr(agreement.scheduleHeadingOverride || '', localConverted.scheduleHeadingOverride) : Promise.resolve(undefined),
-    localConverted.witnessesHeadingOverride ? tr(agreement.witnessesHeadingOverride || '', localConverted.witnessesHeadingOverride) : Promise.resolve(undefined),
-    localConverted.placeLabelOverride ? tr(agreement.placeLabelOverride || '', localConverted.placeLabelOverride) : Promise.resolve(undefined),
-    localConverted.dateLabelOverride ? tr(agreement.dateLabelOverride || '', localConverted.dateLabelOverride) : Promise.resolve(undefined),
-    localConverted.firstPartySignLabelOverride ? tr(agreement.firstPartySignLabelOverride || '', localConverted.firstPartySignLabelOverride) : Promise.resolve(undefined),
-    localConverted.firstPartySignatureLabelOverride ? tr(agreement.firstPartySignatureLabelOverride || '', localConverted.firstPartySignatureLabelOverride) : Promise.resolve(undefined),
-    localConverted.secondPartySignLabelOverride ? tr(agreement.secondPartySignLabelOverride || '', localConverted.secondPartySignLabelOverride) : Promise.resolve(undefined),
-    localConverted.secondPartySignatureLabelOverride ? tr(agreement.secondPartySignatureLabelOverride || '', localConverted.secondPartySignatureLabelOverride) : Promise.resolve(undefined),
-  ]);
-
-  return {
+  const tr = await translateManyTextsServer(rawQueue, localQueue, targetLang);
+  const out: Record<string, any> = {
     ...localConverted,
-    titleMalayalam,
-    executionPlace,
-    firstPartyLabel,
-    firstPartyDetails,
-    secondPartyLabel,
-    secondPartyDetails,
-    preambleParagraph,
-    clauses,
-    schedulePropertyDetails,
-    witnesses,
-    ...(scheduleHeadingOverride !== undefined ? { scheduleHeadingOverride } : {}),
-    ...(witnessesHeadingOverride !== undefined ? { witnessesHeadingOverride } : {}),
-    ...(placeLabelOverride !== undefined ? { placeLabelOverride } : {}),
-    ...(dateLabelOverride !== undefined ? { dateLabelOverride } : {}),
-    ...(firstPartySignLabelOverride !== undefined ? { firstPartySignLabelOverride } : {}),
-    ...(firstPartySignatureLabelOverride !== undefined ? { firstPartySignatureLabelOverride } : {}),
-    ...(secondPartySignLabelOverride !== undefined ? { secondPartySignLabelOverride } : {}),
-    ...(secondPartySignatureLabelOverride !== undefined ? { secondPartySignatureLabelOverride } : {}),
+    titleMalayalam: tr[iTitle],
+    executionPlace: tr[iExecPlace],
+    firstPartyLabel: tr[iFpLabel],
+    firstPartyDetails: tr[iFpDetails],
+    secondPartyLabel: tr[iSpLabel],
+    secondPartyDetails: tr[iSpDetails],
+    preambleParagraph: tr[iPreamble],
+    clauses: iClauses.map((idx: number) => tr[idx]),
+    witnesses: iWitnesses.map((idx: number) => tr[idx]),
   };
+  if (hasSchedule && iSchedule >= 0) {
+    out.schedulePropertyDetails = tr[iSchedule];
+  } else {
+    delete out.schedulePropertyDetails;
+  }
+  for (const key of optKeys) {
+    if (optIdx[key] !== undefined) {
+      out[key] = tr[optIdx[key]];
+    }
+  }
+  return out;
 }
 
 export const app = express();
 app.use(express.json({ limit: '30mb' }));
+
+// Serve /favicon.ico cleanly across dev, Cloud Run, and serverless Express
+app.get('/favicon.ico', (_req, res) => {
+  const icoPath = path.resolve(process.cwd(), 'public', 'favicon.ico');
+  if (fs.existsSync(icoPath)) {
+    res.setHeader('Content-Type', 'image/x-icon');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.sendFile(icoPath);
+    return;
+  }
+  const svgPath = path.resolve(process.cwd(), 'public', 'icon.svg');
+  if (fs.existsSync(svgPath)) {
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.sendFile(svgPath);
+    return;
+  }
+  res.status(204).end();
+});
 
 const resolvePublicOrigin = (req: express.Request): string => {
   try {

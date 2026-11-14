@@ -2191,7 +2191,9 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             ))}
           </div>
 
-          {agreementData.schedulePropertyDetails !== undefined && (
+          {agreementData.schedulePropertyDetails !== undefined &&
+            (agreementData.subType !== 'സത്യവാങ്മൂലം (Affidavit)' ||
+              Boolean(agreementData.schedulePropertyDetails?.trim())) && (
             <div className="border border-slate-300 rounded p-3.5 mb-6 bg-slate-50/40 pdf-keep-together">
               <input
                 type="text"
