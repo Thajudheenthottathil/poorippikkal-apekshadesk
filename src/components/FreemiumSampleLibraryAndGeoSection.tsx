@@ -433,8 +433,8 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
         <div className="flex items-start sm:items-center gap-2">
           <span className="text-base shrink-0">🔒</span>
           <span>
-            <strong className="text-amber-300">100% സ്വകാര്യത ഉറപ്പ് (Zero Server Data Storage):</strong>{' '}
-            നിങ്ങൾ നൽകുന്ന പേര്, വിലാസം, ഫോൺ നമ്പർ, സ്വത്ത് വിവരങ്ങൾ, മാർക്ക് ലിസ്റ്റ് എന്നിവയൊന്നും സെർവറിൽ സേവ് ചെയ്യുന്നില്ല. PDF നിങ്ങളുടെ ഫോണിൽ/ബ്രൗസറിൽ മാത്രം തയ്യാറാക്കപ്പെടുന്നു.
+            <strong className="text-amber-300">വ്യക്തിഗത വിവരങ്ങൾ 100% ഓപ്ഷണൽ (Blank Form Mode):</strong>{' '}
+            പേരോ വിലാസമോ ഓൺലൈനിൽ നൽകാൻ താല്പര്യമില്ലാത്തവർക്ക് <strong>&ldquo;📝 കാലി ഫോം&rdquo;</strong> ബട്ടൺ അമർത്തി വിവരങ്ങൾ നൽകാതെ പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതാം. 55+ ഫോമുകളും PDF നിർമ്മാണവും ബ്രൗസറിലും, ഓപ്ഷണൽ AI വോയ്‌സ്/ചാറ്റ് സഹായി Google Gemini / Hugging Face API വഴിയും പ്രവർത്തിക്കുന്നു (സെർവറിൽ ഡാറ്റാബേസോ ഫയൽ സ്റ്റോറേജോ ഇല്ല).
           </span>
         </div>
         <a
@@ -658,7 +658,7 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
           </p>
           <p className="leading-relaxed">
             <strong>100% ഓപ്ഷണൽ വ്യക്തിഗത വിവരങ്ങൾ (Blank Form Print Mode):</strong> പേരോ വിലാസമോ ഫോൺ നമ്പറോ ടൈപ്പ് ചെയ്യാൻ താല്പര്യമില്ലാത്തവർക്ക് ഒരു വിവരവും നൽകാതെ തന്നെ <strong>"📝 കാലി ഫോം (പേന കൊണ്ട് എഴുതാൻ)"</strong> ബട്ടൺ അമർത്തി നേരിട്ട് A4 PDF പ്രിന്റ് എടുക്കാം! ·{' '}
-            <strong>സാങ്കേതിക വിദ്യ (100% Client-Side Malayalam DTP Engine):</strong> ഇന്റർനെറ്റ് ഓഫ് ചെയ്തും (Airplane Mode) പ്രവർത്തിക്കുന്ന ലോക്കൽ <code>jsPDF</code> എഞ്ചിൻ ·{' '}
+            <strong>സാങ്കേതിക വിദ്യ (Dual-Mode Architecture):</strong> 55+ റെഡിമെയ്ഡ് ഫോമുകളും A4 PDF നിർമ്മാണവും ബ്രൗസറിനുള്ളിലും (<code>jsPDF</code>), ഓപ്ഷണൽ AI വോയ്‌സ്/ചാറ്റ് സഹായി Google Gemini / Hugging Face API വഴിയും പ്രവർത്തിക്കുന്നു (സെർവറിൽ ഡാറ്റാബേസോ ഫയൽ സ്റ്റോറേജോ ഇല്ല) ·{' '}
             <strong>പ്രസാധക വിവരങ്ങൾ (Verified Publisher):</strong> താജുദ്ദീൻ തോട്ടത്തിൽ (Thajudheen Thottathil, Kolari, Kannur District, Kerala - PIN: 670702 | ഇമെയിൽ: thajukolari786@gmail.com) ·{' '}
             <strong>GitHub Official CodeQL &amp; Security Audit:</strong>{' '}
             <a
@@ -674,10 +674,10 @@ export const FreemiumSampleLibraryAndGeoSection: React.FC<
 
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-1.5 text-[11px] text-slate-700">
             <p className="font-bold text-slate-900">
-              🛡️ സുരക്ഷാ സാക്ഷ്യപത്രവും ഔദ്യോഗിക നിരാകരണവും (GitHub CodeQL Audited, 100% Optional Details &amp; Offline-Capable):
+              🛡️ സുരക്ഷാ സാക്ഷ്യപത്രവും ഔദ്യോഗിക നിരാകരണവും (GitHub CodeQL Audited &amp; 100% Optional Details):
             </p>
             <p className="leading-relaxed">
-              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി (DTP) സോഫ്റ്റ്‌വെയർ</strong> ആണ്. <strong>ഇതിൽ പേരോ വിലാസമോ നൽകൽ നിർബന്ധമേയല്ല (100% Optional)</strong> — വിവരങ്ങൾ നൽകാതെ കാലി ഫോം പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കുകയോ, അല്ലെങ്കിൽ ഫോണിലെ ഇന്റർനെറ്റ് ഓഫ് (Airplane Mode) ചെയ്തുകൊണ്ട് ടൈപ്പ് ചെയ്ത് PDF ഡൗൺലോഡ് ചെയ്യുകയോ ചെയ്യാം.
+              ഈ വെബ് ആപ്ലിക്കേഷൻ (<strong>poorippikkal-apekshadesk.vercel.app</strong>) കേരള സർക്കാരിന്റെയോ, e-District പോർട്ടലിന്റെയോ, അക്ഷയ കേന്ദ്രങ്ങളുടെയോ ഔദ്യോഗിക വെബ്‌സൈറ്റ് <strong>അല്ല</strong>. സർക്കാർ ഓഫീസുകളിലും അക്ഷയ കേന്ദ്രങ്ങളിലും സമർപ്പിക്കേണ്ട വെള്ളക്കടലാസ് അപേക്ഷാ കത്തുകൾ (White-Paper Petitions), 11 മാസത്തെ വാടക കരാർ ഡ്രാഫ്റ്റുകൾ, ബയോഡാറ്റ (CV), സ്കൂൾ മാർക്ക് ലിസ്റ്റുകൾ എന്നിവ മലയാളത്തിൽ തെറ്റുകൂടാതെ ടൈപ്പ് ചെയ്ത് A4 PDF പ്രിന്റൗട്ട് എടുക്കാൻ സഹായിക്കുന്ന ഒരു <strong>സ്വതന്ത്ര ഓപ്പൺ സോഴ്സ് ഡി.ടി.പി (DTP) സോഫ്റ്റ്‌വെയർ</strong> ആണ്. <strong>ഇതിൽ പേരോ വിലാസമോ നൽകൽ നിർബന്ധമേയല്ല (100% Optional)</strong> — വിവരങ്ങൾ നൽകാതെ കാലി ഫോം പ്രിന്റ് എടുത്ത് പേന കൊണ്ട് എഴുതി പൂരിപ്പിക്കാവുന്നതാണ്.
             </p>
             <div className="pt-1 flex flex-wrap gap-x-3 gap-y-1 font-bold text-emerald-800">
               <a href="/village-office-applications-malayalam.html" className="underline hover:text-emerald-600">

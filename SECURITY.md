@@ -14,17 +14,17 @@
 
 ## 1. Transparent Dual-Mode Architecture & Data Flow Disclosure
 
-To ensure 100% transparency between our Privacy Policy and `server.ts`, **Poorippikkal Apekshadesk** operates in two clearly separated modes:
+To ensure 100% factual accuracy between our Privacy Policy and `server.ts`, **Poorippikkal Apekshadesk** operates in two clearly separated modes:
 
-### Mode A: 100% Local Browser & Offline Mode (Zero Network Transmission)
+### Mode A: Browser-Side Templates, Blank Form Mode & `jsPDF` Rendering
 - **55+ Ready Kerala Templates, Blank Form Mode (`📝 കാലി ഫോം`), Direct Touch Editing & `jsPDF` PDF Generation:**
-  - Selecting any of the 55+ pre-built Village Office, Panchayat, KSEB, Rental Agreement, Gulf CV, or School Mark List templates, editing text directly on the A4 sheet, using the 1-click **Blank Form Print Mode (`📝 കാലി ഫോം`)**, and generating/downloading the final A4 PDF (`jsPDF` + `html2canvas`) execute **100% locally inside the user's browser**.
-  - **Airplane-Mode Proof:** Users can open any form, turn **OFF** mobile data and Wi-Fi (Airplane Mode), type their Name and Address (or leave fields blank as dotted lines `................................`), and download the A4 PDF completely offline.
+  - Selecting any of the 55+ pre-built Village Office, Panchayat, KSEB, Rental Agreement, Gulf CV, or School Mark List templates, editing text directly on the A4 preview sheet, using the 1-click **Blank Form Print Mode (`📝 കാലി ഫോം`)**, and generating/downloading the final A4 PDF (`jsPDF` + `html2canvas`) execute inside the user's web browser.
+  - **100% Optional Personal Details:** Users are never required to enter their Name, Address, or Phone Number online; they can click **`📝 കാലി ഫോം`** (or **PDF / Print**) to print a clean form with dotted lines (`........................................`) and fill it in by hand with a pen.
 
-### Mode B: Optional Stateless AI Assistant & Voice/PDF Extraction (`/api/*`)
-- When a user **optionally** chooses to use the Smart AI Chat/Voice Assistant (`/api/process-request`), Server Audio Transcription (`/api/transcribe-audio`), or Uploaded PDF AI Text Extraction (`/api/extract-pdf-content`):
-  - The submitted prompt, audio clip, or uploaded PDF content is transmitted over HTTPS to the backend (`server.ts`) and processed **statelessly** via **Google Gemini API** (`@google/genai`) or **Hugging Face Inference API** solely to generate the formatted document response in real time.
-  - **Zero Server Database or Disk Persistence:** `server.ts` contains **zero** `fs.writeFileSync` calls and **zero** database connections. No user document content, uploaded PDFs, voice recordings, phone numbers, or document titles are ever written to server disk files or stored in any database.
+### Mode B: Optional Server-Side AI Assistant, Voice, Translation & PDF Reading (`/api/*`)
+- When a user **optionally** chooses to use the Smart AI Chat/Voice Assistant (`/api/process-request`), Server Audio Transcription (`/api/transcribe-audio`), Uploaded PDF AI Text Extraction (`/api/extract-pdf-content`), AI Document Translation (`/api/translate-doc`), or Help Chat (`/api/help-chat`):
+  - The submitted prompt, audio clip, or uploaded PDF content is transmitted over HTTPS to the backend (`server.ts`) and processed via **Google Gemini API** (`@google/genai`) or **Hugging Face Inference API** to generate the formatted response.
+  - **No External Database & Zero Server Disk File Writes:** `server.ts` contains **zero** `fs.writeFileSync` calls and **zero** external database connections. User document content, uploaded PDFs, and voice recordings are never written to server disk files or stored in a database. (Anonymous user feedback submitted to `/api/feedback` and optional print-queue items are held only in volatile server memory / RAM during runtime.)
 
 ---
 

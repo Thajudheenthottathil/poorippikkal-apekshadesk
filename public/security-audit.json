@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "project": {
     "name": "പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് (Poorippikkal Apekshadesk)",
     "alternateName": "പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Poorippikkam – Apeksha Desk)",
@@ -25,11 +25,29 @@
     "githubCodeQLBadge": "https://github.com/Thajudheenthottathil/poorippikkal-apekshadesk/actions/workflows/codeql.yml/badge.svg",
     "rfc9116SecurityTxt": "https://poorippikkal-apekshadesk.vercel.app/.well-known/security.txt"
   },
-  "technicalPrivacyProofs": {
-    "zeroDatabaseArchitecture": true,
-    "clientSidePdfEngine": ["jspdf", "html2canvas"],
-    "offlineAirplaneModeCapable": true,
-    "offlineVerificationSteps": "Users and auditors can open any of the 55+ forms, turn OFF mobile data/Wi-Fi (Airplane Mode), enter their Name and Address, and download the A4 PDF completely offline—mathematically proving zero network data transmission.",
+  "transparentDataFlowAndPrivacy": {
+    "personalDetailsOptional": true,
+    "blankFormPrintModeAvailable": true,
+    "clientSideFeatures": [
+      "55+ pre-built Malayalam templates",
+      "1-click Blank Form Mode (കാളി ഫോം) with dotted lines for hand-filling with a pen",
+      "Direct text editing on the A4 preview sheet",
+      "Browser-based A4 PDF generation via jsPDF and html2canvas"
+    ],
+    "serverSideAiFeatures": [
+      "Optional AI voice/chat document drafting (/api/process-request)",
+      "Optional audio transcription (/api/transcribe-audio)",
+      "Optional uploaded PDF text extraction (/api/extract-pdf-content)",
+      "Optional AI document translation (/api/translate-doc)",
+      "Optional help chat (/api/help-chat)"
+    ],
+    "externalAiProvidersUsedWhenAiFeaturesInvoked": [
+      "Google Gemini API (@google/genai)",
+      "Hugging Face Inference API"
+    ],
+    "externalDatabaseUsed": false,
+    "serverDiskFileWritesUsed": false,
+    "volatileInMemoryServerState": "Anonymous user feedback (/api/feedback) and optional print-queue items are held only in temporary volatile server RAM during runtime and are never written to disk files or external databases.",
     "collectsAadhaarOrBankOrOtp": false,
     "requiresLoginOrAccount": false,
     "requiresApkDownload": false
