@@ -1260,6 +1260,278 @@ export const KERALA_GOV_FORMS_MASTER: GovFormTemplate[] = [
       { id: 'complaintSubmittedTo', label: 'പരാതി സമർപ്പിക്കുന്ന അധികാരി (പോലീസ് / മദ്രസ കമ്മിറ്റി / ചൈൽഡ് ലൈൻ)', value: 'സ്റ്റേഷൻ ഹൗസ് ഓഫീസർ (SHO) & മദ്രസ മാനേജ്മെന്റ് കമ്മിറ്റി', placeholder: 'പോലീസ് സ്റ്റേഷൻ / കമ്മിറ്റി' },
     ],
   },
+  // ============================================================================
+  // NEW HIGH-DEMAND KERALA GOV / K-SMART / BANK / AFFIDAVIT FORMS (PHASE 1 RESEARCH)
+  // ============================================================================
+  {
+    id: 'lsgd-vacancy-remission-tax',
+    categoryKey: 'lsgd_panchayat',
+    categoryLabelMalayalam: 'പഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി (K-SMART)',
+    formCode: 'കെ-സ്മാർട്ട് (K-SMART) കെട്ടിട നികുതി ഒഴിവാക്കൽ അപേക്ഷ (Vacancy Remission Application)',
+    titleMalayalam: 'കെട്ടിട നികുതി ഒഴിവാക്കൽ അപേക്ഷ (Vacancy Remission — ഒഴിഞ്ഞുകിടക്കുന്ന കെട്ടിടത്തിന്)',
+    titleEnglish: 'Building Tax Vacancy Remission Application (K-SMART LSGD)',
+    subtitleMalayalam: 'വാടകയ്ക്ക് നൽകാതെയോ ഉപയോഗിക്കാതെയോ ഒഴിഞ്ഞുകിടക്കുന്ന വീട് / കടമുറിക്ക് കെട്ടിട നികുതി ഇളവ് ലഭിക്കാൻ',
+    portalName: 'K-SMART LSGD Kerala',
+    portalUrl: 'https://ksmart.lsgkerala.gov.in/',
+    searchKeywords: 'vacancy remission building tax exemption ksmart പഞ്ചായത്ത് കെട്ടിട നികുതി ഒഴിവാക്കൽ ഇളവ് ഒഴിഞ്ഞുകിടക്കുന്ന കെട്ടിടം കടമുറി',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട സെക്രട്ടറി അവർകൾക്ക്,',
+    recipientOffice: 'ഗ്രാമപഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി കാര്യാലയം',
+    subject: 'ഒഴിഞ്ഞുകിടക്കുന്ന കെട്ടിടത്തിന് കെട്ടിട നികുതി ഇളവ് (Vacancy Remission) അനുവദിച്ചു ലഭിക്കുന്നതിനുള്ള അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ അങ്ങയുടെ പഞ്ചായത്ത് / നഗരസഭ പരിധിയിലുള്ള താഴെ പട്ടികയിൽ വിവരങ്ങൾ ചേർത്തിട്ടുള്ള കെട്ടിടത്തിന്റെ നിയമപരമായ ഉടമസ്ഥനാണ്. പ്രസ്തുത കെട്ടിടം താഴെ സൂചിപ്പിച്ച കാലയളവിൽ ആൾത്താമസമില്ലാതെയും വാടകയ്ക്ക് നൽകാതെയും പൂർണ്ണമായും ഒഴിഞ്ഞുകിടക്കുകയാണ്.',
+      'ആയതിനാൽ കേരള പഞ്ചായത്ത് രാജ് / മുൻസിപ്പാലിറ്റി കെട്ടിട നികുതി നിയമപ്രകാരം പ്രസ്തുത കാലയളവിലെ കെട്ടിട നികുതിയിൽ നിന്ന് ഒഴിവാക്കി (Vacancy Remission) ഉത്തരവ് നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'അവസാനമായി അടച്ച കെട്ടിട നികുതി രസീതിന്റെ പകർപ്പ്',
+      'കെ.എസ്.ഇ.ബി വൈദ്യുതി ബിൽ പകർപ്പ് (ഉപയോഗമില്ലെന്ന് തെളിയിക്കാൻ)',
+      'അപേക്ഷകന്റെ ആധാർ കാർഡ് പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'ownerName', label: 'കെട്ടിട ഉടമയുടെ പേരും വിലാസവും', value: 'രാജൻ കെ. വി., ശ്രീനിലയം', placeholder: 'ഉടമയുടെ പേര്, വിലാസം' },
+      { id: 'wardDoorNo', label: 'വാർഡ് നമ്പറും കെട്ടിട നമ്പറും (Door No.)', value: 'വാർഡ് 8, കെട്ടിട നമ്പർ: 8/342', placeholder: 'വാർഡ്, കെട്ടിട നമ്പർ' },
+      { id: 'vacantPeriod', label: 'കെട്ടിടം ഒഴിഞ്ഞുകിടക്കുന്ന കാലയളവ്', value: '01/04/2026 മുതൽ 30/09/2026 വരെ (6 മാസം)', placeholder: 'തീയതി മുതൽ തീയതി വരെ' },
+      { id: 'buildingType', label: 'കെട്ടിടത്തിന്റെ സ്വഭാവം (വീട് / കടമുറി)', value: 'വാണിജ്യ കെട്ടിടം / കടമുറി (Shop Room)', placeholder: 'വീട് / കടമുറി' },
+    ],
+  },
+  {
+    id: 'lsgd-mgnregs-jobcard-bank-change',
+    categoryKey: 'lsgd_panchayat',
+    categoryLabelMalayalam: 'പഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി (K-SMART)',
+    formCode: 'തൊഴിലുറപ്പ് പദ്ധതി (MGNREGS) പുതിയ തൊഴിൽ കാർഡ് / ബാങ്ക് അക്കൗണ്ട് മാറ്റൽ അപേക്ഷ',
+    titleMalayalam: 'തൊഴിലുറപ്പ് പദ്ധതി (MGNREGS) — പുതിയ തൊഴിൽ കാർഡ് / ബാങ്ക് അക്കൗണ്ട് മാറ്റൽ അപേക്ഷ',
+    titleEnglish: 'MGNREGS New Job Card / Aadhaar & Bank Account Seeding Application',
+    subtitleMalayalam: 'മഹാത്മാഗാന്ധി ദേശീയ ഗ്രാമീണ തൊഴിലുറപ്പ് പദ്ധതിയിൽ പുതിയ കാർഡ് എടുക്കാനും ബാങ്ക് അക്കൗണ്ട് / ആധാർ ലിങ്ക് ചെയ്യാനും',
+    portalName: 'MGNREGS / Grama Panchayat',
+    portalUrl: 'https://nrega.nic.in/',
+    searchKeywords: 'mgnregs nregs job card bank account change തൊഴിലുറപ്പ് പദ്ധതി തൊഴിൽ കാർഡ് ബാങ്ക് അക്കൗണ്ട് മാറ്റൽ പഞ്ചായത്ത്',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട സെക്രട്ടറി / വില്ലേജ് എക്സ്റ്റൻഷൻ ഓഫീസർ (VEO) അവർകൾക്ക്,',
+    recipientOffice: 'ഗ്രാമപഞ്ചായത്ത് കാര്യാലയം (MGNREGS വിഭാഗം)',
+    subject: 'മഹാത്മാഗാന്ധി ദേശീയ ഗ്രാമീണ തൊഴിലുറപ്പ് പദ്ധതി (MGNREGS) — തൊഴിൽ കാർഡ് / ബാങ്ക് അക്കൗണ്ട് വിവരങ്ങൾ പുതുക്കുന്നതിനുള്ള അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ മഹാത്മാഗാന്ധി ദേശീയ ഗ്രാമീണ തൊഴിലുറപ്പ് പദ്ധതിയിൽ തൊഴിൽ ചെയ്യുവാൻ താല്പര്യപ്പെടുന്ന വ്യക്തിയാണ്. താഴെ പട്ടികയിൽ നൽകിയിട്ടുള്ള എന്റെ തൊഴിൽ കാർഡ് / ബാങ്ക് അക്കൗണ്ട് / ആധാർ വിവരങ്ങൾ തൊഴിലുറപ്പ് രജിസ്റ്ററിൽ ചേർത്ത് പുതുക്കി നൽകണമെന്ന് അഭ്യർത്ഥിക്കുന്നു.',
+      'എന്റെ കുടുംബാംഗങ്ങളുടെ ആധാർ കാർഡ്, ബാങ്ക് പാസ്ബുക്ക്, റേഷൻ കാർഡ് എന്നിവയുടെ സ്വയം സാക്ഷ്യപ്പെടുത്തിയ പകർപ്പുകൾ ഇതോടൊപ്പം സമർപ്പിക്കുന്നു.',
+    ],
+    enclosures: [
+      'തൊഴിൽ കാർഡിന്റെ (Job Card) പകർപ്പ്',
+      'ബാങ്ക് പാസ്ബുക്കിന്റെ ആദ്യ പേജ് പകർപ്പ് (IFSC സഹിതം)',
+      'ആധാർ കാർഡ് & റേഷൻ കാർഡ് പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'workerName', label: 'അപേക്ഷകന്റെ / തൊഴിലാളിയുടെ പേര്', value: 'സുജാത എം. പി., കൈതച്ചാൽ വീട്', placeholder: 'തൊഴിലാളിയുടെ പേര്' },
+      { id: 'jobCardNo', label: 'തൊഴിൽ കാർഡ് നമ്പർ (Job Card No.)', value: 'KL-10-004-012-008/215', placeholder: 'തൊഴിൽ കാർഡ് നമ്പർ' },
+      { id: 'serviceNeeded', label: 'ആവശ്യമായ സേവനം', value: 'പുതിയ ബാങ്ക് അക്കൗണ്ട് നമ്പർ ചേർക്കൽ & ആധാർ ലിങ്കിംഗ്', placeholder: 'പുതിയ കാർഡ് / ബാങ്ക് മാറ്റൽ' },
+      { id: 'bankAccountIfsc', label: 'ബാങ്കിന്റെ പേരും അക്കൗണ്ട് നമ്പറും IFSC കോഡും', value: 'കേരള ഗ്രാമീൺ ബാങ്ക് — A/c: 40215896321 (IFSC: KLGB0040215)', placeholder: 'ബാങ്ക്, അക്കൗണ്ട് നമ്പർ, IFSC' },
+    ],
+  },
+  {
+    id: 'edistrict-family-membership-affidavit',
+    categoryKey: 'revenue_edistrict',
+    categoryLabelMalayalam: 'വില്ലേജ് & റവന്യൂ (e-District)',
+    formCode: 'ഇ-ഡിസ്ട്രിക്ട് ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് & സത്യവാങ്മൂലം (Family Membership Certificate)',
+    titleMalayalam: 'ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് (Family Membership Certificate) & സത്യവാങ്മൂലം',
+    titleEnglish: 'Family Membership Certificate Application & Self-Affidavit',
+    subtitleMalayalam: 'കുടുംബാംഗങ്ങളുടെ വിവരങ്ങൾ തെളിയിക്കുന്നതിനായി വില്ലേജ് ഓഫീസിൽ സമർപ്പിക്കാനുള്ള അപേക്ഷയും സത്യവാങ്മൂലവും',
+    portalName: 'Kerala e-District Portal',
+    portalUrl: 'https://edistrict.kerala.gov.in/',
+    searchKeywords: 'family membership certificate affidavit village office ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് സത്യവാങ്മൂലം വില്ലേജ് ഓഫീസ് കുടുംബാംഗങ്ങൾ',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട വില്ലേജ് ഓഫീസർ അവർകൾക്ക്,',
+    recipientOffice: 'വില്ലേജ് ഓഫീസ്',
+    subject: 'ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് (Family Membership Certificate) അനുവദിച്ചു ലഭിക്കുന്നതിനുള്ള അപേക്ഷയും സത്യവാങ്മൂലവും.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ എന്റെ കുടുംബാംഗങ്ങളുടെ വിവരങ്ങൾ തെളിയിക്കുന്നതിനായി ഒരു ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് അനുവദിച്ചു തരണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+      'സത്യവാങ്മൂലം: താഴെ പട്ടികയിൽ ചേർത്തിട്ടുള്ള വ്യക്തികൾ എന്റെ കുടുംബത്തിലെ അംഗങ്ങളാണെന്നും ഇതിൽ നിന്നും ആരെയും ഒഴിവാക്കിയിട്ടില്ലെന്നും മേൽപ്പറഞ്ഞ വിവരങ്ങളെല്ലാം എന്റെ അറിവിലും വിശ്വാസത്തിലും സത്യമാണെന്നും ഇതിനാൽ സത്യവാങ്മൂലം ചെയ്യുന്നു.',
+    ],
+    enclosures: [
+      'റേഷൻ കാർഡിന്റെ പകർപ്പ്',
+      'എല്ലാ കുടുംബാംഗങ്ങളുടെയും ആധാർ കാർഡ് പകർപ്പ്',
+      'നിശ്ചിത തുകയുടെ കോർട്ട് ഫീ സ്റ്റാമ്പ്',
+    ],
+    structuredFields: [
+      { id: 'applicantName', label: 'അപേക്ഷകന്റെ (കുടുംബനാഥന്റെ) പേരും വിലാസവും', value: 'ഗോപാലകൃഷ്ണൻ നായർ, ശ്രീപത്മം വീട്', placeholder: 'പേര്, വീട്ടുപേര്' },
+      { id: 'rationCardNo', label: 'റേഷൻ കാർഡ് നമ്പറും താലൂക്കും', value: '1245089632 (പൊതുവിഭാഗം)', placeholder: 'റേഷൻ കാർഡ് നമ്പർ' },
+      { id: 'familyMembersList', label: 'കുടുംബാംഗങ്ങളുടെ പേരും വയസ്സും ബന്ധവും', value: '1) ഗോപാലകൃഷ്ണൻ (58, ഗൃഹനാഥൻ), 2) രാധാമണി (52, ഭാര്യ), 3) അരുൺ ജി. (26, മകൻ)', placeholder: 'അംഗങ്ങളുടെ പേര്, വയസ്സ്, ബന്ധം' },
+      { id: 'purpose', label: 'സർട്ടിഫിക്കറ്റ് ആവശ്യമായി വരുന്ന കാര്യം', value: 'ബാങ്ക് / സർക്കാർ ആനുകൂല്യങ്ങൾ കൈപ്പറ്റുന്നതിലേക്ക്', placeholder: 'ആവശ്യം' },
+    ],
+  },
+  {
+    id: 'revenue-form5-databank-removal',
+    categoryKey: 'revenue_edistrict',
+    categoryLabelMalayalam: 'വില്ലേജ് & റവന്യൂ (e-District)',
+    formCode: 'കേരള നെൽവയൽ-തണ്ണീർത്തട സംരക്ഷണ നിയമം — ഫോം 5 അപേക്ഷ (Form 5 Data Bank Removal)',
+    titleMalayalam: 'ഭൂമി തരംമാറ്റൽ — ഫോം 5 അപേക്ഷ (ഡാറ്റാ ബാങ്കിൽ നിന്ന് ഭൂമി ഒഴിവാക്കാൻ - RDO)',
+    titleEnglish: 'Form 5 Application for Removal of Land from Paddy / Wetland Data Bank (RDO)',
+    subtitleMalayalam: '2008-ന് മുമ്പ് നികത്തപ്പെട്ട പുരയിടം ഡാറ്റാ ബാങ്കിൽ തെറ്റായി ഉൾപ്പെട്ടത് ഒഴിവാക്കാൻ RDO / സബ് കലക്ടർക്ക് നൽകുന്ന ഫോം 5 അപേക്ഷ',
+    portalName: 'Revenue Department e-Services (ReLIS)',
+    portalUrl: 'https://www.revenue.kerala.gov.in/',
+    searchKeywords: 'form 5 data bank removal land conversion rdo ഫോം 5 അപേക്ഷ ഡാറ്റാ ബാങ്ക് ഭൂമി തരംമാറ്റൽ കൃഷി ഓഫീസർ ആർഡിഒ',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട റവന്യൂ ഡിവിഷണൽ ഓഫീസർ (RDO) / സബ് കലക്ടർ അവർകൾക്ക്,',
+    recipientOffice: 'റവന്യൂ ഡിവിഷണൽ ഓഫീസറുടെ കാര്യാലയം (RDO Office)',
+    subject: '2008-ലെ കേരള നെൽവയൽ-തണ്ണീർത്തട സംരക്ഷണ നിയമം — ഡാറ്റാ ബാങ്കിൽ തെറ്റായി ഉൾപ്പെട്ട ഭൂമി ഒഴിവാക്കി കിട്ടുന്നതിനുള്ള ഫോം 5 അപേക്ഷ.',
+    bodyParagraphs: [
+      'താഴെ പട്ടികയിൽ വിവരങ്ങൾ ചേർത്തിട്ടുള്ള എന്റെ ഉടമസ്ഥതയിലുള്ള ഭൂമി വർഷങ്ങൾക്ക് മുമ്പ് തന്നെ (2008-ന് മുമ്പ്) കരഭൂമിയായി രൂപാന്തരപ്പെട്ടതും ഫലവൃക്ഷങ്ങൾ നിൽക്കുന്നതുമായ പുരയിടമാണ്. എന്നാൽ പ്രസ്തുത ഭൂമി പ്രാദേശികതല നിരീക്ഷണ സമിതി (LLMC) തയ്യാറാക്കിയ ഡാറ്റാ ബാങ്കിൽ തെറ്റായി നെൽവയൽ / നിലം എന്ന് രേഖപ്പെടുത്തിയിട്ടുള്ളതായി കാണുന്നു.',
+      'ആയതിനാൽ കൃഷി ഓഫീസറുടെയും വില്ലേജ് ഓഫീസറുടെയും റിപ്പോർട്ടുകൾ തേടി പ്രസ്തുത ഭൂമി ഡാറ്റാ ബാങ്കിൽ നിന്ന് ഒഴിവാക്കി (Form 5 അനുവദിച്ച്) ഉത്തരവ് നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'അസ്സൽ ആധാരത്തിന്റെ പകർപ്പ്',
+      'നിലവിലെ ഭൂനികുതി രസീത് (Land Tax Receipt)',
+      'കൈവശാവകാശ സർട്ടിഫിക്കറ്റും ലൊക്കേഷൻ സ്കെച്ചും',
+      'ഡാറ്റാ ബാങ്കിന്റെ സാക്ഷ്യപ്പെടുത്തിയ പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'ownerName', label: 'ഭൂവുടമയുടെ പേരും പൂർണ്ണ വിലാസവും', value: 'അബ്ദുൽ സലാം കെ., റോസ് വില്ല', placeholder: 'ഭൂവുടമയുടെ പേര്, വിലാസം' },
+      { id: 'villageTaluk', label: 'വില്ലേജും താലൂക്കും ജില്ലയും', value: 'തിരൂർ വില്ലേജ്, തിരൂർ താലൂക്ക്', placeholder: 'വില്ലേജ്, താലൂക്ക്' },
+      { id: 'surveyExtent', label: 'റീ-സർവ്വേ നമ്പറും ഭൂമിയുടെ വിസ്തീർണ്ണവും (ആർ / സെന്റ്)', value: 'റീ-സർവ്വേ നമ്പർ 145/2B — വിസ്തീർണ്ണം: 4.05 ആർ (10 സെന്റ്)', placeholder: 'സർവ്വേ നമ്പർ, വിസ്തീർണ്ണം' },
+      { id: 'currentLandNature', label: 'ഭൂമിയുടെ നിലവിലെ അവസ്ഥ (ഫലവൃക്ഷങ്ങൾ / വീട്)', value: '25 വർഷത്തിലേറെ പഴക്കമുള്ള തെങ്ങുകളും ഫലവൃക്ഷങ്ങളും നിൽക്കുന്ന കരഭൂമി', placeholder: 'നിലവിലെ അവസ്ഥ' },
+    ],
+  },
+  {
+    id: 'bank-education-loan-subsidy',
+    categoryKey: 'service_education',
+    categoryLabelMalayalam: 'സ്കൂൾ, ബാങ്ക് & സർവീസ് ഫോമുകൾ',
+    formCode: 'വിദ്യാഭ്യാസ ലോൺ പലിശ സബ്സിഡി അപേക്ഷ (Education Loan Interest Subsidy / ELRS Application)',
+    titleMalayalam: 'വിദ്യാഭ്യാസ ലോൺ പലിശ സബ്സിഡി / ഇളവ് അപേക്ഷ (Education Loan Subsidy)',
+    titleEnglish: 'Education Loan Interest Subsidy & Repayment Relief Application to Bank Manager',
+    subtitleMalayalam: 'കേന്ദ്ര-സംസ്ഥാന സർക്കാരുകളുടെ വിദ്യാഭ്യാസ ലോൺ പലിശ സബ്സിഡി (CSIS / ELRS) ലഭിക്കുന്നതിനായി ബാങ്ക് മാനേജർക്ക് നൽകുന്ന അപേക്ഷ',
+    portalName: 'ബാങ്ക് ശാഖാ അപേക്ഷ / JanSamarth',
+    portalUrl: 'https://www.jansamarth.in/',
+    searchKeywords: 'education loan subsidy interest waiver bank manager വിദ്യാഭ്യാസ ലോൺ സബ്സിഡി പലിശ ഇളവ് ബാങ്ക് അപേക്ഷ',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട ശാഖാ മാനേജർ (Branch Manager) അവർകൾക്ക്,',
+    recipientOffice: 'സ്റ്റേറ്റ് ബാങ്ക് ഓഫ് ഇന്ത്യ / ബന്ധപ്പെട്ട ബാങ്ക് ശാഖ',
+    subject: 'വിദ്യാഭ്യാസ വായ്പയുടെ പലിശ സബ്സിഡി (Interest Subsidy / Relief Scheme) അനുവദിച്ചു ലഭിക്കുന്നതിനുള്ള അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ അങ്ങയുടെ ബാങ്ക് ശാഖയിൽ നിന്ന് എന്റെ ഉന്നത വിദ്യാഭ്യാസ ആവശ്യത്തിനായി താഴെ പട്ടികയിൽ സൂചിപ്പിച്ച അക്കൗണ്ട് നമ്പർ പ്രകാരം ഒരു വിദ്യാഭ്യാസ വായ്പ എടുത്തിട്ടുണ്ട്.',
+      'സാമ്പത്തികമായി പിന്നാക്കം നിൽക്കുന്ന കുടുംബത്തിലെ വിദ്യാർത്ഥിയായ എനിക്ക് സർക്കാർ പ്രഖ്യാപിച്ചിട്ടുള്ള വിദ്യാഭ്യാസ വായ്പാ പലിശ സബ്സിഡി (CSIS / State Education Loan Subsidy) ലഭിക്കുന്നതിന് അർഹതയുണ്ട്. ആയതിനാൽ എന്റെ ലോൺ അക്കൗണ്ടിൽ പ്രസ്തുത പലിശ സബ്സിഡി ആനുകൂല്യം ലഭ്യമാക്കാൻ വേണ്ട നടപടികൾ സ്വീകരിക്കണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'വില്ലേജ് ഓഫീസിൽ നിന്നുള്ള വരുമാന സർട്ടിഫിക്കറ്റ്',
+      'കോഴ്സ് പൂർത്തിയാക്കിയ സർട്ടിഫിക്കറ്റ് / ബോണഫൈഡ് സർട്ടിഫിക്കറ്റ്',
+      'ആധാർ കാർഡ് & പാൻ കാർഡ് പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'studentBorrowerName', label: 'വിദ്യാർത്ഥിയുടെയും സഹ-അപേക്ഷകന്റെയും (രക്ഷിതാവിന്റെ) പേര്', value: 'അഖിൽ കൃഷ്ണൻ & കൃഷ്ണൻകുട്ടി കെ.', placeholder: 'വിദ്യാർത്ഥിയുടെ പേര്, രക്ഷിതാവിന്റെ പേര്' },
+      { id: 'loanAccountNo', label: 'വിദ്യാഭ്യാസ ലോൺ അക്കൗണ്ട് നമ്പർ', value: '38945120678', placeholder: 'ലോൺ അക്കൗണ്ട് നമ്പർ' },
+      { id: 'courseCollege', label: 'പഠിച്ച കോഴ്സും കോളേജും', value: 'ബി.ടെക് കമ്പ്യൂട്ടർ സയൻസ് (2021–2025)', placeholder: 'കോഴ്സ്, കോളേജ്' },
+      { id: 'annualFamilyIncome', label: 'കുടുംബ വാർഷിക വരുമാനം', value: '₹72,000/-', placeholder: 'വാർഷിക വരുമാനം' },
+    ],
+  },
+  {
+    id: 'bank-gold-loan-auction-postpone',
+    categoryKey: 'service_education',
+    categoryLabelMalayalam: 'സ്കൂൾ, ബാങ്ക് & സർവീസ് ഫോമുകൾ',
+    formCode: 'സ്വർണ്ണപ്പണയ ലേലം നീട്ടിവെക്കാനുള്ള അപേക്ഷ (Gold Loan Auction Postponement Application)',
+    titleMalayalam: 'സ്വർണ്ണപ്പണയ ലേലം നീട്ടിവെക്കാനുള്ള അപേക്ഷ (Gold Loan Auction Postponement)',
+    titleEnglish: 'Application to Bank Manager to Postpone Gold Loan Auction & Grant Time for Renewal',
+    subtitleMalayalam: 'സ്വർണ്ണവായ്പയുടെ കാലാവധി കഴിഞ്ഞ് ലേല നോട്ടീസ് ലഭിച്ചാൽ പലിശ അടച്ച് പുതുക്കാൻ സാവകാശം ചോദിച്ചുകൊണ്ടുള്ള അപേക്ഷ',
+    portalName: 'ബാങ്ക് / ധനകാര്യ സ്ഥാപന അപേക്ഷ',
+    portalUrl: '',
+    searchKeywords: 'gold loan auction postpone renewal bank manager സ്വർണ്ണപ്പണയ ലേലം നീട്ടിവെക്കാൻ സ്വർണ്ണ വായ്പ പുതുക്കാൻ ബാങ്ക് അപേക്ഷ',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട ശാഖാ മാനേജർ (Branch Manager) അവർകൾക്ക്,',
+    recipientOffice: 'ബാങ്ക് / ധനകാര്യ സ്ഥാപന ശാഖ',
+    subject: 'സ്വർണ്ണപ്പണയ വായ്പയുടെ (Gold Loan) ലേല നടപടികൾ നിർത്തിവെച്ച് വായ്പ പുതുക്കുന്നതിന് (Renewal) സാവകാശം അനുവദിക്കണമെന്ന അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ അങ്ങയുടെ ശാഖയിൽ നിന്ന് താഴെ പട്ടികയിൽ ചേർത്തിട്ടുള്ള നമ്പർ പ്രകാരം സ്വർണ്ണാഭരണങ്ങൾ പണയപ്പെടുത്തി വായ്പ എടുത്തിട്ടുണ്ട്. എന്നാൽ അപ്രതീക്ഷിതമായ കുടുംബ ചികിത്സാ ചെലവുകളും സാമ്പത്തിക പ്രയാസങ്ങളും കാരണം കൃത്യസമയത്ത് പലിശ അടച്ച് വായ്പ പുതുക്കുവാൻ എനിക്ക് സാധിച്ചില്ല.',
+      'പ്രസ്തുത സ്വർണ്ണാഭരണങ്ങൾ എന്റെ കുടുംബത്തിന്റേതായതിനാൽ അത് ലേലം ചെയ്ത് പോകരുതെന്ന് എനിക്ക് അതിയായ ആഗ്രഹമുണ്ട്. ആയതിനാൽ ദയവായി ലേല നടപടികൾ നിർത്തിവെക്കണമെന്നും പലിശ തുക അടച്ച് വായ്പ പുതുക്കി എടുക്കുന്നതിനായി എനിക്ക് താഴെ സൂചിപ്പിച്ച സാവകാശം അനുവദിച്ചു തരണമെന്നും വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'സ്വർണ്ണപ്പണയ രസീതിന്റെ (Gold Loan Token / Receipt) പകർപ്പ്',
+      'ലഭിച്ച ലേല നോട്ടീസിന്റെ പകർപ്പ് (ഉണ്ടെങ്കിൽ)',
+    ],
+    structuredFields: [
+      { id: 'borrowerName', label: 'വായ്പക്കാരന്റെ പേരും വിലാസവും', value: 'രമേശൻ പി. കെ., നന്ദനം വീട്', placeholder: 'പേര്, വിലാസം' },
+      { id: 'goldLoanNo', label: 'സ്വർണ്ണപ്പണയ വായ്പാ നമ്പർ (Gold Loan A/c No.)', value: 'GL-2025-88412', placeholder: 'വായ്പാ നമ്പർ' },
+      { id: 'loanAmountOrnaments', label: 'വായ്പാ തുകയും പണയപ്പെടുത്തിയ സ്വർണ്ണത്തിന്റെ തൂക്കവും', value: '₹1,45,000/- (32 ഗ്രാം സ്വർണ്ണാഭരണങ്ങൾ)', placeholder: 'തുക, ഗ്രാം' },
+      { id: 'requestedTime', label: 'പലിശ അടച്ച് പുതുക്കാൻ ആവശ്യപ്പെടുന്ന സാവകാശം', value: '30 ദിവസത്തെ സാവകാശം (അടുത്ത മാസം 15-ാം തീയതി വരെ)', placeholder: 'എത്ര ദിവസത്തെ സാവകാശം' },
+    ],
+  },
+  {
+    id: 'bank-cibil-score-correction',
+    categoryKey: 'service_education',
+    categoryLabelMalayalam: 'സ്കൂൾ, ബാങ്ക് & സർവീസ് ഫോമുകൾ',
+    formCode: 'സിബിൽ (CIBIL) സ്കോർ തിരുത്തൽ & ക്ലോഷർ NOC അപേക്ഷ (CIBIL Score Dispute / Correction Request)',
+    titleMalayalam: 'CIBIL സ്കോർ തിരുത്തൽ & ലോൺ ക്ലോഷർ അപ്ഡേറ്റ് അപേക്ഷ (CIBIL Correction)',
+    titleEnglish: 'Application to Bank Manager for CIBIL Credit Report Update & Loan Closure NOC',
+    subtitleMalayalam: 'അടച്ചുതീർത്ത ലോൺ CIBIL റിപ്പോർട്ടിൽ കുടിശ്ശികയായി കാണിക്കുന്നത് തിരുത്താനും NOC ലഭിക്കാനും ബാങ്കിൽ നൽകുന്ന അപേക്ഷ',
+    portalName: 'ബാങ്ക് ശാഖാ അപേക്ഷ / CIBIL',
+    portalUrl: 'https://www.cibil.com/',
+    searchKeywords: 'cibil score correction noc loan closure credit report സിബിൽ സ്കോർ തിരുത്തൽ ലോൺ ക്ലോഷർ എൻഒസി ബാങ്ക് അപേക്ഷ',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട ശാഖാ മാനേജർ (Branch Manager) അവർകൾക്ക്,',
+    recipientOffice: 'ബാങ്ക് ശാഖാ കാര്യാലയം',
+    subject: 'അടച്ചുതീർത്ത വായ്പയുടെ വിവരങ്ങൾ CIBIL ക്രെഡിറ്റ് റിപ്പോർട്ടിൽ അപ്ഡേറ്റ് ചെയ്യുന്നതിനും NOC ലഭിക്കുന്നതിനുമുള്ള അപേക്ഷ.',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ താമസിക്കുന്ന ഞാൻ അങ്ങയുടെ ശാഖയിൽ നിന്ന് എടുത്തിരുന്ന താഴെ പട്ടികയിൽ സൂചിപ്പിച്ച വായ്പ മുഴുവൻ തുകയും അടച്ച് പൂർണ്ണമായും ക്ലോസ് ചെയ്തിട്ടുള്ളതാണ്. എന്നാൽ എന്റെ CIBIL ക്രെഡിറ്റ് റിപ്പോർട്ട് പരിശോധിച്ചപ്പോൾ പ്രസ്തുത വായ്പ ഇപ്പോഴും സജീവമായോ കുടിശ്ശികയായോ (Active / Overdue) കാണിക്കുന്നതായി ശ്രദ്ധയിൽപ്പെട്ടു.',
+      'ഇതുകാരണം എനിക്ക് മറ്റ് ബാങ്കുകളിൽ നിന്ന് പുതിയ വായ്പകൾ ലഭിക്കുന്നതിന് വലിയ തടസ്സം നേരിടുന്നുണ്ട്. ആയതിനാൽ പ്രസ്തുത വായ്പ അടച്ചുതീർത്ത വിവരം CIBIL ഉൾപ്പെടെയുള്ള ക്രെഡിറ്റ് ബ്യൂറോകളിലേക്ക് അടിയന്തരമായി റിപ്പോർട്ട് ചെയ്ത് എന്റെ CIBIL സ്കോർ തിരുത്തി നൽകണമെന്നും നോ ഒബ്ജക്ഷൻ സർട്ടിഫിക്കറ്റ് (NOC) അനുവദിക്കണമെന്നും വിനീതമായി അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'ലോൺ അടച്ചുതീർത്ത രസീതിന്റെ / ബാങ്ക് സ്റ്റേറ്റ്മെന്റിന്റെ പകർപ്പ്',
+      'CIBIL റിപ്പോർട്ടിന്റെ പ്രസക്തമായ പേജ് പകർപ്പ്',
+      'പാൻ കാർഡ് & ആധാർ കാർഡ് പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'applicantNamePan', label: 'അപേക്ഷകന്റെ പേരും PAN കാർഡ് നമ്പറും', value: 'ഷാനവാസ് കെ. എം. (PAN: ABCDE1234F)', placeholder: 'പേര്, PAN നമ്പർ' },
+      { id: 'closedLoanAccount', label: 'അടച്ചുതീർത്ത ലോൺ അക്കൗണ്ട് നമ്പർ', value: 'LN-6045218990', placeholder: 'ലോൺ അക്കൗണ്ട് നമ്പർ' },
+      { id: 'closedDate', label: 'ലോൺ പൂർണ്ണമായി അടച്ചുതീർത്ത തീയതി', value: '14/02/2026', placeholder: 'ക്ലോസ് ചെയ്ത തീയതി' },
+      { id: 'cibilIssue', label: 'CIBIL റിപ്പോർട്ടിൽ കാണുന്ന പിശക്', value: 'വായ്പ ക്ലോസ് ചെയ്തിട്ടും Active / Written-off എന്ന് തെറ്റായി കാണിക്കുന്നു', placeholder: 'CIBIL-ലെ പ്രശ്നം' },
+    ],
+  },
+  {
+    id: 'affidavit-one-and-same-person',
+    categoryKey: 'revenue_edistrict',
+    categoryLabelMalayalam: 'വില്ലേജ് & റവന്യൂ (e-District)',
+    formCode: 'ഒരാൾ തന്നെയാണെന്ന സത്യവാങ്മൂലം (One and the Same Person Affidavit — Name Difference)',
+    titleMalayalam: 'ജനന സർട്ടിഫിക്കറ്റിലെയും ആധാറിലെയും പേര് വ്യത്യാസം — സത്യവാങ്മൂലം (One and Same Affidavit)',
+    titleEnglish: 'One and the Same Person Affidavit for Name / Initial Discrepancy in Official Documents',
+    subtitleMalayalam: 'ആധാർ, SSLC ബുക്ക്, ജനന സർട്ടിഫിക്കറ്റ്, പാസ്പോർട്ട് എന്നിവയിലെ പേര് / ഇനിഷ്യൽ വ്യത്യാസം ഒരാളുടേത് തന്നെയാണെന്ന് തെളിയിക്കുന്ന സത്യവാങ്മൂലം',
+    portalName: 'നോട്ടറി / വില്ലേജ് ഓഫീസ് സത്യവാങ്മൂലം',
+    portalUrl: 'https://edistrict.kerala.gov.in/',
+    searchKeywords: 'one and same person affidavit name difference aadhaar birth certificate sslc സത്യവാങ്മൂലം പേര് വ്യത്യാസം വൺ ആൻഡ് ദി സെയിം ആധാർ ജനന സർട്ടിഫിക്കറ്റ്',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട വില്ലേജ് ഓഫീസർ / നോട്ടറി പബ്ലിക് / ബന്ധപ്പെട്ട അധികാരി മുമ്പാകെ,',
+    recipientOffice: 'വില്ലേജ് ഓഫീസ് / നോട്ടറി കാര്യാലയം',
+    subject: 'ഔദ്യോഗിക രേഖകളിലെ പേര് വ്യത്യാസം സംബന്ധിച്ച സത്യവാങ്മൂലം (One and the Same Person Affidavit).',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ ദൈവനാമത്തിൽ / സത്യസന്ധമായി ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം: എന്റെ പ്രാഥമിക രേഖയായ ആധാർ കാർഡിലും മറ്റ് ഔദ്യോഗിക രേഖകളിലും എന്റെ പേര് താഴെ പട്ടികയിൽ കാണുന്ന പ്രകാരം ചെറിയ അക്ഷര വ്യത്യാസത്തോടെയാണ് / ഇനിഷ്യൽ വ്യത്യാസത്തോടെയാണ് രേഖപ്പെടുത്തിയിട്ടുള്ളത്.',
+      'മേൽപ്പറഞ്ഞ രണ്ട് രേഖകളിലും വ്യത്യസ്ത രീതിയിൽ പേര് രേഖപ്പെടുത്തിയിട്ടുള്ളത് എനിക്ക് തന്നെയാണെന്നും ഈ രണ്ട് പേരുകളിൽ അറിയപ്പെടുന്നതും ഒരേ വ്യക്തി (One and the Same Person) തന്നെയാണെന്നും ഇതിനാൽ സത്യവാങ്മൂലം ചെയ്യുന്നു. മുകളിൽ പ്രസ്താവിച്ച വിവരങ്ങളെല്ലാം എന്റെ അറിവിലും വിശ്വാസത്തിലും പൂർണ്ണമായും സത്യമാണ്.',
+    ],
+    enclosures: [
+      'ആധാർ കാർഡിന്റെ പകർപ്പ്',
+      'ജനന സർട്ടിഫിക്കറ്റ് / SSLC ബുക്കിന്റെ പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'deponentNameAddress', label: 'സത്യവാങ്മൂലം നൽകുന്നയാളുടെ പേരും വിലാസവും', value: 'മുഹമ്മദ് റഫീഖ് കെ. ടി., സഫ മൻസിൽ', placeholder: 'പേര്, വിലാസം' },
+      { id: 'doc1Name', label: 'ഒന്നാമത്തെ രേഖയും അതിലെ പേരും (ഉദാ: ആധാർ കാർഡ്)', value: 'ആധാർ കാർഡ് — മുഹമ്മദ് റഫീഖ് കെ. ടി. (Muhammed Rafeeq K T)', placeholder: 'രേഖ 1, അതിലെ പേര്' },
+      { id: 'doc2Name', label: 'രണ്ടാമത്തെ രേഖയും അതിലെ പേരും (ഉദാ: ജനന സർട്ടിഫിക്കറ്റ് / SSLC)', value: 'ജനന സർട്ടിഫിക്കറ്റ് / SSLC — റഫീഖ് കുഞ്ഞിത്തൊടി (Rafeeq K)', placeholder: 'രേഖ 2, അതിലെ പേര്' },
+      { id: 'purpose', label: 'സത്യവാങ്മൂലം സമർപ്പിക്കുന്ന ആവശ്യം', value: 'പാസ്പോർട്ട് / ബാങ്ക് / വില്ലേജ് ഓഫീസ് വൺ & ദി സെയിം സർട്ടിഫിക്കറ്റ് ആവശ്യത്തിലേക്ക്', placeholder: 'ആവശ്യം' },
+    ],
+  },
+  {
+    id: 'affidavit-lost-passport',
+    categoryKey: 'general_resignation',
+    categoryLabelMalayalam: 'പോലീസ്, KSEB, വാട്ടർ & പൊതു അപേക്ഷകൾ',
+    formCode: 'പാസ്പോർട്ട് നഷ്ടപ്പെട്ടതിനുള്ള സത്യവാങ്മൂലം (Lost / Damaged Passport Affidavit — Annexure F)',
+    titleMalayalam: 'പാസ്പോർട്ട് നഷ്ടപ്പെട്ടതിനുള്ള സത്യവാങ്മൂലം (Lost Passport Affidavit — Annexure F)',
+    titleEnglish: 'Affidavit for Lost or Damaged Indian Passport (Annexure F Format for Passport Seva Kendra)',
+    subtitleMalayalam: 'പാസ്പോർട്ട് നഷ്ടപ്പെട്ടാലോ കേടുപാടുകൾ സംഭവിച്ചാലോ പുതിയ ഡ്യൂപ്ലിക്കേറ്റ് പാസ്പോർട്ടിനായി പാസ്പോർട്ട് സേവാ കേന്ദ്രത്തിൽ നൽകേണ്ട സത്യവാങ്മൂലം',
+    portalName: 'Passport Seva Kendra (Annexure F)',
+    portalUrl: 'https://www.passportindia.gov.in/',
+    searchKeywords: 'lost passport affidavit annexure f duplicate passport പാസ്പോർട്ട് നഷ്ടപ്പെട്ട സത്യവാങ്മൂലം ഡ്യൂപ്ലിക്കേറ്റ് പാസ്പോർട്ട്',
+    recipientTitle: 'ബഹുമാനപ്പെട്ട റീജിയണൽ പാസ്പോർട്ട് ഓഫീസർ (Regional Passport Officer) മുമ്പാകെ,',
+    recipientOffice: 'റീജിയണൽ പാസ്പോർട്ട് ഓഫീസ് / പാസ്പോർട്ട് സേവാ കേന്ദ്രം (PSK)',
+    subject: 'നഷ്ടപ്പെട്ട / കേടുപാടുകൾ സംഭവിച്ച പാസ്പോർട്ടിന് പകരം പുതിയ പാസ്പോർട്ട് (Re-issue) ലഭിക്കുന്നതിനുള്ള സത്യവാങ്മൂലം (Annexure F).',
+    bodyParagraphs: [
+      'മേൽവിലാസത്തിൽ സ്ഥിരതാമസക്കാരനായ ഞാൻ സത്യസന്ധമായി ബോധിപ്പിക്കുന്ന സത്യവാങ്മൂലം: താഴെ പട്ടികയിൽ വിവരങ്ങൾ ചേർത്തിട്ടുള്ള എന്റെ ഇന്ത്യൻ പാസ്പോർട്ട് താഴെ സൂചിപ്പിച്ച സാഹചര്യത്തിൽ നഷ്ടപ്പെട്ടുപോയിട്ടുള്ളതാണ്. പ്രസ്തുത പാസ്പോർട്ട് കണ്ടെത്തുന്നതിനായി ഞാൻ പരമാവധി തിരച്ചിൽ നടത്തിയെങ്കിലും കണ്ടെത്താൻ സാധിച്ചിട്ടില്ല.',
+      'നഷ്ടപ്പെട്ട പാസ്പോർട്ട് ആരും ദുരുപയോഗം ചെയ്തിട്ടില്ലെന്നും ഭാവിയിൽ പ്രസ്തുത പാസ്പോർട്ട് തിരികെ ലഭിക്കുകയാണെങ്കിൽ അത് ഉടൻ തന്നെ പാസ്പോർട്ട് ഓഫീസിൽ ഹാജരാക്കിക്കൊള്ളാമെന്നും ഇതിനാൽ സത്യവാങ്മൂലം ചെയ്യുന്നു. ആയതിനാൽ എനിക്ക് പുതിയ പാസ്പോർട്ട് അനുവദിച്ചു തരണമെന്ന് അപേക്ഷിക്കുന്നു.',
+    ],
+    enclosures: [
+      'പോലീസ് സ്റ്റേഷനിൽ നിന്നുള്ള ലോസ്റ്റ് സർട്ടിഫിക്കറ്റ് / GD Entry പകർപ്പ്',
+      'പഴയ പാസ്പോർട്ടിന്റെ പകർപ്പ് (ലഭ്യമെങ്കിൽ)',
+      'ആധാർ കാർഡ് പകർപ്പ്',
+    ],
+    structuredFields: [
+      { id: 'applicantName', label: 'അപേക്ഷകന്റെ പൂർണ്ണമായ പേരും വിലാസവും', value: 'അനസ് വി. പി., ബൈത്തുൽ നൂർ', placeholder: 'പേര്, വിലാസം' },
+      { id: 'lostPassportNo', label: 'നഷ്ടപ്പെട്ട പാസ്പോർട്ട് നമ്പറും ഇഷ്യൂ ചെയ്ത സ്ഥലവും', value: 'പാസ്പോർട്ട് നമ്പർ: P7482910 (ഇഷ്യൂ ചെയ്തത്: കോഴിക്കോട്)', placeholder: 'പാസ്പോർട്ട് നമ്പർ, സ്ഥലം' },
+      { id: 'howWhenLost', label: 'പാസ്പോർട്ട് നഷ്ടപ്പെട്ട തീയതിയും സാഹചര്യവും', value: 'യാത്രയ്ക്കിടയിൽ ബാഗ് നഷ്ടപ്പെട്ടപ്പോൾ (തീയതി: 05/10/2026)', placeholder: 'എങ്ങനെ, എപ്പോൾ നഷ്ടപ്പെട്ടു' },
+      { id: 'policeGdNo', label: 'പോലീസ് സ്റ്റേഷൻ GD Entry / പരാതി നമ്പർ', value: 'GD Entry No: 412/2026', placeholder: 'പോലീസ് പരാതി നമ്പർ' },
+    ],
+  },
 ];
 
 export function convertGovFormToLetterData(form: GovFormTemplate): MalayalamLetterData {
@@ -1490,8 +1762,26 @@ export const VILLAGE_SUB_FORM_OPTIONS: SubFormOptionChoice[] = [
   {
     id: 'opt-vil-form6',
     badgeIcon: '🌾',
-    titleMalayalam: '8. ഭൂമി തരം മാറ്റൽ അപേക്ഷ (Form 5 / Form 6 — RDO)',
+    titleMalayalam: '8. ഭൂമി തരം മാറ്റൽ അപേക്ഷ (Form 6 — RDO)',
     govFormId: 'edistrict-land-conversion-form6',
+  },
+  {
+    id: 'opt-vil-form5',
+    badgeIcon: '🌱',
+    titleMalayalam: '9. ഡാറ്റാ ബാങ്കിൽ നിന്ന് ഭൂമി ഒഴിവാക്കാൻ (Form 5 — RDO)',
+    govFormId: 'revenue-form5-databank-removal',
+  },
+  {
+    id: 'opt-vil-family-affidavit',
+    badgeIcon: '📜',
+    titleMalayalam: '10. ഫാമിലി മെമ്പർഷിപ്പ് സർട്ടിഫിക്കറ്റ് & സത്യവാങ്മൂലം',
+    govFormId: 'edistrict-family-membership-affidavit',
+  },
+  {
+    id: 'opt-vil-onesame-affidavit',
+    badgeIcon: '⚖️',
+    titleMalayalam: '11. ആധാറിലെയും ജനന സർട്ടിഫിക്കറ്റിലെയും പേര് വ്യത്യാസം — സത്യവാങ്മൂലം',
+    govFormId: 'affidavit-one-and-same-person',
   },
 ];
 
@@ -1515,21 +1805,33 @@ export const PANCHAYAT_SUB_FORM_OPTIONS: SubFormOptionChoice[] = [
     govFormId: 'lsgd-building-ownership-permit',
   },
   {
+    id: 'opt-pan-vacancy-remission',
+    badgeIcon: '🏢',
+    titleMalayalam: '4. കെട്ടിട നികുതി ഒഴിവാക്കൽ അപേക്ഷ (Vacancy Remission — K-SMART)',
+    govFormId: 'lsgd-vacancy-remission-tax',
+  },
+  {
     id: 'opt-pan-trade',
     badgeIcon: '🏪',
-    titleMalayalam: '4. വ്യാപാര ലൈസൻസ് (Trade License) & തൊഴിലുറപ്പ് അപേക്ഷ',
+    titleMalayalam: '5. വ്യാപാര ലൈസൻസ് (Trade License) അപേക്ഷ',
     govFormId: 'lsgd-trade-license-nregs',
+  },
+  {
+    id: 'opt-pan-mgnregs',
+    badgeIcon: '🛠️',
+    titleMalayalam: '6. തൊഴിലുറപ്പ് പദ്ധതി (MGNREGS) പുതിയ കാർഡ് / ബാങ്ക് അക്കൗണ്ട് മാറ്റൽ',
+    govFormId: 'lsgd-mgnregs-jobcard-bank-change',
   },
   {
     id: 'opt-pan-pension',
     badgeIcon: '👵',
-    titleMalayalam: '5. വാർദ്ധക്യകാല / വിധവാ / ഭിന്നശേഷി ക്ഷേമ പെൻഷൻ അപേക്ഷ',
+    titleMalayalam: '7. വാർദ്ധക്യകാല / വിധവാ / ഭിന്നശേഷി ക്ഷേമ പെൻഷൻ അപേക്ഷ',
     govFormId: 'pension-oldage-widow-disability',
   },
   {
     id: 'opt-pan-tree',
     badgeIcon: '🌳',
-    titleMalayalam: '6. അപകടാവസ്ഥയിലായ മരം (പ്ലാവ് / തെങ്ങ്) മുറിച്ചു മാറ്റാനുള്ള അപേക്ഷ',
+    titleMalayalam: '8. അപകടാവസ്ഥയിലായ മരം (പ്ലാവ് / തെങ്ങ്) മുറിച്ചു മാറ്റാനുള്ള അപേക്ഷ',
     govFormId: 'lsgd-tree-cutting-application',
   },
 ];
@@ -1682,14 +1984,21 @@ function applyExtractedDetailsToGovLetter(
     }
   }
 
-  // 2. Extract inline natural-language mentions (Name, Place/District, Phone, Survey No, Consumer No, Passport No, Income)
+  // 2. Smart Slot-Filling Parser for Continuous Unpunctuated Malayalam Speech
+  // (e.g. "എന്റെ പേര് രാജൻ വീട്ടുപേര് ശ്രീനിലയം വാർഡ് 8 സ്ഥലം തിരൂർ ഫോൺ നമ്പർ 9847123456 വിഷയം വരുമാന സർട്ടിഫിക്കറ്റ്")
+  const slotStopLookahead =
+    '(?=\\s*(?:,|،|ആണ്|എന്നാണ്|വീട്ടുപേര്|വീട്|വിലാസം|മേൽവിലാസം|വാർഡ്|സ്ഥലം|സ്വദേശം|ഫോൺ|മൊബൈൽ|വയസ്സ്|വിഷയം|വരുമാനം|വാർഷിക വരുമാനം|ആവശ്യം|ജോലി|സർവ്വേ|താലൂക്ക്|വില്ലേജ്|ജില്ല|\\.|$))';
+
   const nameMatch = prompt.match(
-    /(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|ഞാൻ|പേര്)\s*[:\-]?\s*([^\n,.;]+?)(?=\s*(?:,|،|ആണ്|എന്നാണ്|സ്ഥലം|സ്വദേശം|വീട്|ഫോൺ|വയസ്സ്|\.|$))/i
+    new RegExp(
+      `(?:എന്റെ പേര്|അപേക്ഷകന്റെ പേര്|ഞാൻ|പേര്)\\s*[:\\-]?\\s*([^\\n,.;]+?)${slotStopLookahead}`,
+      'i'
+    )
   );
   if (nameMatch?.[1]?.trim()) {
     const cleanName = nameMatch[1]
       .trim()
-      .replace(/\s*(ആണ്|എന്നാണ്|വീട്|സ്ഥലം|സ്വദേശം).*$/, '')
+      .replace(/\s*(ആണ്|എന്നാണ്|വീട്ടുപേര്|വീട്|സ്ഥലം|സ്വദേശം|വാർഡ്).*$/, '')
       .trim();
     if (cleanName && cleanName.length >= 2 && cleanName.length <= 45 && !cleanName.includes('അപേക്ഷ')) {
       next.senderName = cleanName;
@@ -1702,6 +2011,26 @@ function applyExtractedDetailsToGovLetter(
           ) || next.structuredFields[0];
         nameFld.value = cleanName;
       }
+      extractedAny = true;
+    }
+  }
+
+  // Extract continuous spoken House Name (വീട്ടുപേര്) & Ward Number (വാർഡ്)
+  const houseSlotMatch = prompt.match(
+    new RegExp(
+      `(?:വീട്ടുപേര്|വീടിന്റെ പേര്|വിലാസം|മേൽവിലാസം)\\s*[:\\-]?\\s*([^\\n,.;]+?)${slotStopLookahead}`,
+      'i'
+    )
+  );
+  const wardSlotMatch = prompt.match(/(?:വാർഡ്\s*നമ്പർ|വാർഡ്|ward\s*(?:no)?)\s*[:\-]?\s*(\d{1,3})/i);
+  const spokenHouseName = houseSlotMatch?.[1]?.trim() || '';
+  const spokenWardNo = wardSlotMatch?.[1]?.trim() ? `വാർഡ് ${wardSlotMatch[1].trim()}` : '';
+  if (spokenHouseName || spokenWardNo) {
+    const prefixParts = [spokenHouseName, spokenWardNo].filter(Boolean);
+    if (prefixParts.length > 0) {
+      next.senderAddress = next.senderAddress
+        ? `${prefixParts.join(', ')}, ${next.senderAddress}`
+        : prefixParts.join(', ');
       extractedAny = true;
     }
   }
@@ -1722,10 +2051,12 @@ function applyExtractedDetailsToGovLetter(
     const townName = extractedLoc.place;
     const distName = extractedLoc.district;
     next.place = townName;
-    next.senderAddress =
+    const baseTownAddr =
       townName !== distName
         ? `${townName}, ${distName} ജില്ല, കേരളം`
         : `${townName}, കേരളം`;
+    const houseWardPrefix = [spokenHouseName, spokenWardNo].filter(Boolean).join(', ');
+    next.senderAddress = houseWardPrefix ? `${houseWardPrefix}, ${baseTownAddr}` : baseTownAddr;
     if (next.structuredFields) {
       const addrFld = next.structuredFields.find(
         (f) =>
@@ -2130,10 +2461,14 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'edistrict-nativity';
   } else if (
+    norm.includes('ഫാമിലി മെമ്പർഷിപ്പ്') ||
+    /\bfamily\s*membership\b/i.test(norm)
+  ) {
+    matchedFormId = 'edistrict-family-membership-affidavit';
+  } else if (
     norm.includes('അനന്തരാവകാശ') ||
     norm.includes('ലീഗൽ ഹെയർ') ||
-    norm.includes('ഫാമിലി മെമ്പർഷിപ്പ്') ||
-    /\b(legal\s*heir|heirship|family\s*membership)\b/i.test(norm)
+    /\b(legal\s*heir|heirship)\b/i.test(norm)
   ) {
     matchedFormId = 'edistrict-legal-heir';
   } else if (
@@ -2145,6 +2480,11 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'edistrict-possession-location';
   } else if (
+    (norm.includes('പേര് വ്യത്യാസം') || norm.includes('ഇനിഷ്യൽ വ്യത്യാസം')) &&
+    (norm.includes('സത്യവാങ്മൂലം') || norm.includes('ആധാർ') || norm.includes('ജനന'))
+  ) {
+    matchedFormId = 'affidavit-one-and-same-person';
+  } else if (
     norm.includes('വൺ ആൻഡ് ദി സെയിം') ||
     norm.includes('വൺ & ദി സെയിം') ||
     norm.includes('ലൈഫ് സർട്ടിഫിക്കറ്റ്') ||
@@ -2153,11 +2493,15 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'edistrict-one-and-same-life';
   } else if (
-    norm.includes('ഭൂമി തരം മാറ്റ') ||
-    norm.includes('ഡാറ്റാ ബാങ്ക്') ||
-    norm.includes('ഫോം 6') ||
     norm.includes('ഫോം 5') ||
-    /\b(form\s*[56]|data\s*bank|land\s*conversion)\b/i.test(norm)
+    norm.includes('ഡാറ്റാ ബാങ്ക്') ||
+    /\b(form\s*5|data\s*bank)\b/i.test(norm)
+  ) {
+    matchedFormId = 'revenue-form5-databank-removal';
+  } else if (
+    norm.includes('ഭൂമി തരം മാറ്റ') ||
+    norm.includes('ഫോം 6') ||
+    /\b(form\s*6|land\s*conversion)\b/i.test(norm)
   ) {
     matchedFormId = 'edistrict-land-conversion-form6';
   } else if (
@@ -2181,16 +2525,26 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'lsgd-marriage-reg-form1';
   } else if (
+    (norm.includes('കെട്ടിട നികുതി') && (norm.includes('ഒഴിവാക്ക') || norm.includes('ഇളവ്') || norm.includes('ഒഴിഞ്ഞു'))) ||
+    /\b(vacancy\s*remission)\b/i.test(norm)
+  ) {
+    matchedFormId = 'lsgd-vacancy-remission-tax';
+  } else if (
     norm.includes('കെട്ടിട നികുതി') ||
     (norm.includes('കെട്ടിട') && (norm.includes('ഉടമസ്ഥാവകാശ') || norm.includes('നമ്പർ') || norm.includes('പെർമിറ്റ്'))) ||
     /\b(building\s*tax|building\s*ownership|building\s*permit)\b/i.test(norm)
   ) {
     matchedFormId = 'lsgd-building-ownership-permit';
   } else if (
+    norm.includes('തൊഴിലുറപ്പ്') ||
+    norm.includes('തൊഴിൽ കാർഡ്') ||
+    /\b(mgnregs|nregs|job\s*card)\b/i.test(norm)
+  ) {
+    matchedFormId = 'lsgd-mgnregs-jobcard-bank-change';
+  } else if (
     norm.includes('വ്യാപാര ലൈസൻസ്') ||
     norm.includes('ട്രേഡ് ലൈസൻസ്') ||
-    norm.includes('തൊഴിലുറപ്പ്') ||
-    /\b(trade\s*licen[cs]e|d&o|nregs|job\s*card)\b/i.test(norm)
+    /\b(trade\s*licen[cs]e|d&o)\b/i.test(norm)
   ) {
     matchedFormId = 'lsgd-trade-license-nregs';
   } else if (
@@ -2269,6 +2623,11 @@ export function matchGovFormFromPrompt(
   ) {
     matchedFormId = 'police-permission-pcc-noc';
   } else if (
+    (norm.includes('പാസ്പോർട്ട്') && norm.includes('സത്യവാങ്മൂലം')) ||
+    /\b(annexure\s*f|lost\s*passport\s*affidavit)\b/i.test(norm)
+  ) {
+    matchedFormId = 'affidavit-lost-passport';
+  } else if (
     norm.includes('നഷ്ടപ്പെട്ട') ||
     norm.includes('കളഞ്ഞുപോയി') ||
     norm.includes('പാസ്പോർട്ട് നഷ്ട') ||
@@ -2311,6 +2670,23 @@ export function matchGovFormFromPrompt(
   ) {
     // Default to General Police Station Complaint (NOT Lost Passport!) and present all 5 Police complaint options!
     matchedFormId = 'police-general-complaint';
+  } else if (
+    (norm.includes('വിദ്യാഭ്യാസ ലോൺ') || norm.includes('വിദ്യാഭ്യാസ വായ്പ')) &&
+    (norm.includes('സബ്സിഡി') || norm.includes('പലിശ'))
+  ) {
+    matchedFormId = 'bank-education-loan-subsidy';
+  } else if (
+    norm.includes('സ്വർണ്ണപ്പണയ') ||
+    norm.includes('സ്വർണ്ണ വായ്പ') ||
+    (norm.includes('സ്വർണ്ണ') && norm.includes('ലേല')) ||
+    /\b(gold\s*loan)\b/i.test(norm)
+  ) {
+    matchedFormId = 'bank-gold-loan-auction-postpone';
+  } else if (
+    norm.includes('സിബിൽ') ||
+    /\b(cibil)\b/i.test(norm)
+  ) {
+    matchedFormId = 'bank-cibil-score-correction';
   } else if (
     norm.includes('ബാങ്ക്') ||
     norm.includes('ലോൺ') ||

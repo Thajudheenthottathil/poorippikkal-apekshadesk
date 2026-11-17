@@ -3743,3 +3743,20 @@ export async function translateActiveDocumentViaServer(params: {
   }
   return res.json();
 }
+
+/**
+ * Live Manglish-to-Malayalam preview helper for inline suggestion chips.
+ * Returns a converted Malayalam string when the input contains Latin Manglish words.
+ */
+export function getLiveManglishSuggestion(inputText: string): string | null {
+  if (!inputText || inputText.trim().length < 2) return null;
+  const trimmed = inputText.trim();
+  if (!/[a-zA-Z]{2,}/.test(trimmed)) return null;
+  if (/^https?:\/\//i.test(trimmed)) return null;
+  const converted = convertEnglishOrManglishToMalayalam(trimmed).trim();
+  if (!converted || converted === trimmed || !/[\u0D00-\u0D7F]/.test(converted)) {
+    return null;
+  }
+  return converted;
+}
+

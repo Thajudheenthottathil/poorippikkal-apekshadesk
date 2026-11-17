@@ -224,8 +224,17 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
   onClose,
   onSelectCategory,
   onOpenPdfUpload,
+  whatsappNumber = '+91 98470 00000',
   customVideoUrl,
 }) => {
+  const cleanWaPhone = (whatsappNumber || '+91 98470 00000').replace(/[^0-9]/g, '');
+  const whatsappAgentUrl = cleanWaPhone
+    ? `https://wa.me/${cleanWaPhone}?text=${encodeURIComponent(
+        'നമസ്കാരം, എനിക്ക് അപേക്ഷ / സിവി / PDF തയ്യാറാക്കുന്നതിനെക്കുറിച്ച് ഒരു സംശയം ചോദിക്കാനുണ്ട്.'
+      )}`
+    : `https://wa.me/?text=${encodeURIComponent(
+        'നമസ്കാരം, എനിക്ക് അപേക്ഷ / സിവി / PDF തയ്യാറാക്കുന്നതിനെക്കുറിച്ച് ഒരു സംശയം ചോദിക്കാനുണ്ട്.'
+      )}`;
   const [scenes, setScenes] = useState<VideoGuideScene[]>(DEFAULT_VIDEO_SCENES);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [sceneIndex, setSceneIndex] = useState<number>(0);
@@ -1081,10 +1090,42 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
         {/* Scrollable User Manual Content Body */}
         <div className="p-4 sm:p-6 overflow-y-auto space-y-5 font-malayalam">
           {/* =================================================================
+              TOP HIGHLIGHT BANNER: 24x7 WHATSAPP CUSTOMER AGENT ("വാട്സാപ്പിലും ചോദിക്കാം")
+             ================================================================= */}
+          <div className="bg-gradient-to-r from-[#075E54] via-emerald-800 to-[#128C7E] text-white rounded-2xl p-4 shadow-lg border-2 border-[#25D366]/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-[#25D366] text-slate-950 text-[10px] font-black uppercase tracking-wide">
+                  NEW · 24×7 WhatsApp AI Agent
+                </span>
+                <span className="text-xs font-extrabold text-amber-300">
+                  💬 വാട്സാപ്പിലും ചോദിക്കാം!
+                </span>
+              </div>
+              <h3 className="font-black text-sm sm:text-base text-white">
+                സംശയങ്ങൾ ഞങ്ങളുടെ വാട്സാപ്പ് കസ്റ്റമർ ഏജന്റിനോട് നേരിട്ട് ചോദിക്കാം
+              </h3>
+              <p className="text-[11px] sm:text-xs text-emerald-100 leading-relaxed">
+                അപേക്ഷകൾ, ഗൾഫ് CV, വാടക കരാർ, PDF എഡിറ്റിംഗ് എന്നിവയെക്കുറിച്ച് എന്ത് സംശയമുണ്ടെങ്കിലും താഴെ തൊട്ട് വാട്സാപ്പിൽ ചോദിക്കൂ — ഉടൻ മറുപടി ലഭിക്കും!
+              </p>
+            </div>
+
+            <a
+              href={whatsappAgentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-emerald-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shrink-0 shadow-md transition-transform active:scale-95 cursor-pointer"
+            >
+              <MessageSquare className="w-4 h-4 fill-slate-950 stroke-slate-950 shrink-0" />
+              <span>വാട്സാപ്പിലും ചോദിക്കാം →</span>
+            </a>
+          </div>
+
+          {/* =================================================================
               SECTION 1: "എന്തിനാണ് ഈ വെബ്സൈറ്റ്?" — CLEAR INTRODUCTION
              ================================================================= */}
           <div className="bg-emerald-50/90 border-2 border-emerald-200 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-md bg-emerald-700 text-white text-[11px] font-black">
                   ഭാഗം 1 · ആമുഖം
@@ -1094,15 +1135,27 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
                 </h3>
               </div>
 
-              {/* Small Tucked-Away AI Chatbot Toggle Button in Top Right of Manual */}
-              <button
-                type="button"
-                onClick={() => setIsChatbotOpen((prev) => !prev)}
-                className="px-2.5 py-1 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold flex items-center gap-1 cursor-pointer shrink-0 shadow-2xs"
-              >
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-700" />
-                <span>{isChatbotOpen ? 'ചാറ്റ് അടയ്ക്കുക ✕' : '🤖 സംശയം ചോദിക്കാം'}</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href={whatsappAgentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded-xl bg-[#25D366] hover:bg-emerald-400 text-slate-950 text-[11px] font-black flex items-center gap-1 cursor-pointer shrink-0 shadow-2xs"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>💬 വാട്സാപ്പിലും ചോദിക്കാം</span>
+                </a>
+
+                {/* Small Tucked-Away AI Chatbot Toggle Button in Top Right of Manual */}
+                <button
+                  type="button"
+                  onClick={() => setIsChatbotOpen((prev) => !prev)}
+                  className="px-2.5 py-1 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold flex items-center gap-1 cursor-pointer shrink-0 shadow-2xs"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>{isChatbotOpen ? 'ചാറ്റ് അടയ്ക്കുക ✕' : '🤖 സംശയം ചോദിക്കാം'}</span>
+                </button>
+              </div>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-800 font-bold leading-relaxed">
@@ -1748,15 +1801,27 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
         </div>
 
         {/* Bottom Sticky Close Button */}
-        <div className="px-4 sm:px-6 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={() => setIsChatbotOpen((prev) => !prev)}
-            className="px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-slate-800 border border-slate-300 font-malayalam font-extrabold text-xs flex items-center gap-1.5 cursor-pointer"
-          >
-            <HelpCircle className="w-3.5 h-3.5 text-emerald-700" />
-            <span>🤖 എഐ സഹായി</span>
-          </button>
+        <div className="px-4 sm:px-6 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-1.5">
+            <a
+              href={whatsappAgentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 rounded-xl bg-[#25D366] hover:bg-emerald-400 text-slate-950 font-malayalam font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>💬 വാട്സാപ്പിലും ചോദിക്കാം</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setIsChatbotOpen((prev) => !prev)}
+              className="px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-slate-800 border border-slate-300 font-malayalam font-extrabold text-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-emerald-700" />
+              <span>🤖 എഐ സഹായി</span>
+            </button>
+          </div>
 
           <button
             type="button"

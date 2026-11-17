@@ -87,16 +87,34 @@ import { useMalayalamVoice, RecordedAudioPayload } from './hooks/useMalayalamVoi
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { A4DocumentSheet, SheetCustomOverlayItem } from './components/A4DocumentSheet';
 import { UpiPaymentModal } from './components/UpiPaymentModal';
-import { OwnerSettingsModal } from './components/OwnerSettingsModal';
 import { WhatsAppBotPanel } from './components/WhatsAppBotPanel';
 import { PWAInstallButton } from './components/PWAInstallButton';
-import { DirectPdfEditor } from './components/DirectPdfEditor';
-import { FeedbackModal } from './components/FeedbackModal';
-import { UserGuideModal } from './components/UserGuideModal';
 import { ThreeDServiceCarousel } from './components/ThreeDServiceCarousel';
-import { PrintCartAndDeliveryModal } from './components/PrintCartAndDeliveryModal';
 import { FreemiumSampleLibraryAndGeoSection } from './components/FreemiumSampleLibraryAndGeoSection';
-import { AtsResumeTailorModal } from './components/AtsResumeTailorModal';
+
+const OwnerSettingsModal = React.lazy(() =>
+  import('./components/OwnerSettingsModal').then((m) => ({ default: m.OwnerSettingsModal }))
+);
+const DirectPdfEditor = React.lazy(() =>
+  import('./components/DirectPdfEditor').then((m) => ({ default: m.DirectPdfEditor }))
+);
+const FeedbackModal = React.lazy(() =>
+  import('./components/FeedbackModal').then((m) => ({ default: m.FeedbackModal }))
+);
+const UserGuideModal = React.lazy(() =>
+  import('./components/UserGuideModal').then((m) => ({ default: m.UserGuideModal }))
+);
+const PrintCartAndDeliveryModal = React.lazy(() =>
+  import('./components/PrintCartAndDeliveryModal').then((m) => ({
+    default: m.PrintCartAndDeliveryModal,
+  }))
+);
+const AtsResumeTailorModal = React.lazy(() =>
+  import('./components/AtsResumeTailorModal').then((m) => ({ default: m.AtsResumeTailorModal }))
+);
+const SignaturePadModal = React.lazy(() =>
+  import('./components/SignaturePadModal').then((m) => ({ default: m.SignaturePadModal }))
+);
 import {
   extractReadableTextFromPdfBuffer,
   generateAndDownloadA4Pdf,
@@ -119,6 +137,17 @@ import {
 const STORAGE_CONFIG_KEY = 'parayam_owner_config_v8';
 const STORAGE_TX_KEY = 'parayam_transactions_v3';
 const STORAGE_CART_KEY = 'parayam_print_cart_v1';
+const STORAGE_DRAFT_KEY = 'parayam_autosave_draft_v1';
+
+interface SavedDocumentDraft {
+  activeCategory: DocumentCategory;
+  outputLanguage: DocumentOutputLanguage;
+  letterData: MalayalamLetterData;
+  gulfCvData: GulfCvData;
+  agreementData: RentalAgreementData;
+  markListData: TeacherMarkListData;
+  updatedAt: number;
+}
 
 const DEFAULT_OWNER_CONFIG: OwnerBusinessConfig = {
   shopName: 'പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് | പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Poorippikkal Apekshadesk)',
@@ -131,7 +160,7 @@ const DEFAULT_OWNER_CONFIG: OwnerBusinessConfig = {
   email: 'service.kerala@email.com',
   workingHours: '24×7 ഓൺലൈൻ അപേക്ഷാ ഡെസ്ക്',
   upiId: 'thajudheenabdulrehman@oksbi',
-  akshayaPin: '',
+  akshayaPin: '1234',
   freeModeEnabled: true,
   cartFeatureEnabled: true,
   homePrinterBusinessModeEnabled: false,
@@ -188,12 +217,50 @@ export function App() {
     return 'എല്ലാം (All)';
   });
 
-  const [letterData, setLetterData] = useState<MalayalamLetterData>(INITIAL_LETTER_DATA);
+  const [letterData, setLetterData] = useState<MalayalamLetterData>(() => {
+    if (typeof window !== 'undefined') {
+      const formId = new URLSearchParams(window.location.search).get('form');
+      if (formId) {
+        const matchedForm = KERALA_GOV_FORMS_MASTER.find((f) => f.id === formId);
+        if (matchedForm) {
+          return convertGovFormToLetterData(matchedForm);
+        }
+      }
+    }
+    return INITIAL_LETTER_DATA;
+  });
   const [gulfCvData, setGulfCvData] = useState<GulfCvData>(INITIAL_GULF_CV_DATA);
   const [agreementData, setAgreementData] = useState<RentalAgreementData>(
     INITIAL_AGREEMENT_DATA
   );
   const [markListData, setMarkListData] = useState<TeacherMarkListData>(INITIAL_MARKLIST_DATA);
+
+  // Dynamically update document.title and meta description for SEO / Google Search deep links
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    let nextTitle =
+      'പറയാം, പ്രിന്റെടുക്കാം | പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക് | Malayalam Application, PDF & Voice Form Maker';
+    if (activeCategory === 'malayalam_letter' && letterData.subject) {
+      const cleanSubj = letterData.subject.replace(/\[.*?\]/g, '').trim();
+      if (cleanSubj) {
+        nextTitle = `${cleanSubj} | ${letterData.recipientOffice || 'മലയാളം അപേക്ഷ ഫോം'} | പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്`;
+      }
+    } else if (activeCategory === 'gulf_cv') {
+      nextTitle = `${gulfCvData.jobTitle || 'Gulf CV & Resume'} | പ്രവാസി ഗൾഫ് ബയോഡാറ്റ മേക്കർ | പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്`;
+    } else if (activeCategory === 'rental_agreement') {
+      nextTitle = `${agreementData.titleMalayalam || '11 മാസത്തെ വാടക കരാർ'} | Kerala Stamp Paper Format | പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്`;
+    } else if (activeCategory === 'teacher_marklist') {
+      nextTitle = `${markListData.examTitle || 'സ്കൂൾ & മദ്രസ മാർക്ക് ലിസ്റ്റ്'} | Teachers Mark List Kerala | പൂരിപ്പിക്കൽ അപേക്ഷ ഡെസ്ക്`;
+    }
+    document.title = nextTitle;
+  }, [
+    activeCategory,
+    letterData.subject,
+    letterData.recipientOffice,
+    gulfCvData.jobTitle,
+    agreementData.titleMalayalam,
+    markListData.examTitle,
+  ]);
 
   // Universal In-Place PDF Touch-Edit Tools State (Default showTouchBorders = false so it looks like a real PDF!)
   const [sheetTool, setSheetTool] = useState<'select_edit' | 'add_text' | 'whiteout'>(
@@ -298,6 +365,22 @@ export function App() {
   const [isAutoFillCvModalOpen, setIsAutoFillCvModalOpen] = useState<boolean>(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState<boolean>(false);
   const [isUserGuideModalOpen, setIsUserGuideModalOpen] = useState<boolean>(false);
+  const [isSignatureModalOpen, setIsSignatureModalOpen] = useState<boolean>(false);
+  const [savedDraftToResume, setSavedDraftToResume] = useState<SavedDocumentDraft | null>(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_DRAFT_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as SavedDocumentDraft;
+        if (parsed && parsed.letterData && parsed.updatedAt) {
+          return parsed;
+        }
+      }
+    } catch {
+      // ignore storage read error
+    }
+    return null;
+  });
+  const hasUserEditedRef = useRef<boolean>(false);
   const [isCvReviewBannerOpen, setIsCvReviewBannerOpen] = useState<boolean>(false);
   const [isTopShareMenuOpen, setIsTopShareMenuOpen] = useState<boolean>(false);
   const [copiedTopLink, setCopiedTopLink] = useState<boolean>(false);
@@ -310,6 +393,44 @@ export function App() {
       // Ignore storage quota warning
     }
   }, [cartItems]);
+
+  // Auto-save active document draft whenever user edits or generates content
+  useEffect(() => {
+    const isInitialDefault =
+      letterData === INITIAL_LETTER_DATA &&
+      gulfCvData === INITIAL_GULF_CV_DATA &&
+      agreementData === INITIAL_AGREEMENT_DATA &&
+      markListData === INITIAL_MARKLIST_DATA;
+    if (isInitialDefault && !hasUserEditedRef.current) return;
+    hasUserEditedRef.current = true;
+    try {
+      const payload: SavedDocumentDraft = {
+        activeCategory,
+        outputLanguage,
+        letterData,
+        gulfCvData,
+        agreementData,
+        markListData,
+        updatedAt: Date.now(),
+      };
+      localStorage.setItem(STORAGE_DRAFT_KEY, JSON.stringify(payload));
+    } catch {
+      // Ignore localStorage quota warnings
+    }
+  }, [activeCategory, outputLanguage, letterData, gulfCvData, agreementData, markListData]);
+
+  const handleResumeSavedDraft = () => {
+    if (!savedDraftToResume) return;
+    setActiveCategory(savedDraftToResume.activeCategory || 'malayalam_letter');
+    setOutputLanguage(savedDraftToResume.outputLanguage || 'ml');
+    if (savedDraftToResume.letterData) setLetterData(savedDraftToResume.letterData);
+    if (savedDraftToResume.gulfCvData) setGulfCvData(savedDraftToResume.gulfCvData);
+    if (savedDraftToResume.agreementData) setAgreementData(savedDraftToResume.agreementData);
+    if (savedDraftToResume.markListData) setMarkListData(savedDraftToResume.markListData);
+    setSavedDraftToResume(null);
+    setMobileViewTab('preview');
+    showToast('✓ നിങ്ങളുടെ പഴയ അപേക്ഷ പുനഃസ്ഥാപിച്ചു (Draft Restored)!');
+  };
 
   const handlePwaInstallClick = async () => {
     if (isInstallable) {
@@ -3114,38 +3235,40 @@ export function App() {
             <span>{statusToast}</span>
           </div>
         )}
-        <OwnerSettingsModal
-          isOpen={true}
-          isStandalonePage={true}
-          config={ownerConfig}
-          transactions={transactions}
-          onClose={() => setIsAdminBackendRoute(false)}
-          onBackToFrontend={() => {
-            setIsAdminBackendRoute(false);
-            try {
-              if (window.location.hash === '#admin') {
-                window.history.replaceState(null, '', window.location.pathname);
+        <React.Suspense fallback={null}>
+          <OwnerSettingsModal
+            isOpen={true}
+            isStandalonePage={true}
+            config={ownerConfig}
+            transactions={transactions}
+            onClose={() => setIsAdminBackendRoute(false)}
+            onBackToFrontend={() => {
+              setIsAdminBackendRoute(false);
+              try {
+                if (window.location.hash === '#admin') {
+                  window.history.replaceState(null, '', window.location.pathname);
+                }
+              } catch {
+                // ignore
               }
-            } catch {
-              // ignore
-            }
-          }}
-          onSaveConfig={async (newCfg, adminPin) => {
-            setOwnerConfig(newCfg);
-            try {
-              await fetch('/api/owner-config', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ config: newCfg, adminPin }),
-              });
-            } catch {
-              // Static host fallback uses localStorage
-            }
-            showToast(
-              '✓ നിങ്ങളുടെ UPI ID-യും പുതിയ നിരക്കുകളും സെർവറിൽ സേവ് ചെയ്തു! കസ്റ്റമർ വെബ്സൈറ്റിൽ ഇത് ഉടൻ ലഭ്യമാകും.'
-            );
-          }}
-        />
+            }}
+            onSaveConfig={async (newCfg, adminPin) => {
+              setOwnerConfig(newCfg);
+              try {
+                await fetch('/api/owner-config', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ config: newCfg, adminPin }),
+                });
+              } catch {
+                // Static host fallback uses localStorage
+              }
+              showToast(
+                '✓ നിങ്ങളുടെ UPI ID-യും പുതിയ നിരക്കുകളും സെർവറിൽ സേവ് ചെയ്തു! കസ്റ്റമർ വെബ്സൈറ്റിൽ ഇത് ഉടൻ ലഭ്യമാകും.'
+              );
+            }}
+          />
+        </React.Suspense>
       </>
     );
   }
@@ -3206,6 +3329,18 @@ export function App() {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          {/* Resume Saved Draft 1-Click Button (When a saved draft exists in localStorage) */}
+          {savedDraftToResume && (
+            <button
+              type="button"
+              onClick={handleResumeSavedDraft}
+              className="btn-round-3d min-h-[34px] px-2.5 py-1 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-malayalam font-black text-[11px] flex items-center gap-1 cursor-pointer shadow-md transition-all"
+              title="മുമ്പ് എഡിറ്റ് ചെയ്ത പഴയ അപേക്ഷ തുടരുക (Resume Draft)"
+            >
+              <span>💾 പഴയ അപേക്ഷ തുടരുക</span>
+            </button>
+          )}
+
           {/* 0. Multi-Document PDF Cart Round 3D Button (Always Available) */}
           <button
             type="button"
@@ -3648,34 +3783,43 @@ export function App() {
                   </button>
                 </div>
 
-                <DirectPdfEditor
-                  file={uploadedPdfFile}
-                  fileName={uploadedPdfFileName}
-                  pdfEditPrice={ownerConfig.pricing.pdf_edit ?? 10}
-                  isUnlocked={isUnlocked}
-                  onRequestProtectedExport={(action, exportCallback) => {
-                    if (ownerConfig.freeModeEnabled) {
-                      exportCallback();
-                      return;
-                    }
-                    customPostPayCallbackRef.current = exportCallback;
-                    setPendingActionAfterPay(action);
-                    setIsPaymentModalOpen(true);
-                  }}
-                  onUploadNewPdfClick={() => pdfEditUploadInputRef.current?.click()}
-                  onSwitchToLetterFormatView={() => {
-                    if (pdfExtractedFallbackRef.current?.letterData) {
-                      setLetterData(pdfExtractedFallbackRef.current.letterData);
-                    }
-                    if (pdfExtractedFallbackRef.current?.gulfCvData) {
-                      setGulfCvData(pdfExtractedFallbackRef.current.gulfCvData);
-                    }
-                    setShowDirectPdfCanvas(false);
-                    showToast('A4 ലെറ്റർ ഫോർമാറ്റ് വ്യൂവിലേക്ക് മാറ്റി.');
-                  }}
-                  onClosePdfEditor={handleCloseAndClearUploadedPdf}
-                  onShowToast={showToast}
-                />
+                <React.Suspense
+                  fallback={
+                    <div className="p-10 text-center text-xs font-malayalam text-slate-600 flex items-center justify-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin text-emerald-700" />
+                      <span>PDF എഡിറ്റർ തുറക്കുന്നു...</span>
+                    </div>
+                  }
+                >
+                  <DirectPdfEditor
+                    file={uploadedPdfFile}
+                    fileName={uploadedPdfFileName}
+                    pdfEditPrice={ownerConfig.pricing.pdf_edit ?? 10}
+                    isUnlocked={isUnlocked}
+                    onRequestProtectedExport={(action, exportCallback) => {
+                      if (ownerConfig.freeModeEnabled) {
+                        exportCallback();
+                        return;
+                      }
+                      customPostPayCallbackRef.current = exportCallback;
+                      setPendingActionAfterPay(action);
+                      setIsPaymentModalOpen(true);
+                    }}
+                    onUploadNewPdfClick={() => pdfEditUploadInputRef.current?.click()}
+                    onSwitchToLetterFormatView={() => {
+                      if (pdfExtractedFallbackRef.current?.letterData) {
+                        setLetterData(pdfExtractedFallbackRef.current.letterData);
+                      }
+                      if (pdfExtractedFallbackRef.current?.gulfCvData) {
+                        setGulfCvData(pdfExtractedFallbackRef.current.gulfCvData);
+                      }
+                      setShowDirectPdfCanvas(false);
+                      showToast('A4 ലെറ്റർ ഫോർമാറ്റ് വ്യൂവിലേക്ക് മാറ്റി.');
+                    }}
+                    onClosePdfEditor={handleCloseAndClearUploadedPdf}
+                    onShowToast={showToast}
+                  />
+                </React.Suspense>
               </div>
             ) : (
               <>
@@ -3768,6 +3912,57 @@ export function App() {
                         <ShoppingCart className="w-3.5 h-3.5 text-slate-950 shrink-0" />
                         <span>+ കാർട്ടിലിടുക ({cartItems.length})</span>
                       </button>
+
+                      {/* 1-Click Digital Signature Pad Button on A4 Toolbar */}
+                      <button
+                        type="button"
+                        onClick={() => setIsSignatureModalOpen(true)}
+                        className="btn-round-3d min-h-[38px] px-3.5 py-1.5 rounded-full bg-gradient-to-b from-teal-50 to-teal-100 hover:from-white hover:to-teal-50 text-teal-950 border border-teal-400 font-malayalam font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-[0_3px_0_0_#0f766e] active:translate-y-0.5 transition-all"
+                        title="വിരൽ കൊണ്ടോ ഒപ്പിന്റെ ഫോട്ടോ വെച്ചോ ഡിജിറ്റൽ ഒപ്പ് ചേർക്കാൻ"
+                      >
+                        <span>✍️ ഒപ്പ് ചേർക്കുക</span>
+                      </button>
+
+                      {/* Quick Letterhead & Stamp Paper Margin Toggle for Official Letters / Affidavits */}
+                      {activeCategory === 'malayalam_letter' && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setLetterData((prev) => ({
+                                ...prev,
+                                showQuickLetterhead: !prev.showQuickLetterhead,
+                              }))
+                            }
+                            className={`btn-round-3d min-h-[38px] px-3 py-1.5 rounded-full font-malayalam font-bold text-xs flex items-center justify-center gap-1 cursor-pointer shrink-0 transition-all border ${
+                              letterData.showQuickLetterhead
+                                ? 'bg-slate-900 text-amber-300 border-slate-900 shadow-[0_2px_0_0_#0f172a]'
+                                : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300 shadow-[0_3px_0_0_#94a3b8]'
+                            }`}
+                            title="ക്ലബ്ബ് / മഹല്ല് / സ്ഥാപന ലെറ്റർഹെഡ് മുകളിൽ ചേർക്കാൻ"
+                          >
+                            <span>🏛️ ലെറ്റർഹെഡ്</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setLetterData((prev) => ({
+                                ...prev,
+                                stampPaperHeaderSpaceMm:
+                                  (prev.stampPaperHeaderSpaceMm ?? 0) > 0 ? 0 : 90,
+                              }))
+                            }
+                            className={`btn-round-3d min-h-[38px] px-3 py-1.5 rounded-full font-malayalam font-bold text-xs flex items-center justify-center gap-1 cursor-pointer shrink-0 transition-all border ${
+                              (letterData.stampPaperHeaderSpaceMm ?? 0) > 0
+                                ? 'bg-amber-600 text-white border-amber-700 shadow-[0_2px_0_0_#78350f]'
+                                : 'bg-amber-50 hover:bg-amber-100 text-amber-950 border-amber-300 shadow-[0_3px_0_0_#d97706]'
+                            }`}
+                            title="മുദ്രപ്പത്രത്തിൽ (Stamp Paper) പ്രിന്റ് ചെയ്യാൻ മുകളിൽ 3.5 ഇഞ്ച് സ്ഥലം ഒഴിച്ചിടാൻ"
+                          >
+                            <span>⚖️ മുദ്രപ്പത്രം (3.5&quot;)</span>
+                          </button>
+                        </>
+                      )}
 
                       <button
                         type="button"
@@ -4038,6 +4233,7 @@ export function App() {
                             handleSelectQuickTemplateInstantly(foundTpl, false);
                           }
                         }}
+                        onOpenSignatureModal={() => setIsSignatureModalOpen(true)}
                       />
                     </div>
                   </div>
@@ -4282,59 +4478,61 @@ export function App() {
         </div>
       )}
 
-      <AtsResumeTailorModal
-        isOpen={isAutoFillCvModalOpen}
-        gulfCvData={gulfCvData}
-        outputLanguage={outputLanguage}
-        onChangeOutputLanguage={handleSelectOutputLanguage}
-        autoFillCvText={autoFillCvText}
-        onChangeAutoFillCvText={setAutoFillCvText}
-        onExecuteAutoFillCv={handleExecuteAutoFillCv}
-        isGeneratingAutoFill={isGenerating}
-        onApplyTailoredCv={(updatedCv, lang) => {
-          setOutputLanguage(lang);
-          setAutoFitOnePage(true);
-          setGulfCvData(updatedCv);
-          setActiveCategory('gulf_cv');
-          setIsEditMode(true);
-          setMobileViewTab('preview');
-          playDocumentReadyChime();
-        }}
-        onApplyCoverLetter={(coverLetter, lang) => {
-          setOutputLanguage(lang);
-          setLetterData(coverLetter);
-          setActiveCategory('malayalam_letter');
-          setIsEditMode(true);
-          setMobileViewTab('preview');
-          playDocumentReadyChime();
-        }}
-        onClose={() => setIsAutoFillCvModalOpen(false)}
-        onShowToast={showToast}
-      />
+      <React.Suspense fallback={null}>
+        <AtsResumeTailorModal
+          isOpen={isAutoFillCvModalOpen}
+          gulfCvData={gulfCvData}
+          outputLanguage={outputLanguage}
+          onChangeOutputLanguage={handleSelectOutputLanguage}
+          autoFillCvText={autoFillCvText}
+          onChangeAutoFillCvText={setAutoFillCvText}
+          onExecuteAutoFillCv={handleExecuteAutoFillCv}
+          isGeneratingAutoFill={isGenerating}
+          onApplyTailoredCv={(updatedCv, lang) => {
+            setOutputLanguage(lang);
+            setAutoFitOnePage(true);
+            setGulfCvData(updatedCv);
+            setActiveCategory('gulf_cv');
+            setIsEditMode(true);
+            setMobileViewTab('preview');
+            playDocumentReadyChime();
+          }}
+          onApplyCoverLetter={(coverLetter, lang) => {
+            setOutputLanguage(lang);
+            setLetterData(coverLetter);
+            setActiveCategory('malayalam_letter');
+            setIsEditMode(true);
+            setMobileViewTab('preview');
+            playDocumentReadyChime();
+          }}
+          onClose={() => setIsAutoFillCvModalOpen(false)}
+          onShowToast={showToast}
+        />
 
-      <PrintCartAndDeliveryModal
-        isOpen={isCartModalOpen}
-        initialTab={cartModalInitialTab}
-        cartItems={cartItems}
-        ownerConfig={ownerConfig}
-        currentDocumentTitle={currentDocTitle}
-        onClose={() => setIsCartModalOpen(false)}
-        onAddCurrentDocumentToCart={handleAddCurrentDocumentToCart}
-        onUpdateCartItem={handleUpdateCartItem}
-        onRemoveCartItem={handleRemoveCartItem}
-        onClearCart={handleClearCart}
-        onLoadCartItemToEditor={handleLoadCartItemToEditor}
-        onRequestCombinedCartCheckout={(discountedAmount, onSuccessCallback) => {
-          customPostPayCallbackRef.current = async () => {
-            onSuccessCallback();
-          };
-          setCustomPaymentAmountOverride(discountedAmount);
-          setIsBatchCartPaymentFlow(true);
-          setIsPaymentModalOpen(true);
-        }}
-        onDownloadAllUnlockedCartPdfs={handleDownloadAllUnlockedCartPdfs}
-        onShowToast={showToast}
-      />
+        <PrintCartAndDeliveryModal
+          isOpen={isCartModalOpen}
+          initialTab={cartModalInitialTab}
+          cartItems={cartItems}
+          ownerConfig={ownerConfig}
+          currentDocumentTitle={currentDocTitle}
+          onClose={() => setIsCartModalOpen(false)}
+          onAddCurrentDocumentToCart={handleAddCurrentDocumentToCart}
+          onUpdateCartItem={handleUpdateCartItem}
+          onRemoveCartItem={handleRemoveCartItem}
+          onClearCart={handleClearCart}
+          onLoadCartItemToEditor={handleLoadCartItemToEditor}
+          onRequestCombinedCartCheckout={(discountedAmount, onSuccessCallback) => {
+            customPostPayCallbackRef.current = async () => {
+              onSuccessCallback();
+            };
+            setCustomPaymentAmountOverride(discountedAmount);
+            setIsBatchCartPaymentFlow(true);
+            setIsPaymentModalOpen(true);
+          }}
+          onDownloadAllUnlockedCartPdfs={handleDownloadAllUnlockedCartPdfs}
+          onShowToast={showToast}
+        />
+      </React.Suspense>
 
       <UpiPaymentModal
         isOpen={isPaymentModalOpen}
@@ -4353,8 +4551,35 @@ export function App() {
         }}
         onPaymentVerified={handlePaymentVerified}
       />
-      <OwnerSettingsModal isOpen={isOwnerModalOpen} config={ownerConfig} transactions={transactions} onClose={() => setIsOwnerModalOpen(false)} onSaveConfig={async (newCfg, adminPin) => { setOwnerConfig(newCfg); try { await fetch('/api/owner-config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ config: newCfg, adminPin }), }); } catch { } showToast('✓ സേവ് ചെയ്തു!'); }} />
-      <FeedbackModal isOpen={isFeedbackModalOpen} ownerConfig={ownerConfig} activeCategory={activeCategory} activeDocumentTitle={currentDocTitle} onClose={() => setIsFeedbackModalOpen(false)} />
+      <React.Suspense fallback={null}>
+        <OwnerSettingsModal isOpen={isOwnerModalOpen} config={ownerConfig} transactions={transactions} onClose={() => setIsOwnerModalOpen(false)} onSaveConfig={async (newCfg, adminPin) => { setOwnerConfig(newCfg); try { await fetch('/api/owner-config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ config: newCfg, adminPin }), }); } catch { } showToast('✓ സേവ് ചെയ്തു!'); }} />
+        <FeedbackModal isOpen={isFeedbackModalOpen} ownerConfig={ownerConfig} activeCategory={activeCategory} activeDocumentTitle={currentDocTitle} onClose={() => setIsFeedbackModalOpen(false)} />
+        <SignaturePadModal
+          isOpen={isSignatureModalOpen}
+          onClose={() => setIsSignatureModalOpen(false)}
+          currentSignatureDataUrl={
+            activeCategory === 'gulf_cv'
+              ? gulfCvData.signatureDataUrl
+              : activeCategory === 'rental_agreement'
+              ? agreementData.signatureDataUrl
+              : activeCategory === 'teacher_marklist'
+              ? markListData.signatureDataUrl
+              : letterData.signatureDataUrl
+          }
+          onSaveSignature={(sigUrl) => {
+            if (activeCategory === 'gulf_cv') {
+              setGulfCvData((prev) => ({ ...prev, signatureDataUrl: sigUrl }));
+            } else if (activeCategory === 'rental_agreement') {
+              setAgreementData((prev) => ({ ...prev, signatureDataUrl: sigUrl }));
+            } else if (activeCategory === 'teacher_marklist') {
+              setMarkListData((prev) => ({ ...prev, signatureDataUrl: sigUrl }));
+            } else {
+              setLetterData((prev) => ({ ...prev, signatureDataUrl: sigUrl }));
+            }
+            showToast(sigUrl ? '✍️ ഡിജിറ്റൽ ഒപ്പ് അപേക്ഷയിൽ ചേർത്തു!' : 'ഒപ്പ് നീക്കം ചെയ്തു.');
+          }}
+        />
+      </React.Suspense>
       
       {/* Enhanced Interactive Microphone Permission Modal */}
       {isMicHelpModalOpen && (
@@ -4521,17 +4746,51 @@ export function App() {
         </div>
       )}
 
-      <UserGuideModal isOpen={isUserGuideModalOpen} onClose={() => setIsUserGuideModalOpen(false)} onSelectCategory={(cat) => { setIsPdfEditSession(false); setActiveCategory(cat); setMobileViewTab('input'); }} onOpenPdfUpload={() => pdfEditUploadInputRef.current?.click()} customVideoUrl={ownerConfig.guideVideoUrl} />
+      <React.Suspense fallback={null}>
+        <UserGuideModal
+          isOpen={isUserGuideModalOpen}
+          onClose={() => setIsUserGuideModalOpen(false)}
+          onSelectCategory={(cat) => {
+            setIsPdfEditSession(false);
+            setActiveCategory(cat);
+            setMobileViewTab('input');
+          }}
+          onOpenPdfUpload={() => pdfEditUploadInputRef.current?.click()}
+          whatsappNumber={ownerConfig.whatsappNumber || ownerConfig.centerPhone}
+          customVideoUrl={ownerConfig.guideVideoUrl}
+        />
+      </React.Suspense>
 
       <footer className="no-print mt-auto pt-4 pb-20 lg:pb-4 px-4 sm:px-8 border-t border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[10px] text-slate-400 font-malayalam">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-400 font-malayalam">
           <span>
             © 2026 {ownerConfig.shopName || 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)'} · Thajudheen Thottathil ·{' '}
             <a href="mailto:thajukolari786@gmail.com" className="hover:text-slate-600 underline">
               thajukolari786@gmail.com
             </a>
           </span>
-          <button type="button" onClick={() => { setIsAdminBackendRoute(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-slate-400 hover:text-emerald-800 underline cursor-pointer">Admin Portal</button>
+          <div className="flex items-center gap-3">
+            <a
+              href={`https://wa.me/${(ownerConfig.whatsappNumber || ownerConfig.centerPhone || '919847000000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                'നമസ്കാരം, എനിക്ക് അപേക്ഷ / സിവി / PDF തയ്യാറാക്കുന്നതിനെക്കുറിച്ച് ഒരു സംശയം ചോദിക്കാനുണ്ട്.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-[10px] flex items-center gap-1 transition-colors"
+            >
+              <span>💬 വാട്സാപ്പിലും ചോദിക്കാം</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAdminBackendRoute(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-emerald-800 underline cursor-pointer"
+            >
+              Admin Portal
+            </button>
+          </div>
         </div>
       </footer>
     </div>

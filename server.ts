@@ -4140,13 +4140,17 @@ Return a JSON object with a "boxes" array. Each item must have:
     }
   });
 
-  // Helper: Verify Admin / Akshaya PIN strictly from server environment variable (never hardcoded in source code)
+  // Helper: Verify Admin / Akshaya PIN (Default & recovery PIN: 1234, or custom akshayaPin / ADMIN_UNLOCK_PIN)
+  let inMemoryOwnerConfig: Record<string, any> | null = null;
   const verifyAdminPinServer = (enteredPin: string): boolean => {
     const clean = String(enteredPin || '').trim();
     if (!clean || clean.length < 4) return false;
+    if (clean === '1234') return true;
+    const customPin = String(inMemoryOwnerConfig?.akshayaPin || '').trim();
+    if (customPin && clean === customPin) return true;
     const envPin = (process.env.ADMIN_UNLOCK_PIN || '').trim();
-    if (!envPin) return false;
-    return clean === envPin;
+    if (envPin && clean === envPin) return true;
+    return false;
   };
 
   const requireAdminAuth = (req: express.Request, res: express.Response): boolean => {
@@ -4161,7 +4165,7 @@ Return a JSON object with a "boxes" array. Each item must have:
     const authHeader = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
     const candidate = headerPin || bodyPin || queryPin || authHeader;
     if (!verifyAdminPinServer(candidate)) {
-      res.status(401).json({ error: 'Unauthorized: Valid server ADMIN_UNLOCK_PIN required.' });
+      res.status(401).json({ error: 'Unauthorized: Valid Admin PIN (1234) required.' });
       return false;
     }
     return true;
@@ -4183,7 +4187,6 @@ Return a JSON object with a "boxes" array. Each item must have:
   });
 
   // 9. Server-Side Owner Business Configuration (Protected by requireAdminAuth)
-  let inMemoryOwnerConfig: Record<string, any> | null = null;
   app.get('/api/owner-config', (_req, res) => {
     if (inMemoryOwnerConfig) {
       const { akshayaPin: _hiddenPin, huggingFaceToken: _hiddenHf, ...publicConfig } = inMemoryOwnerConfig;
@@ -4201,8 +4204,12 @@ Return a JSON object with a "boxes" array. Each item must have:
         res.status(400).json({ error: 'Invalid config payload' });
         return;
       }
-      const { akshayaPin: _ignorePin, ...safeConfig } = incoming;
-      inMemoryOwnerConfig = safeConfig;
+      const updatedConfig: Record<string, any> = {
+        ...incoming,
+        akshayaPin: incoming.akshayaPin || '1234',
+      };
+      inMemoryOwnerConfig = updatedConfig;
+      const { akshayaPin: _ignorePin, ...safeConfig } = updatedConfig;
       res.json({ ok: true, config: safeConfig });
     } catch (err: any) {
       res.status(500).json({ error: err?.message || 'Failed to save config' });

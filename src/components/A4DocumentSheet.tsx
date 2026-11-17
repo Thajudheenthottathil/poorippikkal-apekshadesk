@@ -58,6 +58,7 @@ interface A4DocumentSheetProps {
   highlightedAuditSection?: DocumentAuditSection | null;
   onFixAuditIssue?: (issue: DocumentAuditIssue) => void;
   onSelectQuickTemplateById?: (templateId: string) => void;
+  onOpenSignatureModal?: () => void;
 }
 
 export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
@@ -84,6 +85,7 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
   highlightedAuditSection = null,
   onFixAuditIssue,
   onSelectQuickTemplateById,
+  onOpenSignatureModal,
 }) => {
   const effectiveLang: DocumentOutputLanguage =
     category === 'gulf_cv' && outputLanguage === 'ml' ? 'en' : outputLanguage;
@@ -465,25 +467,55 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
   };
 
   const handleApplyBulkPastedNames = () => {
-    const names = bulkPasteNamesText
+    const rawLines = bulkPasteNamesText
       .split(/\r?\n/)
-      .map((n) => n.replace(/^\d+[\s.)\-:]*/, '').trim())
+      .map((line) => line.replace(/^\d+[\s.)\-:]*/, '').trim())
       .filter(Boolean);
-    if (names.length === 0) return;
+    if (rawLines.length === 0) return;
 
-    const newStudents: TeacherMarkListStudent[] = names.map((name, idx) => {
+    const newStudents: TeacherMarkListStudent[] = rawLines.map((rawLine, idx) => {
       const existing = markListData.students[idx];
+      // Support Excel/CSV/WhatsApp rows like "അർജുൻ കെ., 45, 48, 42, 49" or tab-separated "അർജുൻ കെ.\t45\t48\t42"
+      const parts = rawLine
+        .split(/[\t,;|]+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+
+      let parsedName = rawLine;
+      const parsedMarks: number[] = [];
+      const parsedGrades: string[] = [];
+
+      if (parts.length >= 2) {
+        parsedName = parts[0];
+        for (let i = 1; i < parts.length; i++) {
+          const token = parts[i];
+          const numVal = Number(token.replace(/[^\d.]/g, ''));
+          if (!Number.isNaN(numVal) && /\d/.test(token)) {
+            parsedMarks.push(Math.min(markListData.maxMarksPerSubject, Math.max(0, numVal)));
+          } else if (/^[A-E][+]?$/i.test(token)) {
+            parsedGrades.push(token.toUpperCase());
+          }
+        }
+      }
+
+      const finalMarks = markListData.subjects.map((_, sIdx) => {
+        if (parsedMarks[sIdx] !== undefined) return parsedMarks[sIdx];
+        if (existing?.marks?.[sIdx] !== undefined) return existing.marks[sIdx];
+        return 80;
+      });
+
+      const finalGrades = markListData.subjects.map((_, sIdx) => {
+        if (parsedGrades[sIdx] !== undefined) return parsedGrades[sIdx];
+        if (existing?.subjectGrades?.[sIdx] !== undefined) return existing.subjectGrades[sIdx];
+        return 'A';
+      });
+
       return {
         id: existing?.id || `st-bulk-${Date.now()}-${idx}`,
         rollNo: String(idx + 1),
-        studentName: name,
-        marks: existing?.marks?.length === markListData.subjects.length
-          ? [...existing.marks]
-          : markListData.subjects.map(() => 80),
-        subjectGrades:
-          existing?.subjectGrades?.length === markListData.subjects.length
-            ? [...existing.subjectGrades]
-            : markListData.subjects.map(() => 'A'),
+        studentName: parsedName || `വിദ്യാർത്ഥി ${idx + 1}`,
+        marks: finalMarks,
+        subjectGrades: finalGrades,
         remarks: existing?.remarks || (isGradeOnlyMode ? 'വളരെ മികച്ച പഠന നിലവാരം' : 'വിജയിച്ചു'),
       };
     });
@@ -831,6 +863,57 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 : textSizeClass
             }`}
           >
+            {/* Optional Stamp Paper Top Margin for Affidavits / Official Petitions */}
+            {(letterData.stampPaperHeaderSpaceMm ?? 0) > 0 && (
+              <div
+                style={{ height: `${letterData.stampPaperHeaderSpaceMm}mm` }}
+                className="w-full relative flex items-center justify-center border-b border-dashed border-amber-300/80 mb-5 transition-all"
+              >
+                <div className="no-print text-center px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 text-xs flex items-center gap-2">
+                  <span className="font-bold">
+                    ⚖️ മുദ്രപ്പത്രത്തിന് മുകളിൽ ഒഴിച്ചിട്ട സ്ഥലം: {( (letterData.stampPaperHeaderSpaceMm || 0) / 25.4 ).toFixed(1)} ഇഞ്ച് ({letterData.stampPaperHeaderSpaceMm} mm)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onUpdateLetter({ ...letterData, stampPaperHeaderSpaceMm: 0 })}
+                    className="px-2 py-0.5 rounded bg-white border border-amber-300 text-[10px] font-bold text-amber-900 hover:bg-amber-100 cursor-pointer"
+                  >
+                    സാധാരണ A4 ആക്കുക
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Optional Quick Letterhead Banner for Associations / Mahallu / Institutions */}
+            {letterData.showQuickLetterhead && (
+              <div className="mb-5 pb-3 border-b-2 border-slate-900 text-center space-y-1">
+                <input
+                  type="text"
+                  value={
+                    letterData.letterheadTitle ??
+                    (letterData.senderName || 'സ്ഥാപനത്തിന്റെ / സംഘടനയുടെ പേര് (LETTERHEAD)')
+                  }
+                  onChange={(e) =>
+                    onUpdateLetter({ ...letterData, letterheadTitle: e.target.value })
+                  }
+                  placeholder="സ്ഥാപനത്തിന്റെ / ക്ലബ്ബിന്റെ / മഹല്ലിന്റെ പേര്"
+                  className={`${touchBoxClass(letterData.letterheadTitle)} text-center text-base font-extrabold uppercase tracking-wide text-slate-900`}
+                />
+                <input
+                  type="text"
+                  value={
+                    letterData.letterheadSubtitle ??
+                    (letterData.senderAddress || 'രജിസ്ട്രേഷൻ നമ്പർ, സ്ഥലം, ഫോൺ നമ്പർ')
+                  }
+                  onChange={(e) =>
+                    onUpdateLetter({ ...letterData, letterheadSubtitle: e.target.value })
+                  }
+                  placeholder="വിലാസം, രജിസ്ട്രേഷൻ നമ്പർ, ഫോൺ"
+                  className={`${touchBoxClass(letterData.letterheadSubtitle)} text-center text-xs font-medium text-slate-600`}
+                />
+              </div>
+            )}
+
             {/* Top Document Heading & Official Form Code */}
             <div className="text-center mb-6 space-y-1">
               {letterData.formCode && (
@@ -1276,7 +1359,7 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 </div>
               )}
 
-              <div className="text-right min-w-[200px] space-y-6">
+              <div className="pdf-keep-together signature-block text-right min-w-[200px] space-y-3">
                 <input
                   type="text"
                   value={letterData.closingPhrase}
@@ -1286,6 +1369,26 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                   className={`${touchBoxClass(letterData.closingPhrase)} text-right font-semibold`}
                 />
                 <div className="space-y-1">
+                  {letterData.signatureDataUrl && (
+                    <div className="flex justify-end pr-2 pb-1">
+                      <img
+                        src={letterData.signatureDataUrl}
+                        alt="Signature"
+                        className="h-11 object-contain"
+                      />
+                    </div>
+                  )}
+                  {onOpenSignatureModal && (
+                    <div className="no-print flex justify-end pb-1">
+                      <button
+                        type="button"
+                        onClick={onOpenSignatureModal}
+                        className="px-2.5 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-[10.5px] font-malayalam font-bold cursor-pointer transition-colors"
+                      >
+                        ✍️ {letterData.signatureDataUrl ? 'ഒപ്പ് മാറ്റുക' : 'ഒപ്പ് ചേർക്കുക'}
+                      </button>
+                    </div>
+                  )}
                   <input
                     type="text"
                     value={letterData.signatureLabelOverride ?? labels.signatureLabel}
@@ -1628,39 +1731,110 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             </div>
           )}
 
-          {/* Quick Restore Buttons for Optional Gulf Fields (Hidden in Print/PDF) */}
-          {(!isMeaningfulCvField(gulfCvData.visaStatus) ||
-            !isMeaningfulCvField(gulfCvData.drivingLicense) ||
-            !isMeaningfulCvField(gulfCvData.passportNumber)) && (
-            <div className="no-print mt-2 flex flex-wrap items-center gap-1.5 text-[10px]">
-              <span className="text-slate-400 font-medium">ആവശ്യമെങ്കിൽ മാത്രം ചേർക്കാം:</span>
-              {!isMeaningfulCvField(gulfCvData.visaStatus) && (
-                <button
-                  type="button"
-                  onClick={() => onUpdateGulfCv({ ...gulfCvData, visaStatus: 'Visit Visa (Available Immediately)' })}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 font-semibold border border-slate-200 cursor-pointer"
-                >
-                  + Visa Status ചേർക്കുക
-                </button>
-              )}
-              {!isMeaningfulCvField(gulfCvData.drivingLicense) && (
-                <button
-                  type="button"
-                  onClick={() => onUpdateGulfCv({ ...gulfCvData, drivingLicense: 'Valid UAE / GCC Light Vehicle License' })}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 font-semibold border border-slate-200 cursor-pointer"
-                >
-                  + Driving License ചേർക്കുക
-                </button>
-              )}
-              {!isMeaningfulCvField(gulfCvData.passportNumber) && (
-                <button
-                  type="button"
-                  onClick={() => onUpdateGulfCv({ ...gulfCvData, passportNumber: 'Valid Indian Passport' })}
-                  className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 font-semibold border border-slate-200 cursor-pointer"
-                >
-                  + Passport ചേർക്കുക
-                </button>
-              )}
+          {/* Quick GCC Recruiter Presets & Optional WhatsApp QR Toggle (Hidden in Print/PDF) */}
+          <div className="no-print mt-2 flex flex-wrap items-center gap-1.5 text-[10px]">
+            <span className="text-slate-500 font-bold">GCC ക്വിക്ക് ഓപ്ഷനുകൾ:</span>
+            <button
+              type="button"
+              onClick={() =>
+                onUpdateGulfCv({ ...gulfCvData, visaStatus: 'Visit Visa (Available Immediately)' })
+              }
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold border border-slate-200 cursor-pointer"
+            >
+              ✈️ Visit Visa (Immediate)
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                onUpdateGulfCv({
+                  ...gulfCvData,
+                  visaStatus: 'Employment Visa (Transferable with NOC)',
+                })
+              }
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold border border-slate-200 cursor-pointer"
+            >
+              🏢 Employment Visa
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                onUpdateGulfCv({
+                  ...gulfCvData,
+                  drivingLicense: 'Valid UAE / GCC Light Vehicle License (Manual & Auto)',
+                })
+              }
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold border border-slate-200 cursor-pointer"
+            >
+              🚗 UAE Light License
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                onUpdateGulfCv({
+                  ...gulfCvData,
+                  drivingLicense: 'Valid GCC Heavy Truck & Bus License',
+                })
+              }
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold border border-slate-200 cursor-pointer"
+            >
+              🚛 GCC Heavy License
+            </button>
+            {!isMeaningfulCvField(gulfCvData.passportNumber) && (
+              <button
+                type="button"
+                onClick={() =>
+                  onUpdateGulfCv({ ...gulfCvData, passportNumber: 'Valid Indian Passport' })
+                }
+                className="px-2 py-0.5 rounded bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold border border-slate-200 cursor-pointer"
+              >
+                + Passport ചേർക്കുക
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() =>
+                onUpdateGulfCv({
+                  ...gulfCvData,
+                  showWhatsappQr: !gulfCvData.showWhatsappQr,
+                })
+              }
+              className={`px-2 py-0.5 rounded font-bold border cursor-pointer transition-colors ${
+                gulfCvData.showWhatsappQr
+                  ? 'bg-emerald-600 text-white border-emerald-600'
+                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+              }`}
+            >
+              {gulfCvData.showWhatsappQr ? '✓ 📱 WhatsApp QR ഓൺ' : '+ 📱 WhatsApp QR ചേർക്കുക'}
+            </button>
+          </div>
+
+          {/* Optional Scannable WhatsApp Candidate QR Card for GCC Recruiters */}
+          {gulfCvData.showWhatsappQr && (
+            <div className="mt-2.5 p-2 rounded-lg border border-emerald-200 bg-emerald-50/40 flex items-center justify-between gap-3 pdf-keep-together">
+              <div className="text-[11px] text-slate-700 space-y-0.5">
+                <p className="font-extrabold text-emerald-900 uppercase tracking-wide">
+                  📱 Scan to Contact Candidate on WhatsApp
+                </p>
+                <p className="text-[10px] text-slate-600">
+                  Direct WhatsApp Chat:{' '}
+                  <span className="font-mono-num font-bold text-slate-900">
+                    {gulfCvData.whatsapp || gulfCvData.phone}
+                  </span>{' '}
+                  — Scan with phone camera for instant interview scheduling.
+                </p>
+              </div>
+              <div className="shrink-0 bg-white p-1 rounded border border-slate-200 shadow-2xs">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=96x96&margin=2&data=${encodeURIComponent(
+                    `https://wa.me/${(gulfCvData.whatsapp || gulfCvData.phone || '').replace(/\D/g, '')}?text=${encodeURIComponent(
+                      `Hello ${gulfCvData.fullName}, we reviewed your CV for ${gulfCvData.jobTitle}.`
+                    )}`
+                  )}`}
+                  alt="WhatsApp Candidate QR"
+                  crossOrigin="anonymous"
+                  className="w-14 h-14 object-contain"
+                />
+              </div>
             </div>
           )}
 
@@ -1950,7 +2124,27 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                   className={`${touchBoxClass(gulfCvData.cvPlace, 'w-52')} font-semibold text-slate-900`}
                 />
               </div>
-              <div className="text-right min-w-[200px] space-y-0.5">
+              <div className="pdf-keep-together signature-block text-right min-w-[200px] space-y-0.5">
+                {gulfCvData.signatureDataUrl && (
+                  <div className="flex justify-end pr-2 pb-1">
+                    <img
+                      src={gulfCvData.signatureDataUrl}
+                      alt="Signature"
+                      className="h-10 object-contain"
+                    />
+                  </div>
+                )}
+                {onOpenSignatureModal && (
+                  <div className="no-print flex justify-end pb-1">
+                    <button
+                      type="button"
+                      onClick={onOpenSignatureModal}
+                      className="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-[10px] font-bold cursor-pointer"
+                    >
+                      ✍️ {gulfCvData.signatureDataUrl ? 'Change Sign' : 'Add Signature'}
+                    </button>
+                  </div>
+                )}
                 <input
                   type="text"
                   value={
@@ -2189,29 +2383,81 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 />
               </div>
             ))}
+
+            {/* Quick Legal Clause Adders for Rental Agreement (Hidden in Print/PDF) */}
+            <div className="no-print flex flex-wrap items-center gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  const nextNum = agreementData.clauses.length + 1;
+                  const tradeNocClause = `${nextNum}. പട്ടികയിൽ പറയുന്ന കെട്ടിടത്തിൽ രണ്ടാം കക്ഷിക്ക് നിയമപരമായ വ്യാപാരം / സ്ഥാപനം നടത്തുന്നതിന് ആവശ്യമായ പഞ്ചായത്ത് / മുൻസിപ്പാലിറ്റി D&O ട്രേഡ് ലൈസൻസ്, GST രജിസ്ട്രേഷൻ, ഫുഡ് സേഫ്റ്റി (FSSAI) ലൈസൻസ് എന്നിവ രണ്ടാം കക്ഷിയുടെ പേരിൽ എടുക്കുന്നതിന് ഒന്നാം കക്ഷിക്ക് യാതൊരുവിധ ആക്ഷേപവുമില്ലാത്തതും അതിലേക്കായി ഈ കരാർ സമ്മതപത്രമായി (NOC) ഉപയോഗിക്കാവുന്നതുമാകുന്നു.`;
+                  onUpdateAgreement({
+                    ...agreementData,
+                    clauses: [...agreementData.clauses, tradeNocClause],
+                  });
+                }}
+                className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[11px] font-bold cursor-pointer"
+              >
+                + 🏪 ട്രേഡ് ലൈസൻസ് / GST NOC വ്യവസ്ഥ ചേർക്കുക
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const nextNum = agreementData.clauses.length + 1;
+                  onUpdateAgreement({
+                    ...agreementData,
+                    clauses: [
+                      ...agreementData.clauses,
+                      `${nextNum}. കരാർ കാലാവധി അവസാനിക്കുമ്പോൾ കെട്ടിടം കേടുപാടുകൾ കൂടാതെ ഒന്നാം കക്ഷിയെ തിരികെ ഏൽപ്പിക്കേണ്ടതാണ്.`,
+                    ],
+                  });
+                }}
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[11px] font-bold cursor-pointer"
+              >
+                + പുതിയ വ്യവസ്ഥ ചേർക്കുക
+              </button>
+            </div>
           </div>
 
           {agreementData.schedulePropertyDetails !== undefined &&
             (agreementData.subType !== 'സത്യവാങ്മൂലം (Affidavit)' ||
               Boolean(agreementData.schedulePropertyDetails?.trim())) && (
             <div className="border border-slate-300 rounded p-3.5 mb-6 bg-slate-50/40 pdf-keep-together">
-              <input
-                type="text"
-                value={
-                  agreementData.scheduleHeadingOverride ?? 'വസ്തു / കെട്ടിട പട്ടിക വിവരം :'
-                }
-                onChange={(e) =>
-                  onUpdateAgreement({
-                    ...agreementData,
-                    scheduleHeadingOverride: e.target.value,
-                  })
-                }
-                className={`${touchBoxClass(
-                  agreementData.scheduleHeadingOverride ?? 'വസ്തു / കെട്ടിട പട്ടിക വിവരം :'
-                )} font-bold text-slate-900 mb-1`}
-              />
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                <input
+                  type="text"
+                  value={
+                    agreementData.scheduleHeadingOverride ?? 'വസ്തു / കെട്ടിട പട്ടിക വിവരം :'
+                  }
+                  onChange={(e) =>
+                    onUpdateAgreement({
+                      ...agreementData,
+                      scheduleHeadingOverride: e.target.value,
+                    })
+                  }
+                  className={`${touchBoxClass(
+                    agreementData.scheduleHeadingOverride ?? 'വസ്തു / കെട്ടിട പട്ടിക വിവരം :'
+                  )} font-bold text-slate-900 flex-1`}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const fittingsText =
+                      '\nഇലക്ട്രിക് & ഫർണിച്ചർ വിവരങ്ങൾ: സീലിംഗ് ഫാൻ - 3, ട്യൂബ് ലൈറ്റ്/LED - 5, ഇലക്ട്രിക് മീറ്റർ, വാട്ടർ കണക്ഷൻ, താക്കോൽ സെറ്റ് എന്നിവ പ്രവർത്തനക്ഷമമായ നിലയിൽ കൈമാറിയിരിക്കുന്നു.';
+                    if (!agreementData.schedulePropertyDetails.includes('ഇലക്ട്രിക് & ഫർണിച്ചർ')) {
+                      onUpdateAgreement({
+                        ...agreementData,
+                        schedulePropertyDetails: `${agreementData.schedulePropertyDetails.trim()}${fittingsText}`,
+                      });
+                    }
+                  }}
+                  className="no-print px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] font-bold cursor-pointer shrink-0"
+                >
+                  + 💡 ഫാൻ / ലൈറ്റ് / ഫർണിച്ചർ പട്ടിക ചേർക്കുക
+                </button>
+              </div>
               <textarea
-                rows={2}
+                rows={3}
                 value={agreementData.schedulePropertyDetails}
                 onChange={(e) =>
                   onUpdateAgreement({
@@ -2224,7 +2470,7 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-6 pt-4 mb-6 pdf-keep-together">
+          <div className="grid grid-cols-2 gap-6 pt-4 mb-6 pdf-keep-together signature-block">
             <div>
               <input
                 type="text"
@@ -2234,6 +2480,26 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 }
                 className={`${touchBoxClass(agreementData.firstPartyLabel)} font-bold text-slate-900`}
               />
+              {agreementData.signatureDataUrl && (
+                <div className="pl-2 pt-2">
+                  <img
+                    src={agreementData.signatureDataUrl}
+                    alt="First Party Signature"
+                    className="h-10 object-contain"
+                  />
+                </div>
+              )}
+              {onOpenSignatureModal && (
+                <div className="no-print pt-1">
+                  <button
+                    type="button"
+                    onClick={onOpenSignatureModal}
+                    className="px-2.5 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-[10.5px] font-malayalam font-bold cursor-pointer"
+                  >
+                    ✍️ {agreementData.signatureDataUrl ? 'ഒപ്പ് മാറ്റുക' : 'ഒപ്പ് ചേർക്കുക'}
+                  </button>
+                </div>
+              )}
               <input
                 type="text"
                 value={
@@ -2249,7 +2515,7 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                 className={`${touchBoxClass(
                   agreementData.firstPartySignatureLabelOverride ??
                     'ഒപ്പ് : ........................................'
-                )} mt-6 text-xs text-slate-600`}
+                )} mt-3 text-xs text-slate-600`}
               />
             </div>
             <div className="text-right">
@@ -2410,7 +2676,29 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                   className="px-2.5 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/60 text-amber-200 text-xs font-bold flex items-center gap-1 cursor-pointer"
                 >
                   <ClipboardList className="w-3.5 h-3.5" />
-                  <span>📋 പേരുകൾ ഒന്നിച്ച് പേസ്റ്റ് ചെയ്യാം</span>
+                  <span>📋 പേരുകളും മാർക്കും ഒന്നിച്ച് പേസ്റ്റ് ചെയ്യാം</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    onUpdateMarkList({
+                      ...markListData,
+                      showSummaryBox: !(markListData.showSummaryBox !== false),
+                    })
+                  }
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer border ${
+                    markListData.showSummaryBox !== false
+                      ? 'bg-emerald-700/80 text-white border-emerald-500'
+                      : 'bg-emerald-950/80 text-emerald-300 border-emerald-800'
+                  }`}
+                  title="ക്ലാസ് സമ്മറി ബോക്സ് ഓൺ / ഓഫ് ചെയ്യുക"
+                >
+                  <span>
+                    {markListData.showSummaryBox !== false
+                      ? '✓ 📊 സമ്മറി ബോക്സ്'
+                      : '+ 📊 സമ്മറി ബോക്സ്'}
+                  </span>
                 </button>
               </div>
 
@@ -2472,13 +2760,13 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
             {showBulkPasteBox && (
               <div className="bg-emerald-900/95 border border-emerald-700 rounded-xl p-3 space-y-2">
                 <p className="text-xs font-bold text-amber-200">
-                  വാട്സാപ്പിൽ നിന്നോ എക്സലിൽ നിന്നോ കുട്ടികളുടെ പേരുകൾ (ഒരു വരിയിൽ ഒരാൾ വീതം — 100 പേർ വരെ) താഴെ പേസ്റ്റ് ചെയ്യുക:
+                  വാട്സാപ്പിൽ നിന്നോ എക്സലിൽ (Excel / CSV) നിന്നോ കുട്ടികളുടെ പേരുകളും മാർക്കുകളും (ഒരു വരിയിൽ ഒരാൾ വീതം — ഉദാ: &ldquo;1. അർജുൻ കെ, 45, 48, 42, 49&rdquo;) താഴെ പേസ്റ്റ് ചെയ്യുക:
                 </p>
                 <textarea
                   rows={4}
                   value={bulkPasteNamesText}
                   onChange={(e) => setBulkPasteNamesText(e.target.value)}
-                  placeholder={'1. അർജുൻ കെ.\n2. ഫാത്തിമ സഹ്റ\n3. ആദിത്യൻ എസ്.\n...'}
+                  placeholder={'1. അർജുൻ കെ., 45, 48, 42, 49\n2. ഫാത്തിമ സഹ്റ, 49, 47, 50, 48\n3. ആദിത്യൻ എസ്., 44, 46, 45, 47'}
                   className="w-full rounded-lg bg-white text-slate-900 p-2 text-xs font-malayalam focus:outline-none"
                 />
                 <div className="flex items-center justify-end gap-2">
@@ -2494,7 +2782,7 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                     onClick={handleApplyBulkPastedNames}
                     className="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold cursor-pointer"
                   >
-                    ✓ പേരുകൾ ചേർക്കുക
+                    ✓ പേരുകളും മാർക്കും ചേർക്കുക
                   </button>
                 </div>
               </div>
@@ -3388,9 +3676,29 @@ export const A4DocumentSheet: React.FC<A4DocumentSheetProps> = ({
                         />
                       </div>
 
-                      <div className="text-right">
+                      <div className="pdf-keep-together signature-block text-right">
                         {showHeadmasterBlock ? (
-                          <div className="space-y-4">
+                          <div className="space-y-2">
+                            {markListData.signatureDataUrl && (
+                              <div className="flex justify-end pr-2">
+                                <img
+                                  src={markListData.signatureDataUrl}
+                                  alt="Signature"
+                                  className="h-9 object-contain"
+                                />
+                              </div>
+                            )}
+                            {onOpenSignatureModal && (
+                              <div className="no-print flex justify-end">
+                                <button
+                                  type="button"
+                                  onClick={onOpenSignatureModal}
+                                  className="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-[10px] font-malayalam font-bold cursor-pointer"
+                                >
+                                  ✍️ {markListData.signatureDataUrl ? 'ഒപ്പ് മാറ്റുക' : 'ഒപ്പ് ചേർക്കുക'}
+                                </button>
+                              </div>
+                            )}
                             <input
                               type="text"
                               value={

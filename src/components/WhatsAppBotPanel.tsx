@@ -47,6 +47,7 @@ import {
 import {
   OUTPUT_LANGUAGE_OPTIONS,
   convertMalayalamToEnglish,
+  getLiveManglishSuggestion,
   mergeSpeechRecognitionPieces,
   normalizeSpokenMalayalamTranscript,
 } from '../utils/languageTranslator';
@@ -2596,6 +2597,32 @@ export const WhatsAppBotPanel: React.FC<WhatsAppBotPanelProps> = ({
                   </button>
                 </div>
               )}
+
+              {/* Live Manglish-to-Malayalam Inline Suggestion Chip */}
+              {(() => {
+                const manglishPreview = getLiveManglishSuggestion(inputText);
+                if (!manglishPreview) return null;
+                return (
+                  <div className="mb-2 flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-emerald-950 text-white border border-emerald-600/60 shadow-xs animate-in fade-in duration-150">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                      <span className="text-[11px] font-malayalam text-emerald-200 shrink-0">
+                        മലയാളം:
+                      </span>
+                      <span className="text-xs font-malayalam font-bold text-white truncate">
+                        {manglishPreview}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setInputText(manglishPreview)}
+                      className="px-2.5 py-0.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-[11px] font-malayalam font-black shrink-0 cursor-pointer transition-colors"
+                    >
+                      ✓ മലയാളമാക്കുക
+                    </button>
+                  </div>
+                );
+              })()}
 
               <form onSubmit={handleFormSubmit} className="flex items-center gap-1.5 sm:gap-2">
                 {/* Camera Button (Opens Photo Scan or CV Photo selector) */}

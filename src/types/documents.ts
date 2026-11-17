@@ -52,6 +52,11 @@ export interface MalayalamLetterData {
   dateLabelOverride?: string;
   date: string;
   signatureLabelOverride?: string;
+  signatureDataUrl?: string;
+  showQuickLetterhead?: boolean;
+  letterheadTitle?: string;
+  letterheadSubtitle?: string;
+  stampPaperHeaderSpaceMm?: number;
   enclosuresLabelOverride?: string;
   enclosures: string[];
   structuredFields?: StructuredFormField[];
@@ -346,22 +351,52 @@ export function auditDocumentReadiness(
       }
     }
 
-    // Phone number digit validation
+    // Phone number validation (Supports India, UAE/GCC, and International numbers: 7 to 15 digits with or without country code / leading 0)
     if (letterData.senderPhone && letterData.senderPhone.trim().length > 0) {
       const digitsOnly = letterData.senderPhone.replace(/\D/g, '');
       if (
-        (digitsOnly.length > 0 && digitsOnly.length < 10) ||
-        digitsOnly.length > 13 ||
+        (digitsOnly.length > 0 && digitsOnly.length < 7) ||
+        digitsOnly.length > 15 ||
         letterData.senderPhone.includes('[')
       ) {
         issues.push({
           id: 'senderPhoneInvalid',
-          shortBadgeMalayalam: 'ഫോൺ നമ്പർ തെറ്റാണ്',
-          labelMalayalam: 'ഫോൺ നമ്പറിൽ 10 അക്കങ്ങൾ ഉണ്ടെന്ന് ഉറപ്പാക്കുക',
+          shortBadgeMalayalam: 'ഫോൺ നമ്പർ പരിശോധിക്കുക',
+          labelMalayalam: 'ഫോൺ നമ്പർ പൂർണ്ണമാണോ എന്ന് പരിശോധിക്കുക',
           severity: 'warning',
           section: 'sender',
           mistakeCategory: 'invalid_contact',
         });
+      }
+    }
+
+    // Aadhaar 12-digit validation in structuredFields
+    for (const sf of letterData.structuredFields || []) {
+      const isAadhaarField =
+        sf.label.includes('ആധാർ') ||
+        sf.label.toLowerCase().includes('aadhaar') ||
+        sf.id.toLowerCase().includes('aadhaar');
+      if (isAadhaarField && sf.value && sf.value.trim().length > 0) {
+        const aadhaarDigits = sf.value.replace(/\D/g, '');
+        if (
+          aadhaarDigits.length > 0 &&
+          aadhaarDigits.length !== 12 &&
+          !sf.value.includes('XXXX') &&
+          !sf.value.includes('[')
+        ) {
+          const diffText =
+            aadhaarDigits.length < 12
+              ? `${12 - aadhaarDigits.length} അക്കം കുറവുണ്ട്`
+              : `${aadhaarDigits.length - 12} അക്കം കൂടുതലാണ്`;
+          issues.push({
+            id: `aadhaarInvalid_${sf.id}`,
+            shortBadgeMalayalam: `ആധാർ നമ്പറിൽ ${diffText}`,
+            labelMalayalam: `ആധാർ നമ്പറിൽ 12 അക്കങ്ങൾ വേണം (${diffText} — ഇപ്പോൾ ${aadhaarDigits.length} അക്കം)`,
+            severity: 'warning',
+            section: 'structured_fields',
+            mistakeCategory: 'invalid_contact',
+          });
+        }
       }
     }
 
@@ -1093,6 +1128,8 @@ export interface GulfCvData {
   declaration: string;
   cvPlace?: string;
   signatureName?: string;
+  signatureDataUrl?: string;
+  showWhatsappQr?: boolean;
 }
 
 export interface RentalAgreementData {
@@ -1117,6 +1154,8 @@ export interface RentalAgreementData {
   schedulePropertyDetails: string;
   witnessesHeadingOverride?: string;
   witnesses: string[];
+  signatureDataUrl?: string;
+  secondPartySignatureDataUrl?: string;
 }
 
 export type MarkListEvaluationMode =
@@ -1198,6 +1237,7 @@ export interface TeacherMarkListData {
   showHeadmasterSignature?: boolean;
   headmasterSignatureLine?: string;
   headmasterTitle?: string;
+  signatureDataUrl?: string;
 }
 
 export interface StudentComputedStats {

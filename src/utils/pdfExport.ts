@@ -73,9 +73,38 @@ function extractTextEntriesFromClone(clone: HTMLElement): ExtractedTextEntry[] {
   return entries;
 }
 
+export interface ProtectedBlockRangePx {
+  topPx: number;
+  bottomPx: number;
+}
+
 export interface RenderedA4Result {
   canvas: HTMLCanvasElement;
   textEntries: ExtractedTextEntry[];
+  protectedRangesPx: ProtectedBlockRangePx[];
+}
+
+function extractProtectedBlockRangesFromClone(
+  clone: HTMLElement,
+  scale: number
+): ProtectedBlockRangePx[] {
+  const ranges: ProtectedBlockRangePx[] = [];
+  const cloneRect = clone.getBoundingClientRect();
+  if (!cloneRect || cloneRect.height === 0) return ranges;
+
+  const nodes = Array.from(
+    clone.querySelectorAll<HTMLElement>('.pdf-keep-together, tr, blockquote, .signature-block')
+  );
+  for (const el of nodes) {
+    if (el.classList.contains('no-print')) continue;
+    const rect = el.getBoundingClientRect();
+    if (rect.height > 8 && rect.height < 420) {
+      const topPx = Math.max(0, Math.round((rect.top - cloneRect.top) * scale));
+      const bottomPx = Math.max(topPx, Math.round((rect.bottom - cloneRect.top) * scale));
+      ranges.push({ topPx, bottomPx });
+    }
+  }
+  return ranges;
 }
 
 /**
@@ -510,6 +539,7 @@ async function renderCleanA4Canvas(
     bakeComputedStylesIntoClone(clone);
 
     const textEntries = extractTextEntriesFromClone(clone);
+    const protectedRangesPx = extractProtectedBlockRangesFromClone(clone, scale);
 
     const rawCanvas = await html2canvas(clone, {
       scale,
@@ -525,7 +555,7 @@ async function renderCleanA4Canvas(
       y: 0,
     });
     const trimmedCanvas = trimTrailingBlankCanvasSpace(rawCanvas, scale);
-    return { canvas: trimmedCanvas, textEntries };
+    return { canvas: trimmedCanvas, textEntries, protectedRangesPx };
   } finally {
     if (stage.parentNode) {
       stage.parentNode.removeChild(stage);
@@ -620,22 +650,38 @@ export interface PdfExportOptions {
   gulfCvData?: GulfCvData;
   category?: DocumentCategory;
   textEntries?: ExtractedTextEntry[];
+  protectedRangesPx?: ProtectedBlockRangePx[];
 }
 
 /**
  * Finds a clean horizontal whitespace row (blank scanline between lines of text)
- * near `idealBreakY` so multi-page PDFs never slice through the middle of Malayalam/English text.
+ * near `idealBreakY` while respecting `.pdf-keep-together` and table-row (`tr`) boundaries
+ * so multi-page PDFs never slice through a table row, signature block, or Malayalam/English line.
  */
 function findSafeHorizontalPageBreak(
   canvas: HTMLCanvasElement,
   idealBreakY: number,
-  minBreakY: number
+  minBreakY: number,
+  protectedRangesPx?: ProtectedBlockRangePx[]
 ): number {
   const ctx = canvas.getContext('2d');
   if (!ctx || idealBreakY >= canvas.height) return Math.min(idealBreakY, canvas.height);
 
+  let adjustedBreakY = idealBreakY;
+  if (protectedRangesPx && protectedRangesPx.length > 0) {
+    for (const range of protectedRangesPx) {
+      if (
+        range.topPx < adjustedBreakY &&
+        range.bottomPx > adjustedBreakY &&
+        range.topPx - 4 >= minBreakY
+      ) {
+        adjustedBreakY = range.topPx - 4;
+      }
+    }
+  }
+
   const width = canvas.width;
-  const startY = Math.max(0, Math.min(canvas.height - 1, Math.floor(idealBreakY)));
+  const startY = Math.max(0, Math.min(canvas.height - 1, Math.floor(adjustedBreakY)));
   const endY = Math.max(0, Math.floor(minBreakY));
   if (startY <= endY) return startY;
 
@@ -663,7 +709,7 @@ function findSafeHorizontalPageBreak(
     }
   }
 
-  return idealBreakY;
+  return startY;
 }
 
 /**
@@ -876,6 +922,17 @@ function buildGenuineAtsVectorGulfCvPdf(cv: GulfCvData): jsPDF {
   pdf.text(declLines, marginX, cursorY);
   cursorY += declLines.length * 4.4 + 6;
 
+  if (cv.signatureDataUrl && cv.signatureDataUrl.startsWith('data:image/')) {
+    try {
+      ensureSpace(18);
+      const sigFormat = cv.signatureDataUrl.includes('image/png') ? 'PNG' : 'JPEG';
+      pdf.addImage(cv.signatureDataUrl, sigFormat, pageWidth - marginX - 36, cursorY - 2, 34, 12, undefined, 'FAST');
+      cursorY += 12;
+    } catch {
+      // Ignore invalid signature image
+    }
+  }
+
   pdf.setFont('helvetica', 'bold');
   pdf.setFontSize(9.5);
   pdf.setTextColor(15, 23, 42);
@@ -947,8 +1004,13 @@ function buildProportionalA4PdfFromCanvas(
 
     let nextBreakY = currentY + maxSliceHeightPx;
     if (nextBreakY < canvas.height) {
-      const minSearchY = currentY + Math.round(maxSliceHeightPx * 0.72);
-      nextBreakY = findSafeHorizontalPageBreak(canvas, nextBreakY, minSearchY);
+      const minSearchY = currentY + Math.round(maxSliceHeightPx * 0.68);
+      nextBreakY = findSafeHorizontalPageBreak(
+        canvas,
+        nextBreakY,
+        minSearchY,
+        options?.protectedRangesPx
+      );
     } else {
       nextBreakY = canvas.height;
     }
@@ -1043,8 +1105,8 @@ export async function generateAndDownloadA4Pdf(
       pdf.addImage(imgData, 'PNG', offsetXMm, 0, fittedWidthMm, fittedHeightMm, undefined, 'FAST');
     }
   } else {
-    const { canvas, textEntries } = await renderCleanA4Canvas(element, 3.2);
-    pdf = buildProportionalA4PdfFromCanvas(canvas, { ...options, textEntries });
+    const { canvas, textEntries, protectedRangesPx } = await renderCleanA4Canvas(element, 3.2);
+    pdf = buildProportionalA4PdfFromCanvas(canvas, { ...options, textEntries, protectedRangesPx });
   }
 
   const safeName = filenameBase
