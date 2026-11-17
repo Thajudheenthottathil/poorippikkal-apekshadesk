@@ -4747,18 +4747,50 @@ export function App() {
       )}
 
       <React.Suspense fallback={null}>
-        <UserGuideModal isOpen={isUserGuideModalOpen} onClose={() => setIsUserGuideModalOpen(false)} onSelectCategory={(cat) => { setIsPdfEditSession(false); setActiveCategory(cat); setMobileViewTab('input'); }} onOpenPdfUpload={() => pdfEditUploadInputRef.current?.click()} customVideoUrl={ownerConfig.guideVideoUrl} />
+        <UserGuideModal
+          isOpen={isUserGuideModalOpen}
+          onClose={() => setIsUserGuideModalOpen(false)}
+          onSelectCategory={(cat) => {
+            setIsPdfEditSession(false);
+            setActiveCategory(cat);
+            setMobileViewTab('input');
+          }}
+          onOpenPdfUpload={() => pdfEditUploadInputRef.current?.click()}
+          whatsappNumber={ownerConfig.whatsappNumber || ownerConfig.centerPhone}
+          customVideoUrl={ownerConfig.guideVideoUrl}
+        />
       </React.Suspense>
 
       <footer className="no-print mt-auto pt-4 pb-20 lg:pb-4 px-4 sm:px-8 border-t border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[10px] text-slate-400 font-malayalam">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-400 font-malayalam">
           <span>
             © 2026 {ownerConfig.shopName || 'പൂരിപ്പിക്കാം – അപേക്ഷാ ഡെസ്ക് (Apeksha Desk)'} · Thajudheen Thottathil ·{' '}
             <a href="mailto:thajukolari786@gmail.com" className="hover:text-slate-600 underline">
               thajukolari786@gmail.com
             </a>
           </span>
-          <button type="button" onClick={() => { setIsAdminBackendRoute(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="text-slate-400 hover:text-emerald-800 underline cursor-pointer">Admin Portal</button>
+          <div className="flex items-center gap-3">
+            <a
+              href={`https://wa.me/${(ownerConfig.whatsappNumber || ownerConfig.centerPhone || '919847000000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                'നമസ്കാരം, എനിക്ക് അപേക്ഷ / സിവി / PDF തയ്യാറാക്കുന്നതിനെക്കുറിച്ച് ഒരു സംശയം ചോദിക്കാനുണ്ട്.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-[10px] flex items-center gap-1 transition-colors"
+            >
+              <span>💬 വാട്സാപ്പിലും ചോദിക്കാം</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAdminBackendRoute(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-slate-400 hover:text-emerald-800 underline cursor-pointer"
+            >
+              Admin Portal
+            </button>
+          </div>
         </div>
       </footer>
     </div>
