@@ -294,28 +294,6 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4">
-            {/* Direct WhatsApp Customer Agent Banner */}
-            <div className="bg-emerald-950 text-white rounded-xl p-3 border border-emerald-700 flex items-center justify-between gap-2.5">
-              <div className="min-w-0 font-malayalam">
-                <p className="text-xs font-extrabold text-amber-300">
-                  💬 വാട്സാപ്പിലും ചോദിക്കാം! (WhatsApp കസ്റ്റമർ ഏജന്റ്)
-                </p>
-                <p className="text-[11px] text-emerald-100 leading-snug">
-                  സംശയങ്ങൾ ഞങ്ങളുടെ വാട്സാപ്പ് കസ്റ്റമർ ഏജന്റിനോട് നേരിട്ട് ചോദിക്കാം:
-                </p>
-              </div>
-              <a
-                href={`https://wa.me/${cleanWaPhone}?text=${encodeURIComponent(
-                  'നമസ്കാരം, എനിക്ക് അപേക്ഷ / സിവി / PDF തയ്യാറാക്കുന്നതിനെക്കുറിച്ച് ഒരു സംശയം ചോദിക്കാനുണ്ട്.'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 rounded-lg bg-[#25D366] hover:bg-emerald-400 text-slate-950 font-malayalam font-black text-xs shrink-0 flex items-center gap-1 shadow-xs"
-              >
-                <span>വാട്സാപ്പിൽ ചോദിക്കാം →</span>
-              </a>
-            </div>
-
             {/* Category Picker */}
             <div className="space-y-1.5">
               <label className="block font-malayalam font-bold text-xs text-slate-900">
